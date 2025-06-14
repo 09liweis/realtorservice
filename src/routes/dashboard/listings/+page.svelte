@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	// 模拟数据 - 在实际应用中，这些数据会从API获取
 	let listings = [
 		{
@@ -435,101 +435,129 @@
 
 <!-- Details Modal -->
 {#if showDetailsModal && selectedListing}
-	<div class="fixed inset-0 z-10 overflow-y-auto">
-		<div class="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-			<div class="fixed inset-0 transition-opacity" aria-hidden="true">
-				<div class="absolute inset-0 bg-gray-500 opacity-75"></div>
-			</div>
-
+	<div class="fixed inset-0 z-50 overflow-y-auto">
+		<div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+			<!-- Modal panel -->
 			<div
-				class="inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full sm:p-6"
+				class="inline-block static z-10 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-3xl sm:w-full"
 			>
-				<div class="absolute top-0 right-0 pt-4 pr-4">
+				<!-- Header with title and close button -->
+				<div class="flex items-center justify-between px-6 pt-6 pb-3 border-b border-gray-200">
+					<h3 class="text-xl font-semibold leading-6 text-gray-900">Property Details</h3>
 					<button
 						type="button"
 						on:click={() => (showDetailsModal = false)}
 						class="text-gray-400 bg-white rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
 					>
 						<span class="sr-only">Close</span>
-						❌
+						<svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+						</svg>
 					</button>
 				</div>
 
-				<div class="sm:flex sm:items-start">
-					<div class="w-full mt-3 text-center sm:mt-0 sm:text-left">
-						<h3 class="text-lg font-medium leading-6 text-gray-900">Property Details</h3>
-						<div class="mt-4 space-y-4">
-							<div>
+				<!-- Modal content -->
+				<div class="px-6 py-4">
+					<div class="w-full">
+						<div class="space-y-6">
+							<!-- Main property info with highlight -->
+							<div class="p-4 mb-6 bg-blue-50 rounded-lg">
 								<h4 class="text-sm font-medium text-gray-500">Address</h4>
-								<p class="mt-1 text-sm text-gray-900">{selectedListing.address}</p>
-							</div>
-							<div class="grid grid-cols-2 gap-4">
-								<div>
-									<h4 class="text-sm font-medium text-gray-500">Price</h4>
-									<p class="mt-1 text-sm text-gray-900">{formatPrice(selectedListing.price)}</p>
-								</div>
-								<div>
-									<h4 class="text-sm font-medium text-gray-500">Status</h4>
-									<p class="mt-1">
-										<span
-											class={`px-2 py-1 text-xs font-medium rounded-full ${getStatusStyle(
-												selectedListing.status
-											)}`}
-										>
-											{selectedListing.status}
-										</span>
-									</p>
-								</div>
-							</div>
-							<div class="grid grid-cols-3 gap-4">
-								<div>
-									<h4 class="text-sm font-medium text-gray-500">Bedrooms</h4>
-									<p class="mt-1 text-sm text-gray-900">{selectedListing.bedrooms}</p>
-								</div>
-								<div>
-									<h4 class="text-sm font-medium text-gray-500">Bathrooms</h4>
-									<p class="mt-1 text-sm text-gray-900">{selectedListing.bathrooms}</p>
-								</div>
-								<div>
-									<h4 class="text-sm font-medium text-gray-500">Square Feet</h4>
-									<p class="mt-1 text-sm text-gray-900">{selectedListing.sqft.toLocaleString()}</p>
+								<p class="mt-1 text-lg font-medium text-gray-900">{selectedListing.address}</p>
+								
+								<div class="grid grid-cols-2 gap-6 mt-4">
+									<div>
+										<h4 class="text-sm font-medium text-gray-500">Price</h4>
+										<p class="mt-1 text-xl font-bold text-blue-600">{formatPrice(selectedListing.price)}</p>
+									</div>
+									<div>
+										<h4 class="text-sm font-medium text-gray-500">Status</h4>
+										<p class="mt-1">
+											<span
+												class={`px-3 py-1 text-sm font-medium rounded-full ${getStatusStyle(
+													selectedListing.status
+												)}`}
+											>
+												{selectedListing.status}
+											</span>
+										</p>
+									</div>
 								</div>
 							</div>
-							<div>
-								<h4 class="text-sm font-medium text-gray-500">Description</h4>
-								<p class="mt-1 text-sm text-gray-900">{selectedListing.description}</p>
+							
+							<!-- Property specifications -->
+							<div class="p-4 mb-6 border border-gray-200 rounded-lg">
+								<h4 class="mb-4 text-base font-medium text-gray-700">Property Specifications</h4>
+								<div class="grid grid-cols-3 gap-6">
+									<div class="text-center">
+										<div class="text-2xl font-bold text-gray-900">{selectedListing.bedrooms}</div>
+										<p class="text-sm text-gray-500">Bedrooms</p>
+									</div>
+									<div class="text-center">
+										<div class="text-2xl font-bold text-gray-900">{selectedListing.bathrooms}</div>
+										<p class="text-sm text-gray-500">Bathrooms</p>
+									</div>
+									<div class="text-center">
+										<div class="text-2xl font-bold text-gray-900">{selectedListing.sqft.toLocaleString()}</div>
+										<p class="text-sm text-gray-500">Square Feet</p>
+									</div>
+								</div>
 							</div>
-							<div>
-								<h4 class="text-sm font-medium text-gray-500">Features</h4>
-								<div class="flex flex-wrap gap-2 mt-1">
+							
+							<!-- Description -->
+							<div class="mb-6">
+								<h4 class="mb-2 text-base font-medium text-gray-700">Description</h4>
+								<p class="text-gray-700">{selectedListing.description}</p>
+							</div>
+							
+							<!-- Features -->
+							<div class="mb-6">
+								<h4 class="mb-2 text-base font-medium text-gray-700">Features</h4>
+								<div class="flex flex-wrap gap-2">
 									{#each selectedListing.features as feature}
-										<span class="px-2 py-1 text-sm bg-gray-100 rounded-full">{feature}</span>
+										<span class="px-3 py-1 text-sm bg-gray-100 rounded-full">{feature}</span>
 									{/each}
 								</div>
 							</div>
-							<div class="grid grid-cols-2 gap-4">
+							
+							<!-- Dates and additional info -->
+							<div class="grid grid-cols-2 gap-6 p-4 bg-gray-50 rounded-lg">
 								<div>
 									<h4 class="text-sm font-medium text-gray-500">Listed Date</h4>
-									<p class="mt-1 text-sm text-gray-900">
+									<p class="mt-1 font-medium text-gray-900">
 										{new Date(selectedListing.listedDate).toLocaleDateString()}
 									</p>
 								</div>
 								{#if selectedListing.status === 'Sold'}
 									<div>
 										<h4 class="text-sm font-medium text-gray-500">Sold Date</h4>
-										<p class="mt-1 text-sm text-gray-900">
+										<p class="mt-1 font-medium text-gray-900">
 											{new Date(selectedListing.soldDate).toLocaleDateString()}
 										</p>
 									</div>
 								{/if}
+								
+								{#if selectedListing.status === 'Sold' && selectedListing.soldPrice}
+									<div class="col-span-2">
+										<h4 class="text-sm font-medium text-gray-500">Sold Price</h4>
+										<p class="mt-1 text-lg font-bold text-green-600">{formatPrice(selectedListing.soldPrice)}</p>
+									</div>
+								{/if}
 							</div>
-							{#if selectedListing.status === 'Sold' && selectedListing.soldPrice}
-								<div>
-									<h4 class="text-sm font-medium text-gray-500">Sold Price</h4>
-									<p class="mt-1 text-sm text-gray-900">{formatPrice(selectedListing.soldPrice)}</p>
-								</div>
-							{/if}
 						</div>
+					</div>
+				</div>
+				
+				<!-- Footer with action buttons -->
+				<div class="px-6 py-4 bg-gray-50 border-t border-gray-200">
+					<div class="flex justify-end">
+						<button
+							type="button"
+							on:click={() => (showDetailsModal = false)}
+							class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+						>
+							Close
+						</button>
 					</div>
 				</div>
 			</div>
