@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { page } from '$app/stores';
 
 	// 导航项
@@ -6,12 +6,12 @@
 		{ name: 'Dashboard', href: '/dashboard', icon: '📊' },
 		{ name: 'Listings', href: '/dashboard/listings', icon: '🏠' },
 		{ name: 'Open Houses', href: '/dashboard/openhouses', icon: '🔍' },
-		{ name: 'Offers', href: '/dashboard/offers', icon: '�' },
+		{ name: 'Offers', href: '/dashboard/offers', icon: '💲' },
 		{ name: 'Stagings', href: '/dashboard/stagings', icon: '🛋️' }
 	];
 
 	// 检查当前路径是否匹配导航项
-	function isActive(href) {
+	function isActive(href:string) {
 		return $page.url.pathname === href || 
 			($page.url.pathname !== '/dashboard' && href !== '/dashboard' && $page.url.pathname.startsWith(href));
 	}
@@ -129,7 +129,7 @@
 	</nav>
 
 	<div class="py-6">
-		<div class="px-4 mx-auto max-w-7xl sm:px-6 md:px-8">
+		<div class="px-4 mx-auto max-w-10xl sm:px-6 md:px-8">
 			<div class="flex flex-col md:flex-row">
 				<!-- 侧边栏导航 - 桌面版 -->
 				<div class="hidden md:block md:w-64 md:flex-shrink-0">
