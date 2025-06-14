@@ -8,7 +8,8 @@
 		{ name: 'Services', href: '#services' },
 		{ name: 'About', href: '#about' },
 		{ name: 'Testimonials', href: '#testimonials' },
-		{ name: 'Contact', href: '#contact' }
+		{ name: 'Contact', href: '#contact' },
+		{ name: 'Dashboard', href: '/dashboard' }
 	];
 </script>
 
