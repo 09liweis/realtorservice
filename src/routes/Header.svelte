@@ -37,11 +37,11 @@
 
 <header class="bg-white shadow-lg fixed w-full top-0 z-50">
 	<nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-		<div class="flex justify-between items-center h-16">
+		<div class="flex justify-between items-center">
 			<!-- Logo -->
 			<div class="flex-shrink-0">
 				<a href="/" class="text-2xl font-bold text-blue-600">
-					Realtor Service
+					<img src="/logo.png" alt="Realtor Service" class="w-32">
 				</a>
 			</div>
 			
