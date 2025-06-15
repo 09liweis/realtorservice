@@ -1,16 +1,38 @@
 <script>
 	import { page } from '$app/stores';
+	import { user, signOut } from '$lib/stores/auth';
+	import { goto } from '$app/navigation';
+  import { derived } from 'svelte/store';
 	
 	let mobileMenuOpen = $state(false);
+	let userMenuOpen = $state(false);
 	
-	const navigation = [
+	// Public navigation items
+	const publicNavigation = [
 		{ name: 'Home', href: '/' },
 		{ name: 'Services', href: '#services' },
 		{ name: 'About', href: '#about' },
 		{ name: 'Testimonials', href: '#testimonials' },
-		{ name: 'Contact', href: '#contact' },
-		{ name: 'Dashboard', href: '/dashboard' }
+		{ name: 'Contact', href: '#contact' }
 	];
+
+	// Navigation items for logged-in users
+	const privateNavigation = [
+		{ name: 'Dashboard', href: '/dashboard' },
+		{ name: 'Listings', href: '/dashboard/listings' },
+		{ name: 'Offers', href: '/dashboard/offers' }
+	];
+
+	// Get navigation items based on login status
+	const navigation = derived(user, ($user) => $user ? [...publicNavigation, ...privateNavigation] : publicNavigation);
+
+	async function handleSignOut() {
+		const { success } = await signOut();
+		if (success) {
+			goto('/');
+			userMenuOpen = false;
+		}
+	}
 </script>
 
 <header class="bg-white shadow-lg fixed w-full top-0 z-50">
@@ -37,20 +59,58 @@
 				</div>
 			</div>
 			
-			<!-- CTA Button -->
+			<!-- Auth Buttons / User Menu -->
 			<div class="hidden md:block">
-				<a 
-					href="#contact" 
-					class="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700 transition-colors duration-200"
-				>
-					Get Started
-				</a>
+				{#if $user}
+					<!-- User Menu -->
+					<div class="relative">
+						<button 
+							on:click={() => userMenuOpen = !userMenuOpen}
+							class="flex items-center text-gray-700 hover:text-blue-600 focus:outline-none"
+						>
+							<span class="mr-2">{$user.email?.split('@')[0] || 'User'}</span>
+							<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+							</svg>
+						</button>
+						
+						{#if userMenuOpen}
+							<div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 border">
+								<a href="/dashboard" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Dashboard</a>
+								<a href="/dashboard/listings" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">My Listings</a>
+								<a href="/dashboard/offers" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Offer Management</a>
+								<button 
+									on:click={handleSignOut}
+									class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+								>
+									Sign Out
+								</button>
+							</div>
+						{/if}
+					</div>
+				{:else}
+					<!-- Login/Register Buttons -->
+					<div class="flex space-x-2">
+						<a 
+							href="/login" 
+							class="text-blue-600 border border-blue-600 px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-50 transition-colors duration-200"
+						>
+							Login
+						</a>
+						<a 
+							href="/register" 
+							class="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700 transition-colors duration-200"
+						>
+							Register
+						</a>
+					</div>
+				{/if}
 			</div>
 			
 			<!-- Mobile menu button -->
 			<div class="md:hidden">
 				<button
-					onclick={() => mobileMenuOpen = !mobileMenuOpen}
+					on:click={() => mobileMenuOpen = !mobileMenuOpen}
 					class="text-gray-700 hover:text-blue-600 focus:outline-none focus:text-blue-600"
 				>
 					<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -68,18 +128,46 @@
 						<a 
 							href={item.href}
 							class="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium"
-							onclick={() => mobileMenuOpen = false}
+							on:click={() => mobileMenuOpen = false}
 						>
 							{item.name}
 						</a>
 					{/each}
-					<a 
-						href="#contact" 
-						class="bg-blue-600 text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-blue-700 mt-4"
-						onclick={() => mobileMenuOpen = false}
-					>
-						Get Started
-					</a>
+					
+					<!-- Mobile Auth Section -->
+					{#if $user}
+						<div class="border-t border-gray-200 mt-4 pt-4">
+							<div class="px-3 py-2 text-sm text-gray-500">
+								{$user.email}
+							</div>
+							<button 
+								on:click={() => {
+									handleSignOut();
+									mobileMenuOpen = false;
+								}}
+								class="text-red-600 hover:text-red-800 block w-full text-left px-3 py-2 rounded-md text-base font-medium"
+							>
+								Sign Out
+							</button>
+						</div>
+					{:else}
+						<div class="border-t border-gray-200 mt-4 pt-4 space-y-2">
+							<a 
+								href="/login" 
+								class="text-blue-600 border border-blue-600 block text-center px-3 py-2 rounded-md text-base font-medium hover:bg-blue-50"
+								on:click={() => mobileMenuOpen = false}
+							>
+								Login
+							</a>
+							<a 
+								href="/register" 
+								class="bg-blue-600 text-white block text-center px-3 py-2 rounded-md text-base font-medium hover:bg-blue-700"
+								on:click={() => mobileMenuOpen = false}
+							>
+								Register
+							</a>
+						</div>
+					{/if}
 				</div>
 			</div>
 		{/if}

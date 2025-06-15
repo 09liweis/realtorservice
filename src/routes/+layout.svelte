@@ -2,9 +2,15 @@
 	import Header from './Header.svelte';
 	import Footer from './Footer.svelte';
 	import '../app.css';
+	import { initializeAuth } from '$lib/stores/auth';
+	import { onMount } from 'svelte';
 
 	/** @type {{children: import('svelte').Snippet}} */
 	let { children } = $props();
+
+	onMount(() => {
+		initializeAuth();
+	});
 </script>
 
 <div class="app">
