@@ -4,34 +4,34 @@
   import { user } from '$lib/stores/auth';
   import { onMount } from 'svelte';
 
-  // 如果用户已登录，重定向到仪表板
+  // If user is already logged in, redirect to dashboard
   onMount(() => {
     if ($user) {
       goto('/dashboard');
     }
   });
 
-  // 表单数据
+  // Form data
   let firstName = '';
   let lastName = '';
   let email = '';
   let password = '';
   let confirmPassword = '';
   
-  // 错误和加载状态
+  // Error and loading states
   let error = '';
   let loading = false;
   let passwordsMatch = true;
 
-  // 处理表单提交
+  // Handle form submission
   async function handleRegister() {
-    // 重置错误
+    // Reset error
     error = '';
     
-    // 验证密码匹配
+    // Validate password match
     if (password !== confirmPassword) {
       passwordsMatch = false;
-      error = '密码不匹配';
+      error = 'Passwords do not match';
       return;
     }
     
@@ -39,7 +39,7 @@
     loading = true;
 
     try {
-      // 使用Supabase注册用户
+      // Register user with Supabase
       const { data, error: signUpError } = await supabase.auth.signUp({
         email,
         password,
@@ -53,14 +53,14 @@
 
       if (signUpError) throw signUpError;
 
-      // 注册成功
+      // Registration successful
       if (data) {
-        // 注意：根据Supabase设置，可能需要验证电子邮件
+        // Note: Email verification may be required based on Supabase settings
         goto('/dashboard');
       }
     } catch (err) {
-      console.error('注册错误:', err);
-      error = err.message || '注册过程中出现错误';
+      console.error('Registration error:', err);
+      error = err.message || 'An error occurred during registration';
     } finally {
       loading = false;
     }
@@ -68,55 +68,55 @@
 </script>
 
 <svelte:head>
-  <title>注册 - 房产经纪人服务</title>
+  <title>Register - Real Estate Agent Service</title>
 </svelte:head>
 
-<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-  <div class="max-w-md w-full space-y-8">
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full bg-white rounded-xl shadow-lg p-8 transition-all duration-300 hover:shadow-xl">
     <div>
-      <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-        创建您的账户
+      <h2 class="text-center text-3xl font-extrabold text-gray-800">
+        Create Your Account
       </h2>
-      <p class="mt-2 text-center text-sm text-gray-600">
-        或
-        <a href="/login" class="font-medium text-blue-600 hover:text-blue-500">
-          已有账户？登录
+      <p class="mt-3 text-center text-sm text-gray-600">
+        or
+        <a href="/login" class="font-medium text-indigo-600 hover:text-indigo-500 transition-colors duration-200">
+          Already have an account? Log in
         </a>
       </p>
     </div>
     
-    <form class="mt-8 space-y-6" on:submit|preventDefault={handleRegister}>
-      <div class="rounded-md shadow-sm -space-y-px">
-        <div class="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-4">
+    <form class="mt-8 space-y-5" on:submit|preventDefault={handleRegister}>
+      <div class="space-y-4">
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
-            <label for="first-name" class="sr-only">名字</label>
+            <label for="first-name" class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
             <input
               id="first-name"
               name="first-name"
               type="text"
               required
               bind:value={firstName}
-              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md sm:rounded-tr-none sm:rounded-tl-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-              placeholder="名字"
+              class="appearance-none relative block w-full px-4 py-3 border border-gray-300 rounded-lg placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200 ease-in-out sm:text-sm"
+              placeholder="First Name"
             />
           </div>
           
           <div>
-            <label for="last-name" class="sr-only">姓氏</label>
+            <label for="last-name" class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
             <input
               id="last-name"
               name="last-name"
               type="text"
               required
               bind:value={lastName}
-              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 sm:rounded-tr-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-              placeholder="姓氏"
+              class="appearance-none relative block w-full px-4 py-3 border border-gray-300 rounded-lg placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200 ease-in-out sm:text-sm"
+              placeholder="Last Name"
             />
           </div>
         </div>
         
         <div>
-          <label for="email-address" class="sr-only">电子邮件地址</label>
+          <label for="email-address" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
           <input
             id="email-address"
             name="email"
@@ -124,13 +124,13 @@
             autocomplete="email"
             required
             bind:value={email}
-            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-            placeholder="电子邮件地址"
+            class="appearance-none relative block w-full px-4 py-3 border border-gray-300 rounded-lg placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200 ease-in-out sm:text-sm"
+            placeholder="Email Address"
           />
         </div>
         
         <div>
-          <label for="password" class="sr-only">密码</label>
+          <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
           <input
             id="password"
             name="password"
@@ -138,14 +138,14 @@
             autocomplete="new-password"
             required
             bind:value={password}
-            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-            placeholder="密码"
+            class="appearance-none relative block w-full px-4 py-3 border border-gray-300 rounded-lg placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200 ease-in-out sm:text-sm"
+            placeholder="Password"
             minlength="6"
           />
         </div>
         
         <div>
-          <label for="confirm-password" class="sr-only">确认密码</label>
+          <label for="confirm-password" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
           <input
             id="confirm-password"
             name="confirm-password"
@@ -153,22 +153,22 @@
             autocomplete="new-password"
             required
             bind:value={confirmPassword}
-            class={`appearance-none rounded-none relative block w-full px-3 py-2 border ${!passwordsMatch ? 'border-red-500' : 'border-gray-300'} placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
-            placeholder="确认密码"
+            class={`appearance-none relative block w-full px-4 py-3 border ${!passwordsMatch ? 'border-red-500' : 'border-gray-300'} rounded-lg placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200 ease-in-out sm:text-sm`}
+            placeholder="Confirm Password"
             minlength="6"
           />
         </div>
       </div>
 
       {#if error}
-        <div class="text-red-500 text-sm text-center">{error}</div>
+        <div class="text-red-500 text-sm text-center p-2 bg-red-50 rounded-lg border border-red-100 transition-all duration-300">{error}</div>
       {/if}
 
-      <div>
+      <div class="mt-6">
         <button
           type="submit"
           disabled={loading}
-          class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+          class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 ease-in-out transform hover:-translate-y-0.5"
         >
           {#if loading}
             <span class="absolute left-0 inset-y-0 flex items-center pl-3">
@@ -177,9 +177,9 @@
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
             </span>
-            注册中...
+            Registering...
           {:else}
-            注册
+            Register
           {/if}
         </button>
       </div>
