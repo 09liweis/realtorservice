@@ -140,7 +140,7 @@
         </div>
 
         <div class="text-sm text-center">
-          <a href="/login" class="font-medium text-indigo-600 hover:text-indigo-500">
+          <a href="/login" class="font-medium text-primary hover:text-primary-hover">
             Return to login
           </a>
         </div>

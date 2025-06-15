@@ -53,7 +53,7 @@
   <title>Login - Real Estate Agent Service</title>
 </svelte:head>
 
-<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50 py-12 px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-[#e6f3f3] py-12 px-4 sm:px-6 lg:px-8">
   <div class="max-w-md w-full bg-white rounded-xl shadow-lg p-8 transition-all duration-300 hover:shadow-xl">
     <div>
       <h2 class="text-center text-3xl font-extrabold text-gray-800">
@@ -61,7 +61,7 @@
       </h2>
       <p class="mt-3 text-center text-sm text-gray-600">
         or
-        <a href="/register" class="font-medium text-indigo-600 hover:text-indigo-500 transition-colors duration-200">
+        <a href="/register" class="font-medium text-primary hover:text-primary-hover transition-colors duration-200">
           Create new account
         </a>
       </p>
@@ -106,7 +106,7 @@
         </div>
 
         <div class="text-sm">
-          <a href="/forgot-password" class="font-medium text-indigo-600 hover:text-indigo-500 transition-colors duration-200">
+          <a href="/forgot-password" class="font-medium text-primary hover:text-primary-hover transition-colors duration-200">
             Forgot password?
           </a>
         </div>
