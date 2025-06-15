@@ -4,6 +4,7 @@
   import { user } from '$lib/stores/auth';
   import { onMount } from 'svelte';
   import Button from '$lib/components/Button.svelte';
+  import Input from '$lib/components/Input.svelte';
 
   // Redirect to dashboard if user is already logged in
   onMount(() => {
@@ -68,33 +69,27 @@
     
     <form class="mt-8 space-y-5" on:submit|preventDefault={handleLogin}>
       <div class="space-y-4">
-        <div>
-          <label for="email-address" class="block text-sm font-medium text-gray-700 mb-1">Email address</label>
-          <input
-            id="email-address"
-            name="email"
-            type="email"
-            autocomplete="email"
-            required
-            bind:value={email}
-            class="appearance-none relative block w-full px-4 py-3 border border-gray-300 rounded-lg placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200 ease-in-out sm:text-sm"
-            placeholder="Email address"
-          />
-        </div>
+        <Input
+          id="email-address"
+          name="email"
+          type="email"
+          label="Email address"
+          placeholder="Email address"
+          autocomplete="email"
+          required={true}
+          bind:value={email}
+        />
         
-        <div>
-          <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            autocomplete="current-password"
-            required
-            bind:value={password}
-            class="appearance-none relative block w-full px-4 py-3 border border-gray-300 rounded-lg placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200 ease-in-out sm:text-sm"
-            placeholder="Password"
-          />
-        </div>
+        <Input
+          id="password"
+          name="password"
+          type="password"
+          label="Password"
+          placeholder="Password"
+          autocomplete="current-password"
+          required={true}
+          bind:value={password}
+        />
       </div>
 
       <div class="flex items-center justify-between mt-4">

@@ -4,6 +4,7 @@
   import { user } from '$lib/stores/auth';
   import { onMount } from 'svelte';
   import Button from '$lib/components/Button.svelte';
+  import Input from '$lib/components/Input.svelte';
 
   // If user is already logged in, redirect to dashboard
   onMount(() => {
@@ -89,76 +90,63 @@
     <form class="mt-8 space-y-5" on:submit|preventDefault={handleRegister}>
       <div class="space-y-4">
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <div>
-            <label for="first-name" class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
-            <input
-              id="first-name"
-              name="first-name"
-              type="text"
-              required
-              bind:value={firstName}
-              class="appearance-none relative block w-full px-4 py-3 border border-gray-300 rounded-lg placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200 ease-in-out sm:text-sm"
-              placeholder="First Name"
-            />
-          </div>
+          <Input
+            id="first-name"
+            name="first-name"
+            type="text"
+            label="First Name"
+            placeholder="First Name"
+            required={true}
+            bind:value={firstName}
+          />
           
-          <div>
-            <label for="last-name" class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
-            <input
-              id="last-name"
-              name="last-name"
-              type="text"
-              required
-              bind:value={lastName}
-              class="appearance-none relative block w-full px-4 py-3 border border-gray-300 rounded-lg placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200 ease-in-out sm:text-sm"
-              placeholder="Last Name"
-            />
-          </div>
-        </div>
-        
-        <div>
-          <label for="email-address" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-          <input
-            id="email-address"
-            name="email"
-            type="email"
-            autocomplete="email"
-            required
-            bind:value={email}
-            class="appearance-none relative block w-full px-4 py-3 border border-gray-300 rounded-lg placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200 ease-in-out sm:text-sm"
-            placeholder="Email Address"
+          <Input
+            id="last-name"
+            name="last-name"
+            type="text"
+            label="Last Name"
+            placeholder="Last Name"
+            required={true}
+            bind:value={lastName}
           />
         </div>
         
-        <div>
-          <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            autocomplete="new-password"
-            required
-            bind:value={password}
-            class="appearance-none relative block w-full px-4 py-3 border border-gray-300 rounded-lg placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200 ease-in-out sm:text-sm"
-            placeholder="Password"
-            minlength="6"
-          />
-        </div>
+        <Input
+          id="email-address"
+          name="email"
+          type="email"
+          label="Email Address"
+          placeholder="Email Address"
+          autocomplete="email"
+          required={true}
+          bind:value={email}
+        />
         
-        <div>
-          <label for="confirm-password" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
-          <input
-            id="confirm-password"
-            name="confirm-password"
-            type="password"
-            autocomplete="new-password"
-            required
-            bind:value={confirmPassword}
-            class={`appearance-none relative block w-full px-4 py-3 border ${!passwordsMatch ? 'border-red-500' : 'border-gray-300'} rounded-lg placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200 ease-in-out sm:text-sm`}
-            placeholder="Confirm Password"
-            minlength="6"
-          />
-        </div>
+        <Input
+          id="password"
+          name="password"
+          type="password"
+          label="Password"
+          placeholder="Password"
+          autocomplete="new-password"
+          required={true}
+          minlength="6"
+          bind:value={password}
+        />
+        
+        <Input
+          id="confirm-password"
+          name="confirm-password"
+          type="password"
+          label="Confirm Password"
+          placeholder="Confirm Password"
+          autocomplete="new-password"
+          required={true}
+          minlength="6"
+          error={!passwordsMatch}
+          errorMessage={!passwordsMatch ? 'Passwords do not match' : ''}
+          bind:value={confirmPassword}
+        />
       </div>
 
       {#if error}
