@@ -4,11 +4,11 @@
   import { onMount } from 'svelte';
 
   // 如果用户未登录，重定向到登录页面
-  onMount(() => {
-    if (!$user) {
-      goto('/login');
-    }
-  });
+  // onMount(() => {
+  //   if (!$user) {
+  //     goto('/login');
+  //   }
+  // });
 </script>
 
 <svelte:head>
@@ -30,7 +30,7 @@
             class="inline-flex items-center text-blue-600 hover:text-blue-800"
           >
             查看房源
-            <svg class="ml-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"></svg>
+            <svg class="ml-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
             </svg>
           </a>
@@ -45,7 +45,7 @@
             class="inline-flex items-center text-green-600 hover:text-green-800"
           >
             查看报价
-            <svg class="ml-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"></svg>
+            <svg class="ml-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
             </svg>
           </a>
