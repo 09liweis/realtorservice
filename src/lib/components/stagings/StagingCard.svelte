@@ -33,7 +33,7 @@
 <div class="bg-white overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-200">
 	<div class="px-6 py-5 border-b border-gray-200">
 		<div class="flex justify-between items-center">
-			<h3 class="text-lg font-medium text-gray-900 truncate">{request.property}</h3>
+			<h3 class="text-lg font-medium text-gray-900 truncate">{request.location || request.property}</h3>
 			<span
 				class={`px-2 py-1 text-xs font-medium rounded-full ${getStatusStyle(
 					request.status
@@ -46,24 +46,34 @@
 	<div class="px-6 py-4">
 		<div class="space-y-3">
 			<div class="flex justify-between">
-				<span class="text-sm text-gray-500">Type</span>
-				<span class="text-sm text-gray-900">{request.type}</span>
+				<span class="text-sm text-gray-500">Property Type</span>
+				<span class="text-sm text-gray-900">{request.property_type || request.type}</span>
 			</div>
 			<div class="flex justify-between">
-				<span class="text-sm text-gray-500">Budget</span>
-				<span class="text-sm font-medium text-gray-900">{formatAmount(request.budget)}</span>
+				<span class="text-sm text-gray-500">Size</span>
+				<span class="text-sm text-gray-900">{request.size ? `${request.size} sq ft` : 'Not specified'}</span>
 			</div>
 			<div class="flex justify-between">
-				<span class="text-sm text-gray-500">Scheduled</span>
-				<span class="text-sm text-gray-900">
-					{request.scheduledDate
-						? new Date(request.scheduledDate).toLocaleDateString()
-						: 'Not scheduled'}
+				<span class="text-sm text-gray-500">Status</span>
+				<span class="text-sm text-gray-900">{request.occupation_status || 'Not specified'}</span>
+			</div>
+			<div class="flex justify-between">
+				<span class="text-sm text-gray-500">Selling Price</span>
+				<span class="text-sm font-medium text-gray-900">
+					{request.selling_price ? formatAmount(request.selling_price) : formatAmount(request.budget)}
 				</span>
 			</div>
 			<div class="flex justify-between">
-				<span class="text-sm text-gray-500">Contact</span>
-				<span class="text-sm text-gray-900">{request.contactPerson}</span>
+				<span class="text-sm text-gray-500">Timeline</span>
+				<span class="text-sm text-gray-900">
+					{request.timeline || (request.scheduledDate
+						? new Date(request.scheduledDate).toLocaleDateString()
+						: 'Not scheduled')}
+				</span>
+			</div>
+			<div class="flex justify-between">
+				<span class="text-sm text-gray-500">Length</span>
+				<span class="text-sm text-gray-900">{request.length || 'Not specified'}</span>
 			</div>
 		</div>
 		

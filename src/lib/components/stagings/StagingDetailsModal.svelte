@@ -91,19 +91,63 @@
 							<div class="mt-6 space-y-6">
 								<!-- 属性信息 -->
 								<div>
-									<h4 class="text-sm font-medium text-gray-500">Property</h4>
-									<p class="mt-1 text-sm text-gray-900">{request.property}</p>
+									<h4 class="text-sm font-medium text-gray-500">Property Location</h4>
+									<p class="mt-1 text-sm text-gray-900">{request.location || request.property}</p>
 								</div>
 
-								<!-- 类型和预算 -->
+								<!-- 属性详情 -->
 								<div class="grid grid-cols-2 gap-4">
 									<div>
-										<h4 class="text-sm font-medium text-gray-500">Type</h4>
-										<p class="mt-1 text-sm text-gray-900">{request.type}</p>
+										<h4 class="text-sm font-medium text-gray-500">Property Type</h4>
+										<p class="mt-1 text-sm text-gray-900">{request.property_type || request.type}</p>
+									</div>
+									<div>
+										<h4 class="text-sm font-medium text-gray-500">Size</h4>
+										<p class="mt-1 text-sm text-gray-900">
+											{request.size ? `${request.size} sq ft` : 'Not specified'}
+										</p>
+									</div>
+								</div>
+
+								<!-- 占用状态和房间 -->
+								<div class="grid grid-cols-2 gap-4">
+									<div>
+										<h4 class="text-sm font-medium text-gray-500">Occupation Status</h4>
+										<p class="mt-1 text-sm text-gray-900">{request.occupation_status || 'Not specified'}</p>
+									</div>
+									<div>
+										<h4 class="text-sm font-medium text-gray-500">Rooms to be Staged</h4>
+										<p class="mt-1 text-sm text-gray-900">{request.rooms || 'All rooms'}</p>
+									</div>
+								</div>
+
+								<!-- 价格信息 -->
+								<div class="grid grid-cols-2 gap-4">
+									<div>
+										<h4 class="text-sm font-medium text-gray-500">Selling Price</h4>
+										<p class="mt-1 text-sm text-gray-900">
+											{request.selling_price ? formatAmount(request.selling_price) : 'Not specified'}
+										</p>
 									</div>
 									<div>
 										<h4 class="text-sm font-medium text-gray-500">Budget</h4>
-										<p class="mt-1 text-sm text-gray-900">{formatAmount(request.budget)}</p>
+										<p class="mt-1 text-sm text-gray-900">
+											{request.budget ? formatAmount(request.budget) : 'Not specified'}
+										</p>
+									</div>
+								</div>
+
+								<!-- 时间信息 -->
+								<div class="grid grid-cols-2 gap-4">
+									<div>
+										<h4 class="text-sm font-medium text-gray-500">Timeline</h4>
+										<p class="mt-1 text-sm text-gray-900">
+											{request.timeline || (request.scheduledDate ? formatDate(request.scheduledDate) : 'Not specified')}
+										</p>
+									</div>
+									<div>
+										<h4 class="text-sm font-medium text-gray-500">Length of Staging</h4>
+										<p class="mt-1 text-sm text-gray-900">{request.length || 'Not specified'}</p>
 									</div>
 								</div>
 
@@ -129,12 +173,6 @@
 											</p>
 										{/if}
 									</div>
-								</div>
-
-								<!-- 日期信息 -->
-								<div>
-									<h4 class="text-sm font-medium text-gray-500">Scheduled Date</h4>
-									<p class="mt-1 text-sm text-gray-900">{formatDate(request.scheduledDate)}</p>
 								</div>
 
 								<!-- 备注 -->
