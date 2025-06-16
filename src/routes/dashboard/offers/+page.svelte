@@ -1,5 +1,6 @@
 <script lang="ts">
 import Button from '$lib/components/Button.svelte';
+    import FormBackdrop from '$lib/components/form/FormBackdrop.svelte';
 	// 模拟数据 - 在实际应用中，这些数据会从API获取
 	let offers = [
 		{
@@ -227,88 +228,66 @@ import Button from '$lib/components/Button.svelte';
 
 <!-- Details Modal -->
 {#if showDetailsModal && selectedOffer}
-	<div class="fixed inset-0 z-10 overflow-y-auto">
-		<div class="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-			<div class="fixed inset-0 transition-opacity" aria-hidden="true">
-				<div class="absolute inset-0 bg-gray-500 opacity-75"></div>
-			</div>
-
-			<div
-				class="inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6"
-			>
-				<div class="absolute top-0 right-0 pt-4 pr-4">
-					<button
-						type="button"
-						on:click={() => (showDetailsModal = false)}
-						class="text-gray-400 bg-white rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-					>
-						<span class="sr-only">Close</span>
-						❌
-					</button>
-				</div>
-
-				<div class="sm:flex sm:items-start">
-					<div class="w-full mt-3 text-center sm:mt-0 sm:text-left">
-						<h3 class="text-lg font-medium leading-6 text-gray-900">Offer Details</h3>
-						<div class="mt-4 space-y-4">
-							<div>
-								<h4 class="text-sm font-medium text-gray-500">Property</h4>
-								<p class="mt-1 text-sm text-gray-900">{selectedOffer.property}</p>
-							</div>
-							<div>
-								<h4 class="text-sm font-medium text-gray-500">Buyer</h4>
-								<p class="mt-1 text-sm text-gray-900">{selectedOffer.buyer}</p>
-							</div>
-							<div>
-								<h4 class="text-sm font-medium text-gray-500">Amount</h4>
-								<p class="mt-1 text-sm text-gray-900">{formatAmount(selectedOffer.amount)}</p>
-							</div>
-							<div>
-								<h4 class="text-sm font-medium text-gray-500">Status</h4>
-								<div class="mt-1">
-									<select
-										bind:value={selectedOffer.status}
-										on:change={() => updateStatus(selectedOffer.id, selectedOffer.status)}
-										class="block w-full px-3 py-2 text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-									>
-										{#each statuses as status}
-											<option value={status}>{status}</option>
-										{/each}
-									</select>
-								</div>
-							</div>
-							<div>
-								<h4 class="text-sm font-medium text-gray-500">Conditions</h4>
-								<ul class="mt-1 space-y-1">
-									{#each selectedOffer.conditions as condition}
-										<li class="text-sm text-gray-900">• {condition}</li>
-									{/each}
-								</ul>
-							</div>
-							<div>
-								<h4 class="text-sm font-medium text-gray-500">Notes</h4>
-								<div class="mt-1">
-									<textarea
-										bind:value={newNote}
-										rows="2"
-										class="block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-										placeholder="Add a note..."
-									></textarea>
-									<button
-										on:click={addNote}
-										class="mt-2 px-3 py-1 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-									>
-										Add Note
-									</button>
-								</div>
-								<div class="mt-2 p-2 max-h-40 overflow-y-auto bg-gray-50 rounded-md">
-									<pre class="text-sm text-gray-900 whitespace-pre-wrap">{selectedOffer.notes}</pre>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+  <FormBackdrop handleClose={() => (showDetailsModal = false)}>
+    <div class="w-full mt-3">
+      <h3 class="text-lg font-medium leading-6 text-gray-900">Offer Details</h3>
+      <div class="mt-4 space-y-4">
+        <div>
+          <h4 class="text-sm font-medium text-gray-500">Property</h4>
+          <p class="mt-1 text-sm text-gray-900">{selectedOffer.property}</p>
+        </div>
+        <div>
+          <h4 class="text-sm font-medium text-gray-500">Buyer</h4>
+          <p class="mt-1 text-sm text-gray-900">{selectedOffer.buyer}</p>
+        </div>
+        <div>
+          <h4 class="text-sm font-medium text-gray-500">Amount</h4>
+          <p class="mt-1 text-sm text-gray-900">{formatAmount(selectedOffer.amount)}</p>
+        </div>
+        <div>
+          <h4 class="text-sm font-medium text-gray-500">Status</h4>
+          <div class="mt-1">
+            <select
+              bind:value={selectedOffer.status}
+              on:change={() => updateStatus(selectedOffer.id, selectedOffer.status)}
+              class="block w-full px-3 py-2 text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            >
+              {#each statuses as status}
+                <option value={status}>{status}</option>
+              {/each}
+            </select>
+          </div>
+        </div>
+        <div>
+          <h4 class="text-sm font-medium text-gray-500">Conditions</h4>
+          <ul class="mt-1 space-y-1">
+            {#each selectedOffer.conditions as condition}
+              <li class="text-sm text-gray-900">• {condition}</li>
+            {/each}
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-sm font-medium text-gray-500">Notes</h4>
+          <div class="mt-1">
+            <textarea
+              bind:value={newNote}
+              rows="2"
+              class="block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              placeholder="Add a note..."
+            ></textarea>
+            <button
+              on:click={addNote}
+              class="mt-2 px-3 py-1 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+              Add Note
+            </button>
+          </div>
+          <div class="mt-2 p-2 max-h-40 overflow-y-auto bg-gray-50 rounded-md">
+            <pre class="text-sm text-gray-900 whitespace-pre-wrap">{selectedOffer.notes}</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </FormBackdrop>
+    
 {/if}
