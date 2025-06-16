@@ -19,7 +19,7 @@
 
 <a 
   {href} 
-  class="text-primary {className}" 
+  class="font-medium text-primary hover:text-primary-hover transition-colors duration-200 {className}" 
   {target} 
   rel={finalRel}
   on:click

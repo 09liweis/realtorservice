@@ -3,6 +3,7 @@
   import { goto } from '$app/navigation';
   import Input from '$lib/components/Input.svelte';
   import Button from '$lib/components/Button.svelte';
+  import Link from '$lib/components/Link.svelte';
 
   let email = '';
   let loading = false;
@@ -89,15 +90,15 @@
         {/if}
 
         <div>
-          <Button type="submit" loading={loading} disabled={loading} fullWidth={true}>
+          <Button type="submit" loading={loading} disabled={loading}>
             Send Reset Instructions
           </Button>
         </div>
 
         <div class="text-sm text-center">
-          <a href="/login" class="font-medium text-primary hover:text-primary-hover">
+          <Link href="/login">
             Return to login
-          </a>
+          </Link>
         </div>
       </form>
     </div>

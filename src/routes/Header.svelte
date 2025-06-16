@@ -93,14 +93,12 @@
 					<!-- Login/Register Buttons -->
 					<div class="flex space-x-2">
 						<Link 
-							href="/login" 
-							className="text-blue-600 border border-blue-600 px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-50 transition-colors duration-200"
+							href="/login"
 						>
 							Login
 						</Link>
 						<Link 
 							href="/register" 
-							className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700 transition-colors duration-200"
 						>
 							Register
 						</Link>
@@ -128,7 +126,6 @@
 					{#each navigation as item}
 						<Link 
 							href={item.href}
-							className="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium"
 							on:click={() => mobileMenuOpen = false}
 						>
 							{item.name}
@@ -155,14 +152,12 @@
 						<div class="border-t border-gray-200 mt-4 pt-4 space-y-2">
 							<Link 
 								href="/login" 
-								className="text-blue-600 border border-blue-600 block text-center px-3 py-2 rounded-md text-base font-medium hover:bg-blue-50"
 								on:click={() => mobileMenuOpen = false}
 							>
 								Login
 							</Link>
 							<Link 
 								href="/register" 
-								className="bg-blue-600 text-white block text-center px-3 py-2 rounded-md text-base font-medium hover:bg-blue-700"
 								on:click={() => mobileMenuOpen = false}
 							>
 								Register

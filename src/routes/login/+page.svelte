@@ -5,6 +5,7 @@
   import { onMount } from 'svelte';
   import Button from '$lib/components/Button.svelte';
   import Input from '$lib/components/Input.svelte';
+  import Link from '$lib/components/Link.svelte';
 
   // Redirect to dashboard if user is already logged in
   onMount(() => {
@@ -61,9 +62,9 @@
       </h2>
       <p class="mt-3 text-center text-sm text-gray-600">
         or
-        <a href="/register" class="font-medium text-primary hover:text-primary-hover transition-colors duration-200">
+        <Link href="/register">
           Create new account
-        </a>
+        </Link>
       </p>
     </div>
     
@@ -106,9 +107,9 @@
         </div>
 
         <div class="text-sm">
-          <a href="/forgot-password" class="font-medium text-primary hover:text-primary-hover transition-colors duration-200">
+          <Link href="/forgot-password">
             Forgot password?
-          </a>
+          </Link>
         </div>
       </div>
 
