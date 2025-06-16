@@ -3,9 +3,10 @@
   export let variant: "primary" | "secondary" = "primary";
   export let loading = false;
   export let disabled = false;
+  export let onclick;
   export let class_name = ""; // Additional classes
 
-  const baseClasses = "group relative w-full flex justify-center py-3 px-4 border text-sm font-medium rounded-lg cursor-pointer hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 ease-in-out transform hover:-translate-y-0.5";
+  const baseClasses = "group relative flex justify-center py-3 px-4 border text-sm font-medium rounded-lg cursor-pointer hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 ease-in-out transform hover:-translate-y-0.5";
   
   const variantClasses = {
     primary: "border-transparent text-white bg-primary hover:bg-[#085c5f] focus:ring-[#0d7377]",
@@ -19,7 +20,7 @@
   {type}
   disabled={disabled || loading}
   class={classes}
-  on:click
+  onclick={onclick}
 >
   {#if loading}
     <span class="absolute left-0 inset-y-0 flex items-center pl-3">

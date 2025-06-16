@@ -9,6 +9,7 @@
 		StagingForm, 
 		StagingDetailsModal 
 	} from '$lib/components/stagings';
+  import Button from '$lib/components/Button.svelte';
 
 	// 模拟数据 - 在实际应用中，这些数据将从API获取
 	let stagingRequests = [
@@ -173,6 +174,7 @@
 
 	// 新建请求
 	function newRequest() {
+    console.log('test');
 		currentRequest = {
 			id: (stagingRequests.length + 1).toString(),
 			location: '',
@@ -230,12 +232,11 @@
 	}
 </script>
 
-<div class="container mx-auto px-4 py-8">
+<div class="container mx-auto">
 	<div class="flex justify-between items-center mb-6">
 		<h1 class="text-2xl font-bold text-gray-900">Staging Requests</h1>
-		<button
-			on:click={newRequest}
-			class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+		<Button
+			onclick={newRequest}
 		>
 			<svg class="mr-2 -ml-1 h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
 				<path
@@ -245,7 +246,7 @@
 				/>
 			</svg>
 			New Staging Request
-		</button>
+		</Button>
 	</div>
 
 	<!-- 主内容区域 -->
