@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Button from '$lib/components/Button.svelte';
 	// 模拟数据 - 在实际应用中，这些数据会从API获取
 	let listings = [
 		{
@@ -211,15 +212,14 @@
 <div class="space-y-6">
 	<div class="flex items-center justify-between">
 		<h1 class="text-2xl font-semibold text-gray-900">Listings Management</h1>
-		<button
-			on:click={() => {
+		<Button
+			onclick={() => {
 				showAddForm = true;
 				resetForm();
 			}}
-			class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
 		>
 			Add New Listing
-		</button>
+		</Button>
 	</div>
 
 	<!-- Filters -->

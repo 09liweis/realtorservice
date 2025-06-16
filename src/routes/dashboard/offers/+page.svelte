@@ -1,4 +1,5 @@
-<script>
+<script lang="ts">
+import Button from '$lib/components/Button.svelte';
 	// 模拟数据 - 在实际应用中，这些数据会从API获取
 	let offers = [
 		{
@@ -205,15 +206,14 @@
 					</div>
 
 					<div class="mt-6 text-right">
-						<button
-							on:click={() => viewDetails(offer)}
-							class="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-md hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+						<Button
+							onclick={() => viewDetails(offer)}
 						>
 							View Details
 							<svg class="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
 							</svg>
-						</button>
+						</Button>
 					</div>
 				</div>
 			</div>
