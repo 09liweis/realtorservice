@@ -13,13 +13,13 @@
 				<div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
 					<a 
 						href="#services" 
-						class="bg-blue-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-blue-700 transition-colors duration-200 text-center"
+						class="bg-blue-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-blue-700 transition-colors duration-200 text-center text-primary"
 					>
 						Our Services
 					</a>
 					<a 
 						href="#contact" 
-						class="border-2 border-blue-600 text-blue-600 px-8 py-3 rounded-lg text-lg font-semibold hover:bg-blue-600 hover:text-white transition-colors duration-200 text-center"
+						class="border-2 border-blue-600 text-blue-600 px-8 py-3 rounded-lg text-lg font-semibold hover:bg-blue-600 hover:text-white transition-colors duration-200 text-center text-primary"
 					>
 						Get Quote
 					</a>

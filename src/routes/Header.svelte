@@ -3,6 +3,7 @@
 	import { user, signOut } from '$lib/stores/auth';
 	import { goto } from '$app/navigation';
   import { derived } from 'svelte/store';
+	import Link from '$lib/components/Link.svelte';
 	
 	let mobileMenuOpen = $state(false);
 	let userMenuOpen = $state(false);
@@ -40,21 +41,21 @@
 		<div class="flex justify-between items-center">
 			<!-- Logo -->
 			<div class="flex-shrink-0">
-				<a href="/" class="text-2xl font-bold text-blue-600">
+				<Link href="/" className="text-2xl font-bold text-primary">
 					<img src="/logo.png" alt="Realtor Service" class="w-32">
-				</a>
+				</Link>
 			</div>
 			
 			<!-- Desktop Navigation -->
 			<div class="hidden md:block">
 				<div class="ml-10 flex items-baseline space-x-4">
 					{#each navigation as item}
-						<a 
+						<Link 
 							href={item.href}
-							class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+							className="hover:text-primary-hover px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
 						>
 							{item.name}
-						</a>
+						</Link>
 					{/each}
 				</div>
 			</div>
@@ -76,9 +77,9 @@
 						
 						{#if userMenuOpen}
 							<div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 border">
-								<a href="/dashboard" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Dashboard</a>
-								<a href="/dashboard/listings" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">My Listings</a>
-								<a href="/dashboard/offers" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Offer Management</a>
+								<Link href="/dashboard" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Dashboard</Link>
+								<Link href="/dashboard/listings" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">My Listings</Link>
+								<Link href="/dashboard/offers" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Offer Management</Link>
 								<button 
 									on:click={handleSignOut}
 									class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -91,18 +92,18 @@
 				{:else}
 					<!-- Login/Register Buttons -->
 					<div class="flex space-x-2">
-						<a 
+						<Link 
 							href="/login" 
-							class="text-blue-600 border border-blue-600 px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-50 transition-colors duration-200"
+							className="text-blue-600 border border-blue-600 px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-50 transition-colors duration-200"
 						>
 							Login
-						</a>
-						<a 
+						</Link>
+						<Link 
 							href="/register" 
-							class="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700 transition-colors duration-200"
+							className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700 transition-colors duration-200"
 						>
 							Register
-						</a>
+						</Link>
 					</div>
 				{/if}
 			</div>
@@ -125,13 +126,13 @@
 			<div class="md:hidden">
 				<div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t">
 					{#each navigation as item}
-						<a 
+						<Link 
 							href={item.href}
-							class="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium"
+							className="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium"
 							on:click={() => mobileMenuOpen = false}
 						>
 							{item.name}
-						</a>
+						</Link>
 					{/each}
 					
 					<!-- Mobile Auth Section -->
@@ -152,20 +153,20 @@
 						</div>
 					{:else}
 						<div class="border-t border-gray-200 mt-4 pt-4 space-y-2">
-							<a 
+							<Link 
 								href="/login" 
-								class="text-blue-600 border border-blue-600 block text-center px-3 py-2 rounded-md text-base font-medium hover:bg-blue-50"
+								className="text-blue-600 border border-blue-600 block text-center px-3 py-2 rounded-md text-base font-medium hover:bg-blue-50"
 								on:click={() => mobileMenuOpen = false}
 							>
 								Login
-							</a>
-							<a 
+							</Link>
+							<Link 
 								href="/register" 
-								class="bg-blue-600 text-white block text-center px-3 py-2 rounded-md text-base font-medium hover:bg-blue-700"
+								className="bg-blue-600 text-white block text-center px-3 py-2 rounded-md text-base font-medium hover:bg-blue-700"
 								on:click={() => mobileMenuOpen = false}
 							>
 								Register
-							</a>
+							</Link>
 						</div>
 					{/if}
 				</div>
