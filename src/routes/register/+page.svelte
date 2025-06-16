@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { supabase } from '$lib/supabase';
   import { goto } from '$app/navigation';
   import { user } from '$lib/stores/auth';
@@ -17,6 +17,9 @@
   let firstName = '';
   let lastName = '';
   let email = '';
+  let brokerage = '';
+  let reco_number = '';
+  let phone = '';
   let password = '';
   let confirmPassword = '';
   
@@ -58,9 +61,21 @@
       // Registration successful
       if (data) {
         // Note: Email verification may be required based on Supabase settings
+        const {error: UserProfileError} = await supabase.from('user_profiles')
+          .insert({
+            first_name: firstName,
+            last_name: lastName,
+            phone,
+            reco_number,
+            brokerage,
+            role: 'realtor',
+            user_id: data?.user?.id
+          });
+        if (UserProfileError) throw UserProfileError;
+        
         goto('/dashboard');
       }
-    } catch (err) {
+    } catch (err:any) {
       console.error('Registration error:', err);
       error = err.message || 'An error occurred during registration';
     } finally {
@@ -120,6 +135,38 @@
           autocomplete="email"
           required={true}
           bind:value={email}
+        />
+
+        <Input
+          id="brokerage"
+          name="brokerage"
+          type="brokerage"
+          label="Brokerage"
+          placeholder="Brokerage"
+          required={true}
+          bind:value={brokerage}
+        />
+
+        <Input
+          id="reco_number"
+          name="reco_number"
+          type="reco_number"
+          label="Reco Number"
+          placeholder="Reco Number"
+          autocomplete="reco_number"
+          required={true}
+          bind:value={reco_number}
+        />
+
+        <Input
+          id="phone"
+          name="phone"
+          type="phone"
+          label="Phone Number"
+          placeholder="Phone Number"
+          autocomplete="phone"
+          required={true}
+          bind:value={phone}
         />
         
         <Input
