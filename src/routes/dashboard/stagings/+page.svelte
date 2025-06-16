@@ -10,6 +10,7 @@
 		StagingDetailsModal 
 	} from '$lib/components/stagings';
   import Button from '$lib/components/Button.svelte';
+    import FormBackdrop from '$lib/components/form/FormBackdrop.svelte';
 
 	// 模拟数据 - 在实际应用中，这些数据将从API获取
 	let stagingRequests = [
@@ -252,34 +253,36 @@
 	<!-- 主内容区域 -->
 	{#if showForm}
 		<div transition:fade={{ duration: 200 }}>
-			<StagingForm 
-				isEdit={isEditMode} 
-				request={currentRequest} 
-				on:submit={handleSubmit} 
-				on:cancel={cancelForm} 
-			/>
+      <FormBackdrop handleClose={cancelForm}>
+        <StagingForm 
+          isEdit={isEditMode} 
+          request={currentRequest} 
+          on:submit={handleSubmit} 
+          on:cancel={cancelForm} 
+        />
+      </FormBackdrop>
 		</div>
-	{:else}
-		<!-- 过滤器 -->
-		<StagingFilters
-			{searchQuery}
-			{statusFilter}
-			{typeFilter}
-			{sortBy}
-			on:filter={handleFilterChange}
-		/>
-
-		<!-- 请求列表 -->
-		<StagingsList
-			requests={filteredRequests}
-			{loading}
-			{error}
-			on:view={(e) => viewRequest(e.detail)}
-			on:edit={(e) => editRequest(e.detail)}
-			on:delete={(e) => deleteRequest(e.detail)}
-			on:new={newRequest}
-		/>
 	{/if}
+  
+  <!-- 过滤器 -->
+  <StagingFilters
+    {searchQuery}
+    {statusFilter}
+    {typeFilter}
+    {sortBy}
+    on:filter={handleFilterChange}
+  />
+
+  <!-- 请求列表 -->
+  <StagingsList
+    requests={filteredRequests}
+    {loading}
+    {error}
+    on:view={(e) => viewRequest(e.detail)}
+    on:edit={(e) => editRequest(e.detail)}
+    on:delete={(e) => deleteRequest(e.detail)}
+    on:new={newRequest}
+  />
 
 	<!-- 详情模态框 -->
 	<StagingDetailsModal

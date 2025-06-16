@@ -4,11 +4,11 @@
   import { onMount } from 'svelte';
 
   // 如果用户未登录，重定向到登录页面
-  // onMount(() => {
-  //   if (!$user) {
-  //     goto('/login');
-  //   }
-  // });
+  onMount(() => {
+    if (!$user) {
+      goto('/login');
+    }
+  });
 </script>
 
 <svelte:head>

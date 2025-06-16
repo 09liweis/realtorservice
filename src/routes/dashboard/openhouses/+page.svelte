@@ -1,5 +1,6 @@
 <script lang="ts">
   import Button from '$lib/components/Button.svelte';
+    import FormBackdrop from '$lib/components/form/FormBackdrop.svelte';
 	// 模拟数据 - 在实际应用中，这些数据会从API获取
 	let openHouses = [
 		{
@@ -156,6 +157,7 @@
 
 	<!-- Add/Edit Form -->
 	{#if showAddForm}
+    <FormBackdrop handleClose={cancelForm}>
 		<div class="p-6 bg-white rounded-lg shadow">
 			<h2 class="mb-4 text-lg font-medium text-gray-900">
 				{editingId ? 'Edit Open House' : 'Add New Open House'}
@@ -234,6 +236,7 @@
 				</div>
 			</form>
 		</div>
+    </FormBackdrop>
 	{/if}
 
 	<!-- Open Houses Grid -->

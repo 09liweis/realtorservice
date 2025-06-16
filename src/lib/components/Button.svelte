@@ -3,7 +3,7 @@
   export let variant: "primary" | "secondary" = "primary";
   export let loading = false;
   export let disabled = false;
-  export let onclick;
+  export let onclick = ()=>{};
   export let class_name = ""; // Additional classes
 
   const baseClasses = "group relative flex justify-center py-3 px-4 border text-sm font-medium rounded-lg cursor-pointer hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 ease-in-out transform hover:-translate-y-0.5";
