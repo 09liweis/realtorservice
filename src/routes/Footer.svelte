@@ -49,32 +49,6 @@
 					<li><Link href="#services" className="hover:text-white transition-colors">Market Analysis</Link></li>
 				</ul>
 			</div>
-			
-			<!-- Quick Links -->
-			<div>
-				<h4 class="text-lg font-semibold mb-4">Quick Links</h4>
-				<ul class="space-y-2 text-gray-300">
-					<li><a href="/" class="hover:text-white transition-colors text-primary">Home</a></li>
-					<li><a href="#about" class="hover:text-white transition-colors text-primary">About Us</a></li>
-					<li><a href="#services" class="hover:text-white transition-colors text-primary">Services</a></li>
-					<li><a href="#testimonials" class="hover:text-white transition-colors text-primary">Testimonials</a></li>
-					<li><a href="#contact" class="hover:text-white transition-colors text-primary">Contact</a></li>
-					<li><a href="/privacy" class="hover:text-white transition-colors text-primary">Privacy Policy</a></li>
-				</ul>
-			</div>
-		</div>
-		
-		<div class="border-t border-gray-800 mt-8 pt-8">
-			<div class="flex flex-col md:flex-row justify-between items-center">
-				<p class="text-gray-400 text-sm">
-					© 2024 Realtor Service. All rights reserved.
-				</p>
-				<div class="flex space-x-6 mt-4 md:mt-0">
-					<a href="/terms" class="text-gray-400 hover:text-white text-sm transition-colors text-primary">Terms of Service</a>
-					<a href="/privacy" class="text-gray-400 hover:text-white text-sm transition-colors text-primary">Privacy Policy</a>
-					<a href="/cookies" class="text-gray-400 hover:text-white text-sm transition-colors text-primary">Cookie Policy</a>
-				</div>
-			</div>
 		</div>
 	</div>
 </footer>
