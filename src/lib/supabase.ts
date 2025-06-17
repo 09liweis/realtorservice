@@ -22,6 +22,20 @@ export const getOpenHouses = async ({user_id}) => {
     .eq('user_id',user_id);
 }
 
+export const getOpenHouse = async ({property_id}) => {
+  return await supabase
+    .from('openhouses')
+    .select(`
+      id,
+      user_id,
+      address,
+      date
+    `)
+    .eq('id',property_id)
+    .single()
+    ;
+}
+
 export const upsertOpenHouse = async (oh) => {
   if (oh.id) {
     return await supabase
@@ -41,6 +55,40 @@ export const upsertOpenHouse = async (oh) => {
 export const deleteOpenhouse = async (id:string) => {
   return await supabase
     .from('openhouses')
+    .delete()
+    .eq('id',id);
+}
+
+export const getOpenHouseGuests = async ({user_id, property_id}) => {
+  return await supabase
+    .from('openhouse_guests')
+    .select(`
+      *
+    `)
+    .eq('user_id',user_id)
+    .eq('property_id',property_id)
+    ;
+}
+
+export const upsertOpenHouseGuest = async (guest) => {
+  if (guest.id) {
+    return await supabase
+      .from('openhouse_guests')
+      .update({
+        updated_at: new Date(),
+        ...guest
+      })
+      .eq('id',guest.id);
+  } else {
+    return await supabase
+      .from('openhouse_guests')
+      .insert(guest);
+  }
+}
+
+export const deleteOpenHouseGuest = async (id:string) => {
+  return await supabase
+    .from('openhouse_guests')
     .delete()
     .eq('id',id);
 }

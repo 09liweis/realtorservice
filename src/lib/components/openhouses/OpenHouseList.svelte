@@ -1,4 +1,6 @@
 <script lang="ts">
+    import Link from "../Link.svelte";
+
   export let openHouses:any[] = [];
   export let handleEdit;
   export let handleDelete;
@@ -8,7 +10,7 @@
   {#each openHouses as house (house.id)}
     <div class="bg-white shadow rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-200">
       <div class="p-4 border-b border-gray-200 bg-gray-50">
-        <h3 class="text-lg font-medium text-gray-900 truncate">{house.address}</h3>
+        <Link href={`/dashboard/openhouses/${house.id}`} className="text-lg font-medium text-gray-900 truncate">{house.address}</Link>
       </div>
       
       <div class="p-4">
