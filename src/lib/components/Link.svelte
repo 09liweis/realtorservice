@@ -9,21 +9,13 @@
    */
   export let href;
   export let className = "";
-  export let target = "_self";
-  export let rel = "";
-  export let external = false;
 
   // Automatically add noopener noreferrer for external links
-  $: finalRel = external ? `noopener noreferrer ${rel}`.trim() : rel;
 </script>
 
 <a 
   {href} 
   class="font-medium text-primary hover:text-primary-hover transition-colors duration-200 {className}" 
-  {target} 
-  rel={finalRel}
-  on:click
-  {...$$restProps}
 >
   <slot />
 </a>
