@@ -1,5 +1,10 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+    import { initializeAuth } from '$lib/stores/auth';
+    import { onMount } from 'svelte';
+	onMount(()=>{
+		initializeAuth();
+	})
 
 	// 导航项
 	const navItems = [

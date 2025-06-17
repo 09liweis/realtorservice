@@ -104,14 +104,14 @@
 	{#if showAddForm}
     <FormBackdrop handleClose={cancelForm}>
 		<div class="p-6 bg-white rounded-lg shadow">
-			<h2 class="mb-4 text-lg font-medium text-gray-900">
-				{editingId ? 'Edit Open House' : 'Add New Open House'}
-			</h2>
-			<form
-				on:submit|preventDefault={editingId ? updateOpenHouse : addOpenHouse}
-				class="space-y-4"
-			>
-				
+      <h2 class="mb-4 text-lg font-medium text-gray-900">
+        {editingId ? 'Edit Open House' : 'Add New Open House'}
+      </h2>
+      <form
+        on:submit|preventDefault={editingId ? updateOpenHouse : addOpenHouse}
+        class="space-y-4"
+      >
+        
         <Input
           id="address"
           bind:value={newOpenHouse.address}
@@ -130,21 +130,21 @@
         
         
         <div class="flex justify-end space-x-3">
-					<button
-						type="button"
-						on:click={cancelForm}
-						class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-					>
-						Cancel
-					</button>
-					<button
-						type="submit"
-						class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-					>
-						{editingId ? 'Update' : 'Save'}
-					</button>
-				</div>
-			</form>
+          <button
+            type="button"
+            on:click={cancelForm}
+            class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            {editingId ? 'Update' : 'Save'}
+          </button>
+        </div>
+      </form>
 		</div>
     </FormBackdrop>
 	{/if}

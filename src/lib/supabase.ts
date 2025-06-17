@@ -44,3 +44,86 @@ export const deleteOpenhouse = async (id:string) => {
     .delete()
     .eq('id',id);
 }
+
+
+
+export const getOfferProperties = async ({user_id}) => {
+  return await supabase
+    .from('offer_properties')
+    .select(`
+      id,
+      user_id,
+      address,
+      date,
+      asking_price
+    `)
+    .eq('user_id',user_id);
+}
+
+export const getOfferProperty = async ({propertyId}) => {
+  return await supabase
+    .from('offer_properties')
+    .select(
+      `*`
+    )
+    .eq("id", propertyId)
+    .single()
+    ;
+}
+
+export const upsertOfferProperty = async (op) => {
+  if (op.id) {
+    return await supabase
+      .from('offer_properties')
+      .update({
+        updated_at: new Date(),
+        ...op
+      })
+      .eq('id',op.id);
+  } else {
+    return await supabase
+      .from('offer_properties')
+      .insert(op);
+  }
+}
+
+export const deleteOfferProperty = async (id:string) => {
+  return await supabase
+    .from('offer_properties')
+    .delete()
+    .eq('id',id);
+}
+
+export const getOffers = async ({user_id, property_id}) => {
+  return await supabase
+    .from('offers')
+    .select(`
+      *
+    `)
+    .eq('user_id',user_id)
+    .eq('property_id',property_id)
+    ;
+}
+
+export const upsertOffer = async (offer) => {
+  if (offer.id) {
+    return await supabase
+      .from('offers')
+      .update({
+        updated_at: new Date(),
+        ...offer
+      })
+      .eq('id',offer.id);
+  } else {
+    return await supabase
+      .from('offers')
+      .insert(offer);
+  }
+}
+
+export const deleteOffer = async (id:string) => {
+  return await supabase
+    .from('offers')
+    .delete()
+    .eq('id',id);
+}
