@@ -1,5 +1,4 @@
 <script lang="ts">
-    import Button from "../Button.svelte";
     import Link from "../Link.svelte";
 
   export let offers;
