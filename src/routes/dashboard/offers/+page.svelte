@@ -5,9 +5,10 @@
   import OfferList from '$lib/components/offers/OfferList.svelte';
     import { user } from '$lib/stores/auth';
     import { getOfferProperties, upsertOfferProperty } from '$lib/supabase';
+    import type { OfferProperty } from '$lib/types/offer';
     import { onMount } from 'svelte';
 
-  const EMPTY_OFFER_PROPERTY = {
+  const EMPTY_OFFER_PROPERTY:OfferProperty = {
     address:'',
     date:'',
     asking_price:''
@@ -25,24 +26,15 @@
     }
   }
 	// 模拟数据 - 在实际应用中，这些数据会从API获取
-	let offers = [];
-  let newOfferProperty = EMPTY_OFFER_PROPERTY;
+	let offers:OfferProperty[] = [];
+  let newOfferProperty:OfferProperty = EMPTY_OFFER_PROPERTY;
 
 	// 状态变量
 	let selectedOffer = null;
 	let showDetailsModal = false;
 
-	// 格式化金额
-	function formatAmount(amount) {
-		return new Intl.NumberFormat('en-US', {
-			style: 'currency',
-			currency: 'USD',
-			maximumFractionDigits: 0
-		}).format(amount);
-	}
-
 	// 查看报价详情
-	function viewDetails(offer) {
+	function viewDetails(offer:OfferProperty) {
 		newOfferProperty = { ...offer };
 		showDetailsModal = true;
 	}
@@ -55,7 +47,7 @@
   const handleUpsertOfferProperty = async()=> {
     if (!$user) return;
     await upsertOfferProperty({
-      user_id: $user.id,
+      user_id: $user?.id,
       ...newOfferProperty
     });
     fetchOfferProperties();
@@ -107,7 +99,7 @@
           bind:value={newOfferProperty.asking_price}
           placeholder="Asking Price"
           label="Asking Price"
-          type="asking_price"
+          type="number"
         />
         
         
