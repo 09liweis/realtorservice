@@ -8,29 +8,29 @@
   export let handleSubmit;
 
 
-  const INPUT_FEILDS = [
-    {name: 'listing_type', type:'text', label: 'listing_type'},
-    {name: 'project_name', type:'text', label: 'project_name'},
-    {name: 'developer', type:'text', label: 'developer'},
-    {name: 'address', type:'text', label: 'address'},
-    {name: 'location', type:'text', label: 'location'},
-    {name: 'ptype', type:'text', label: 'ptype'},
-    {name: 'bedroom', type:'number', label: 'bedroom'},
-    {name: 'bathroom', type:'number', label: 'bathroom'},
-    {name: 'level', type:'text', label: 'level'},
-    {name: 'size', type:'text', label: 'size'},
-    {name: 'parking', type:'text', label: 'parking'},
-    {name: 'locker', type:'text', label: 'locker'},
-    {name: 'basement', type:'text', label: 'basement'},
-    {name: 'exposure', type:'text', label: 'exposure'},
-    {name: 'occupancy', type:'text', label: 'occupancy'},
-    {name: 'asking_price', type:'number', label: 'asking_price'},
-    {name: 'commission', type:'text', label: 'commission'},
-    {name: 'description', type:'text', label: 'description'},
-    {name: 'is_sold', type:'checkbox', label: 'is_sold'},
-    {name: 'pictures', type:'text', label: 'pictures'},
-    {name: 'original_price', type:'number', label: 'original_price'},
-    {name: 'deposit_paid', type:'number', label: 'deposit_paid'},
+  const INPUT_FIELDS = [
+    {name: 'listing_type', type: 'text', label: 'Listing Type', required: true},
+    {name: 'project_name', type: 'text', label: 'Project Name', required: true},
+    {name: 'developer', type: 'text', label: 'Developer'},
+    {name: 'address', type: 'text', label: 'Address', required: true},
+    {name: 'location', type: 'text', label: 'Location'},
+    {name: 'ptype', type: 'text', label: 'Property Type'},
+    {name: 'bedroom', type: 'number', label: 'Bedrooms'},
+    {name: 'bathroom', type: 'number', label: 'Bathrooms'},
+    {name: 'level', type: 'text', label: 'Level'},
+    {name: 'size', type: 'number', label: 'Size (sqft)'},
+    {name: 'parking', type: 'text', label: 'Parking'},
+    {name: 'locker', type: 'text', label: 'Locker'},
+    {name: 'basement', type: 'text', label: 'Basement'},
+    {name: 'exposure', type: 'text', label: 'Exposure'},
+    {name: 'occupancy', type: 'date', label: 'Occupancy Date'},
+    {name: 'asking_price', type: 'number', label: 'Asking Price ($)'},
+    {name: 'original_price', type: 'number', label: 'Original Price ($)'},
+    {name: 'commission', type: 'number', label: 'Commission (%)', step: '0.1'},
+    {name: 'deposit_paid', type: 'number', label: 'Deposit Paid ($)'},
+    {name: 'description', type: 'textarea', label: 'Description', classes: 'col-span-full'},
+    {name: 'pictures', type: 'text', label: 'Pictures URL', classes: 'col-span-full'},
+    {name: 'is_sold', type: 'checkbox', label: 'Is Sold'}
   ]
 </script>
 
@@ -39,23 +39,35 @@
   class="space-y-4 bg-white p-6 rounded-lg shadow"
 >
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
-  {#each INPUT_FEILDS as { name, type, label } (name)}
+  {#each INPUT_FIELDS as { name, type, label, required = false, step, classes } (name)}
     {#if (type == 'checkbox')}
-    <Input 
-    id={name}
-    bind:checked={listing[name]}
-    type={type}
-    label={label}
-    placeholder={label}
-    />
+      <Input 
+        id={name}
+        bind:checked={listing[name]}
+        type={type}
+        label={label}
+        {required}
+        {classes}
+      />
+    {:else if (type == 'textarea')}
+      <Input 
+        id={name}
+        bind:value={listing[name]}
+        type={type}
+        label={label}
+        {required}
+        {classes}
+      />
     {:else}
-    <Input 
-    id={name}
-    bind:value={listing[name]}
-    type={type}
-    label={label}
-    placeholder={label}
-    />
+      <Input 
+        id={name}
+        bind:value={listing[name]}
+        type={type}
+        label={label}
+        {step}
+        {required}
+        {classes}
+      />
     {/if}
   {/each}
   </div>
