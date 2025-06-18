@@ -1,10 +1,11 @@
-<script>
+<script lang="ts">
   import { createEventDispatcher } from "svelte";
   import Button from "../Button.svelte";
   import { OCCUPATION_STATUS_OPTIONS, PROPERTY_TYPES, STAGING_STATUS_OPTIONS } from "$lib/types/constant";
+    import type { Staging } from "$lib/types/staging";
 
   export let isEdit = false;
-  export let request = {
+  export let request:Staging = {
     id: "",
     location: "",
     size: "",
@@ -15,10 +16,6 @@
     timeline: "",
     length: "",
     status: "Pending",
-    contactPerson: "",
-    contactEmail: "",
-    contactPhone: "",
-    notes: "",
   };
 
   const dispatch = createEventDispatcher();
@@ -37,16 +34,6 @@
     // 验证表单
     if (!request.location) {
       alert("Property location is required");
-      return;
-    }
-
-    if (!request.contactPerson) {
-      alert("Contact person is required");
-      return;
-    }
-
-    if (!request.contactEmail && !request.contactPhone) {
-      alert("Either email or phone is required");
       return;
     }
 
