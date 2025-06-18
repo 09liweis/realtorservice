@@ -233,8 +233,8 @@
 	}
 </script>
 
-<div class="container mx-auto">
-	<div class="flex justify-between items-center mb-6">
+<div class="space-y-6">
+	<div class="flex justify-between items-center">
 		<h1 class="text-2xl font-bold text-gray-900">Staging Requests</h1>
 		<Button
 			onclick={newRequest}
