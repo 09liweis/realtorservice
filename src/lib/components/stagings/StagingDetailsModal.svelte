@@ -1,8 +1,9 @@
-<script>
+<script lang="ts">
 	import { createEventDispatcher } from 'svelte';
     import FormBackdrop from '../form/FormBackdrop.svelte';
+    import type { Staging } from '$lib/types/staging';
 
-	export let request = null;
+	export let request:Staging;
 	export let show = false;
 
 	const dispatch = createEventDispatcher();

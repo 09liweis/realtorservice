@@ -31,7 +31,7 @@
   let error = null;
   let showForm = false;
   let showDetails = false;
-  let currentRequest = null;
+  let currentRequest:Staging;
   let isEditMode = false;
   let filteredRequests:Staging[] = [];
 
@@ -62,7 +62,7 @@
   }
 
   // 编辑请求
-  function editRequest(request) {
+  function editRequest(request:Staging) {
     currentRequest = { ...request };
     isEditMode = true;
     showForm = true;
@@ -77,9 +77,9 @@
   }
 
   // 删除请求
-  function deleteRequest(id) {
+  function deleteRequest(id:string) {
     if (confirm("Are you sure you want to delete this staging request?")) {
-      stagingRequests = stagingRequests.filter((req) => req.id !== id);
+      
       applyFilters();
     }
   }

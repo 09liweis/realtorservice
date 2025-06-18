@@ -1,11 +1,11 @@
-<script>
+<script lang="ts">
 	export let request;
 	export let onView;
 	export let onEdit;
 	export let onDelete;
 
 	// 获取状态标签的样式
-	function getStatusStyle(status) {
+	function getStatusStyle(status:String) {
 		switch (status) {
 			case 'pending':
 				return 'bg-yellow-100 text-yellow-800';
@@ -21,7 +21,7 @@
 	}
 
 	// 格式化金额
-	function formatAmount(amount) {
+	function formatAmount(amount:number) {
 		return new Intl.NumberFormat('en-US', {
 			style: 'currency',
 			currency: 'USD',
