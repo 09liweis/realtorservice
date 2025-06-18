@@ -3,6 +3,7 @@
   import Button from '$lib/components/Button.svelte';
   import FormBackdrop from '$lib/components/form/FormBackdrop.svelte';
   import Input from '$lib/components/Input.svelte';
+    import OpenHouseGuestList from '$lib/components/openhouses/OpenHouseGuestList.svelte';
   import { user } from '$lib/stores/auth';
   import { getOpenHouseGuests, upsertOpenHouseGuest } from '$lib/supabase';
   import { onMount } from 'svelte';
@@ -72,13 +73,7 @@
     </Button>
 	</div>
 
-  <div>
-    {#each guests as guest}
-    <article>
-      {guest.name}
-    </article>
-    {/each}
-  </div>
+  <OpenHouseGuestList guests={guests} />
 
 </div>
 
