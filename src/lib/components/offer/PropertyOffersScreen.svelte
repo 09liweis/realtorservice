@@ -6,12 +6,13 @@
   import { getOffers, upsertOffer, deleteOffer } from '$lib/supabase';
   import { onMount } from 'svelte';
   import OfferList from './OfferList.svelte';
+    import type { Offer } from '$lib/types/offer';
   
   // 接收属性和属性ID作为props
   export let property;
   export let property_id;
 
-  const EMPTY_OFFER = {
+  const EMPTY_OFFER:Offer = {
     property_id,
     buyer: '',
     agent: '',
@@ -30,7 +31,7 @@
   });
 
   // 状态变量
-  let offers = [];
+  let offers:Offer[] = [];
   let newOffer = EMPTY_OFFER;
   let selectedOffer = null;
   let showDetailsModal = false;
@@ -58,7 +59,7 @@
   }
 
   // 查看报价详情
-  function viewDetails(offer) {
+  function viewDetails(offer:Offer) {
     newOffer = { ...offer };
     showDetailsModal = true;
   }
@@ -69,7 +70,7 @@
   }
 
   // 处理删除确认
-  function confirmDelete(offer) {
+  function confirmDelete(offer:Offer) {
     offerToDelete = offer;
     showDeleteConfirm = true;
   }
