@@ -24,3 +24,8 @@ export interface Listing {
   deposit_paid: string;
   [key: string]: any; // 允许其他扩展属性
 }
+
+export interface ListingSearch {
+  user_id?: string;
+  property_id?: string;
+}

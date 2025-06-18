@@ -1,6 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 import { browser } from '$app/environment';
 import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from "$env/static/public"
+import type { Listing, ListingSearch } from './types/listing';
 
 // 从环境变量中获取Supabase URL和匿名密钥
 const supabaseUrl = PUBLIC_SUPABASE_URL;
@@ -177,7 +178,7 @@ export const deleteOffer = async (id:string) => {
 }
 
 // Listings CRUD operations
-export const getListings = async ({user_id}) => {
+export const getListings = async ({user_id}:ListingSearch) => {
   return await supabase
     .from('listings')
     .select(`
@@ -186,7 +187,7 @@ export const getListings = async ({user_id}) => {
     .eq('user_id',user_id);
 }
 
-export const getListing = async ({property_id}) => {
+export const getListing = async ({property_id}:ListingSearch) => {
   return await supabase
     .from('listings')
     .select(`
@@ -196,7 +197,7 @@ export const getListing = async ({property_id}) => {
     .single();
 }
 
-export const upsertListing = async (listing) => {
+export const upsertListing = async (listing:Listing) => {
   if (listing.id) {
     return await supabase
       .from('listings')
