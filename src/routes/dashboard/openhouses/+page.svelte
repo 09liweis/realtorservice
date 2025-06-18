@@ -5,6 +5,7 @@
   import OpenHouseList from '$lib/components/openhouses/OpenHouseList.svelte';
   import { user } from '$lib/stores/auth';  
     import { deleteOpenhouse, getOpenHouses, upsertOpenHouse } from '$lib/supabase';
+    import type { OpenHouse } from '$lib/types/openhouse';
     import { onMount } from 'svelte';
   	
   onMount(async()=>{
@@ -19,28 +20,21 @@
     }
   }
 
-  const EMPTY_OH = {
+  const EMPTY_OH:OpenHouse = {
     address: '',
     date: ''
   }
 
-	let openHouses = [];
+	let openHouses:OpenHouse[] = [];
 
 	// 状态变量
 	let showAddForm = false;
 	let searchQuery = '';
 	let statusFilter = 'All';
-	let editingId = null;
+	let editingId:string = '';
 
 	// 新开放看房的表单数据
 	let newOpenHouse = EMPTY_OH;
-
-	// 过滤开放看房
-	$: filteredOpenHouses = openHouses.filter((house) => {
-		const matchesSearch = house.address.toLowerCase().includes(searchQuery.toLowerCase());
-		const matchesStatus = statusFilter === 'All' || house.status === statusFilter;
-		return matchesSearch && matchesStatus;
-	});
 
 	// 添加新开放看房
 	async function addOpenHouse() {
@@ -54,8 +48,8 @@
 	}
 
 	// 开始编辑开放看房
-	function startEdit(house) {
-		editingId = house.id;
+	function startEdit(house:OpenHouse) {
+		editingId = house.id || '';
 		newOpenHouse = { ...house };
 		showAddForm = true;
 	}
@@ -69,7 +63,7 @@
 	}
 
 	// 删除开放看房
-	async function handleDeleteOpenHouse(id) {
+	async function handleDeleteOpenHouse(id:string) {
 		await deleteOpenhouse(id);
     fetchOHs();
 	}
@@ -77,7 +71,7 @@
 	// 重置表单
 	function resetForm() {
 		newOpenHouse = EMPTY_OH;
-		editingId = null;
+		editingId = '';
 	}
 
 	// 取消表单
@@ -108,7 +102,7 @@
         {editingId ? 'Edit Open House' : 'Add New Open House'}
       </h2>
       <form
-        on:submit|preventDefault={editingId ? updateOpenHouse : addOpenHouse}
+        onsubmit={editingId ? updateOpenHouse : addOpenHouse}
         class="space-y-4"
       >
         
@@ -149,5 +143,5 @@
 	{/if}
 
 	<!-- Open Houses Grid -->
-	<OpenHouseList openHouses={filteredOpenHouses} handleEdit={startEdit} handleDelete={handleDeleteOpenHouse} />
+	<OpenHouseList openHouses={openHouses} handleEdit={startEdit} handleDelete={handleDeleteOpenHouse} />
 </div>
