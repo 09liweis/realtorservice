@@ -9,9 +9,9 @@
   export let type = 'text';
   export let label = '';
   export let value = '';
+  export let checked = false;
   export let placeholder = '';
   export let required = false;
-  export let autocomplete = '';
   export let minlength = '';
   export let error = false;
   export let errorMessage = '';
@@ -39,7 +39,9 @@
   }
   
   // Base input classes
-  const baseClasses = 'appearance-none relative block w-full px-4 py-3 border rounded-lg placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#0d7377] focus:border-[#0d7377] transition-colors duration-200 ease-in-out sm:text-sm';
+  const baseClasses = type === 'checkbox' 
+    ? 'h-4 w-4 rounded border-gray-300 text-[#0d7377] focus:ring-[#0d7377] transition-colors duration-200 ease-in-out'
+    : 'appearance-none relative block w-full px-4 py-3 border rounded-lg placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#0d7377] focus:border-[#0d7377] transition-colors duration-200 ease-in-out sm:text-sm';
   
   // Compute input classes based on error state
   $: inputClasses = `${baseClasses} ${error ? 'border-red-500' : 'border-gray-300'} ${classes}`;
@@ -55,22 +57,36 @@
     </label>
   {/if}
   
-  <input
-    {id}
-    {name}
-    {type}
-    {placeholder}
-    {required}
-    {autocomplete}
-    {minlength}
-    {disabled}
-    bind:value
-    class={inputClasses}
-    on:input={handleInput}
-    on:change={handleChange}
-    on:focus={handleFocus}
-    on:blur={handleBlur}
-  />
+  {#if type === 'checkbox'}
+    <input
+      {id}
+      {name}
+      type="checkbox"
+      bind:checked
+      {disabled}
+      class={inputClasses}
+      on:input={handleInput}
+      on:change={handleChange}
+      on:focus={handleFocus}
+      on:blur={handleBlur}
+    />
+  {:else}
+    <input
+      {id}
+      {name}
+      {type}
+      {placeholder}
+      {required}
+      {minlength}
+      {disabled}
+      bind:value
+      class={inputClasses}
+      on:input={handleInput}
+      on:change={handleChange}
+      on:focus={handleFocus}
+      on:blur={handleBlur}
+    />
+  {/if}
   
   {#if error && errorMessage}
     <p class="mt-1 text-sm text-red-500">{errorMessage}</p>

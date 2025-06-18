@@ -175,3 +175,46 @@ export const deleteOffer = async (id:string) => {
     .delete()
     .eq('id',id);
 }
+
+// Listings CRUD operations
+export const getListings = async ({user_id}) => {
+  return await supabase
+    .from('listings')
+    .select(`
+      *
+    `)
+    .eq('user_id',user_id);
+}
+
+export const getListing = async ({property_id}) => {
+  return await supabase
+    .from('listings')
+    .select(`
+      *
+    `)
+    .eq('id',property_id)
+    .single();
+}
+
+export const upsertListing = async (listing) => {
+  if (listing.id) {
+    return await supabase
+      .from('listings')
+      .update({
+        updated_at: new Date(),
+        ...listing
+      })
+      .eq('id',listing.id);
+  } else {
+    return await supabase
+      .from('listings')
+      .insert(listing);
+  }
+}
+
+export const deleteListing = async (id:string) => {
+  return await supabase
+    .from('listings')
+    .delete()
+    .eq('id',id);
+}
