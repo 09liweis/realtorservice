@@ -19,7 +19,7 @@ export interface Listing {
   commission: string;
   description: string;
   is_sold: boolean;
-  pictures: string;
+  photos?: string;
   original_price: string;
   deposit_paid: string;
   [key: string]: any; // 允许其他扩展属性
