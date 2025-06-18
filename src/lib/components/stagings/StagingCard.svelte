@@ -7,13 +7,13 @@
 	// 获取状态标签的样式
 	function getStatusStyle(status) {
 		switch (status) {
-			case 'Pending':
+			case 'pending':
 				return 'bg-yellow-100 text-yellow-800';
-			case 'Scheduled':
+			case 'scheduled':
 				return 'bg-blue-100 text-blue-800';
-			case 'Completed':
+			case 'completed':
 				return 'bg-green-100 text-green-800';
-			case 'Cancelled':
+			case 'cancelled':
 				return 'bg-red-100 text-red-800';
 			default:
 				return 'bg-gray-100 text-gray-800';
@@ -35,7 +35,7 @@
 		<div class="flex justify-between items-center">
 			<h3 class="text-lg font-medium text-gray-900 truncate">{request.location || request.property}</h3>
 			<span
-				class={`px-2 py-1 text-xs font-medium rounded-full ${getStatusStyle(
+				class={`px-2 py-1 text-xs font-medium rounded-full capitalize ${getStatusStyle(
 					request.status
 				)}`}
 			>
@@ -47,7 +47,7 @@
 		<div class="space-y-3">
 			<div class="flex justify-between">
 				<span class="text-sm text-gray-500">Property Type</span>
-				<span class="text-sm text-gray-900">{request.property_type || request.type}</span>
+				<span class="text-sm text-gray-900 capitalize">{request.property_type || request.type}</span>
 			</div>
 			<div class="flex justify-between">
 				<span class="text-sm text-gray-500">Size</span>
@@ -55,7 +55,7 @@
 			</div>
 			<div class="flex justify-between">
 				<span class="text-sm text-gray-500">Status</span>
-				<span class="text-sm text-gray-900">{request.occupation_status || 'Not specified'}</span>
+				<span class="text-sm text-gray-900 capitalize">{request.occupation_status || 'Not specified'}</span>
 			</div>
 			<div class="flex justify-between">
 				<span class="text-sm text-gray-500">Selling Price</span>

@@ -75,7 +75,7 @@
           class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
         >
           {#each propertyTypeOptions as type}
-            <option value={type}>{type}</option>
+            <option value={type.toLowerCase()}>{type}</option>
           {/each}
         </select>
       </div>
@@ -110,7 +110,7 @@
           class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
         >
           {#each occupationStatusOptions as status}
-            <option value={status}>{status}</option>
+            <option value={status.toLowerCase()}>{status}</option>
           {/each}
         </select>
       </div>
@@ -155,7 +155,7 @@
           Desired Timeline
         </label>
         <input
-          type="text"
+          type="date"
           id="timeline"
           bind:value={request.timeline}
           placeholder="e.g. By June 15th"
@@ -196,7 +196,7 @@
             class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           >
             {#each statusOptions as status}
-              <option value={status}>{status}</option>
+              <option value={status.toLowerCase()}>{status}</option>
             {/each}
           </select>
         </div>

@@ -2,6 +2,8 @@ import { createClient } from '@supabase/supabase-js';
 import { browser } from '$app/environment';
 import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from "$env/static/public"
 import type { Listing, ListingSearch } from './types/listing';
+import type { Offer, OfferProperty } from './types/offer';
+import type { Staging } from './types/staging';
 
 // 从环境变量中获取Supabase URL和匿名密钥
 const supabaseUrl = PUBLIC_SUPABASE_URL;
@@ -120,7 +122,7 @@ export const getOfferProperty = async ({propertyId}) => {
     ;
 }
 
-export const upsertOfferProperty = async (op) => {
+export const upsertOfferProperty = async (op:OfferProperty) => {
   if (op.id) {
     return await supabase
       .from('offer_properties')
@@ -154,7 +156,7 @@ export const getOffers = async ({user_id, property_id}) => {
     ;
 }
 
-export const upsertOffer = async (offer) => {
+export const upsertOffer = async (offer:Offer) => {
   if (offer.id) {
     return await supabase
       .from('offers')
@@ -216,6 +218,51 @@ export const upsertListing = async (listing:Listing) => {
 export const deleteListing = async (id:string) => {
   return await supabase
     .from('listings')
+    .delete()
+    .eq('id',id);
+}
+
+
+
+// Listings CRUD operations
+export const getStagings = async ({user_id}:ListingSearch) => {
+  return await supabase
+    .from('stagings')
+    .select(`
+      *
+    `)
+    .eq('user_id',user_id);
+}
+
+export const getStaging = async ({property_id}:ListingSearch) => {
+  return await supabase
+    .from('stagings')
+    .select(`
+      *
+    `)
+    .eq('id',property_id)
+    .single();
+}
+
+export const upsertStaging = async (staging:Staging) => {
+  if (staging.id) {
+    return await supabase
+      .from('stagings')
+      .update({
+        updated_at: new Date(),
+        ...staging
+      })
+      .eq('id',staging.id);
+  } else {
+    return await supabase
+      .from('stagings')
+      .insert(staging);
+  }
+}
+
+export const deleteStaging = async (id:string) => {
+  return await supabase
+    .from('stagings')
     .delete()
     .eq('id',id);
 }
