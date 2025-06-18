@@ -11,6 +11,7 @@
 	} from '$lib/components/stagings';
   import Button from '$lib/components/Button.svelte';
     import FormBackdrop from '$lib/components/form/FormBackdrop.svelte';
+    import { EMPTY_STAGING } from '$lib/types/staging';
 
 	// 模拟数据 - 在实际应用中，这些数据将从API获取
 	let stagingRequests = [
@@ -175,23 +176,7 @@
 
 	// 新建请求
 	function newRequest() {
-    console.log('test');
-		currentRequest = {
-			id: (stagingRequests.length + 1).toString(),
-			location: '',
-			size: '',
-			occupation_status: 'Vacant',
-			property_type: 'House',
-			rooms: '',
-			selling_price: 0,
-			timeline: '',
-			length: '',
-			status: 'Pending',
-			contactPerson: '',
-			contactEmail: '',
-			contactPhone: '',
-			notes: ''
-		};
+		currentRequest = {...EMPTY_STAGING}
 		isEditMode = false;
 		showForm = true;
 	}

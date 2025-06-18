@@ -10,3 +10,15 @@ export interface Staging {
   length: string,
   status: string,
 }
+
+export const EMPTY_STAGING = {
+  location: '',
+  size: '',
+  occupation_status: 'Vacant',
+  property_type: 'House',
+  rooms: '',
+  selling_price: 0,
+  timeline: '',
+  length: '',
+  status: 'Pending',
+}

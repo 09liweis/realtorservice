@@ -2,21 +2,10 @@
   import { createEventDispatcher } from "svelte";
   import Button from "../Button.svelte";
   import { OCCUPATION_STATUS_OPTIONS, PROPERTY_TYPES, STAGING_STATUS_OPTIONS } from "$lib/types/constant";
-    import type { Staging } from "$lib/types/staging";
+    import { EMPTY_STAGING, type Staging } from "$lib/types/staging";
 
   export let isEdit = false;
-  export let request:Staging = {
-    id: "",
-    location: "",
-    size: "",
-    occupation_status: "Vacant",
-    property_type: "House",
-    rooms: "",
-    selling_price: 0,
-    timeline: "",
-    length: "",
-    status: "Pending",
-  };
+  export let request:Staging = {...EMPTY_STAGING};
 
   const dispatch = createEventDispatcher();
 
