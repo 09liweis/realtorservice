@@ -5,14 +5,15 @@
   import Input from '$lib/components/Input.svelte';
   import Button from '$lib/components/Button.svelte';
   import { user } from '$lib/stores/auth';
+  import type { Listing } from '$lib/types/listing';
     import FormBackdrop from '$lib/components/form/FormBackdrop.svelte';
     import ListingList from '$lib/components/listings/ListingList.svelte';
 
   let showForm = false;
 
-  let listings = [];
+  let listings: Listing[] = [];
   
-  const EMPTY_LISTING = {
+  const EMPTY_LISTING: Listing = {
     listing_type: '',
     project_name: '',
     developer: '',
@@ -72,7 +73,7 @@
     if (!error) listings = data;
   }
 
-  function editListing(listing) {
+  function editListing(listing: Listing) {
     isEditing = true;
     newListing = { ...listing };
   }
@@ -87,6 +88,7 @@
 	}
 
   async function handleSubmit() {
+    if (!$user) return;
     const listing = {
       ...newListing,
       user_id:$user.id,
@@ -112,7 +114,7 @@
 				resetForm();
 			}}
 		>
-			Add Open House
+			Add New Listings
 		</Button>
 	</div>
   
@@ -145,7 +147,10 @@
       <div class="flex justify-end gap-2 mt-4">
         <Button
           type="button"
-          onclick={resetForm}
+          onclick={()=>{
+            showForm = false;
+            resetForm();
+          }}
           variant="secondary"
         >
           Cancel
@@ -159,5 +164,5 @@
   </FormBackdrop>
   {/if}
 
-  <ListingList listings={listisngs} />
+  <ListingList listings={listings} />
 </div>
