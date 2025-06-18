@@ -8,7 +8,7 @@
   </div>
 
   <div
-    class="inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6"
+    class="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl min-w-lg"
   >
     <div class="absolute top-0 right-0 pt-4 pr-4">
       <button

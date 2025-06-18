@@ -77,7 +77,7 @@
 <!-- Details Modal -->
 {#if showDetailsModal }
   <FormBackdrop handleClose={() => (showDetailsModal = false)}>
-    <div class="w-full mt-3">
+    <div class="w-full mt-3 p-6">
       <h2 class="mb-4 text-lg font-medium text-gray-900">
         {selectedOffer ? 'Edit Sold Property' : 'Add New Sold Property'}
       </h2>
