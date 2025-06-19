@@ -65,6 +65,7 @@
           .insert({
             first_name: firstName,
             last_name: lastName,
+            email,
             phone,
             reco_number,
             brokerage,
