@@ -275,9 +275,9 @@ export const getUserProfiles = async () => {
     .order('created_at', { ascending: false });
 }
 
-export const updateUserProfile = async (id: string, updates: any) => {
+export const updateUserProfile = async (user_id: string, updates: any) => {
   return await supabase
     .from('user_profiles')
     .update(updates)
-    .eq('id', id);
+    .eq('user_id', user_id);
 }
