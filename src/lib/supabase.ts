@@ -179,21 +179,42 @@ export const deleteOffer = async (id:string) => {
     .eq('id',id);
 }
 
-// Listings CRUD operations
-export const getListings = async ({user_id}:ListingSearch) => {
-  return await supabase
+// Updated Listings CRUD operations
+export const getListings = async (params?: ListingSearch) => {
+  let query = supabase
     .from('listings')
     .select(`
-      *
+      *,
+      user_profiles!inner(
+        first_name,
+        last_name,
+        brokerage,
+        phone,
+        email
+      )
     `)
-    .eq('user_id',user_id);
+    .order('created_at', { ascending: false });
+
+  // Only filter by user_id if provided
+  if (params?.user_id) {
+    query = query.eq('user_id', params.user_id);
+  }
+
+  return await query;
 }
 
 export const getListing = async ({property_id}:ListingSearch) => {
   return await supabase
     .from('listings')
     .select(`
-      *
+      *,
+      user_profiles!inner(
+        first_name,
+        last_name,
+        brokerage,
+        phone,
+        email
+      )
     `)
     .eq('id',property_id)
     .single();

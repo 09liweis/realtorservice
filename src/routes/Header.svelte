@@ -10,17 +10,15 @@
 
 	// Public navigation items
 	const publicNavigation = [
-		{ name: "Home", href: "/" },
+		{ name: "Listings", href: "/listings" },
 		{ name: "Services", href: "#services" },
 		{ name: "About", href: "#about" },
-		{ name: "Testimonials", href: "#testimonials" },
-		{ name: "Contact", href: "#contact" },
 	];
 
 	// Navigation items for logged-in users
 	const privateNavigation = [
 		{ name: "Dashboard", href: "/dashboard" },
-		{ name: "Listings", href: "/dashboard/listings" },
+		{ name: "My Listings", href: "/dashboard/listings" },
 		{ name: "Offers", href: "/dashboard/offers" },
 	];
 
@@ -51,7 +49,7 @@
 			<!-- Desktop Navigation -->
 			<div class="hidden md:block">
 				<div class="ml-10 flex items-baseline space-x-4">
-					{#each navigation as item}
+					{#each publicNavigation as item}
 						<Link
 							href={item.href}
 							className="hover:text-primary-hover px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
