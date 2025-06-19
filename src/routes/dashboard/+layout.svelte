@@ -298,8 +298,7 @@
   </nav>
 
   <!-- Main Content Area -->
-  <div class="pt-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="max-w-7xl mx-auto px-4 pt-16">
       <!-- Page Content -->
       <div
         class="bg-white rounded-xl shadow-sm border border-gray-200 min-h-[calc(100vh-8rem)]"
@@ -309,8 +308,8 @@
         </div>
       </div>
     </div>
+
   </div>
-</div>
 
 <!-- Click outside handlers -->
 {#if userMenuOpen}

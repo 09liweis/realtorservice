@@ -266,3 +266,18 @@ export const deleteStaging = async (id:string) => {
     .delete()
     .eq('id',id);
 }
+
+// User Profiles operations
+export const getUserProfiles = async () => {
+  return await supabase
+    .from('user_profiles')
+    .select('*')
+    .order('created_at', { ascending: false });
+}
+
+export const updateUserProfile = async (id: string, updates: any) => {
+  return await supabase
+    .from('user_profiles')
+    .update(updates)
+    .eq('id', id);
+}
