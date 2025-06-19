@@ -38,11 +38,14 @@
 
 <header class="bg-white shadow-lg fixed w-full top-0 z-50">
 	<nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-		<div class="flex justify-between items-center">
+		<div class="flex justify-between items-center h-16">
 			<!-- Logo -->
 			<div class="flex-shrink-0">
-				<Link href="/" className="text-2xl font-bold text-primary">
-					<img src="/logo.png" alt="Realtor Service" class="w-32" />
+				<Link href="/" className="text-2xl font-bold text-primary flex items-center">
+					<div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center mr-2">
+						<span class="text-white font-bold text-sm">RS</span>
+					</div>
+					<span class="hidden sm:block">Realtor Service</span>
 				</Link>
 			</div>
 
@@ -52,7 +55,9 @@
 					{#each publicNavigation as item}
 						<Link
 							href={item.href}
-							className="hover:text-primary-hover px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+							className="hover:text-primary-hover px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 {
+								$page.url.pathname === item.href ? 'text-primary font-semibold' : 'text-gray-700'
+							}"
 						>
 							{item.name}
 						</Link>
@@ -117,9 +122,19 @@
 					</div>
 				{:else}
 					<!-- Login/Register Buttons -->
-					<div class="flex space-x-2">
-						<Link href="/login">Login</Link>
-						<Link href="/register">Register</Link>
+					<div class="flex space-x-4">
+						<Link 
+							href="/login"
+							className="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+						>
+							Login
+						</Link>
+						<Link 
+							href="/register"
+							className="bg-primary text-white hover:bg-primary-hover px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+						>
+							Register
+						</Link>
 					</div>
 				{/if}
 			</div>
@@ -155,6 +170,7 @@
 						<Link
 							href={item.href}
 							onclick={() => (mobileMenuOpen = false)}
+							className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50 transition-colors duration-200"
 						>
 							{item.name}
 						</Link>
@@ -183,12 +199,14 @@
 							<Link
 								href="/login"
 								onclick={() => (mobileMenuOpen = false)}
+								className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50 transition-colors duration-200"
 							>
 								Login
 							</Link>
 							<Link
 								href="/register"
 								onclick={() => (mobileMenuOpen = false)}
+								className="block px-3 py-2 rounded-md text-base font-medium bg-primary text-white hover:bg-primary-hover transition-colors duration-200"
 							>
 								Register
 							</Link>
