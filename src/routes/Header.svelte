@@ -12,7 +12,7 @@
 	const publicNavigation = [
 		{ name: "Listings", href: "/listings" },
 		{ name: "Services", href: "#services" },
-		{ name: "About", href: "#about" },
+		{ name: "About", href: "/about" },
 	];
 
 	// Navigation items for logged-in users
