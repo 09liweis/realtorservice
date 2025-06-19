@@ -8,19 +8,19 @@
   export let onCancel: () => void;
   export let handleSubmit;
 
-  // Convert pictures string to array for ImageUpload component
-  let imageUrls: string[] = listing.pictures ? listing.pictures.split(',').filter(url => url.trim()) : [];
+  // Convert pics string to array for ImageUpload component
+  let imageUrls: string[] = listing.pics ? listing.pics.split(',').filter(url => url.trim()) : [];
 
   // Handle image updates from ImageUpload component
   function handleImageUpdate(event: CustomEvent<string[]>) {
     imageUrls = event.detail;
     // Convert array back to comma-separated string for the listing object
-    listing.pictures = imageUrls.join(',');
+    listing.pics = imageUrls.join(',');
   }
 
   // Form sections for better organization
   const basicInfoFields = [
-    { name: 'listing_type', type: 'select', label: 'Listing Type', required: true, options: ['Sale', 'Lease', 'Assignment'] },
+    { name: 'listing_type', type: 'select', label: 'Listing Type', required: true, options: ['Assignment Sale','Coming Soon'] },
     { name: 'project_name', type: 'text', label: 'Project Name', required: true },
     { name: 'developer', type: 'text', label: 'Developer' },
     { name: 'address', type: 'text', label: 'Address', required: true },
