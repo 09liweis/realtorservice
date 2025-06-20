@@ -49,21 +49,18 @@
 				</Link>
 			</div>
 
-			<!-- Desktop Navigation -->
-			<div class="hidden md:block">
-				<div class="ml-10 flex items-baseline space-x-4">
-					{#each publicNavigation as item}
-						<Link
-							href={item.href}
-							className="hover:text-primary-hover px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 {
-								$page.url.pathname === item.href ? 'text-primary font-semibold' : 'text-gray-700'
-							}"
-						>
-							{item.name}
-						</Link>
-					{/each}
-				</div>
-			</div>
+			<div class="ml-10 flex items-baseline space-x-4">
+        {#each publicNavigation as item}
+          <Link
+            href={item.href}
+            className="hover:text-primary-hover px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 {
+              $page.url.pathname === item.href ? 'text-primary font-semibold' : 'text-gray-700'
+            }"
+          >
+            {item.name}
+          </Link>
+        {/each}
+      </div>
 
 			<!-- Auth Buttons / User Menu -->
 			<div class="hidden md:block">
@@ -166,15 +163,6 @@
 		{#if mobileMenuOpen}
 			<div class="md:hidden">
 				<div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t">
-					{#each navigation as item}
-						<Link
-							href={item.href}
-							onclick={() => (mobileMenuOpen = false)}
-							className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50 transition-colors duration-200"
-						>
-							{item.name}
-						</Link>
-					{/each}
 
 					<!-- Mobile Auth Section -->
 					{#if $user}
