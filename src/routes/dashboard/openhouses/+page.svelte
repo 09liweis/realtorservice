@@ -5,6 +5,7 @@
   import OpenHouseList from '$lib/components/openhouses/OpenHouseList.svelte';
   import { user } from '$lib/stores/auth';  
     import { deleteOpenhouse, getOpenHouses, upsertOpenHouse } from '$lib/supabase';
+    import { getPageTitle } from '$lib/types/constant';
     import type { OpenHouse } from '$lib/types/openhouse';
     import { onMount } from 'svelte';
   
@@ -81,6 +82,10 @@
 		showAddForm = false;
 	}
 </script>
+
+<svelte:head>
+  <title>{getPageTitle('Openhouses')}</title>
+</svelte:head>
 
 <div class="space-y-6">
 	<div class="flex items-center justify-between">

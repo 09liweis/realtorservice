@@ -5,6 +5,7 @@
   import OfferList from '$lib/components/offers/OfferList.svelte';
     import { user } from '$lib/stores/auth';
     import { getOfferProperties, upsertOfferProperty } from '$lib/supabase';
+    import { getPageTitle } from '$lib/types/constant';
     import type { OfferProperty } from '$lib/types/offer';
     import { onMount } from 'svelte';
 
@@ -57,6 +58,10 @@
   }
 	
 </script>
+
+<svelte:head>
+  <title>{getPageTitle('Offers')}</title>
+</svelte:head>
 
 <div class="space-y-6">
 	<div class="flex items-center justify-between">

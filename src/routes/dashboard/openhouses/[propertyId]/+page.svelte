@@ -6,6 +6,7 @@
     import OpenHouseGuestList from '$lib/components/openhouses/OpenHouseGuestList.svelte';
   import { user } from '$lib/stores/auth';
   import { getOpenHouseGuests, upsertOpenHouseGuest } from '$lib/supabase';
+    import { getPageTitle } from '$lib/types/constant';
   import { onMount } from 'svelte';
   
   export let data;
@@ -67,6 +68,10 @@
   }
 	
 </script>
+
+<svelte:head>
+  <title>{getPageTitle('Openhouse')}</title>
+</svelte:head>
 
 <div class="space-y-6">
 	<div class="flex items-center justify-between">

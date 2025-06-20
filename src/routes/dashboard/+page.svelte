@@ -3,6 +3,7 @@
   import { goto } from '$app/navigation';
   import { onMount } from 'svelte';
   import { getListings, getOfferProperties, getOpenHouses, getStagings } from '$lib/supabase';
+    import { getPageTitle } from '$lib/types/constant';
 
   // Redirect if user is not logged in
   onMount(() => {
@@ -93,7 +94,7 @@
 </script>
 
 <svelte:head>
-  <title>Dashboard - Realtor Service</title>
+  <title>{getPageTitle('Dashboard')}</title>
 </svelte:head>
 
 <div class="space-y-8">

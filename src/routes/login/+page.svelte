@@ -6,6 +6,7 @@
   import Button from '$lib/components/Button.svelte';
   import Input from '$lib/components/Input.svelte';
   import Link from '$lib/components/Link.svelte';
+    import { getPageTitle } from '$lib/types/constant';
 
   // Redirect to dashboard if user is already logged in
   onMount(() => {
@@ -51,7 +52,7 @@
 </script>
 
 <svelte:head>
-  <title>Login - Real Estate Agent Service</title>
+  <title>{getPageTitle('Login')}</title>
 </svelte:head>
 
 <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-[#e6f3f3] py-12 px-4 sm:px-6 lg:px-8">
@@ -76,7 +77,6 @@
           type="email"
           label="Email address"
           placeholder="Email address"
-          autocomplete="email"
           required={true}
           bind:value={email}
         />
@@ -87,7 +87,6 @@
           type="password"
           label="Password"
           placeholder="Password"
-          autocomplete="current-password"
           required={true}
           bind:value={password}
         />

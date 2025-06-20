@@ -12,28 +12,33 @@
   import Button from "$lib/components/Button.svelte";
   import FormBackdrop from "$lib/components/form/FormBackdrop.svelte";
   import { EMPTY_STAGING, type Staging } from "$lib/types/staging";
-    import { getStagings, upsertStaging } from "$lib/supabase";
-    import { user } from "$lib/stores/auth";
+  import { getStagings, upsertStaging } from "$lib/supabase";
+  import { user } from "$lib/stores/auth";
+  import { getPageTitle } from "$lib/types/constant";
 
-  onMount(()=>{
+  let user_id:string = '';
+
+  $: {
+    user_id = $user?.id;
     fetchStagings();
-  });
+  }
 
   const fetchStagings = async () => {
+    if (!user_id) return;
     loading = true;
-    const {data, error} = await getStagings({user_id: $user?.id});
+    const { data, error } = await getStagings({ user_id });
     loading = false;
-    filteredRequests = data;
-  }
+    if (!error) filteredRequests = data;
+  };
 
   // 状态变量
   let loading = false;
   let error = null;
   let showForm = false;
   let showDetails = false;
-  let currentRequest:Staging;
+  let currentRequest: Staging;
   let isEditMode = false;
-  let filteredRequests:Staging[] = [];
+  let filteredRequests: Staging[] = [];
 
   // 过滤器状态
   let searchQuery = "";
@@ -42,9 +47,7 @@
   let sortBy = "newest";
 
   // 应用过滤器
-  function applyFilters() {
-    
-  }
+  function applyFilters() {}
 
   // 处理过滤器变化
   function handleFilterChange(event) {
@@ -56,13 +59,13 @@
   }
 
   // 查看请求详情
-  function viewRequest(request) {
+  function viewRequest(request: Staging) {
     currentRequest = request;
     showDetails = true;
   }
 
   // 编辑请求
-  function editRequest(request:Staging) {
+  function editRequest(request: Staging) {
     currentRequest = { ...request };
     isEditMode = true;
     showForm = true;
@@ -77,18 +80,17 @@
   }
 
   // 删除请求
-  function deleteRequest(id:string) {
+  function deleteRequest(id: string) {
     if (confirm("Are you sure you want to delete this staging request?")) {
-      
       applyFilters();
     }
   }
 
   // 提交表单
-  async function handleSubmit(event:any) {
+  async function handleSubmit(event: any) {
     const formData = event.detail;
 
-    await upsertStaging({...formData,user_id:$user?.id});
+    await upsertStaging({ ...formData, user_id });
 
     showForm = false;
     fetchStagings();
@@ -104,6 +106,10 @@
     showDetails = false;
   }
 </script>
+
+<svelte:head>
+  <title>{getPageTitle("Stagings")}</title>
+</svelte:head>
 
 <div class="space-y-6">
   <div class="flex justify-between items-center">

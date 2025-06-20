@@ -5,6 +5,7 @@
   import { onMount } from 'svelte';
   import Button from '$lib/components/Button.svelte';
   import Input from '$lib/components/Input.svelte';
+    import { getPageTitle } from '$lib/types/constant';
 
   // If user is already logged in, redirect to dashboard
   onMount(() => {
@@ -86,7 +87,7 @@
 </script>
 
 <svelte:head>
-  <title>Register - Real Estate Agent Service</title>
+  <title>{getPageTitle('Register')}</title>
 </svelte:head>
 
 <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-[#e6f3f3] py-12 px-4 sm:px-6 lg:px-8">
