@@ -50,7 +50,7 @@
   function applyFilters() {}
 
   // 处理过滤器变化
-  function handleFilterChange(event) {
+  function handleFilterChange(event: { detail: { searchQuery: string; statusFilter: string; typeFilter: string; sortBy: string; }; }) {
     searchQuery = event.detail.searchQuery;
     statusFilter = event.detail.statusFilter;
     typeFilter = event.detail.typeFilter;
@@ -141,13 +141,13 @@
   {/if}
 
   <!-- 过滤器 -->
-  <StagingFilters
+  <!-- <StagingFilters
     {searchQuery}
     {statusFilter}
     {typeFilter}
     {sortBy}
     on:filter={handleFilterChange}
-  />
+  /> -->
 
   <!-- 请求列表 -->
   <StagingsList

@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { formatAmount } from "$lib/types/constant";
+
   export let isLoading;
   export let offers;
   export let handleEdit;
@@ -7,16 +9,6 @@
   // 排序状态
   let sortField = 'buyer';
   let sortDirection = 'asc';
-
-  // 格式化金额
-  function formatAmount(amount) {
-    if (!amount) return 'N/A';
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      maximumFractionDigits: 0
-    }).format(amount);
-  }
 
   // 排序函数
   function sortOffers(field) {

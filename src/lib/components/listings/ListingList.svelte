@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { formatAmount } from "$lib/types/constant";
   import type { Listing } from "$lib/types/listing";
 
 export let listings: Array<Listing> = [];
@@ -14,18 +15,6 @@ function getFirstImage(pictures: string): string {
 function getImageCount(pictures: string): number {
   if (!pictures) return 0;
   return pictures.split(',').filter(url => url.trim()).length;
-}
-
-// Format price for display
-function formatPrice(price: string): string {
-  if (!price) return 'Price on request';
-  const num = parseFloat(price);
-  if (isNaN(num)) return 'Price on request';
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    maximumFractionDigits: 0
-  }).format(num);
 }
 
 // Format property features
@@ -81,11 +70,11 @@ function formatFeatures(listing: Listing): string {
       <div class="flex justify-between items-start mb-3">
         <div>
           <div class="text-2xl font-bold text-gray-900 mb-1">
-            {formatPrice(listing.asking_price)}
+            {formatAmount(listing.asking_price)}
           </div>
           {#if listing.original_price && listing.original_price !== listing.asking_price}
             <div class="text-sm text-gray-500 line-through">
-              {formatPrice(listing.original_price)}
+              {formatAmount(listing.original_price)}
             </div>
           {/if}
         </div>

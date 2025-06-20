@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { formatAmount } from "$lib/types/constant";
+
 	export let request;
 	export let onView;
 	export let onEdit;
@@ -18,15 +20,6 @@
 			default:
 				return 'bg-gray-100 text-gray-800';
 		}
-	}
-
-	// 格式化金额
-	function formatAmount(amount:number) {
-		return new Intl.NumberFormat('en-US', {
-			style: 'currency',
-			currency: 'USD',
-			maximumFractionDigits: 0
-		}).format(amount);
 	}
 </script>
 

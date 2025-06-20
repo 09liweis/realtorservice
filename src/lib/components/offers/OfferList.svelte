@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { formatAmount } from "$lib/types/constant";
     import Link from "../Link.svelte";
 
   export let offers;
@@ -44,7 +45,7 @@
         <div class="mt-4 space-y-3">
           <div class="flex justify-between">
             <span class="text-sm text-gray-500">Amount</span>
-            <span class="text-sm font-medium text-gray-900">{offer.asking_price}</span>
+            <span class="text-sm font-medium text-gray-900">{formatAmount(offer.asking_price)}</span>
           </div>
           <div class="flex justify-between">
             <span class="text-sm text-gray-500">Submitted</span>
