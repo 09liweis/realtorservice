@@ -14,13 +14,16 @@
     asking_price:''
   };
 
-  onMount(()=> {
+  let user_id;
+
+  $: {
+    user_id = $user?.id;
     fetchOfferProperties();
-  });
+  }
 
   const fetchOfferProperties = async ()=> {
-    if ($user) {
-      const {data, error} = await getOfferProperties({user_id:$user.id});
+    if (user_id) {
+      const {data, error} = await getOfferProperties({user_id});
       if (error) throw error;
       offers = data;
     }
@@ -45,9 +48,9 @@
   }
 
   const handleUpsertOfferProperty = async()=> {
-    if (!$user) return;
+    if (!user_id) return;
     await upsertOfferProperty({
-      user_id: $user?.id,
+      user_id,
       ...newOfferProperty
     });
     fetchOfferProperties();

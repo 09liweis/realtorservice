@@ -22,13 +22,16 @@
     has_agent: '',
   };
 
-  onMount(()=> {
+  let user_id;
+
+  $: {
+    user_id = $user?.id;
     fetchGuests();
-  });
+  }
 
   const fetchGuests = async ()=> {
-    if ($user) {
-      const {data, error} = await getOpenHouseGuests({user_id:$user.id, property_id});
+    if (user_id) {
+      const {data, error} = await getOpenHouseGuests({user_id, property_id});
       if (error) throw error;
       guests = data;
     }
@@ -53,9 +56,9 @@
   }
 
   const handleUpsertGuest = async()=> {
-    if (!$user) return;
+    if (!user_id) return;
     await upsertOpenHouseGuest({
-      user_id: $user.id,
+      user_id,
       ...newGuest
     });
     fetchGuests();

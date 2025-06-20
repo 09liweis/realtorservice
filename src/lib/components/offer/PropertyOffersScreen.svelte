@@ -26,9 +26,12 @@
     schedule_a_conditions: '',
   };
 
-  onMount(() => {
+  let user_id;
+
+  $: {
+    user_id = $user?.id;
     fetchOffers();
-  });
+  }
 
   // 状态变量
   let offers:Offer[] = [];
@@ -41,13 +44,13 @@
   let errorMessage = '';
 
   const fetchOffers = async () => {
-    if (!$user) return;
+    if (!user_id) return;
     
     isLoading = true;
     errorMessage = '';
     
     try {
-      const {data, error} = await getOffers({user_id: $user.id, property_id});
+      const {data, error} = await getOffers({user_id, property_id});
       if (error) throw error;
       offers = data;
     } catch (error) {
@@ -77,13 +80,13 @@
 
   // 执行删除
   async function handleDelete() {
-    if (!$user || !offerToDelete) return;
+    if (!user_id || !offerToDelete) return;
     
     isLoading = true;
     errorMessage = '';
     
     try {
-      await deleteOffer({ user_id: $user.id, id: offerToDelete.id });
+      await deleteOffer({ user_id, id: offerToDelete.id });
       await fetchOffers();
       showDeleteConfirm = false;
       offerToDelete = null;
@@ -97,14 +100,14 @@
 
   const handleUpsertOffer = async (event) => {
     event.preventDefault();
-    if (!$user) return;
+    if (!user_id) return;
     
     isLoading = true;
     errorMessage = '';
     
     try {
       await upsertOffer({
-        user_id: $user.id,
+        user_id,
         ...newOffer
       });
       await fetchOffers();

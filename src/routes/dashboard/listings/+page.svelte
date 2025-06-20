@@ -38,13 +38,15 @@
   };
   let newListing = EMPTY_LISTING;
   let isEditing = false;
+  let user_id;
 
   $: {
+    user_id = $user?.id;
     loadListings();
   }
 
   async function loadListings() {
-    const { data, error } = await getListings({ user_id: $user?.id });
+    const { data, error } = await getListings({ user_id });
     if (!error) listings = data;
   }
 
@@ -63,10 +65,10 @@
 	}
 
   async function handleSubmit() {
-    if (!$user) return;
+    if (!user_id) return;
     const listing = {
       ...newListing,
-      user_id:$user.id,
+      user_id,
     };
 
     const { error } = await upsertListing(listing);

@@ -7,17 +7,18 @@
     import { deleteOpenhouse, getOpenHouses, upsertOpenHouse } from '$lib/supabase';
     import type { OpenHouse } from '$lib/types/openhouse';
     import { onMount } from 'svelte';
+  
+  let user_id;
   	
-  onMount(async()=>{
+  $: {
+    user_id = $user?.id;
     fetchOHs();
-  });
+  }
 
-  const fetchOHs = async ()=> {
-    if ($user) {
-      const {data,error} = await getOpenHouses({user_id: $user?.id});
-      if (error) throw error;
-      openHouses = data;
-    }
+  async function fetchOHs() {
+    if (!user_id) return;
+    const {data,error} = await getOpenHouses({user_id});
+    if (!error) openHouses = data;
   }
 
   const EMPTY_OH:OpenHouse = {
@@ -39,7 +40,7 @@
 	// 添加新开放看房
 	async function addOpenHouse() {
 		await upsertOpenHouse({
-      user_id: $user.id,
+      user_id,
       ...newOpenHouse
     });
     fetchOHs();
