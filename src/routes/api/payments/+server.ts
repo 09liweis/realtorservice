@@ -7,7 +7,7 @@ import { STRIPE_SECRET_KEY } from '$env/static/private';
 // For now, we'll create a mock implementation
 export const POST: RequestHandler = async ({ request }) => {
   try {
-    const { amount, currency = 'usd', user_id } = await request.json();
+    const { amount, currency = 'usd', user_id, stripe_client_secret } = await request.json();
 
     // Validate input
     if (!amount || amount < 50) {
@@ -19,18 +19,27 @@ export const POST: RequestHandler = async ({ request }) => {
     }
 
     const stripe = new Stripe(STRIPE_SECRET_KEY);
-    
-    const paymentIntent = await stripe.paymentIntents.create({
+    let paymentIntent;
+    const paymentIntentOption = {
       amount: amount, // amount in cents
       currency: currency,
       metadata: {
         user_id: user_id,
         type: 'credit_topup'
       },
-      automatic_payment_methods: {
-        enabled: true,
-      },
-    });
+      payment_method_types: ['card'],
+    }
+
+    if (stripe_client_secret) {
+        // Extract payment intent ID from client secret
+        const paymentIntentId = stripe_client_secret.split('_secret_')[0];
+  
+        // Update existing payment intent
+        paymentIntent = await stripe.paymentIntents.update(paymentIntentId, paymentIntentOption);
+      } else {
+        // Create payment intent
+        paymentIntent = await stripe.paymentIntents.create(paymentIntentOption);
+      }
 
     return json({
       client_secret: paymentIntent.client_secret,

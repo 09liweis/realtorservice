@@ -4,10 +4,10 @@
   import { getPageTitle } from '$lib/types/constant';
   import Button from '$lib/components/Button.svelte';
   import Input from '$lib/components/Input.svelte';
-  import TopupComponent from '$lib/components/TopupComponent.svelte';
   import FormBackdrop from '$lib/components/form/FormBackdrop.svelte';
   import { onMount } from 'svelte';
   import type { UserProfile } from '$lib/types/user';
+    import CreditTopup from '$lib/components/credit/CreditTopup.svelte';
 
   // Profile data
   let profile:UserProfile = {
@@ -520,7 +520,7 @@
 <!-- Topup Modal -->
 {#if showTopup}
   <FormBackdrop handleClose={() => showTopup = false}>
-    <TopupComponent 
+    <CreditTopup 
       on:success={handleTopupSuccess}
       on:close={() => showTopup = false}
     />
