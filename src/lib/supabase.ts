@@ -4,6 +4,7 @@ import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from "$env/static/publi
 import type { Listing, ListingSearch } from './types/listing';
 import type { Offer, OfferProperty } from './types/offer';
 import type { Staging } from './types/staging';
+import type { CreditRecord } from './types/credit';
 
 // 从环境变量中获取Supabase URL和匿名密钥
 const supabaseUrl = PUBLIC_SUPABASE_URL;
@@ -309,4 +310,17 @@ export const updateUserProfile = async (user_id: string, updates: any) => {
     .from('user_profiles')
     .update(updates)
     .eq('user_id', user_id);
+}
+
+export const getCreditRecords = async (user_id:string) => {
+  return await supabase
+    .from('credit_records')
+    .select(`*`)
+    .eq('user_id', user_id)
+}
+
+export const addCreditRecord = async (creditRecord:CreditRecord) => {
+  return await supabase
+    .from('credit_records')
+    .insert(creditRecord);
 }

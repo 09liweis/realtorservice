@@ -5,9 +5,10 @@
   import Button from '$lib/components/Button.svelte';
   import Input from '$lib/components/Input.svelte';
   import { onMount } from 'svelte';
+    import type { UserProfile } from '$lib/types/user';
 
   // Profile data
-  let profile = {
+  let profile:UserProfile = {
     first_name: '',
     last_name: '',
     email: '',
@@ -15,7 +16,8 @@
     brokerage: '',
     reco_number: '',
     role: 'realtor',
-    realtor_approved: false
+    realtor_approved: false,
+    credits: 0
   };
 
   // Form state
