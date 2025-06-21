@@ -1,11 +1,13 @@
 <script lang="ts">
   import { user } from '$lib/stores/auth';
-  import { getUserProfile, updateUserProfile } from '$lib/supabase';
+  import { getUserProfile, updateUserProfile, getUserCredits } from '$lib/supabase';
   import { getPageTitle } from '$lib/types/constant';
   import Button from '$lib/components/Button.svelte';
   import Input from '$lib/components/Input.svelte';
+  import TopupComponent from '$lib/components/TopupComponent.svelte';
+  import FormBackdrop from '$lib/components/form/FormBackdrop.svelte';
   import { onMount } from 'svelte';
-    import type { UserProfile } from '$lib/types/user';
+  import type { UserProfile } from '$lib/types/user';
 
   // Profile data
   let profile:UserProfile = {
@@ -26,17 +28,22 @@
   let saving = false;
   let error = '';
   let successMessage = '';
+  let showTopup = false;
+  let userCredits = 0;
+  let loadingCredits = false;
 
   // Load user profile on mount
   onMount(() => {
     if ($user) {
       loadUserProfile();
+      loadUserCredits();
     }
   });
 
   // Watch for user changes
   $: if ($user && !profile.email) {
     loadUserProfile();
+    loadUserCredits();
   }
 
   async function loadUserProfile() {
@@ -60,6 +67,25 @@
       error = 'Failed to load profile data';
     } finally {
       loading = false;
+    }
+  }
+
+  async function loadUserCredits() {
+    if (!$user) return;
+    
+    try {
+      loadingCredits = true;
+      const { data, error: creditsError } = await getUserCredits($user.id);
+      
+      if (creditsError) {
+        throw creditsError;
+      }
+      
+      userCredits = data || 0;
+    } catch (err) {
+      console.error('Error loading credits:', err);
+    } finally {
+      loadingCredits = false;
     }
   }
 
@@ -108,6 +134,18 @@
     loadUserProfile();
   }
 
+  function handleTopupSuccess(event: CustomEvent) {
+    const { amount } = event.detail;
+    showTopup = false;
+    successMessage = `Successfully added $${amount} to your account!`;
+    loadUserCredits(); // Reload credits
+    
+    // Clear success message after 5 seconds
+    setTimeout(() => {
+      successMessage = '';
+    }, 5000);
+  }
+
   function getInitials(firstName: string, lastName: string): string {
     const first = firstName?.charAt(0)?.toUpperCase() || '';
     const last = lastName?.charAt(0)?.toUpperCase() || '';
@@ -127,6 +165,10 @@
       month: 'long',
       day: 'numeric'
     });
+  }
+
+  function formatCredits(credits: number): string {
+    return new Intl.NumberFormat('en-US').format(credits);
   }
 </script>
 
@@ -324,6 +366,39 @@
     <!-- Sidebar Information -->
     <div class="space-y-6">
       
+      <!-- Credits Section -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+        <div class="px-6 py-4 border-b border-gray-200">
+          <h3 class="text-lg font-semibold text-gray-900">Account Credits</h3>
+        </div>
+        <div class="p-6">
+          <div class="text-center mb-6">
+            <div class="text-4xl font-bold text-blue-600 mb-2">
+              {#if loadingCredits}
+                <div class="animate-pulse bg-gray-200 h-12 w-24 mx-auto rounded"></div>
+              {:else}
+                {formatCredits(userCredits)}
+              {/if}
+            </div>
+            <p class="text-gray-600">Available Credits</p>
+          </div>
+          
+          <Button 
+            onclick={() => showTopup = true}
+            class_name="w-full"
+          >
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+            </svg>
+            Add Credits
+          </Button>
+          
+          <div class="mt-4 text-center text-sm text-gray-500">
+            <p>Use credits for premium features and services</p>
+          </div>
+        </div>
+      </div>
+
       <!-- Account Status -->
       <div class="bg-white rounded-xl shadow-sm border border-gray-200">
         <div class="px-6 py-4 border-b border-gray-200">
@@ -441,3 +516,13 @@
     </div>
   </div>
 </div>
+
+<!-- Topup Modal -->
+{#if showTopup}
+  <FormBackdrop handleClose={() => showTopup = false}>
+    <TopupComponent 
+      on:success={handleTopupSuccess}
+      on:close={() => showTopup = false}
+    />
+  </FormBackdrop>
+{/if}

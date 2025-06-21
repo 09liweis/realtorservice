@@ -317,10 +317,24 @@ export const getCreditRecords = async (user_id:string) => {
     .from('credit_records')
     .select(`*`)
     .eq('user_id', user_id)
+    .order('created_at', { ascending: false });
 }
 
 export const addCreditRecord = async (creditRecord:CreditRecord) => {
   return await supabase
     .from('credit_records')
     .insert(creditRecord);
+}
+
+// Get user's total credits
+export const getUserCredits = async (user_id: string) => {
+  const { data, error } = await supabase
+    .from('credit_records')
+    .select('amount')
+    .eq('user_id', user_id);
+
+  if (error) return { data: 0, error };
+
+  const totalCredits = data?.reduce((sum, record) => sum + record.amount, 0) || 0;
+  return { data: totalCredits, error: null };
 }
