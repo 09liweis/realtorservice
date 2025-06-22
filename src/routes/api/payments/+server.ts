@@ -5,7 +5,7 @@ import { STRIPE_SECRET_KEY } from '$env/static/private';
 
 export const POST: RequestHandler = async ({ request }) => {
   try {
-    const { amount, currency = 'usd', user_id, stripe_client_secret } = await request.json();
+    const { amount, currency = 'cad', user_id, stripe_client_secret } = await request.json();
 
     // Validate input
     if (!amount || amount < 50) {

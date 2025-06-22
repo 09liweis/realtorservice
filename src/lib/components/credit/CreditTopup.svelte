@@ -16,7 +16,6 @@
     ];
   
     // Component state
-    let selectCreditRecordId = '';
     let selectedAmount = 100;
     let loading = false;
     let error = '';
@@ -52,28 +51,26 @@
           },
           body: JSON.stringify({
             amount: amount * 100, // Convert to cents
-            currency: 'usd',
             user_id: $user?.id,
             stripe_client_secret: clientSecret
           }),
         });
   
-        const data = await response.json();
+        const responseJson = await response.json();
         
         if (!response.ok) {
-          throw new Error(data.error || 'Failed to create payment intent');
+          throw new Error(responseJson.error || 'Failed to create payment intent');
         }
 
-        await upsertCreditRecord({
-          id: selectCreditRecordId,
+        const {data:creditRecord,error} = await upsertCreditRecord({
           user_id: $user?.id,
           amount,
           tp: 'topup',
           status: 'pending',
-          stripe_client_secret: data.client_secret
-        })
+          stripe_client_secret: responseJson.client_secret
+        });
   
-        return data.client_secret;
+        return responseJson.client_secret;
       } catch (err) {
         console.error('Error creating payment intent:', err);
         throw err;
@@ -167,7 +164,6 @@
         if (paymentIntent && paymentIntent.status === 'succeeded') {
           // Payment successful, add credit record
           await upsertCreditRecord({
-            id: selectCreditRecordId,
             user_id: $user?.id,
             amount: selectedAmount,
             tp: 'topup',
@@ -197,7 +193,6 @@
     onMount(async ()=>{
       const {data:pendingTopupCreditRecord, error} = await getPendingTopUpCreditRecord({user_id:$user.id,tp:'topup',status:'pending'});
       if (pendingTopupCreditRecord) {
-        selectCreditRecordId = pendingTopupCreditRecord.id;
         selectedAmount = pendingTopupCreditRecord.amount;
         clientSecret = pendingTopupCreditRecord.stripe_client_secret;
       }

@@ -331,15 +331,17 @@ export const getPendingTopUpCreditRecord = async (creditRecord: CreditRecord) =>
 }
 
 export const upsertCreditRecord = async (creditRecord:CreditRecord) => {
-  if (creditRecord.id) {
+  const {data,error} = await supabase.from('credit_records').select('*').eq('stripe_client_secret',creditRecord.stripe_client_secret).single();
+  if (data) {
     return await supabase
       .from('credit_records')
       .update(creditRecord)
-      .eq('stripe_client_secret', creditRecord.stripe_client_secret);
+      .eq('id', data.id);
+  } else {
+    return await supabase
+      .from('credit_records')
+      .insert(creditRecord);
   }
-  return await supabase
-    .from('credit_records')
-    .insert(creditRecord);
 }
 
 export const calcUserCredits = async (user_id:string, amount:number) => {
