@@ -320,10 +320,39 @@ export const getCreditRecords = async (user_id:string) => {
     .order('created_at', { ascending: false });
 }
 
-export const addCreditRecord = async (creditRecord:CreditRecord) => {
+export const getPendingTopUpCreditRecord = async (creditRecord: CreditRecord) => {
+  return await supabase
+    .from('credit_records')
+    .select('*')
+    .eq('user_id',creditRecord.user_id)
+    .eq('tp', 'topup')
+    .eq('status', 'pending')
+    .single();
+}
+
+export const upsertCreditRecord = async (creditRecord:CreditRecord) => {
+  if (creditRecord.id) {
+    return await supabase
+      .from('credit_records')
+      .update(creditRecord)
+      .eq('stripe_client_secret', creditRecord.stripe_client_secret);
+  }
   return await supabase
     .from('credit_records')
     .insert(creditRecord);
+}
+
+export const calcUserCredits = async (user_id:string, amount:number) => {
+  const {data, error} = await supabase
+    .from('user_profiles')
+    .select(`credits`)
+    .eq('user_id', user_id)
+    .single();
+  const newCredit = (data?.credits || 0) + amount;
+  return await supabase
+    .from('user_profiles')
+    .update({credits: newCredit})
+    .eq('user_id', user_id);
 }
 
 // Get user's total credits
@@ -331,6 +360,7 @@ export const getUserCredits = async (user_id: string) => {
   const { data, error } = await supabase
     .from('credit_records')
     .select('amount')
+    .eq('status', 'done')
     .eq('user_id', user_id);
 
   if (error) return { data: 0, error };

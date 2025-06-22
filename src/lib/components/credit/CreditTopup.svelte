@@ -1,7 +1,7 @@
 <script lang="ts">
-    import { createEventDispatcher } from 'svelte';
+    import { createEventDispatcher, onMount } from 'svelte';
     import { user } from '$lib/stores/auth';
-    import { addCreditRecord } from '$lib/supabase';
+    import { calcUserCredits, getPendingTopUpCreditRecord, upsertCreditRecord } from '$lib/supabase';
     import { loadStripe } from '@stripe/stripe-js';
     import { PUBLIC_STRIPE_PUBLISHABLE_KEY } from '$env/static/public';
     import Button from '../Button.svelte';
@@ -16,6 +16,7 @@
     ];
   
     // Component state
+    let selectCreditRecordId = '';
     let selectedAmount = 100;
     let loading = false;
     let error = '';
@@ -62,6 +63,15 @@
         if (!response.ok) {
           throw new Error(data.error || 'Failed to create payment intent');
         }
+
+        await upsertCreditRecord({
+          id: selectCreditRecordId,
+          user_id: $user?.id,
+          amount,
+          tp: 'topup',
+          status: 'pending',
+          stripe_client_secret: data.client_secret
+        })
   
         return data.client_secret;
       } catch (err) {
@@ -112,15 +122,16 @@
     // Handle amount selection
     async function selectAmount(amount: number) {
       if (processing) return;
-      
-      selectedAmount = amount;
+
       error = '';
       loading = true;
       paymentElementMounted = false;
+      selectedAmount = amount;
   
       try {
         await initializeStripe();
         clientSecret = await createPaymentIntent(amount);
+        
         await setupPaymentElement();
       } catch (err: any) {
         error = err.message || 'Failed to setup payment';
@@ -155,12 +166,16 @@
   
         if (paymentIntent && paymentIntent.status === 'succeeded') {
           // Payment successful, add credit record
-          await addCreditRecord({
+          await upsertCreditRecord({
+            id: selectCreditRecordId,
             user_id: $user?.id,
             amount: selectedAmount,
             tp: 'topup',
-            stripe_client_secret: clientSecret
+            stripe_client_secret: clientSecret,
+            status: 'done'
           });
+
+          await calcUserCredits($user?.id, selectedAmount);
   
           // Dispatch success event
           dispatch('success', { amount: selectedAmount });
@@ -179,12 +194,20 @@
     }
   
     // Initialize with default amount
-    selectAmount(selectedAmount);
+    onMount(async ()=>{
+      const {data:pendingTopupCreditRecord, error} = await getPendingTopUpCreditRecord({user_id:$user.id,tp:'topup',status:'pending'});
+      if (pendingTopupCreditRecord) {
+        selectCreditRecordId = pendingTopupCreditRecord.id;
+        selectedAmount = pendingTopupCreditRecord.amount;
+        clientSecret = pendingTopupCreditRecord.stripe_client_secret;
+      }
+      selectAmount(selectedAmount);
+    });
   </script>
   
   <div class="bg-white rounded-xl shadow-lg max-w-4xl mx-auto overflow-hidden">
     <!-- Header -->
-    <div class="bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-4 text-white">
+    <div class="bg-primary px-6 py-4 text-white">
       <div class="flex items-center justify-between">
         <h2 class="text-xl font-bold">Add Credits</h2>
         <button
