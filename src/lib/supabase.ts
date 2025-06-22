@@ -253,7 +253,9 @@ export const getStagings = async ({user_id}:ListingSearch) => {
     .select(`
       *
     `)
-    .eq('user_id',user_id);
+    .eq('user_id',user_id)
+    .order('updated_at', { ascending: false })
+    ;
 }
 
 export const getStaging = async ({property_id}:ListingSearch) => {
