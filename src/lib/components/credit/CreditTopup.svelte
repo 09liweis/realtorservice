@@ -11,13 +11,13 @@
   
     // Topup options
     const topupOptions = [
-      { amount: 50, label: '$50', description: 'Perfect for small projects' },
-      { amount: 100, label: '$100', description: 'Most popular choice', popular: true },
-      { amount: 200, label: '$200', description: 'Best value for agencies' }
+      { amount: 500, label: '$500', description: 'Perfect for small projects' },
+      { amount: 1000, label: '$1000', description: 'Most popular choice', popular: true },
+      { amount: 2000, label: '$2000', description: 'Best value for agencies' }
     ];
   
     // Component state
-    let selectedAmount = 100;
+    let selectedAmount = topupOptions[0].amount;
     let loading = false;
     let error = '';
     let processing = false;
