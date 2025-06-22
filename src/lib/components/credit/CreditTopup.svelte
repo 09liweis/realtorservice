@@ -5,6 +5,7 @@
     import { loadStripe } from '@stripe/stripe-js';
     import { PUBLIC_STRIPE_PUBLISHABLE_KEY } from '$env/static/public';
     import Button from '../Button.svelte';
+    import { sendRequest } from '$lib/helper';
   
     const dispatch = createEventDispatcher();
   
@@ -44,20 +45,12 @@
     // Create payment intent
     async function createPaymentIntent(amount: number) {
       try {
-        const response = await fetch('/api/payments', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
+        const {response, data:responseJson} = await sendRequest({url:'/api/payments',body:{
             amount: amount * 100, // Convert to cents
             user_id: $user?.id,
             stripe_client_secret: clientSecret
-          }),
-        });
-  
-        const responseJson = await response.json();
-        
+          }})
+          
         if (!response.ok) {
           throw new Error(responseJson.error || 'Failed to create payment intent');
         }
