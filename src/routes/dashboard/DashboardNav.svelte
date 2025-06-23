@@ -67,7 +67,7 @@
 </script>
 
 <!-- Left Sidebar Navigation -->
-<nav class="h-full bg-white border-r border-gray-200 flex flex-col">
+<nav class="h-full bg-white border-r border-gray-200 flex flex-col w-full md:w-64">
   <!-- Logo and Brand -->
   <div class="px-6 py-4 border-b border-gray-200">
     <Logo size="md" showText={true} />
@@ -101,10 +101,11 @@
             : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'}"
         >
           <span class="text-lg">{item.icon}</span>
-          <div>
+          <div class="hidden md:block">
             <div>{item.name}</div>
             <div class="text-xs text-gray-500">{item.description}</div>
           </div>
+          <div class="md:hidden text-sm font-medium">{item.name}</div>
         </Link>
       {/each}
     </div>
