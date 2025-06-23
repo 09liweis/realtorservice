@@ -4,6 +4,7 @@
 	import '../app.css';
 	import { initializeAuth } from '$lib/stores/auth';
 	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
 
 	/** @type {{children: import('svelte').Snippet}} */
 	let { children } = $props();
@@ -20,7 +21,9 @@
 		{@render children()}
 	</main>
 
-	<Footer />
+	{#if !$page.url.pathname.startsWith('/dashboard')}
+		<Footer />
+	{/if}
 </div>
 
 <style>
