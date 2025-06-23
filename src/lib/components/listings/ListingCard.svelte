@@ -30,7 +30,7 @@
 
 <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group">
   <!-- Property Image with Sold Badge and Image Count -->
-  <Link to={`/dashboard/listings/${listing.id}`} class="block">
+  <Link href={`/listings/${listing.id}`} className="block">
     <div class="relative h-64 bg-gray-200 overflow-hidden">
       <img 
         src={getFirstImage(listing.pics)} 
