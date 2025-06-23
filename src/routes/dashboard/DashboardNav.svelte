@@ -170,7 +170,7 @@
                 <div class="text-xs text-gray-500">{$user?.email}</div>
               </div>
               <a
-                href="/dashboard"
+                href="/dashboard/profile"
                 class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
               >
                 <svg
