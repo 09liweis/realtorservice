@@ -146,7 +146,7 @@
               </Link>
               <Link
                 href="/register"
-                className="bg-primary text-white hover:bg-primary-hover px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+                className="border text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200"
               >
                 Register
               </Link>

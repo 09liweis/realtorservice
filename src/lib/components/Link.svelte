@@ -15,7 +15,7 @@
 
 <a 
   {href} 
-  class="font-medium text-primary hover:text-primary-hover transition-colors duration-200 {className}" 
+  class="font-medium text-primary hover:scale-105 transition-transform duration-300 {className}" 
 >
   <slot />
 </a>
