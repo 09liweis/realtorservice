@@ -413,7 +413,7 @@
     {/if}
 
     <!-- Call to Action -->
-    <div class="mt-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 text-white text-center">
+    <div class="mt-12 bg-primary rounded-2xl p-8 text-white text-center">
       <h2 class="text-2xl font-bold mb-4">
         Can't Find What You're Looking For?
       </h2>

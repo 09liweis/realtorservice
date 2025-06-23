@@ -71,7 +71,7 @@
                 class="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-50 transition-colors duration-200"
               >
                 <div
-                  class="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white font-medium text-sm"
+                  class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-medium text-sm"
                 >
                   {$user.email?.split("@")[0]?.[0]?.toUpperCase() || "U"}
                 </div>

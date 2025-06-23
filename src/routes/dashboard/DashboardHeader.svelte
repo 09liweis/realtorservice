@@ -21,7 +21,7 @@
   }
 </script>
 
-<div class="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 text-white">
+<div class="bg-primary rounded-2xl p-8 text-white">
   <div class="flex items-center justify-between">
     <div class="flex items-center space-x-6">
       <div class="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">

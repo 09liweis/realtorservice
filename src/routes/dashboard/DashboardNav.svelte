@@ -113,8 +113,8 @@
   <!-- Bottom Actions -->
   <div class="px-2 py-4 border-t border-gray-200 space-y-1">
     <Link
-      to="/dashboard/profile"
-      class="flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+      href="/dashboard/profile"
+      className="flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50"
     >
       <svg
         class="w-5 h-5 text-gray-400"
