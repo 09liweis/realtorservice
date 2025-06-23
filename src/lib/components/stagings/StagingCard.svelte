@@ -1,7 +1,8 @@
 <script lang="ts">
     import { formatAmount } from "$lib/types/constant";
+    import type { Staging } from "$lib/types/staging";
 
-	export let request;
+	export let request:Staging;
 	export let onView;
 	export let onEdit;
 	export let onDelete;
@@ -54,6 +55,12 @@
 				<span class="text-sm text-gray-500">Selling Price</span>
 				<span class="text-sm font-medium text-gray-900">
 					{formatAmount(request.selling_price)}
+				</span>
+			</div>
+			<div class="flex justify-between">
+				<span class="text-sm text-gray-500">Quotation Price</span>
+				<span class="text-sm font-medium text-gray-900">
+					{formatAmount(request.quotation_price)}
 				</span>
 			</div>
 			<div class="flex justify-between">
