@@ -2,6 +2,7 @@
   import { page } from "$app/stores";
   import { user, signOut } from "$lib/stores/auth";
   import { goto } from "$app/navigation";
+  import Logo from "$lib/components/Logo.svelte";
 
   // Navigation items with icons and descriptions
   const navItems = [
@@ -68,12 +69,7 @@
 <nav class="h-full bg-white border-r border-gray-200 flex flex-col">
   <!-- Logo and Brand -->
   <div class="px-6 py-4 border-b border-gray-200">
-    <a href="/" class="flex items-center space-x-2">
-      <div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center">
-        <span class="text-white font-bold text-sm">RS</span>
-      </div>
-      <span class="text-xl font-bold text-gray-900">Realtor Service</span>
-    </a>
+    <Logo size="md" showText={true} />
   </div>
 
   <!-- User Profile -->
