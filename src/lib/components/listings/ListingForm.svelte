@@ -83,7 +83,7 @@
       case 4:
         return true; // Financial details are optional
       case 5:
-        return true; // Images and description are optional
+        return true; // Images are optional
       default:
         return true;
     }
@@ -95,7 +95,7 @@
     'Property Details',
     'Amenities & Features',
     'Financial Information',
-    'Images & Description'
+    'Images'
   ];
 </script>
 
@@ -318,12 +318,12 @@
         </div>
       {/if}
 
-      <!-- Step 5: Images & Description -->
+      <!-- Step 5: Images -->
       {#if currentStep === 5}
         <div class="space-y-6 animate-in slide-in-from-right-4 duration-300">
           <div class="text-center mb-6">
-            <h3 class="text-xl font-semibold text-gray-900 mb-2">Images & Description</h3>
-            <p class="text-gray-600">Upload photos and add a detailed description</p>
+            <h3 class="text-xl font-semibold text-gray-900 mb-2">Images</h3>
+            <p class="text-gray-600">Upload photos</p>
           </div>
           
           <!-- Image Upload -->
@@ -333,21 +333,6 @@
               on:update={handleImageUpdate}
               maxImages={30}
             />
-          </div>
-
-          <!-- Description -->
-          <div>
-            <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
-              Property Description
-            </label>
-            <textarea
-              id="description"
-              bind:value={listing.description}
-              rows="6"
-              class="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors resize-none"
-              placeholder="Describe the property features, location benefits, and any special highlights..."
-            ></textarea>
-            <p class="text-xs text-gray-500 mt-1">Provide a detailed description to attract potential buyers</p>
           </div>
         </div>
       {/if}

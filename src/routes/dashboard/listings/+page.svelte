@@ -32,7 +32,7 @@
     commission: '',
     description: '',
     is_sold: false,
-    pictures: '',
+    pics: '',
     original_price: '',
     deposit_paid: '',
   };
