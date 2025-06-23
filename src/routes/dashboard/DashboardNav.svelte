@@ -3,6 +3,7 @@
   import { user, signOut } from "$lib/stores/auth";
   import { goto } from "$app/navigation";
   import Logo from "$lib/components/Logo.svelte";
+  import Link from "$lib/components/Link.svelte";
 
   // Navigation items with icons and descriptions
   const navItems = [
@@ -91,9 +92,9 @@
   <div class="flex-1 overflow-y-auto">
     <div class="px-2 py-4 space-y-1">
       {#each navItems as item}
-        <a
+        <Link
           href={item.href}
-          class="flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors duration-200 {isActive(
+          className="flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors duration-200 {isActive(
             item.href,
           )
             ? 'bg-blue-50 text-blue-700'
@@ -104,15 +105,15 @@
             <div>{item.name}</div>
             <div class="text-xs text-gray-500">{item.description}</div>
           </div>
-        </a>
+        </Link>
       {/each}
     </div>
   </div>
 
   <!-- Bottom Actions -->
   <div class="px-2 py-4 border-t border-gray-200 space-y-1">
-    <a
-      href="/dashboard/profile"
+    <Link
+      to="/dashboard/profile"
       class="flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50"
     >
       <svg
@@ -129,10 +130,10 @@
         ></path>
       </svg>
       <span>Profile Settings</span>
-    </a>
-    <a
+    </Link>
+    <Link
       href="/"
-      class="flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+      className="flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50"
     >
       <svg
         class="w-5 h-5 text-gray-400"
@@ -148,7 +149,7 @@
         ></path>
       </svg>
       <span>Back to Website</span>
-    </a>
+    </Link>
     <button
       on:click={handleSignOut}
       class="flex items-center space-x-3 w-full px-4 py-3 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50"
