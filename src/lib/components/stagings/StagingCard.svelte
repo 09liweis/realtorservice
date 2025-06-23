@@ -53,7 +53,7 @@
 			<div class="flex justify-between">
 				<span class="text-sm text-gray-500">Selling Price</span>
 				<span class="text-sm font-medium text-gray-900">
-					{request.selling_price ? formatAmount(request.selling_price) : formatAmount(request.budget)}
+					{formatAmount(request.selling_price)}
 				</span>
 			</div>
 			<div class="flex justify-between">
@@ -66,7 +66,7 @@
 			</div>
 			<div class="flex justify-between">
 				<span class="text-sm text-gray-500">Length</span>
-				<span class="text-sm text-gray-900">{request.length || 'Not specified'}</span>
+				<span class="text-sm text-gray-900">{request.length + ' Month' || 'Not specified'}</span>
 			</div>
 		</div>
 		

@@ -4,6 +4,7 @@ import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from "$env/static/publi
 import type { Listing, ListingSearch } from './types/listing';
 import type { Offer, OfferProperty } from './types/offer';
 import type { Staging } from './types/staging';
+import type { CreditRecord } from './types/credit';
 
 // 从环境变量中获取Supabase URL和匿名密钥
 const supabaseUrl = PUBLIC_SUPABASE_URL;
@@ -252,7 +253,9 @@ export const getStagings = async ({user_id}:ListingSearch) => {
     .select(`
       *
     `)
-    .eq('user_id',user_id);
+    .eq('user_id',user_id)
+    .order('updated_at', { ascending: false })
+    ;
 }
 
 export const getStaging = async ({property_id}:ListingSearch) => {
@@ -296,9 +299,76 @@ export const getUserProfiles = async () => {
     .order('created_at', { ascending: false });
 }
 
+export const getUserProfile = async (user_id: string) => {
+  return await supabase
+    .from('user_profiles')
+    .select('*')
+    .eq('user_id', user_id)
+    .single();
+}
+
 export const updateUserProfile = async (user_id: string, updates: any) => {
   return await supabase
     .from('user_profiles')
     .update(updates)
     .eq('user_id', user_id);
+}
+
+export const getCreditRecords = async (user_id:string) => {
+  return await supabase
+    .from('credit_records')
+    .select(`*`)
+    .eq('user_id', user_id)
+    .order('created_at', { ascending: false });
+}
+
+export const getPendingTopUpCreditRecord = async (creditRecord: CreditRecord) => {
+  return await supabase
+    .from('credit_records')
+    .select('*')
+    .eq('user_id',creditRecord.user_id)
+    .eq('tp', 'topup')
+    .eq('status', 'pending')
+    .single();
+}
+
+export const upsertCreditRecord = async (creditRecord:CreditRecord) => {
+  const {data,error} = await supabase.from('credit_records').select('*').eq('stripe_client_secret',creditRecord.stripe_client_secret).single();
+  if (data) {
+    return await supabase
+      .from('credit_records')
+      .update(creditRecord)
+      .eq('id', data.id);
+  } else {
+    return await supabase
+      .from('credit_records')
+      .insert(creditRecord);
+  }
+}
+
+export const calcUserCredits = async (user_id:string, amount:number) => {
+  const {data, error} = await supabase
+    .from('user_profiles')
+    .select(`credits`)
+    .eq('user_id', user_id)
+    .single();
+  const newCredit = (data?.credits || 0) + amount;
+  return await supabase
+    .from('user_profiles')
+    .update({credits: newCredit})
+    .eq('user_id', user_id);
+}
+
+// Get user's total credits
+export const getUserCredits = async (user_id: string) => {
+  const { data, error } = await supabase
+    .from('credit_records')
+    .select('amount')
+    .eq('status', 'done')
+    .eq('user_id', user_id);
+
+  if (error) return { data: 0, error };
+
+  const totalCredits = data?.reduce((sum, record) => sum + record.amount, 0) || 0;
+  return { data: totalCredits, error: null };
 }
