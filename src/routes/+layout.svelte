@@ -1,5 +1,5 @@
 <script>
-	import Header from './Header.svelte';
+	import Header from '../lib/components/Header.svelte';
 	import Footer from './Footer.svelte';
 	import '../app.css';
 	import { initializeAuth } from '$lib/stores/auth';
