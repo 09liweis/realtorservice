@@ -1,8 +1,8 @@
 <script lang="ts">
   import { getAllStagings, getUserProfiles } from '$lib/supabase';
   import UserTable from '$lib/components/admin/UserTable.svelte';
-  import StagingTable from '$lib/components/admin/StagingTable.svelte';
   import type { Staging } from '$lib/types/staging';
+  import StagingsList from '$lib/components/stagings/StagingsList.svelte';
 
   let loading = true;
   let error: string | null = null;
@@ -51,6 +51,6 @@
     </button>
   {:else}
     <UserTable {users} />
-    <StagingTable {stagings} />
+    <StagingsList requests={stagings} {loading} />
   {/if}
 </div>
