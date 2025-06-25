@@ -99,6 +99,12 @@
 					{formatAmount(request.estimate_price)}
 				</span>
 			</div>
+      <div class="flex justify-between">
+				<span class="text-sm text-gray-500">Quotation Price</span>
+				<span class="text-sm font-medium text-gray-900">
+					{formatAmount(request.quotation_price)}
+				</span>
+			</div>
 		</div>
 	</div>
 	<div class="px-6 py-3 bg-gray-50 flex justify-end space-x-3">
