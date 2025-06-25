@@ -4,5 +4,6 @@ export interface CreditRecord {
   status: string, //pending, done
   stripe_client_secret?: string,
   id?: string,
-  user_id: string
+  user_id: string,
+  tp_id?: string,
 }
