@@ -5,6 +5,7 @@
   import { OCCUPATION_STATUS_OPTIONS, PROPERTY_TYPES, STAGING_STATUS_OPTIONS } from "$lib/types/constant";
   import { EMPTY_STAGING, type Staging, calculateStagingFee } from "$lib/types/staging";
   import Select from "../Select.svelte";
+  import { user } from "$lib/stores/auth";
 
   export let isEdit = false;
   export let request: Staging = { ...EMPTY_STAGING };
@@ -174,7 +175,7 @@
             />
           </div>
 
-          {#if isEdit}
+          {#if isEdit && $user?.isAdmin}
             <div>
               <Select
                 id="status"
@@ -185,6 +186,24 @@
             </div>
           {/if}
         </div>
+        
+        <!-- Admin Only Fields -->
+        {#if $user?.isAdmin}
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <Input
+                id="quotation_price"
+                label="Admin Quotation Price ($)"
+                type="number"
+                bind:value={request.quotation_price}
+                min="0"
+                step="100"
+                placeholder="e.g., 5000"
+                helpText="Final price quoted to client"
+              />
+            </div>
+          </div>
+        {/if}
       </div>
 
       <!-- Right Column - Price Calculator -->
