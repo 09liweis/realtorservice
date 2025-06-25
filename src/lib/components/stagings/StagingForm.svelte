@@ -4,6 +4,7 @@
   import Input from "../Input.svelte";
   import { OCCUPATION_STATUS_OPTIONS, PROPERTY_TYPES, STAGING_STATUS_OPTIONS } from "$lib/types/constant";
   import { EMPTY_STAGING, type Staging, calculateStagingFee } from "$lib/types/staging";
+  import Select from "../Select.svelte";
 
   export let isEdit = false;
   export let request: Staging = { ...EMPTY_STAGING };
@@ -87,21 +88,12 @@
         <!-- Property Type and Size -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label
-              for="property_type"
-              class="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Property Type
-            </label>
-            <select
+            <Select
               id="property_type"
+              label="Property Type"
               bind:value={request.property_type}
-              class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            >
-              {#each propertyTypeOptions as type}
-                <option value={type.toLowerCase()}>{type}</option>
-              {/each}
-            </select>
+              options={propertyTypeOptions.map(type => ({ value: type.toLowerCase(), label: type }))}
+            />
           </div>
 
           <div>
@@ -121,21 +113,12 @@
         <!-- Occupation Status and Rooms -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label
-              for="occupation_status"
-              class="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Occupation Status
-            </label>
-            <select
+            <Select
               id="occupation_status"
+              label="Occupation Status"
               bind:value={request.occupation_status}
-              class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            >
-              {#each occupationStatusOptions as status}
-                <option value={status.toLowerCase()}>{status}</option>
-              {/each}
-            </select>
+              options={occupationStatusOptions.map(status => ({ value: status.toLowerCase(), label: status }))}
+            />
           </div>
 
           <div>
@@ -193,21 +176,12 @@
 
           {#if isEdit}
             <div>
-              <label
-                for="status"
-                class="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Status
-              </label>
-              <select
+              <Select
                 id="status"
+                label="Status"
                 bind:value={request.status}
-                class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-              >
-                {#each statusOptions as status}
-                  <option value={status.toLowerCase()}>{status}</option>
-                {/each}
-              </select>
+                options={statusOptions.map(status => ({ value: status.toLowerCase(), label: status }))}
+              />
             </div>
           {/if}
         </div>
