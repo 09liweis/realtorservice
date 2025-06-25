@@ -83,6 +83,7 @@
             bind:value={request.location}
             required={true}
             placeholder="Address, City, Postal Code"
+            disabled={$user?.isAdmin}
           />
         </div>
 
@@ -94,20 +95,22 @@
               label="Property Type"
               bind:value={request.property_type}
               options={propertyTypeOptions.map(type => ({ value: type.toLowerCase(), label: type }))}
+              disabled={$user?.isAdmin}
             />
           </div>
 
           <div>
-            <Input
-              id="size"
-              label="Size (sq ft)*"
-              type="number"
-              bind:value={request.size}
-              min="0"
-              step="1"
-              placeholder="Property square footage"
-              helpText="Required for accurate pricing calculation"
-            />
+                          <Input
+                            id="size"
+                            label="Size (sq ft)*"
+                            type="number"
+                            bind:value={request.size}
+                            min="0"
+                            step="1"
+                            placeholder="Property square footage"
+                            helpText="Required for accurate pricing calculation"
+                            disabled={$user?.isAdmin}
+                          />
           </div>
         </div>
 
@@ -119,6 +122,7 @@
               label="Occupation Status"
               bind:value={request.occupation_status}
               options={occupationStatusOptions.map(status => ({ value: status.toLowerCase(), label: status }))}
+              disabled={$user?.isAdmin}
             />
           </div>
 
@@ -132,6 +136,7 @@
               step="1"
               placeholder="e.g., 5"
               helpText="Required for accurate pricing calculation"
+              disabled={$user?.isAdmin}
             />
           </div>
         </div>
@@ -147,6 +152,7 @@
               min="0"
               step="1000"
               placeholder="e.g., 750000"
+              disabled={$user?.isAdmin}
             />
           </div>
 
@@ -156,6 +162,7 @@
               label="Desired Start Date"
               type="date"
               bind:value={request.timeline}
+              disabled={$user?.isAdmin}
             />
           </div>
         </div>
@@ -172,6 +179,7 @@
               step="1"
               placeholder="e.g., 3"
               helpText="Longer terms receive discounts"
+              disabled={$user?.isAdmin}
             />
           </div>
 

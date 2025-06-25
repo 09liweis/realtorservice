@@ -5,6 +5,7 @@
   export let options: { value: string; label: string }[];
   export let required = false;
   export let helpText: string | undefined = undefined;
+  export let disabled = false;
 
   // Forward the value changes to parent
   function handleChange(event: Event) {
@@ -18,6 +19,7 @@
     {label}
   </label>
   <select
+    {disabled}
     {id}
     {required}
     value={value}
