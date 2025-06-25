@@ -4,9 +4,10 @@
   import { goto } from "$app/navigation";
   import Logo from "$lib/components/Logo.svelte";
   import Link from "$lib/components/Link.svelte";
+  import { derived } from "svelte/store";
 
-  // Navigation items with icons and descriptions
-  const navItems = [
+  // Base navigation items with icons and descriptions
+  const baseNavItems = [
     {
       name: "Dashboard",
       href: "/dashboard",
@@ -38,6 +39,20 @@
       description: "Property Staging",
     },
   ];
+
+  // Admin navigation item
+  const adminNavItem = {
+    name: "Admin Panel",
+    href: "/admin",
+    icon: "⚙️",
+    description: "System Administration",
+  };
+
+  // Derive navigation items based on user role
+  console.log($user?.profile?.role);
+  $: navItems = $user?.profile?.role === "admin" 
+    ? [...baseNavItems, adminNavItem] 
+    : baseNavItems;
 
   // Check if current path matches navigation item
   function isActive(href: string) {

@@ -6,19 +6,55 @@ import { browser } from '$app/environment';
 export const user = writable(null);
 export const isLoading = writable(true);
 
+// 获取用户资料
+async function fetchUserProfile(userId: string) {
+  const { data, error } = await supabase
+    .from('user_profiles')
+    .select('*')
+    .eq('user_id', userId)
+    .single();
+    
+  if (error) {
+    console.error('获取用户资料错误:', error);
+    return null;
+  }
+  
+  return data;
+}
+
 // 初始化函数，检查当前会话状态
 export async function initializeAuth() {
   if (!browser) return;
   
   // 检查当前会话
   const { data } = await supabase.auth.getSession();
-  user.set(data?.session?.user || null);
+  
+  if (data?.session?.user) {
+    const userData = data.session.user;
+    const profile = await fetchUserProfile(userData.id);
+    
+    // 设置用户数据，包括资料
+    user.set({
+      ...userData,
+      profile
+    });
+  } else {
+    user.set(null);
+  }
+  
   isLoading.set(false);
   
   // 监听认证状态变化
-  supabase.auth.onAuthStateChange((event, session) => {
+  supabase.auth.onAuthStateChange(async (event, session) => {
     if (event === 'SIGNED_IN' && session) {
-      user.set(session.user);
+      const userData = session.user;
+      const profile = await fetchUserProfile(userData.id);
+      
+      // 设置用户数据，包括资料
+      user.set({
+        ...userData,
+        profile
+      });
     } else if (event === 'SIGNED_OUT') {
       user.set(null);
     }
