@@ -1,6 +1,7 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
   import Button from "../Button.svelte";
+  import Input from "../Input.svelte";
   import { OCCUPATION_STATUS_OPTIONS, PROPERTY_TYPES, STAGING_STATUS_OPTIONS } from "$lib/types/constant";
   import { EMPTY_STAGING, type Staging, calculateStagingFee } from "$lib/types/staging";
 
@@ -73,19 +74,13 @@
       <div class="lg:col-span-2 space-y-6">
         <!-- Property Location -->
         <div>
-          <label
-            for="location"
-            class="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Property Location*
-          </label>
-          <input
-            type="text"
+          <Input
             id="location"
+            label="Property Location*"
+            type="text"
             bind:value={request.location}
-            required
+            required={true}
             placeholder="Address, City, Postal Code"
-            class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
         </div>
 
@@ -110,19 +105,16 @@
           </div>
 
           <div>
-            <label for="size" class="block text-sm font-medium text-gray-700 mb-1">
-              Size (sq ft)*
-            </label>
-            <input
-              type="number"
+            <Input
               id="size"
+              label="Size (sq ft)*"
+              type="number"
               bind:value={request.size}
               min="0"
               step="1"
               placeholder="Property square footage"
-              class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              helpText="Required for accurate pricing calculation"
             />
-            <p class="text-xs text-gray-500 mt-1">Required for accurate pricing calculation</p>
           </div>
         </div>
 
@@ -147,54 +139,39 @@
           </div>
 
           <div>
-            <label for="rooms" class="block text-sm font-medium text-gray-700 mb-1">
-              Number of Rooms to Stage*
-            </label>
-            <input
-              type="number"
+            <Input
               id="rooms"
+              label="Number of Rooms to Stage*"
+              type="number"
               bind:value={request.rooms}
               min="1"
               step="1"
               placeholder="e.g., 5"
-              class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              helpText="Required for accurate pricing calculation"
             />
-            <p class="text-xs text-gray-500 mt-1">Required for accurate pricing calculation</p>
           </div>
         </div>
 
         <!-- Selling Price and Timeline -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label
-              for="selling_price"
-              class="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Approximate Selling Price ($)
-            </label>
-            <input
-              type="number"
+            <Input
               id="selling_price"
+              label="Approximate Selling Price ($)"
+              type="number"
               bind:value={request.selling_price}
               min="0"
               step="1000"
               placeholder="e.g., 750000"
-              class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             />
           </div>
 
           <div>
-            <label
-              for="timeline"
-              class="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Desired Start Date
-            </label>
-            <input
-              type="date"
+            <Input
               id="timeline"
+              label="Desired Start Date"
+              type="date"
               bind:value={request.timeline}
-              class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             />
           </div>
         </div>
@@ -202,22 +179,16 @@
         <!-- Length and Status -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label
-              for="length"
-              class="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Length of Staging (months)*
-            </label>
-            <input
-              type="number"
+            <Input
               id="length"
+              label="Length of Staging (months)*"
+              type="number"
               bind:value={request.length}
               min="1"
               step="1"
               placeholder="e.g., 3"
-              class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              helpText="Longer terms receive discounts"
             />
-            <p class="text-xs text-gray-500 mt-1">Longer terms receive discounts</p>
           </div>
 
           {#if isEdit}
