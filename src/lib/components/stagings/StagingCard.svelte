@@ -58,9 +58,9 @@
 				</span>
 			</div>
 			<div class="flex justify-between">
-				<span class="text-sm text-gray-500">Quotation Price</span>
+				<span class="text-sm text-gray-500">Estimate Quotation Price</span>
 				<span class="text-sm font-medium text-gray-900">
-					{formatAmount(request.quotation_price)}
+					{formatAmount(request.estimate_price)}
 				</span>
 			</div>
 			<div class="flex justify-between">

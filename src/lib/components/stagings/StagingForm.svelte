@@ -26,9 +26,9 @@
     request.property_type || 'house'
   );
 
-  // Update quotation_price when calculation changes
+  // Update estimate_price when calculation changes
   $: {
-    request.quotation_price = stagingCalculation.totalCost;
+    request.estimate_price = stagingCalculation.totalCost;
   }
 
   // Handle form submission
@@ -39,8 +39,8 @@
       return;
     }
 
-    // Ensure quotation_price is set
-    request.quotation_price = stagingCalculation.totalCost;
+    // Ensure estimate_price is set
+    request.estimate_price = stagingCalculation.totalCost;
 
     // Submit form
     dispatch("submit", { ...request });

@@ -12,7 +12,7 @@
   import Button from "$lib/components/Button.svelte";
   import FormBackdrop from "$lib/components/form/FormBackdrop.svelte";
   import { EMPTY_STAGING, type Staging } from "$lib/types/staging";
-  import { getStagings, upsertStaging } from "$lib/supabase";
+  import { getStagings, upsertStaging, deleteStaging } from "$lib/supabase";
   import { user } from "$lib/stores/auth";
   import { getPageTitle } from "$lib/types/constant";
 
@@ -80,9 +80,10 @@
   }
 
   // 删除请求
-  function deleteRequest(id: string) {
+  async function deleteRequest(id: string) {
     if (confirm("Are you sure you want to delete this staging request?")) {
-      applyFilters();
+      await deleteStaging(id);
+      await fetchStagings();
     }
   }
 
