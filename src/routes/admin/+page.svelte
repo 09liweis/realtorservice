@@ -1,17 +1,25 @@
 <script lang="ts">
-  import { getUserProfiles } from '$lib/supabase';
+  import { getAllStagings, getUserProfiles } from '$lib/supabase';
   import UserTable from '$lib/components/admin/UserTable.svelte';
+  import StagingTable from '$lib/components/admin/StagingTable.svelte';
+  import type { Staging } from '$lib/types/staging';
 
   let loading = true;
   let error: string | null = null;
   let users: any[] = [];
+  let stagings: Staging[] = [];
 
-  const loadUsers = async () => {
+  const loadAdminData = async () => {
     try {
       loading = true;
       const { data, error: supabaseError } = await getUserProfiles();
       if (supabaseError) throw supabaseError;
       users = data || [];
+
+
+      const { data: stagingData, error: stagingError } = await getAllStagings();
+      if (stagingError) throw stagingError;
+      stagings = stagingData || [];
     } catch (err) {
       error = err instanceof Error ? err.message : 'Failed to load users';
     } finally {
@@ -19,7 +27,7 @@
     }
   };
 
-  loadUsers();
+  loadAdminData();
 </script>
 
 <div class="bg-white shadow rounded-lg p-6">
@@ -36,12 +44,13 @@
       </div>
     </div>
     <button
-      on:click={loadUsers}
+      on:click={loadAdminData}
       class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
     >
       Retry
     </button>
   {:else}
     <UserTable {users} />
+    <StagingTable {stagings} />
   {/if}
 </div>

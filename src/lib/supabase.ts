@@ -258,6 +258,23 @@ export const getStagings = async ({user_id}:ListingSearch) => {
     ;
 }
 
+// Get all stagings for admin (no user filter)
+export const getAllStagings = async () => {
+  return await supabase
+    .from('stagings')
+    .select(`
+      *,
+      user_profiles!inner(
+        first_name,
+        last_name,
+        email,
+        phone,
+        brokerage
+      )
+    `)
+    .order('created_at', { ascending: false });
+}
+
 export const getStaging = async ({property_id}:ListingSearch) => {
   return await supabase
     .from('stagings')

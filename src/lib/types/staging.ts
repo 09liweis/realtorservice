@@ -10,6 +10,8 @@ export interface Staging {
   length: string,
   status: string,
   quotation_price?: number,
+  created_at?: string,
+  updated_at?: string
 }
 
 export const EMPTY_STAGING = {
