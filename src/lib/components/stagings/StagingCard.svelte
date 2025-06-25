@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { user } from "$lib/stores/auth";
     import { formatAmount } from "$lib/types/constant";
     import type { Staging } from "$lib/types/staging";
 
@@ -83,12 +84,6 @@
 				</span>
 			</div>
 			<div class="flex justify-between">
-				<span class="text-sm text-gray-500">Estimate Quotation Price</span>
-				<span class="text-sm font-medium text-gray-900">
-					{formatAmount(request.estimate_price)}
-				</span>
-			</div>
-			<div class="flex justify-between">
 				<span class="text-sm text-gray-500">Timeline</span>
 				<span class="text-sm text-gray-900">
 					{request.timeline || 'Not specified'}
@@ -97,6 +92,12 @@
 			<div class="flex justify-between">
 				<span class="text-sm text-gray-500">Length</span>
 				<span class="text-sm text-gray-900">{request.length + ' Month' || 'Not specified'}</span>
+			</div>
+      <div class="flex justify-between">
+				<span class="text-sm text-gray-500">Estimate Staging Price</span>
+				<span class="text-sm font-medium text-gray-900">
+					{formatAmount(request.estimate_price)}
+				</span>
 			</div>
 		</div>
 	</div>
@@ -113,11 +114,13 @@
 		>
 			Edit
 		</button>
+    {#if !$user?.isAdmin}
 		<button
 			on:click={() => onDelete(request.id)}
 			class="text-sm text-red-600 hover:text-red-900"
 		>
 			Delete
 		</button>
+    {/if}
 	</div>
 </div>
