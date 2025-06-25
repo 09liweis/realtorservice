@@ -204,8 +204,6 @@
                 label="Admin Quotation Price ($)"
                 type="number"
                 bind:value={request.quotation_price}
-                min="0"
-                step="100"
                 placeholder="e.g., 5000"
                 helpText="Final price quoted to client"
               />

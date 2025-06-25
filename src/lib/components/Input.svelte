@@ -13,9 +13,6 @@
   export let placeholder = '';
   export let required = false;
   export let minlength = '';
-  export let min = '';
-  export let max = '';
-  export let step = '';
   export let error = false;
   export let errorMessage = '';
   export let disabled = false;
@@ -95,9 +92,6 @@
       {placeholder}
       {required}
       {minlength}
-      {min}
-      {max}
-      {step}
       {disabled}
       bind:value
       class={inputClasses}

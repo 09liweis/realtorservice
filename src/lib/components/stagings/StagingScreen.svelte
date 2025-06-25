@@ -96,7 +96,11 @@
   // 提交表单
   async function handleSubmit(event: any) {
     const formData = event.detail;
-    await upsertStaging({ ...formData, user_id });
+    const stagingData = {...formData};
+    if (!$user?.isAdmin) {
+      stagingData.user_id = user_id;
+    }
+    await upsertStaging(stagingData);
     showForm = false;
     fetchStagings();
   }

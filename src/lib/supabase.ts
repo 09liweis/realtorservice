@@ -272,7 +272,7 @@ export const getAllStagings = async () => {
         brokerage
       )
     `)
-    .order('created_at', { ascending: false });
+    .order('updated_at', { ascending: false });
 }
 
 export const getStaging = async ({property_id}:ListingSearch) => {
@@ -286,6 +286,7 @@ export const getStaging = async ({property_id}:ListingSearch) => {
 }
 
 export const upsertStaging = async (staging:Staging) => {
+  delete staging.user_profiles;
   if (staging.id) {
     return await supabase
       .from('stagings')
