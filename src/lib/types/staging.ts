@@ -30,7 +30,7 @@ export const EMPTY_STAGING = {
 }
 
 // Toronto-based staging fee calculation constants
-export const STAGING_RATES = {
+export const STAGING_RATES: Record<string, any> = {
   // Base rate per square foot per month (CAD)
   BASE_RATE_PER_SQFT: 0.85,
   
