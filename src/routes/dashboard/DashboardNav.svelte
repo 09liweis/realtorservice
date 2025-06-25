@@ -49,8 +49,7 @@
   };
 
   // Derive navigation items based on user role
-  console.log($user?.profile?.role);
-  $: navItems = $user?.profile?.role === "admin" 
+  $: navItems = $user?.isAdmin 
     ? [...baseNavItems, adminNavItem] 
     : baseNavItems;
 

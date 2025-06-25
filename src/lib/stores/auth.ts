@@ -2,8 +2,15 @@ import { writable } from 'svelte/store';
 import { supabase } from '$lib/supabase';
 import { browser } from '$app/environment';
 
+interface User {
+  id: string;
+  email: string;
+  isAdmin: boolean;
+  profile: any;
+}
+
 // 创建用户存储
-export const user = writable(null);
+export const user = writable<User | null>(null);
 export const isLoading = writable(true);
 
 // 获取用户资料
@@ -22,6 +29,19 @@ async function fetchUserProfile(userId: string) {
   return data;
 }
 
+async function setUserProfile(userData: any) {
+  const profile = await fetchUserProfile(userData.id);
+  
+  if (!profile) return;
+  
+  // 设置用户数据，包括资料
+  user.set({
+    ...userData,
+    isAdmin: profile?.role === 'admin',
+    profile
+  });
+}
+
 // 初始化函数，检查当前会话状态
 export async function initializeAuth() {
   if (!browser) return;
@@ -31,13 +51,7 @@ export async function initializeAuth() {
   
   if (data?.session?.user) {
     const userData = data.session.user;
-    const profile = await fetchUserProfile(userData.id);
-    
-    // 设置用户数据，包括资料
-    user.set({
-      ...userData,
-      profile
-    });
+    await setUserProfile(userData);
   } else {
     user.set(null);
   }
@@ -48,13 +62,7 @@ export async function initializeAuth() {
   supabase.auth.onAuthStateChange(async (event, session) => {
     if (event === 'SIGNED_IN' && session) {
       const userData = session.user;
-      const profile = await fetchUserProfile(userData.id);
-      
-      // 设置用户数据，包括资料
-      user.set({
-        ...userData,
-        profile
-      });
+      await setUserProfile(userData);
     } else if (event === 'SIGNED_OUT') {
       user.set(null);
     }
