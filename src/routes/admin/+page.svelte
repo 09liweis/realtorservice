@@ -12,7 +12,7 @@
     activeTab = tab;
   };
 
-  let loading = true;
+  let loading = false;
   let error: string | null = null;
   let users: any[] = [];
   let stagings: Staging[] = [];
