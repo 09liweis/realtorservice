@@ -2,7 +2,7 @@
   import { getAllStagings, getUserProfiles } from '$lib/supabase';
   import UserTable from '$lib/components/admin/UserTable.svelte';
   import type { Staging } from '$lib/types/staging';
-  import StagingsList from '$lib/components/stagings/StagingsList.svelte';
+  import StagingScreen from '$lib/components/stagings/StagingScreen.svelte';
 
   // Tab management
   type Tab = 'users' | 'stagings';
@@ -15,7 +15,6 @@
   let loading = false;
   let error: string | null = null;
   let users: any[] = [];
-  let stagings: Staging[] = [];
 
   const loadAdminData = async () => {
     try {
@@ -24,9 +23,6 @@
       if (supabaseError) throw supabaseError;
       users = data || [];
 
-      const { data: stagingData, error: stagingError } = await getAllStagings();
-      if (stagingError) throw stagingError;
-      stagings = stagingData || [];
     } catch (err) {
       error = err instanceof Error ? err.message : 'Failed to load admin data';
     } finally {
@@ -83,10 +79,7 @@
           <UserTable {users} />
         </div>
       {:else if activeTab === 'stagings'}
-        <div class="tab-panel">
-          <h2 class="text-xl font-semibold text-gray-800 mb-4">Staging Requests</h2>
-          <StagingsList requests={stagings} {loading} />
-        </div>
+        <StagingScreen />
       {/if}
     </div>
   {/if}
