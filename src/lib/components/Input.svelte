@@ -46,8 +46,12 @@
     ? 'h-4 w-4 rounded border-gray-300 text-primary focus:ring-[#0d7377] transition-colors duration-200 ease-in-out'
     : 'appearance-none relative block w-full px-4 py-3 border rounded-lg placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#0d7377] focus:border-[#0d7377] transition-colors duration-200 ease-in-out sm:text-sm';
   
-  // Compute input classes based on error state
-  $: inputClasses = `${baseClasses} ${error ? 'border-red-500 focus:ring-red-500 focus:border-red-500' : 'border-gray-300'} ${classes}`;
+  // Compute input classes based on error state and disabled state
+  $: inputClasses = `${baseClasses} ${
+    error ? 'border-red-500 focus:ring-red-500 focus:border-red-500' : 'border-gray-300'
+  } ${
+    disabled ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : ''
+  } ${classes}`;
 </script>
 
 <div class="space-y-1">

@@ -24,7 +24,7 @@
     {required}
     value={value}
     on:change={handleChange}
-    class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#0d7377] focus:border-[#0d7377] sm:text-sm"
+    class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#0d7377] focus:border-[#0d7377] sm:text-sm {disabled ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : ''}"
   >
     {#each options as option}
       <option value={option.value}>{option.label}</option>
