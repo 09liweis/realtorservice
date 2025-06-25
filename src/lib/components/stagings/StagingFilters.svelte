@@ -1,15 +1,16 @@
-<script>
+<script lang="ts">
 	import { createEventDispatcher } from 'svelte';
+	import type { StagingStatus } from '$lib/types/staging';
 
 	export let searchQuery = '';
-	export let statusFilter = 'All';
+	export let statusFilter: 'All' | StagingStatus = 'All';
 	export let typeFilter = 'All';
 	export let sortBy = 'newest';
 
 	const dispatch = createEventDispatcher();
 
 	// 状态选项
-	const statusOptions = ['All', 'Pending', 'Scheduled', 'Completed', 'Cancelled'];
+	const statusOptions: Array<'All' | StagingStatus> = ['All', 'draft', 'submitted', 'confirmed', 'paid', 'schedule'];
 	
 	// 类型选项
 	const typeOptions = ['All', 'Full Home', 'Partial', 'Virtual', 'Consultation'];

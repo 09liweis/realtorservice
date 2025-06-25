@@ -1,3 +1,5 @@
+export type StagingStatus = 'draft' | 'submitted' | 'confirmed' | 'paid' | 'schedule';
+
 export interface Staging {
   id?: string,
   location: string,
@@ -8,7 +10,7 @@ export interface Staging {
   selling_price: number,
   timeline: string,
   length: string,
-  status: string,
+  status: StagingStatus,
   created_at?: string,
   updated_at?: string
   estimate_price?: number,
@@ -29,7 +31,7 @@ export const EMPTY_STAGING = {
   selling_price: 0,
   timeline: '',
   length: '',
-  status: 'pending',
+  status: 'draft' as StagingStatus,
   estimate_price: 0,
   quotation_price: 0
 }
