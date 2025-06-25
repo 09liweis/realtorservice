@@ -25,9 +25,30 @@
 </script>
 
 <div class="bg-white overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-200">
+	{#if request.user_profiles}
+		<div class="px-6 py-3 bg-blue-50 border-b border-blue-100">
+			<div class="flex items-center">
+				<div class="flex-shrink-0">
+					<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
+						<path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+					</svg>
+				</div>
+				<div class="ml-3">
+					<p class="text-sm font-medium text-blue-800">
+						{request.user_profiles.first_name} {request.user_profiles.last_name}
+					</p>
+					{#if request.user_profiles.brokerage}
+						<p class="text-xs text-blue-600">
+							{request.user_profiles.brokerage}
+						</p>
+					{/if}
+				</div>
+			</div>
+		</div>
+	{/if}
 	<div class="px-6 py-5 border-b border-gray-200">
 		<div class="flex justify-between items-center">
-			<h3 class="text-lg font-medium text-gray-900 truncate">{request.location || request.property}</h3>
+			<h3 class="text-lg font-medium text-gray-900 truncate">{request.location}</h3>
 			<span
 				class={`px-2 py-1 text-xs font-medium rounded-full capitalize ${getStatusStyle(
 					request.status
@@ -41,7 +62,7 @@
 		<div class="space-y-3">
 			<div class="flex justify-between">
 				<span class="text-sm text-gray-500">Property Type</span>
-				<span class="text-sm text-gray-900 capitalize">{request.property_type || request.type}</span>
+				<span class="text-sm text-gray-900 capitalize">{request.property_type}</span>
 			</div>
 			<div class="flex justify-between">
 				<span class="text-sm text-gray-500">Size</span>
@@ -66,9 +87,7 @@
 			<div class="flex justify-between">
 				<span class="text-sm text-gray-500">Timeline</span>
 				<span class="text-sm text-gray-900">
-					{request.timeline || (request.scheduledDate
-						? new Date(request.scheduledDate).toLocaleDateString()
-						: 'Not scheduled')}
+					{request.timeline || 'Not specified'}
 				</span>
 			</div>
 			<div class="flex justify-between">
@@ -76,12 +95,6 @@
 				<span class="text-sm text-gray-900">{request.length + ' Month' || 'Not specified'}</span>
 			</div>
 		</div>
-		
-		{#if request.notes}
-			<div class="mt-4">
-				<p class="text-sm text-gray-500 line-clamp-2">{request.notes}</p>
-			</div>
-		{/if}
 	</div>
 	<div class="px-6 py-3 bg-gray-50 flex justify-end space-x-3">
 		<button

@@ -12,7 +12,12 @@ export interface Staging {
   created_at?: string,
   updated_at?: string
   estimate_price?: number,
-  quotation_price?: number
+  quotation_price?: number,
+  user_profiles?: {
+    first_name: string,
+    last_name: string,
+    brokerage: string
+  }
 }
 
 export const EMPTY_STAGING = {
