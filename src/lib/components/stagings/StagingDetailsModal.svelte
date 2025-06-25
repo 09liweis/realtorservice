@@ -135,7 +135,7 @@
                 <div>
                   <h4 class="text-sm font-medium text-gray-500">Staging Quote</h4>
                   <p class="mt-1 text-lg font-bold text-blue-600">
-                    {formatCurrency(request.quotation_price)}
+                    {formatCurrency(request.estimate_price)}
                   </p>
                 </div>
               </div>
@@ -181,11 +181,11 @@
               </div>
 
               <!-- Pricing Breakdown -->
-              {#if request.quotation_price}
+              {#if request.estimate_price}
                 <div class="bg-blue-50 rounded-lg p-4 border border-blue-200">
                   <h4 class="text-sm font-medium text-blue-900 mb-2">💰 Staging Investment</h4>
                   <div class="text-2xl font-bold text-blue-600 mb-2">
-                    {formatCurrency(request.quotation_price)}
+                    {formatCurrency(request.estimate_price)}
                   </div>
                   <div class="text-xs text-blue-700 space-y-1">
                     <div>✓ Professional furniture & decor</div>

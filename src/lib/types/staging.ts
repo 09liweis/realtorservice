@@ -9,7 +9,8 @@ export interface Staging {
   timeline: string,
   length: string,
   status: string,
-  quotation_price?: number,
+  estimate_price?: number,
+  quotation_price?: number
 }
 
 export const EMPTY_STAGING = {
@@ -22,7 +23,8 @@ export const EMPTY_STAGING = {
   timeline: '',
   length: '',
   status: 'pending',
-  quotation_price: 0,
+  estimate_price: 0,
+  quotation_price: 0
 }
 
 // Toronto-based staging fee calculation constants
