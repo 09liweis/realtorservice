@@ -4,7 +4,7 @@
 			<div class="text-center lg:text-left">
 				<h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
 					Professional
-					<span class="text-blue-600">Real Estate</span>
+					<span class="text-primary">Real Estate</span>
 					Solutions
 				</h1>
 				<p class="mt-6 text-xl text-gray-600 leading-relaxed">

@@ -12,7 +12,7 @@
 		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 			<!-- Open House Service -->
 			<div class="bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-2xl hover:shadow-xl transition-shadow duration-300">
-				<div class="bg-blue-600 w-16 h-16 rounded-full flex items-center justify-center mb-6">
+				<div class="bg-primary w-16 h-16 rounded-full flex items-center justify-center mb-6">
 					<svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 4l2 2 4-4"></path>

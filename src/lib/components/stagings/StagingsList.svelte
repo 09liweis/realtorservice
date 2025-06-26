@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Staging } from "$lib/types/staging";
+  import Button from "../Button.svelte";
   import StagingCard from "./StagingCard.svelte";
   import { createEventDispatcher } from "svelte";
 
@@ -60,9 +61,8 @@
         Get started by creating a new staging request.
       </p>
       <div class="mt-6">
-        <button
-          on:click={() => dispatch("new")}
-          class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        <Button
+          onclick={() => dispatch("new")}
         >
           <svg
             class="mr-2 -ml-1 h-5 w-5"
@@ -76,7 +76,7 @@
             />
           </svg>
           New Staging Request
-        </button>
+        </Button>
       </div>
     </div>
   {:else}

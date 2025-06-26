@@ -222,7 +222,7 @@
         <div class="space-y-2">
           <button 
             on:click={() => navigateToSection('/dashboard/listings')}
-            class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors duration-200"
+            class="w-full bg-primary text-white py-2 px-4 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors duration-200"
           >
             Add New Listing
           </button>

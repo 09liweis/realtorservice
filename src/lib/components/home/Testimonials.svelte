@@ -87,7 +87,7 @@
 		</div>
 		
 		<!-- Stats Section -->
-		<div class="mt-16 bg-blue-600 rounded-2xl p-8 md:p-12">
+		<div class="mt-16 bg-primary rounded-2xl p-8 md:p-12">
 			<div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
 				<div>
 					<div class="text-3xl md:text-4xl font-bold text-white mb-2">500+</div>

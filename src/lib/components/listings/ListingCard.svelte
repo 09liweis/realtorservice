@@ -41,7 +41,7 @@
       
       <!-- Listing Type Badge -->
       {#if listing.listing_type}
-        <div class="absolute top-3 left-3 bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide">
+        <div class="absolute top-3 left-3 bg-primary text-white px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide">
           {listing.listing_type}
         </div>
       {/if}
