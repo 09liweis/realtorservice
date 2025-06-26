@@ -4,7 +4,7 @@ export const getPageTitle = (title:string) => {
   return `${title} - ${WEBSITE_NAME}`;
 }
 
-export function formatAmount(amount:number|string) {
+export function formatAmount(amount:number|string|undefined) {
   if (!amount) return '';
   return new Intl.NumberFormat('en-US', {
     style: 'currency',

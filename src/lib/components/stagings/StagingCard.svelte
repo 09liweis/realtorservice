@@ -24,6 +24,9 @@
     paymentSuccess = false;
 		
     try {
+			if (!request.quotation_price) {
+				throw new Error('Quotation price is required');
+			}
       // Create credit record
       const creditRecord: CreditRecord = {
         amount: -request.quotation_price, // Negative amount for payment
@@ -49,7 +52,7 @@
       setTimeout(() => {
         window.location.reload();
       }, 1000);
-    } catch (error) {
+    } catch (error:any) {
       console.error('Payment error:', error);
       paymentError = error.message || 'An error occurred during payment';
     } finally {
