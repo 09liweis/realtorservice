@@ -4,10 +4,10 @@
   import Input from '$lib/components/Input.svelte';
   import OpenHouseList from '$lib/components/openhouses/OpenHouseList.svelte';
   import { user } from '$lib/stores/auth';  
-    import { deleteOpenhouse, getOpenHouses, upsertOpenHouse } from '$lib/supabase';
-    import { getPageTitle } from '$lib/types/constant';
-    import type { OpenHouse } from '$lib/types/openhouse';
-    import { onMount } from 'svelte';
+  import { deleteOpenhouse, getOpenHouses, upsertOpenHouse } from '$lib/supabase';
+  import { getPageTitle } from '$lib/types/constant';
+  import type { OpenHouse } from '$lib/types/openhouse';
+  import { onMount } from 'svelte';
   
   let user_id;
   	
@@ -27,60 +27,84 @@
     date: ''
   }
 
-	let openHouses:OpenHouse[] = [];
+  let openHouses:OpenHouse[] = [];
 
-	// 状态变量
-	let showAddForm = false;
-	let searchQuery = '';
-	let statusFilter = 'All';
-	let editingId:string = '';
+  // 状态变量
+  let showAddForm = false;
+  let searchQuery = '';
+  let statusFilter = 'All';
+  let editingId:string = '';
+  
+  // 确认删除对话框状态
+  let showDeleteConfirm = false;
+  let deleteOpenHouseId = '';
+  let deleteOpenHouseAddress = '';
 
-	// 新开放看房的表单数据
-	let newOpenHouse = EMPTY_OH;
+  // 新开放看房的表单数据
+  let newOpenHouse = EMPTY_OH;
 
-	// 添加新开放看房
-	async function addOpenHouse() {
-		await upsertOpenHouse({
+  // 添加新开放看房
+  async function addOpenHouse() {
+    await upsertOpenHouse({
       user_id,
       ...newOpenHouse
     });
     fetchOHs();
-		resetForm();
-		showAddForm = false;
-	}
+    resetForm();
+    showAddForm = false;
+  }
 
-	// 开始编辑开放看房
-	function startEdit(house:OpenHouse) {
-		editingId = house.id || '';
-		newOpenHouse = { ...house };
-		showAddForm = true;
-	}
+  // 开始编辑开放看房
+  function startEdit(house:OpenHouse) {
+    editingId = house.id || '';
+    newOpenHouse = { ...house };
+    showAddForm = true;
+  }
 
-	// 更新开放看房
-	async function updateOpenHouse() {
-		await upsertOpenHouse(newOpenHouse);
+  // 更新开放看房
+  async function updateOpenHouse() {
+    await upsertOpenHouse(newOpenHouse);
     fetchOHs();
-		resetForm();
-		showAddForm = false;
-	}
+    resetForm();
+    showAddForm = false;
+  }
 
-	// 删除开放看房
-	async function handleDeleteOpenHouse(id:string) {
-		await deleteOpenhouse(id);
+  // 显示删除确认对话框
+  function confirmDelete(id:string, address:string) {
+    deleteOpenHouseId = id;
+    deleteOpenHouseAddress = address;
+    showDeleteConfirm = true;
+  }
+
+  // 取消删除
+  function cancelDelete() {
+    showDeleteConfirm = false;
+    deleteOpenHouseId = '';
+    deleteOpenHouseAddress = '';
+  }
+
+  // 删除开放看房
+  async function handleDeleteOpenHouse() {
+    if (!deleteOpenHouseId) return;
+    
+    await deleteOpenhouse(deleteOpenHouseId);
     fetchOHs();
-	}
+    showDeleteConfirm = false;
+    deleteOpenHouseId = '';
+    deleteOpenHouseAddress = '';
+  }
 
-	// 重置表单
-	function resetForm() {
-		newOpenHouse = EMPTY_OH;
-		editingId = '';
-	}
+  // 重置表单
+  function resetForm() {
+    newOpenHouse = EMPTY_OH;
+    editingId = '';
+  }
 
-	// 取消表单
-	function cancelForm() {
-		resetForm();
-		showAddForm = false;
-	}
+  // 取消表单
+  function cancelForm() {
+    resetForm();
+    showAddForm = false;
+  }
 </script>
 
 <svelte:head>
@@ -148,6 +172,38 @@
     </FormBackdrop>
 	{/if}
 
+	<!-- 删除确认对话框 -->
+	{#if showDeleteConfirm}
+		<FormBackdrop handleClose={cancelDelete}>
+			<div class="p-6 bg-white rounded-lg shadow max-w-md mx-auto">
+				<h2 class="text-lg font-medium text-gray-900 mb-4">Confirm Deletion</h2>
+				<p class="text-gray-600 mb-6">
+					Are you sure you want to delete the open house at <span class="font-medium">{deleteOpenHouseAddress}</span>? This action cannot be undone.
+				</p>
+				<div class="flex justify-end space-x-3">
+					<Button
+						variant="secondary"
+						type="button"
+						onclick={cancelDelete}
+					>
+						Cancel
+					</Button>
+					<Button
+						variant="danger"
+						type="button"
+						onclick={handleDeleteOpenHouse}
+					>
+						Delete
+					</Button>
+				</div>
+			</div>
+		</FormBackdrop>
+	{/if}
+
 	<!-- Open Houses Grid -->
-	<OpenHouseList openHouses={openHouses} handleEdit={startEdit} handleDelete={handleDeleteOpenHouse} />
+	<OpenHouseList 
+		openHouses={openHouses} 
+		handleEdit={startEdit} 
+		handleDelete={(id, address) => confirmDelete(id, address)} 
+	/>
 </div>

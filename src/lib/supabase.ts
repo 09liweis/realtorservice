@@ -57,6 +57,9 @@ export const upsertOpenHouse = async (oh) => {
 }
 
 export const deleteOpenhouse = async (id:string) => {
+  await supabase.from('openhouse_guests')
+    .delete()
+    .eq('property_id', id);
   return await supabase
     .from('openhouses')
     .delete()
