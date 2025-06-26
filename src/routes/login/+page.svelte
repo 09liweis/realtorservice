@@ -9,11 +9,11 @@
     import { getPageTitle } from '$lib/types/constant';
 
   // Redirect to dashboard if user is already logged in
-  onMount(() => {
+  $: {
     if ($user) {
       goto('/dashboard');
     }
-  });
+  }
 
   // Form data
   let email = '';

@@ -7,12 +7,11 @@
   import Input from '$lib/components/Input.svelte';
     import { getPageTitle } from '$lib/types/constant';
 
-  // If user is already logged in, redirect to dashboard
-  onMount(() => {
+  $: {
     if ($user) {
       goto('/dashboard');
     }
-  });
+  }
 
   // Form data
   let firstName = '';
