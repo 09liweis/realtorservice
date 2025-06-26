@@ -68,34 +68,21 @@
       goto("/");
     }
   }
-
-  // Get user initials for avatar
-  function getUserInitials(email: string): string {
-    if (!email) return "U";
-    const parts = email.split("@")[0].split(".");
-    if (parts.length >= 2) {
-      return (parts[0][0] + parts[1][0]).toUpperCase();
-    }
-    return email[0].toUpperCase();
-  }
 </script>
 
 <!-- Left Sidebar Navigation -->
 <nav class="h-full bg-white border-r border-gray-200 flex flex-col w-full md:w-64">
   <!-- Logo and Brand -->
   <div class="px-6 py-4 border-b border-gray-200">
-    <Logo size="md" showText={true} />
+    <Logo />
   </div>
 
   <!-- User Profile -->
   <div class="px-6 py-4 border-b border-gray-200">
     <div class="flex items-center space-x-3">
-      <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white font-medium text-sm">
-        {getUserInitials($user?.email || "")}
-      </div>
       <div>
         <div class="text-sm font-medium text-gray-900">
-          {$user?.email?.split("@")[0] || "User"}
+          {$user?.name || "User"}
         </div>
         <div class="text-xs text-gray-500">Real Estate Agent</div>
       </div>

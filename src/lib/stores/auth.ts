@@ -7,6 +7,7 @@ interface User {
   email: string;
   isAdmin: boolean;
   profile: any;
+  name: string;
 }
 
 // 创建用户存储
@@ -38,6 +39,7 @@ async function setUserProfile(userData: any) {
   user.set({
     ...userData,
     isAdmin: profile?.role === 'admin',
+    name: `${profile.first_name} ${profile.last_name}`,
     profile
   });
 }
