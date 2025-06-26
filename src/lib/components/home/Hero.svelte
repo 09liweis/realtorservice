@@ -10,20 +10,6 @@
 				<p class="mt-6 text-xl text-gray-600 leading-relaxed">
 					Comprehensive real estate services designed to maximize your property's potential. From staging to social media management, we handle every detail of your real estate journey.
 				</p>
-				<div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-					<a 
-						href="#services" 
-						class="bg-blue-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-blue-700 transition-colors duration-200 text-center text-primary"
-					>
-						Our Services
-					</a>
-					<a 
-						href="#contact" 
-						class="border-2 border-blue-600 text-blue-600 px-8 py-3 rounded-lg text-lg font-semibold hover:bg-blue-600 hover:text-white transition-colors duration-200 text-center text-primary"
-					>
-						Get Quote
-					</a>
-				</div>
 			</div>
 			<div class="relative">
 				<img 
