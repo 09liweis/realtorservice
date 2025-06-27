@@ -1,13 +1,21 @@
 <script lang="ts">
   import type { Listing } from "$lib/types/listing";
   import ListingCard from "./ListingCard.svelte";
+  import { fade, fly } from 'svelte/transition';
+  import { flip } from 'svelte/animate';
 
   export let listings: Array<Listing> = [];
 </script>
 
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-{#each listings as listing}
-  <ListingCard {listing} />
+{#each listings as listing (listing.id)}
+  <div
+    in:fly={{ y: 20, duration: 400, delay: 200 }}
+    out:fade={{ duration: 300 }}
+    animate:flip={{ duration: 300 }}
+  >
+    <ListingCard {listing} />
+  </div>
 {/each}
 </div>
 
