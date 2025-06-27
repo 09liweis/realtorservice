@@ -5,6 +5,10 @@
   import Logo from "$lib/components/Logo.svelte";
   import Link from "$lib/components/Link.svelte";
   import { derived } from "svelte/store";
+  import { createEventDispatcher } from "svelte";
+
+  // Create event dispatcher for close events
+  const dispatch = createEventDispatcher();
 
   // Base navigation items with icons and descriptions
   const baseNavItems = [
@@ -71,10 +75,20 @@
 </script>
 
 <!-- Left Sidebar Navigation -->
-<nav class="h-full bg-white border-r border-gray-200 flex flex-col w-full md:w-64">
+<nav class="h-full bg-white border-r border-gray-200 flex flex-col w-full md:w-64 overflow-hidden">
   <!-- Logo and Brand -->
-  <div class="px-6 py-4 border-b border-gray-200">
+  <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
     <Logo />
+    <!-- Close button for mobile -->
+    <button 
+      class="md:hidden text-gray-500 hover:text-gray-700"
+      on:click={() => dispatch('close')}
+      aria-label="Close navigation"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
   </div>
 
   <!-- User Profile -->
