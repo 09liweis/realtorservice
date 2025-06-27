@@ -3,6 +3,8 @@
   import { onMount } from "svelte";
   import DashboardNav from "./DashboardNav.svelte";
   import { writable } from "svelte/store";
+  import { fade, fly } from 'svelte/transition';
+  import { quartOut } from 'svelte/easing';
 
   // Store to control mobile navigation visibility
   const showMobileNav = writable(false);
@@ -19,8 +21,24 @@
 
 <div class="min-h-screen bg-gray-50 flex flex-col md:flex-row relative">
   <!-- Left Navigation - Fixed on desktop, hidden by default on mobile -->
-  <div class="md:fixed md:h-screen md:w-64 md:z-10 {$showMobileNav ? 'fixed inset-0 z-50' : 'hidden md:block'}">
-    <DashboardNav on:close={() => showMobileNav.set(false)} />
+  {#if $showMobileNav}
+    <!-- Backdrop overlay -->
+    <div 
+      class="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden" 
+      onclick={() => showMobileNav.set(false)}
+      transition:fade={{ duration: 200 }}
+    ></div>
+  {/if}
+
+  <div class="md:fixed md:h-screen md:w-64 md:z-10">
+    {#if $showMobileNav || (typeof window != 'undefined' && window?.innerWidth >= 768)}
+      <div
+        class="fixed inset-y-0 left-0 w-64 z-50 md:relative md:z-auto"
+        transition:fly={{ x: -300, duration: 300, easing: quartOut }}
+      >
+        <DashboardNav on:close={() => showMobileNav.set(false)} />
+      </div>
+    {/if}
   </div>
 
   <!-- Main Content Area -->
