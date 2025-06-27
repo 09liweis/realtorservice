@@ -1,6 +1,9 @@
 <script lang="ts">
     import { formatAmount } from "$lib/types/constant";
     import Link from "../Link.svelte";
+    import { fade, fly, slide } from "svelte/transition";
+    import { flip } from 'svelte/animate';
+    import { quintOut } from "svelte/easing";
 
   export let offers;
   export let handleClick;
@@ -27,7 +30,12 @@
 <!-- Offers Grid -->
 <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
   {#each offers as offer (offer.id)}
-    <div class="bg-white overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-200">
+    <div 
+      class="bg-white overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-200"
+      animate:flip={{ duration: 300 }}
+      in:fly={{ y: 20, duration: 300, delay: 100 }}
+      out:fade={{ duration: 200 }}
+    >
       <div class="p-6">
         <div class="flex justify-between items-start mb-4">
           <div class="flex-1">
@@ -63,7 +71,10 @@
       </div>
     </div>
   {:else}
-    <div class="col-span-full text-center py-12 bg-white rounded-lg">
+    <div 
+      class="col-span-full text-center py-12 bg-white rounded-lg"
+      in:fade={{ duration: 300, delay: 150 }}
+    >
       <p class="text-gray-500">No offers found</p>
     </div>
   {/each}
