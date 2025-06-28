@@ -5,6 +5,7 @@ import type { Listing, ListingSearch } from './types/listing';
 import type { Offer, OfferProperty } from './types/offer';
 import type { Staging } from './types/staging';
 import type { CreditRecord } from './types/credit';
+import type { SocialMediaAccount } from './types/social';
 
 // 从环境变量中获取Supabase URL和匿名密钥
 const supabaseUrl = PUBLIC_SUPABASE_URL;
@@ -392,4 +393,55 @@ export const getUserCredits = async (user_id: string) => {
 
   const totalCredits = data?.reduce((sum, record) => sum + record.amount, 0) || 0;
   return { data: totalCredits, error: null };
+}
+
+// Temporary function to check if social_media_accounts table exists
+export const checkSocialMediaTableExists = async () => {
+  try {
+    const { data, error } = await supabase
+      .from('social_media_accounts')
+      .select('*')
+      .limit(1);
+    
+    if (error) {
+      return { exists: false, error };
+    }
+    return { exists: true, error: null };
+  } catch (err) {
+    return { exists: false, error: err };
+  }
+}
+
+// Get user's social media accounts
+export const getUserSocialMedia = async (user_id: string) => {
+  return await supabase
+    .from('social_media_accounts')
+    .select('*')
+    .eq('user_id', user_id)
+    .order('created_at', { ascending: false });
+}
+
+// Add or update social media account
+export const upsertSocialMediaAccount = async (account: SocialMediaAccount) => {
+  if (account.id) {
+    return await supabase
+      .from('social_media_accounts')
+      .update({
+        updated_at: new Date(),
+        ...account
+      })
+      .eq('id', account.id);
+  } else {
+    return await supabase
+      .from('social_media_accounts')
+      .insert(account);
+  }
+}
+
+// Delete social media account
+export const deleteSocialMediaAccount = async (id: string) => {
+  return await supabase
+    .from('social_media_accounts')
+    .delete()
+    .eq('id', id);
 }

@@ -24,6 +24,12 @@
       description: "Overview & Analytics",
     },
     {
+      name: "Social Media",
+      href: "/dashboard/social",
+      icon: "🌐",
+      description: "Manage Social Links",
+    },
+    {
       name: "Listings",
       href: "/dashboard/listings",
       icon: "📋",
