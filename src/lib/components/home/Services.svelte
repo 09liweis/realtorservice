@@ -1,20 +1,20 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
 	import { fade, fly } from 'svelte/transition';
 
-	let services = [];
-	let observer;
+	let services: Array<boolean> = [];
+	let observer: IntersectionObserver | null = null;
 
-	function createIntersectionObserver(element) {
+	function createIntersectionObserver(element: Element) {
 		if (!observer) {
 			observer = new IntersectionObserver(
 				(entries) => {
 					entries.forEach(entry => {
 						if (entry.isIntersecting) {
-							const index = parseInt(entry.target.dataset.index);
+							const index = parseInt(entry.target?.dataset.index);
 							services[index] = true;
 							services = services;
-							observer.unobserve(entry.target);
+							observer?.unobserve(entry.target);
 						}
 					});
 				},
