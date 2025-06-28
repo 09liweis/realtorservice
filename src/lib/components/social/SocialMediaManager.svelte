@@ -89,7 +89,7 @@
   <div class="flex justify-between items-center">
     <h2 class="text-2xl font-semibold">Social Media Accounts</h2>
     {#if !isFormVisible}
-      <Button on:click={() => isFormVisible = true}>
+      <Button onclick={() => isFormVisible = true}>
         Add Account
       </Button>
     {/if}

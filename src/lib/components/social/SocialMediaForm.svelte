@@ -107,7 +107,7 @@
   </div>
 
   <div class="flex justify-end space-x-3 pt-2">
-    <Button type="button" variant="outline" on:click={onCancel}>
+    <Button type="button" variant="outline" onclick={onCancel}>
       Cancel
     </Button>
     <Button type="submit">

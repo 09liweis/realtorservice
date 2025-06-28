@@ -68,14 +68,14 @@
             <Button
               variant="outline"
               size="sm"
-              on:click={() => onEdit(index)}
+              onclick={() => onEdit(index)}
             >
               Edit
             </Button>
             <Button
               variant="danger"
               size="sm"
-              on:click={() => onDelete(index)}
+              onclick={() => onDelete(index)}
             >
               Delete
             </Button>
