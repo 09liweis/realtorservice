@@ -8,4 +8,4 @@
   });
 </script>
 
-<SocialMediaManager userId={$user.id} />
+<SocialMediaManager userId={$user?.id} />

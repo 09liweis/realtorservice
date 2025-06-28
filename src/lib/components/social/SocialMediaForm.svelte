@@ -10,7 +10,7 @@
 
   const dispatch = createEventDispatcher();
 
-  // 初始化表单数据
+  // Initialize form data
   let formData: SocialMediaAccount = account
     ? { ...account }
     : {
@@ -19,27 +19,27 @@
         accountUrl: ''
       };
 
-  // 平台选项
+  // Platform options
   const platformOptions = Object.values(SocialMediaPlatform);
 
-  // 表单验证
+  // Form validation
   let errors: Record<string, string> = {};
 
   function validateForm(): boolean {
     errors = {};
 
     if (!formData.platform) {
-      errors.platform = '请选择平台';
+      errors.platform = 'Please select a platform';
     }
 
     if (!formData.accountName) {
-      errors.accountName = '请输入账户名称';
+      errors.accountName = 'Please enter account name';
     }
 
     if (!formData.accountUrl) {
-      errors.accountUrl = '请输入账户链接';
+      errors.accountUrl = 'Please enter account URL';
     } else if (!isValidUrl(formData.accountUrl)) {
-      errors.accountUrl = '请输入有效的URL';
+      errors.accountUrl = 'Please enter a valid URL';
     }
 
     return Object.keys(errors).length === 0;
@@ -63,7 +63,7 @@
 
 <form on:submit|preventDefault={handleSubmit} class="space-y-4">
   <div>
-    <label for="platform" class="block text-sm font-medium text-gray-700 mb-1">平台</label>
+    <label for="platform" class="block text-sm font-medium text-gray-700 mb-1">Platform</label>
     <select
       id="platform"
       bind:value={formData.platform}
@@ -79,13 +79,13 @@
   </div>
 
   <div>
-    <label for="accountName" class="block text-sm font-medium text-gray-700 mb-1">账户名称</label>
+    <label for="accountName" class="block text-sm font-medium text-gray-700 mb-1">Account Name</label>
     <input
       type="text"
       id="accountName"
       bind:value={formData.accountName}
       class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-      placeholder="例如：John Doe"
+      placeholder="e.g., John Doe"
     />
     {#if errors.accountName}
       <p class="mt-1 text-sm text-red-600">{errors.accountName}</p>
@@ -93,7 +93,7 @@
   </div>
 
   <div>
-    <label for="accountUrl" class="block text-sm font-medium text-gray-700 mb-1">账户链接</label>
+    <label for="accountUrl" class="block text-sm font-medium text-gray-700 mb-1">Account URL</label>
     <input
       type="text"
       id="accountUrl"
@@ -108,10 +108,10 @@
 
   <div class="flex justify-end space-x-3 pt-2">
     <Button type="button" variant="outline" on:click={onCancel}>
-      取消
+      Cancel
     </Button>
     <Button type="submit">
-      {account ? '更新' : '添加'}
+      {account ? 'Update' : 'Add'}
     </Button>
   </div>
 </form>

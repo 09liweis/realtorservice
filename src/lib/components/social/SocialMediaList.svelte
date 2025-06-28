@@ -6,7 +6,7 @@
   export let onEdit: (index: number) => void;
   export let onDelete: (index: number) => void;
 
-  // 获取平台图标的函数
+  // Function to get platform icon
   function getPlatformIcon(platform: string): string {
     const icons: Record<string, string> = {
       'Facebook': 'fab fa-facebook',
@@ -21,10 +21,10 @@
     return icons[platform] || icons['Other'];
   }
 
-  // 格式化日期的函数
+  // Function to format date
   function formatDate(date: Date | string | undefined): string {
     if (!date) return '';
-    return new Date(date).toLocaleDateString('zh-CN', {
+    return new Date(date).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
       day: 'numeric'
@@ -34,7 +34,7 @@
 
 {#if accounts.length === 0}
   <div class="text-center py-8 text-gray-500">
-    <p>暂无社交媒体账户</p>
+    <p>No social media accounts</p>
   </div>
 {:else}
   <div class="space-y-4">
@@ -54,12 +54,12 @@
                   rel="noopener noreferrer"
                   class="text-blue-600 hover:text-blue-800 text-sm"
                 >
-                  {account.platform} 主页
+                  {account.platform} Profile
                 </a>
               </div>
               {#if account.created_at}
                 <p class="text-sm text-gray-500 mt-1">
-                  添加于 {formatDate(account.created_at)}
+                  Added on {formatDate(account.created_at)}
                 </p>
               {/if}
             </div>
@@ -70,14 +70,14 @@
               size="sm"
               on:click={() => onEdit(index)}
             >
-              编辑
+              Edit
             </Button>
             <Button
               variant="danger"
               size="sm"
               on:click={() => onDelete(index)}
             >
-              删除
+              Delete
             </Button>
           </div>
         </div>
@@ -87,7 +87,7 @@
 {/if}
 
 <style>
-  /* 确保Font Awesome图标正确显示 */
+  /* Ensure Font Awesome icons display correctly */
   :global(.fab),
   :global(.fas) {
     font-family: 'Font Awesome 5 Free', 'Font Awesome 5 Brands';

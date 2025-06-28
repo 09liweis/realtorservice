@@ -26,7 +26,7 @@
       if (err) throw err;
       accounts = data || [];
     } catch (err) {
-      error = '加载社交媒体账户时出错';
+      error = 'Error loading social media accounts';
       console.error('Error loading social media accounts:', err);
     } finally {
       loading = false;
@@ -52,13 +52,13 @@
       isFormVisible = false;
       editingIndex = null;
     } catch (err) {
-      error = '保存社交媒体账户时出错';
+      error = 'Error saving social media account';
       console.error('Error saving social media account:', err);
     }
   }
 
   async function handleDelete(index: number) {
-    if (!confirm('确定要删除这个社交媒体账户吗？')) return;
+    if (!confirm('Are you sure you want to delete this social media account?')) return;
 
     error = null;
     const accountId = accounts[index]?.id;
@@ -69,7 +69,7 @@
       if (err) throw err;
       await loadAccounts();
     } catch (err) {
-      error = '删除社交媒体账户时出错';
+      error = 'Error deleting social media account';
       console.error('Error deleting social media account:', err);
     }
   }
@@ -87,10 +87,10 @@
 
 <div class="space-y-6">
   <div class="flex justify-between items-center">
-    <h2 class="text-2xl font-semibold">社交媒体账户</h2>
+    <h2 class="text-2xl font-semibold">Social Media Accounts</h2>
     {#if !isFormVisible}
       <Button on:click={() => isFormVisible = true}>
-        添加账户
+        Add Account
       </Button>
     {/if}
   </div>
@@ -103,7 +103,7 @@
 
   {#if loading}
     <div class="text-center py-8">
-      <p>加载中...</p>
+      <p>Loading...</p>
     </div>
   {:else}
     {#if isFormVisible}

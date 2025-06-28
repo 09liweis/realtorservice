@@ -7,11 +7,11 @@ import type { Staging } from './types/staging';
 import type { CreditRecord } from './types/credit';
 import type { SocialMediaAccount } from './types/social';
 
-// 从环境变量中获取Supabase URL和匿名密钥
+// Get Supabase URL and anonymous key from environment variables
 const supabaseUrl = PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = PUBLIC_SUPABASE_ANON_KEY;
 
-// 创建Supabase客户端
+// Create Supabase client
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 
