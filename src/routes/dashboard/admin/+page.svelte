@@ -3,9 +3,10 @@
   import UserTable from '$lib/components/admin/UserTable.svelte';
   import type { Staging } from '$lib/types/staging';
   import StagingScreen from '$lib/components/stagings/StagingScreen.svelte';
+  import CouponManager from '$lib/components/admin/CouponManager.svelte';
 
   // Tab management
-  type Tab = 'users' | 'stagings';
+  type Tab = 'users' | 'stagings' | 'coupons';
   let activeTab: Tab = 'users';
   
   const setActiveTab = (tab: Tab) => {
@@ -57,16 +58,37 @@
     <div class="border-b border-gray-200 mb-6">
       <nav class="-mb-px flex space-x-8">
         <button
-          class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm {activeTab === 'users' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}"
+          class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 {activeTab === 'users' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}"
           on:click={() => setActiveTab('users')}
         >
-          Users
+          <div class="flex items-center space-x-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+            </svg>
+            <span>Users</span>
+          </div>
         </button>
         <button
-          class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm {activeTab === 'stagings' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}"
+          class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 {activeTab === 'stagings' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}"
           on:click={() => setActiveTab('stagings')}
         >
-          Stagings
+          <div class="flex items-center space-x-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+            </svg>
+            <span>Stagings</span>
+          </div>
+        </button>
+        <button
+          class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 {activeTab === 'coupons' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}"
+          on:click={() => setActiveTab('coupons')}
+        >
+          <div class="flex items-center space-x-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+            </svg>
+            <span>Coupons</span>
+          </div>
         </button>
       </nav>
     </div>
@@ -80,6 +102,8 @@
         </div>
       {:else if activeTab === 'stagings'}
         <StagingScreen />
+      {:else if activeTab === 'coupons'}
+        <CouponManager />
       {/if}
     </div>
   {/if}

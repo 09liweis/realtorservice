@@ -6,6 +6,7 @@ import type { Offer, OfferProperty } from './types/offer';
 import type { Staging } from './types/staging';
 import type { CreditRecord } from './types/credit';
 import type { SocialMediaAccount } from './types/social';
+import type { Coupon } from './types/coupon';
 
 // Get Supabase URL and anonymous key from environment variables
 const supabaseUrl = PUBLIC_SUPABASE_URL;
@@ -444,4 +445,151 @@ export const deleteSocialMediaAccount = async (id: string) => {
     .from('social_media_accounts')
     .delete()
     .eq('id', id);
+}
+
+// Coupon CRUD operations
+export const getCoupons = async () => {
+  return await supabase
+    .from('coupons')
+    .select('*')
+    .order('created_at', { ascending: false });
+}
+
+export const getCoupon = async (id: string) => {
+  return await supabase
+    .from('coupons')
+    .select('*')
+    .eq('id', id)
+    .single();
+}
+
+export const upsertCoupon = async (coupon: Coupon) => {
+  if (!coupon.expires_at) {
+    delete coupon.expires_at;
+  }
+  if (coupon.id) {
+    return await supabase
+      .from('coupons')
+      .update({
+        updated_at: new Date(),
+        ...coupon
+      })
+      .eq('id', coupon.id);
+  } else {
+    return await supabase
+      .from('coupons')
+      .insert(coupon);
+  }
+}
+
+export const deleteCoupon = async (id: string) => {
+  return await supabase
+    .from('coupons')
+    .delete()
+    .eq('id', id);
+}
+
+export const toggleCouponStatus = async (id: string, active: boolean) => {
+  return await supabase
+    .from('coupons')
+    .update({ 
+      active,
+      updated_at: new Date()
+    })
+    .eq('id', id);
+}
+
+// Get active coupons for users
+export const getActiveCoupons = async () => {
+  return await supabase
+    .from('coupons')
+    .select('*')
+    .eq('active', true)
+    .or('expires_at.is.null,expires_at.gte.' + new Date().toISOString())
+    .order('created_at', { ascending: false });
+}
+
+// Validate and redeem coupon
+export const redeemCoupon = async (couponCode: string, userId: string) => {
+  // First, get the coupon
+  const { data: coupon, error: couponError } = await supabase
+    .from('coupons')
+    .select('*')
+    .eq('name', couponCode.toUpperCase())
+    .eq('active', true)
+    .single();
+
+  if (couponError || !coupon) {
+    return { data: null, error: { message: 'Invalid or inactive coupon code' } };
+  }
+
+  // Check if coupon is expired
+  if (coupon.expires_at && new Date(coupon.expires_at) < new Date()) {
+    return { data: null, error: { message: 'This coupon has expired' } };
+  }
+
+  // Check usage limit
+  if (coupon.usage_limit && coupon.used_count >= coupon.usage_limit) {
+    return { data: null, error: { message: 'This coupon has reached its usage limit' } };
+  }
+
+  // Check if user has already used this coupon
+  const { data: existingUsage } = await supabase
+    .from('coupon_usage')
+    .select('*')
+    .eq('coupon_id', coupon.id)
+    .eq('user_id', userId)
+    .single();
+
+  if (existingUsage) {
+    return { data: null, error: { message: 'You have already used this coupon' } };
+  }
+
+  // Create credit record
+  const creditRecord: CreditRecord = {
+    amount: coupon.credits,
+    tp: 'coupon',
+    tp_id: coupon.id,
+    user_id: userId,
+    status: 'done'
+  };
+
+  const { error: creditError } = await upsertCreditRecord(creditRecord);
+  if (creditError) {
+    return { data: null, error: creditError };
+  }
+
+  // Update user credits
+  const { error: updateCreditsError } = await calcUserCredits(userId, coupon.credits);
+  if (updateCreditsError) {
+    return { data: null, error: updateCreditsError };
+  }
+
+  // Record coupon usage
+  const { error: usageError } = await supabase
+    .from('coupon_usage')
+    .insert({
+      coupon_id: coupon.id,
+      user_id: userId,
+      redeemed_at: new Date().toISOString()
+    });
+
+  if (usageError) {
+    return { data: null, error: usageError };
+  }
+
+  // Update coupon used count
+  const { error: updateCouponError } = await supabase
+    .from('coupons')
+    .update({
+      used_count: (coupon.used_count || 0) + 1,
+      updated_at: new Date()
+    })
+    .eq('id', coupon.id);
+
+  if (updateCouponError) {
+    return { data: null, error: updateCouponError };
+  }
+
+  return { data: { coupon, credits: coupon.credits }, error: null };
 }
