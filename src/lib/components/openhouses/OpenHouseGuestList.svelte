@@ -1,10 +1,13 @@
 <script lang="ts">
+  import { fade, fly, scale } from 'svelte/transition';
+  import { quintOut, elasticOut } from 'svelte/easing';
+  import { flip } from 'svelte/animate';
+
   export let guests: any[] = [];
 
   // Format phone number for display
   function formatPhone(phone: string): string {
     if (!phone) return 'N/A';
-    // Simple phone formatting (assumes North American format)
     const cleaned = phone.replace(/\D/g, '');
     if (cleaned.length === 10) {
       return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3, 6)}-${cleaned.slice(6)}`;
@@ -27,11 +30,11 @@
   function getStatusColor(buyLease: string): string {
     switch (buyLease?.toLowerCase()) {
       case 'buy':
-        return 'bg-green-100 text-green-800';
+        return 'bg-emerald-100 text-emerald-700 border-emerald-200';
       case 'lease':
-        return 'bg-blue-100 text-blue-800';
+        return 'bg-blue-100 text-blue-700 border-blue-200';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-gray-100 text-gray-700 border-gray-200';
     }
   }
 
@@ -39,136 +42,260 @@
   function getAgentStatusColor(hasAgent: string): string {
     const hasAgentLower = hasAgent?.toLowerCase();
     if (hasAgentLower === 'yes' || hasAgentLower === 'true') {
-      return 'bg-orange-100 text-orange-800';
+      return 'bg-amber-100 text-amber-700 border-amber-200';
     } else if (hasAgentLower === 'no' || hasAgentLower === 'false') {
-      return 'bg-purple-100 text-purple-800';
+      return 'bg-purple-100 text-purple-700 border-purple-200';
     }
-    return 'bg-gray-100 text-gray-800';
+    return 'bg-gray-100 text-gray-700 border-gray-200';
+  }
+
+  // Get avatar gradient
+  function getAvatarGradient(index: number): string {
+    const gradients = [
+      'from-blue-500 to-purple-600',
+      'from-emerald-500 to-teal-600',
+      'from-pink-500 to-rose-600',
+      'from-orange-500 to-red-600',
+      'from-indigo-500 to-blue-600',
+      'from-green-500 to-emerald-600',
+      'from-purple-500 to-pink-600',
+      'from-yellow-500 to-orange-600'
+    ];
+    return gradients[index % gradients.length];
   }
 </script>
 
-<div class="bg-white rounded-lg shadow-sm border border-gray-200">
+<div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
   {#if guests.length === 0}
     <!-- Empty State -->
-    <div class="text-center py-12 px-6">
-      <div class="mx-auto h-16 w-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-        <svg class="h-8 w-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+    <div 
+      class="text-center py-16 px-8"
+      in:fade={{ duration: 400, delay: 200 }}
+    >
+      <div 
+        class="mx-auto h-20 w-20 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center mb-6"
+        in:scale={{ duration: 600, delay: 400, easing: elasticOut, start: 0.5 }}
+      >
+        <svg class="h-10 w-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
         </svg>
       </div>
-      <h3 class="text-lg font-medium text-gray-900 mb-2">No guests yet</h3>
-      <p class="text-gray-500 text-sm">
+      <h3 
+        class="text-xl font-semibold text-gray-900 mb-3"
+        in:fly={{ y: 20, duration: 400, delay: 600 }}
+      >
+        No guests yet
+      </h3>
+      <p 
+        class="text-gray-500 max-w-sm mx-auto leading-relaxed"
+        in:fly={{ y: 20, duration: 400, delay: 700 }}
+      >
         Guest information will appear here once visitors sign in to the open house.
       </p>
     </div>
   {:else}
     <!-- Header -->
-    <div class="px-6 py-4 border-b border-gray-200 bg-gray-50 rounded-t-lg">
+    <div 
+      class="px-8 py-6 bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200"
+      in:fly={{ y: -20, duration: 400, delay: 100 }}
+    >
       <div class="flex items-center justify-between">
-        <h3 class="text-lg font-semibold text-gray-900">
-          Open House Guests
-        </h3>
-        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-          {guests.length} {guests.length === 1 ? 'Guest' : 'Guests'}
-        </span>
+        <div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-1">
+            Open House Guests
+          </h3>
+          <p class="text-sm text-gray-600">
+            Welcome visitors and potential buyers
+          </p>
+        </div>
+        <div 
+          class="flex items-center space-x-3"
+          in:scale={{ duration: 400, delay: 300, easing: elasticOut }}
+        >
+          <div class="text-right">
+            <div class="text-2xl font-bold text-gray-900">{guests.length}</div>
+            <div class="text-xs text-gray-500 uppercase tracking-wide">
+              {guests.length === 1 ? 'Guest' : 'Guests'}
+            </div>
+          </div>
+          <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+            </svg>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Guest List -->
-    <div class="divide-y divide-gray-200">
-      {#each guests as guest, index (guest.id || index)}
-        <div class="px-6 py-4 hover:bg-gray-50 transition-colors duration-150">
-          <div class="flex items-start space-x-4">
-            <!-- Avatar -->
-            <div class="flex-shrink-0">
-              <div class="h-10 w-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-medium text-sm">
-                {getInitials(guest.name)}
-              </div>
-            </div>
-
-            <!-- Guest Information -->
-            <div class="flex-1 min-w-0">
-              <div class="flex items-start justify-between">
-                <div class="flex-1">
-                  <!-- Name -->
-                  <h4 class="text-sm font-semibold text-gray-900 truncate">
-                    {guest.name || 'Unknown Guest'}
-                  </h4>
-                  
-                  <!-- Contact Information -->
-                  <div class="mt-1 space-y-1">
-                    {#if guest.email}
-                      <div class="flex items-center text-sm text-gray-600">
-                        <svg class="h-4 w-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                        </svg>
-                        <a href="mailto:{guest.email}" class="hover:text-blue-600 transition-colors">
-                          {guest.email}
-                        </a>
-                      </div>
-                    {/if}
-                    
-                    {#if guest.phone}
-                      <div class="flex items-center text-sm text-gray-600">
-                        <svg class="h-4 w-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
-                        </svg>
-                        <a href="tel:{guest.phone}" class="hover:text-blue-600 transition-colors">
-                          {formatPhone(guest.phone)}
-                        </a>
-                      </div>
-                    {/if}
-                  </div>
+    <!-- Guest Cards -->
+    <div class="p-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {#each guests as guest, index (guest.id || index)}
+          <div 
+            class="group bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg hover:border-gray-300 transition-all duration-300 hover:-translate-y-1"
+            in:fly={{ y: 30, duration: 400, delay: 200 + index * 100, easing: quintOut }}
+            out:fade={{ duration: 200 }}
+            animate:flip={{ duration: 400, easing: quintOut }}
+          >
+            <!-- Guest Header -->
+            <div class="flex items-start space-x-4 mb-4">
+              <div 
+                class="flex-shrink-0 relative"
+                in:scale={{ duration: 400, delay: 300 + index * 100, easing: elasticOut }}
+              >
+                <div class="h-12 w-12 rounded-full bg-gradient-to-br {getAvatarGradient(index)} flex items-center justify-center text-white font-semibold text-sm shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  {getInitials(guest.name)}
                 </div>
-
-                <!-- Status Badges -->
-                <div class="flex flex-col items-end space-y-2 ml-4">
+                <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 border-2 border-white rounded-full"></div>
+              </div>
+              
+              <div class="flex-1 min-w-0">
+                <h4 class="text-lg font-semibold text-gray-900 truncate group-hover:text-blue-600 transition-colors duration-200">
+                  {guest.name || 'Unknown Guest'}
+                </h4>
+                <div class="flex items-center space-x-2 mt-1">
                   {#if guest.buy_lease}
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {getStatusColor(guest.buy_lease)}">
+                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium border {getStatusColor(guest.buy_lease)}">
                       {guest.buy_lease}
                     </span>
                   {/if}
-                  
                   {#if guest.has_agent}
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {getAgentStatusColor(guest.has_agent)}">
+                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium border {getAgentStatusColor(guest.has_agent)}">
                       {guest.has_agent?.toLowerCase() === 'yes' || guest.has_agent?.toLowerCase() === 'true' ? 'Has Agent' : 'No Agent'}
                     </span>
                   {/if}
                 </div>
               </div>
+            </div>
 
-              <!-- Additional Information -->
+            <!-- Contact Information -->
+            <div class="space-y-3">
+              {#if guest.email}
+                <div class="flex items-center space-x-3 group/item">
+                  <div class="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center group-hover/item:bg-blue-100 transition-colors duration-200">
+                    <svg class="h-4 w-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                    </svg>
+                  </div>
+                  <a 
+                    href="mailto:{guest.email}" 
+                    class="text-sm text-gray-600 hover:text-blue-600 transition-colors duration-200 truncate flex-1"
+                  >
+                    {guest.email}
+                  </a>
+                </div>
+              {/if}
+              
+              {#if guest.phone}
+                <div class="flex items-center space-x-3 group/item">
+                  <div class="w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center group-hover/item:bg-green-100 transition-colors duration-200">
+                    <svg class="h-4 w-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                    </svg>
+                  </div>
+                  <a 
+                    href="tel:{guest.phone}" 
+                    class="text-sm text-gray-600 hover:text-green-600 transition-colors duration-200"
+                  >
+                    {formatPhone(guest.phone)}
+                  </a>
+                </div>
+              {/if}
+
               {#if !guest.email && !guest.phone}
-                <p class="mt-1 text-sm text-gray-500 italic">
-                  No contact information provided
-                </p>
+                <div class="flex items-center space-x-3">
+                  <div class="w-8 h-8 bg-gray-50 rounded-lg flex items-center justify-center">
+                    <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                  </div>
+                  <span class="text-sm text-gray-400 italic">No contact information</span>
+                </div>
               {/if}
             </div>
           </div>
-        </div>
-      {/each}
+        {/each}
+      </div>
     </div>
 
-    <!-- Footer Summary -->
-    <div class="px-6 py-3 bg-gray-50 rounded-b-lg border-t border-gray-200">
-      <div class="flex items-center justify-between text-sm text-gray-600">
-        <div class="flex items-center space-x-4">
-          <span>
-            <span class="font-medium text-gray-900">{guests.filter(g => g.buy_lease?.toLowerCase() === 'buy').length}</span>
-            looking to buy
-          </span>
-          <span>
-            <span class="font-medium text-gray-900">{guests.filter(g => g.buy_lease?.toLowerCase() === 'lease').length}</span>
-            looking to lease
-          </span>
+    <!-- Summary Footer -->
+    <div 
+      class="px-8 py-6 bg-gradient-to-r from-gray-50 to-gray-100 border-t border-gray-200"
+      in:fly={{ y: 20, duration: 400, delay: 400 + guests.length * 100 }}
+    >
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Buyers -->
+        <div class="text-center">
+          <div class="flex items-center justify-center space-x-2 mb-2">
+            <div class="w-3 h-3 bg-emerald-500 rounded-full"></div>
+            <span class="text-sm font-medium text-gray-700">Looking to Buy</span>
+          </div>
+          <div class="text-2xl font-bold text-emerald-600">
+            {guests.filter(g => g.buy_lease?.toLowerCase() === 'buy').length}
+          </div>
         </div>
-        <div>
-          <span class="font-medium text-gray-900">
+
+        <!-- Leasers -->
+        <div class="text-center">
+          <div class="flex items-center justify-center space-x-2 mb-2">
+            <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
+            <span class="text-sm font-medium text-gray-700">Looking to Lease</span>
+          </div>
+          <div class="text-2xl font-bold text-blue-600">
+            {guests.filter(g => g.buy_lease?.toLowerCase() === 'lease').length}
+          </div>
+        </div>
+
+        <!-- Without Agents -->
+        <div class="text-center">
+          <div class="flex items-center justify-center space-x-2 mb-2">
+            <div class="w-3 h-3 bg-purple-500 rounded-full"></div>
+            <span class="text-sm font-medium text-gray-700">Without Agents</span>
+          </div>
+          <div class="text-2xl font-bold text-purple-600">
             {guests.filter(g => g.has_agent?.toLowerCase() === 'no' || g.has_agent?.toLowerCase() === 'false').length}
-          </span>
-          without agents
+          </div>
         </div>
       </div>
     </div>
   {/if}
 </div>
+
+<style>
+  /* Custom animations */
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-4px); }
+  }
+
+  .group:hover .animate-float {
+    animation: float 2s ease-in-out infinite;
+  }
+
+  /* Smooth transitions for all interactive elements */
+  * {
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 200ms;
+  }
+
+  /* Custom scrollbar */
+  :global(::-webkit-scrollbar) {
+    width: 6px;
+    height: 6px;
+  }
+
+  :global(::-webkit-scrollbar-track) {
+    background: #f1f5f9;
+    border-radius: 3px;
+  }
+
+  :global(::-webkit-scrollbar-thumb) {
+    background: #cbd5e1;
+    border-radius: 3px;
+  }
+
+  :global(::-webkit-scrollbar-thumb:hover) {
+    background: #94a3b8;
+  }
+</style>

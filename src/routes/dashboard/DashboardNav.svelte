@@ -58,7 +58,7 @@
   // Admin navigation item
   const adminNavItem = {
     name: "Admin Panel",
-    href: "/admin",
+    href: "/dashboard/admin",
     icon: "⚙️",
     description: "System Administration",
   };
