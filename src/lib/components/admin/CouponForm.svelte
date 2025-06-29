@@ -5,6 +5,7 @@
   import Button from '$lib/components/Button.svelte';
   import Input from '$lib/components/Input.svelte';
   import Select from '$lib/components/Select.svelte';
+  import CheckBox from '$lib/components/common/CheckBox.svelte';
 
   export let coupon: Coupon = { ...EMPTY_COUPON };
   export let isEdit = false;
@@ -62,6 +63,11 @@
     const prefix = coupon.tp.toUpperCase().slice(0, 3);
     const random = Math.random().toString(36).substring(2, 8).toUpperCase();
     coupon.name = `${prefix}${random}`;
+  }
+
+  // Handle status change
+  function handleStatusChange(event: CustomEvent) {
+    coupon.active = event.detail.checked;
   }
 </script>
 
@@ -155,29 +161,15 @@
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
-        <div class="flex items-center space-x-4">
-          <label class="flex items-center">
-            <input
-              type="radio"
-              bind:group={coupon.active}
-              value={true}
-              class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
-              disabled={loading}
-            />
-            <span class="ml-2 text-sm text-gray-700">Active</span>
-          </label>
-          <label class="flex items-center">
-            <input
-              type="radio"
-              bind:group={coupon.active}
-              value={false}
-              class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
-              disabled={loading}
-            />
-            <span class="ml-2 text-sm text-gray-700">Inactive</span>
-          </label>
-        </div>
+        <CheckBox
+          id="active"
+          label="Active Status"
+          bind:checked={coupon.active}
+          variant="switch"
+          disabled={loading}
+          helpText="Toggle to activate or deactivate this coupon"
+          on:change={handleStatusChange}
+        />
       </div>
     </div>
 
@@ -260,6 +252,11 @@
             {:else}
               <span>No expiry</span>
             {/if}
+          </div>
+          <div class="mt-2">
+            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium {coupon.active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">
+              {coupon.active ? 'Active' : 'Inactive'}
+            </span>
           </div>
         </div>
       </div>
