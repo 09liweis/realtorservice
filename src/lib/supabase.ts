@@ -4,6 +4,7 @@ import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from "$env/static/publi
 import type { Listing, ListingSearch } from './types/listing';
 import type { Offer, OfferProperty } from './types/offer';
 import type { Staging } from './types/staging';
+import type { Cleaning } from './types/cleaning';
 import type { CreditRecord } from './types/credit';
 import type { SocialMediaAccount } from './types/social';
 import type { Coupon } from './types/coupon';
@@ -251,7 +252,7 @@ export const deleteListing = async (id:string) => {
 
 
 
-// Listings CRUD operations
+// Stagings CRUD operations
 export const getStagings = async ({user_id}:ListingSearch) => {
   return await supabase
     .from('stagings')
@@ -310,6 +311,69 @@ export const upsertStaging = async (staging:Staging) => {
 export const deleteStaging = async (id:string) => {
   return await supabase
     .from('stagings')
+    .delete()
+    .eq('id',id);
+}
+
+// Cleanings CRUD operations
+export const getCleanings = async ({user_id}:ListingSearch) => {
+  return await supabase
+    .from('cleanings')
+    .select(`
+      *
+    `)
+    .eq('user_id',user_id)
+    .order('updated_at', { ascending: false })
+    ;
+}
+
+// Get all cleanings for admin (no user filter)
+export const getAllCleanings = async () => {
+  return await supabase
+    .from('cleanings')
+    .select(`
+      *,
+      user_profiles!inner(
+        first_name,
+        last_name,
+        email,
+        phone,
+        brokerage
+      )
+    `)
+    .order('updated_at', { ascending: false });
+}
+
+export const getCleaning = async ({property_id}:ListingSearch) => {
+  return await supabase
+    .from('cleanings')
+    .select(`
+      *
+    `)
+    .eq('id',property_id)
+    .single();
+}
+
+export const upsertCleaning = async (cleaning:Cleaning) => {
+  delete cleaning.user_profiles;
+  if (cleaning.id) {
+    return await supabase
+      .from('cleanings')
+      .update({
+        updated_at: new Date(),
+        ...cleaning
+      })
+      .eq('id',cleaning.id);
+  } else {
+    return await supabase
+      .from('cleanings')
+      .insert(cleaning);
+  }
+}
+
+export const deleteCleaning = async (id:string) => {
+  return await supabase
+    .from('cleanings')
     .delete()
     .eq('id',id);
 }
@@ -464,9 +528,6 @@ export const getCoupon = async (id: string) => {
 }
 
 export const upsertCoupon = async (coupon: Coupon) => {
-  if (!coupon.expires_at) {
-    delete coupon.expires_at;
-  }
   if (coupon.id) {
     return await supabase
       .from('coupons')

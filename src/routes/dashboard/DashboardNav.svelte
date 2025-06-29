@@ -53,6 +53,12 @@
       icon: "✨",
       description: "Property Staging",
     },
+    {
+      name: "Cleanings",
+      href: "/dashboard/cleanings",
+      icon: "🧽",
+      description: "Cleaning Services",
+    },
   ];
 
   // Admin navigation item
