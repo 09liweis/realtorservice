@@ -18,10 +18,6 @@
     });
   }
 
-  // Format credits helper function
-  function formatCredits(credits: number) {
-    return credits.toLocaleString();
-  }
 
   async function loadCreditHistory() {
     if (!userId) return;
@@ -94,11 +90,11 @@
                     {record.type === 'add' ? 'Added' : 'Used'}
                   </span>
                 </td>
-                <td class="px-3 py-2 whitespace-nowrap text-sm text-right font-medium {record.type === 'add' ? 'text-green-600' : 'text-red-600'}">
-                  {record.type === 'add' ? '+' : '-'}{formatCredits(record.amount)}
+                <td class="px-3 py-2 whitespace-nowrap text-sm text-right font-medium {record.amount > 0 ? 'text-green-600' : 'text-red-600'}">
+                  {record.amount}
                 </td>
-                <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
-                  {record.description || 'N/A'}
+                <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500 capitalize">
+                  {record.tp || 'N/A'}
                 </td>
               </tr>
             {/each}
