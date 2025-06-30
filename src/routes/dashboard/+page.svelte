@@ -5,6 +5,7 @@
   import { getListings, getOfferProperties, getOpenHouses, getStagings } from '$lib/supabase';
   import { getPageTitle } from '$lib/types/constant';
   import DashboardHeader from './DashboardHeader.svelte';
+  import WelcomeBonusNotification from '$lib/components/dashboard/WelcomeBonusNotification.svelte';
 
   // Redirect if user is not logged in
   onMount(() => {
@@ -12,6 +13,7 @@
       goto('/login');
     } else {
       loadDashboardData();
+      checkForWelcomeBonus();
     }
   });
 
@@ -27,6 +29,36 @@
 
   let recentActivity = [];
   let loading = true;
+
+  // Welcome bonus notification
+  let showWelcomeBonus = false;
+  let welcomeBonusData = {
+    appliedCoupons: [],
+    totalCredits: 0
+  };
+
+  // Check for welcome bonus in URL params (from registration)
+  function checkForWelcomeBonus() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const welcomeCredits = urlParams.get('welcome_credits');
+    const welcomeCoupons = urlParams.get('welcome_coupons');
+    
+    if (welcomeCredits && welcomeCoupons) {
+      try {
+        welcomeBonusData = {
+          appliedCoupons: JSON.parse(decodeURIComponent(welcomeCoupons)),
+          totalCredits: parseInt(welcomeCredits)
+        };
+        showWelcomeBonus = true;
+        
+        // Clean up URL
+        const newUrl = window.location.pathname;
+        window.history.replaceState({}, document.title, newUrl);
+      } catch (error) {
+        console.error('Error parsing welcome bonus data:', error);
+      }
+    }
+  }
 
   // Load dashboard data
   async function loadDashboardData() {
@@ -72,6 +104,10 @@
   // Quick action handlers
   function navigateToSection(path: string) {
     goto(path);
+  }
+
+  function handleCloseWelcomeBonus() {
+    showWelcomeBonus = false;
   }
 </script>
 
@@ -352,3 +388,11 @@
     </div>
   </div>
 </div>
+
+<!-- Welcome Bonus Notification -->
+<WelcomeBonusNotification 
+  appliedCoupons={welcomeBonusData.appliedCoupons}
+  totalCredits={welcomeBonusData.totalCredits}
+  show={showWelcomeBonus}
+  on:close={handleCloseWelcomeBonus}
+/>

@@ -570,6 +570,104 @@ export const getActiveCoupons = async () => {
     .order('created_at', { ascending: false });
 }
 
+// Get welcome coupons (for new user registration)
+export const getWelcomeCoupons = async () => {
+  return await supabase
+    .from('coupons')
+    .select('*')
+    .eq('active', true)
+    .or('expires_at.is.null,expires_at.gte.' + new Date().toISOString())
+    .order('created_at', { ascending: false });
+}
+
+// Auto-apply welcome coupons to new user
+export const autoApplyWelcomeCoupons = async (userId: string) => {
+  try {
+    // Get all active welcome coupons
+    const { data: welcomeCoupons, error: couponsError } = await getWelcomeCoupons();
+    
+    if (couponsError || !welcomeCoupons || welcomeCoupons.length === 0) {
+      return { data: [], error: couponsError };
+    }
+
+    const appliedCoupons = [];
+    let totalCreditsAdded = 0;
+
+    // Apply each welcome coupon
+    for (const coupon of welcomeCoupons) {
+      // Check if coupon has usage limit and is not exceeded
+      if (coupon.usage_limit && coupon.used_count >= coupon.usage_limit) {
+        continue; // Skip this coupon if usage limit exceeded
+      }
+
+      // Create credit record
+      const creditRecord: CreditRecord = {
+        amount: coupon.credits,
+        tp: 'coupon',
+        tp_id: coupon.id,
+        user_id: userId,
+        status: 'done'
+      };
+
+      const { error: creditError } = await upsertCreditRecord(creditRecord);
+      if (creditError) {
+        console.error('Error creating credit record for coupon:', coupon.id, creditError);
+        continue;
+      }
+
+      // Record coupon usage
+      const { error: usageError } = await supabase
+        .from('coupon_usage')
+        .insert({
+          coupon_id: coupon.id,
+          user_id: userId,
+          redeemed_at: new Date().toISOString()
+        });
+
+      if (usageError) {
+        console.error('Error recording coupon usage:', coupon.id, usageError);
+        continue;
+      }
+
+      // Update coupon used count
+      const { error: updateCouponError } = await supabase
+        .from('coupons')
+        .update({
+          used_count: (coupon.used_count || 0) + 1,
+          updated_at: new Date()
+        })
+        .eq('id', coupon.id);
+
+      if (updateCouponError) {
+        console.error('Error updating coupon used count:', coupon.id, updateCouponError);
+      }
+
+      appliedCoupons.push(coupon);
+      totalCreditsAdded += coupon.credits;
+    }
+
+    // Update user credits if any coupons were applied
+    if (totalCreditsAdded > 0) {
+      const { error: updateCreditsError } = await calcUserCredits(userId, totalCreditsAdded);
+      if (updateCreditsError) {
+        console.error('Error updating user credits:', updateCreditsError);
+      }
+    }
+
+    return { 
+      data: {
+        appliedCoupons,
+        totalCreditsAdded
+      }, 
+      error: null 
+    };
+
+  } catch (error) {
+    console.error('Error auto-applying welcome coupons:', error);
+    return { data: [], error };
+  }
+}
+
 // Validate and redeem coupon
 export const redeemCoupon = async (couponCode: string, userId: string) => {
   // First, get the coupon
