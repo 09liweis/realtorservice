@@ -704,33 +704,12 @@ export const redeemCoupon = async (couponCode: string, userId: string) => {
     return { data: null, error: { message: 'You have already used this coupon' } };
   }
 
-  // Create credit record
-  const creditRecord: CreditRecord = {
-    amount: coupon.credits,
-    tp: 'coupon',
-    tp_id: coupon.id,
-    user_id: userId,
-    status: 'done'
-  };
-
-  const { error: creditError } = await upsertCreditRecord(creditRecord);
-  if (creditError) {
-    return { data: null, error: creditError };
-  }
-
-  // Update user credits
-  const { error: updateCreditsError } = await calcUserCredits(userId, coupon.credits);
-  if (updateCreditsError) {
-    return { data: null, error: updateCreditsError };
-  }
-
   // Record coupon usage
   const { error: usageError } = await supabase
     .from('coupon_usage')
     .insert({
       coupon_id: coupon.id,
-      user_id: userId,
-      redeemed_at: new Date().toISOString()
+      user_id: userId
     });
 
   if (usageError) {
