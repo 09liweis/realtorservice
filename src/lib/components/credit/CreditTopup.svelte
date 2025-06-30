@@ -158,7 +158,7 @@
           // Payment successful, add credit record
           await upsertCreditRecord({
             user_id: $user?.id,
-            amount: selectedAmount,
+            amount: selectedAmount >= 500 ? selectedAmount + 500 : selectedAmount,
             tp: 'topup',
             stripe_client_secret: clientSecret,
             status: 'done'
