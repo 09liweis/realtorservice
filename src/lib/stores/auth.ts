@@ -9,6 +9,7 @@ interface User {
   isApproved: boolean;
   profile: any;
   name: string;
+  initial: string;
 }
 
 // 创建用户存储
@@ -42,6 +43,7 @@ async function setUserProfile(userData: any) {
     isAdmin: profile?.role === 'admin',
     isApproved: profile?.realtor_approved,
     name: `${profile.first_name} ${profile.last_name}`,
+    initial: `${profile.first_name[0]}`,
     profile
   });
 }

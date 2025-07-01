@@ -71,12 +71,12 @@
                 class="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-50 transition-colors duration-200"
               >
                 <div
-                  class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-medium text-sm"
+                  class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-medium text-sm uppercase"
                 >
-                  {$user.email?.split("@")[0]?.[0]?.toUpperCase() || "U"}
+                  {$user?.initial}
                 </div>
                 <span class="hidden md:block text-sm font-medium text-gray-700">
-                  {$user.email?.split("@")[0] || "User"}
+                  {$user?.name}
                 </span>
               </button>
 
@@ -86,7 +86,7 @@
                 >
                   <div class="px-4 py-3 border-b border-gray-100">
                     <div class="text-sm font-medium text-gray-900">
-                      {$user.email?.split("@")[0] || "User"}
+                      {$user?.name}
                     </div>
                     <div class="text-xs text-gray-500">
                       {$user.email}
