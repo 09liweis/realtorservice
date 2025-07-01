@@ -399,14 +399,7 @@
       </div>
 
       <!-- Credit History Section -->
-      <div class="bg-white rounded-xl shadow-sm border border-gray-200">
-        <div class="px-6 py-4 border-b border-gray-200">
-          <h3 class="text-lg font-semibold text-gray-900">Credit History</h3>
-        </div>
-        <div class="p-6">
-          <CreditHistory userId={$user?.id} />
-        </div>
-      </div>
+      <CreditHistory userId={$user?.id} />
 
       <!-- Account Status -->
       <div class="bg-white rounded-xl shadow-sm border border-gray-200">
