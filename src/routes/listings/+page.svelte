@@ -110,8 +110,7 @@
     </div>
 
     <!-- Search and Filters -->
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 mb-8">
-      <!-- Quick Search Bar -->
+    <!-- <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 mb-8">
       <div class="mb-6">
         <div class="relative max-w-2xl mx-auto">
           <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -134,7 +133,6 @@
         </div>
       </div>
 
-      <!-- Advanced Filters Toggle -->
       <div class="flex items-center justify-between">
         <button
           on:click={() => showFilters = !showFilters}
@@ -164,12 +162,10 @@
         {/if}
       </div>
 
-      <!-- Advanced Filters Panel -->
       {#if showFilters}
         <div class="mt-6 pt-6 border-t border-gray-200">
           <form on:submit|preventDefault={handleFilterSubmit} class="space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <!-- Property Type -->
               <div>
                 <label for="type" class="block text-sm font-medium text-gray-700 mb-2">
                   Property Type
@@ -186,7 +182,6 @@
                 </select>
               </div>
 
-              <!-- Location -->
               <div>
                 <label for="location" class="block text-sm font-medium text-gray-700 mb-2">
                   Location
@@ -203,7 +198,6 @@
                 </select>
               </div>
 
-              <!-- Bedrooms -->
               <div>
                 <label for="bedrooms" class="block text-sm font-medium text-gray-700 mb-2">
                   Bedrooms
@@ -220,7 +214,6 @@
                 </select>
               </div>
 
-              <!-- Bathrooms -->
               <div>
                 <label for="bathrooms" class="block text-sm font-medium text-gray-700 mb-2">
                   Bathrooms
@@ -238,7 +231,6 @@
               </div>
             </div>
 
-            <!-- Price Range -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label for="minPrice" class="block text-sm font-medium text-gray-700 mb-2">
@@ -277,7 +269,6 @@
               </div>
             </div>
 
-            <!-- Filter Actions -->
             <div class="flex items-center justify-end space-x-4 pt-4">
               <button
                 type="button"
@@ -293,7 +284,7 @@
           </form>
         </div>
       {/if}
-    </div>
+    </div> -->
 
     <!-- Results Summary -->
     <div class="flex items-center justify-between mb-6">
