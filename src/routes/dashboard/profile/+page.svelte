@@ -9,6 +9,7 @@
   import type { UserProfile } from '$lib/types/user';
   import CreditTopup from '$lib/components/credit/CreditTopup.svelte';
   import CreditHistory from '$lib/components/CreditHistory.svelte';
+    import { formatDate } from '$lib/helper';
 
   // Profile data
   let profile:UserProfile = {
@@ -157,19 +158,6 @@
     return approved 
       ? 'bg-green-100 text-green-800 border-green-200' 
       : 'bg-yellow-100 text-yellow-800 border-yellow-200';
-  }
-
-  function formatDate(dateString: string): string {
-    if (!dateString) return 'N/A';
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  }
-
-  function formatCredits(credits: number): string {
-    return new Intl.NumberFormat('en-US').format(credits);
   }
 </script>
 
@@ -376,7 +364,7 @@
               {#if loadingCredits}
                 <div class="animate-pulse bg-gray-200 h-12 w-24 mx-auto rounded"></div>
               {:else}
-                {formatCredits(userCredits)}
+                {userCredits}
               {/if}
             </div>
             <p class="text-gray-600">Available Credits</p>

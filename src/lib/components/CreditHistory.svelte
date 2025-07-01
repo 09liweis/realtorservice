@@ -4,7 +4,7 @@
   import type { CreditRecord } from '$lib/types/credit';
   import { onMount } from 'svelte';
   
-  export let userId: string;
+  export let userId: string|undefined;
   export let showTitle: boolean = true;
 
   let creditRecords:CreditRecord[] = [];

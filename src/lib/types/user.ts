@@ -1,4 +1,5 @@
 export interface UserProfile {
+  created_at?: string | undefined;
   first_name: string,
   last_name: string,
   email: string,
