@@ -73,7 +73,7 @@
             {#each creditRecords as record}
               <tr>
                 <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900">
-                  {formatDate(record.created_at)}
+                  {formatDate(record?.created_at)}
                 </td>
                 <td class="px-3 py-2 whitespace-nowrap text-sm text-right font-medium {record?.amount > 0 ? 'text-green-600' : 'text-red-600'}">
                   {record.amount}

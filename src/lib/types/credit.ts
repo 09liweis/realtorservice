@@ -1,5 +1,5 @@
 export interface CreditRecord {
-  amount?: number, //+100, -100
+  amount: number, //+100, -100
   tp: string, //usage: topup, staging, cleaning
   status: string, //pending, done
   stripe_client_secret?: string,
