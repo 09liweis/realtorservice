@@ -85,20 +85,16 @@
           if (couponError) {
             console.error('Error applying welcome coupons:', couponError);
           } else if (couponData?.appliedCoupons?.length > 0) {
-            successMessage = `Welcome! You've received ${couponData.totalCreditsAdded} credits from ${couponData.appliedCoupons.length} welcome coupon${couponData.appliedCoupons.length > 1 ? 's' : ''}!`;
+            successMessage = `Welcome! You've received ${couponData.totalCreditsAdded} credits from ${couponData.appliedCoupons.length} welcome coupon${couponData.appliedCoupons.length > 1 ? 's' : ''}! Please confirm your email`;
           }
         } catch (couponError) {
           console.error('Error applying welcome coupons:', couponError);
           // Don't fail registration if coupon application fails
         }
-        
-        // Show success message briefly before redirecting
         if (successMessage) {
-          setTimeout(() => {
-            goto('/dashboard');
-          }, 3000); // Show success message for 3 seconds
-        } else {
-          goto('/dashboard');
+          setTimeout(()=> {
+            goto('/login');
+          },5000);
         }
       }
     } catch (err:any) {
@@ -230,7 +226,7 @@
             </svg>
             {successMessage}
           </div>
-          <p class="text-xs mt-1 text-green-500">Redirecting to dashboard...</p>
+          <p class="text-xs mt-1 text-green-500">Redirecting to login...</p>
         </div>
       {/if}
 

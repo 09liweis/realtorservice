@@ -600,28 +600,13 @@ export const autoApplyWelcomeCoupons = async (userId: string) => {
         continue; // Skip this coupon if usage limit exceeded
       }
 
-      // Create credit record
-      const creditRecord: CreditRecord = {
-        amount: coupon.credits,
-        tp: 'coupon',
-        tp_id: coupon.id,
-        user_id: userId,
-        status: 'done'
-      };
-
-      const { error: creditError } = await upsertCreditRecord(creditRecord);
-      if (creditError) {
-        console.error('Error creating credit record for coupon:', coupon.id, creditError);
-        continue;
-      }
-
       // Record coupon usage
       const { error: usageError } = await supabase
         .from('coupon_usage')
         .insert({
           coupon_id: coupon.id,
           user_id: userId,
-          redeemed_at: new Date().toISOString()
+          redeemed_at: null
         });
 
       if (usageError) {
@@ -644,14 +629,6 @@ export const autoApplyWelcomeCoupons = async (userId: string) => {
 
       appliedCoupons.push(coupon);
       totalCreditsAdded += coupon.credits;
-    }
-
-    // Update user credits if any coupons were applied
-    if (totalCreditsAdded > 0) {
-      const { error: updateCreditsError } = await calcUserCredits(userId, totalCreditsAdded);
-      if (updateCreditsError) {
-        console.error('Error updating user credits:', updateCreditsError);
-      }
     }
 
     return { 
