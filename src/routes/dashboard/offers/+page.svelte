@@ -1,6 +1,7 @@
 <script lang="ts">
   import Button from '$lib/components/Button.svelte';
   import FormBackdrop from '$lib/components/form/FormBackdrop.svelte';
+    import Add from '$lib/components/icons/Add.svelte';
     import Input from '$lib/components/Input.svelte';
   import OfferList from '$lib/components/offers/OfferList.svelte';
     import { user } from '$lib/stores/auth';
@@ -12,10 +13,11 @@
   const EMPTY_OFFER_PROPERTY:OfferProperty = {
     address:'',
     date:'',
-    asking_price:''
+    asking_price:'',
+    user_id: ''
   };
 
-  let user_id;
+  let user_id:string|undefined;
 
   $: {
     user_id = $user?.id;
@@ -67,7 +69,8 @@
 	<div class="flex items-center justify-between">
 		<h1 class="text-2xl font-semibold text-gray-900">Offers Management</h1>
     <Button onclick={AddNewProperty}>
-      Add New Sold Property
+      <Add />
+      Add New Offer Property
     </Button>
 	</div>
 
@@ -79,7 +82,7 @@
   <FormBackdrop handleClose={() => (showDetailsModal = false)}>
     <div class="w-full mt-3 p-6">
       <h2 class="mb-4 text-lg font-medium text-gray-900">
-        {selectedOffer ? 'Edit Sold Property' : 'Add New Sold Property'}
+        {selectedOffer ? 'Edit Sold Property' : 'Add New Offer Property'}
       </h2>
       <form
         onsubmit={handleUpsertOfferProperty}

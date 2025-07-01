@@ -5,6 +5,7 @@
   import SocialMediaForm from './SocialMediaForm.svelte';
   import SocialMediaList from './SocialMediaList.svelte';
   import Button from '$lib/components/Button.svelte';
+    import Add from '../icons/Add.svelte';
 
   export let userId: string;
 
@@ -90,6 +91,7 @@
     <h2 class="text-2xl font-semibold">Social Media Accounts</h2>
     {#if !isFormVisible}
       <Button onclick={() => isFormVisible = true}>
+        <Add />
         Add Account
       </Button>
     {/if}

@@ -7,6 +7,7 @@
   import FormBackdrop from '$lib/components/form/FormBackdrop.svelte';
   import ListingList from '$lib/components/listings/ListingList.svelte';
     import Button from '$lib/components/Button.svelte';
+    import Add from '$lib/components/icons/Add.svelte';
 
   let showForm = false;
 
@@ -91,6 +92,7 @@
 				resetForm();
 			}}
 		>
+      <Add />
 			Add New Listings
 		</Button>
 	</div>

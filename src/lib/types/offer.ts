@@ -1,4 +1,5 @@
 export interface OfferProperty {
+  user_id: string,
   id?: string,
   address: string,
   date: string,
