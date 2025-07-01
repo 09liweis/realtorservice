@@ -6,6 +6,7 @@ interface User {
   id: string;
   email: string;
   isAdmin: boolean;
+  isApproved: boolean;
   profile: any;
   name: string;
 }
@@ -39,6 +40,7 @@ async function setUserProfile(userData: any) {
   user.set({
     ...userData,
     isAdmin: profile?.role === 'admin',
+    isApproved: profile?.is_approved,
     name: `${profile.first_name} ${profile.last_name}`,
     profile
   });

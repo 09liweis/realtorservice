@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { initializeAuth } from "$lib/stores/auth";
+  import { initializeAuth, user } from "$lib/stores/auth";
   import { onMount } from "svelte";
   import DashboardNav from "./DashboardNav.svelte";
   import { writable } from "svelte/store";
@@ -43,6 +43,9 @@
 
   <!-- Main Content Area -->
   <div class="flex-1 md:ml-64">
+    {#if !$user?.isApproved}
+    <div class="bg-red-700 text-white p-3">You are waiting to be approved as a realtor.</div>
+    {/if}
     <div class="bg-white shadow-sm border border-gray-200 min-h-[calc(100vh-4rem)] p-6">
       <slot />
     </div>
