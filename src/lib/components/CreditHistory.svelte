@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { formatDate } from '$lib/helper';
   import { getCreditRecords } from '$lib/supabase';
   import type { CreditRecord } from '$lib/types/credit';
   import { onMount } from 'svelte';
@@ -8,16 +9,6 @@
 
   let creditRecords:CreditRecord[] = [];
   let loadingCreditRecords = false;
-
-  // Format date helper function
-  function formatDate(date: string) {
-    return new Date(date).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    });
-  }
-
 
   async function loadCreditHistory() {
     if (!userId) return;
@@ -74,7 +65,6 @@
           <thead class="bg-gray-50">
             <tr>
               <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-              <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
               <th scope="col" class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
               <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
             </tr>
@@ -85,12 +75,7 @@
                 <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900">
                   {formatDate(record.created_at)}
                 </td>
-                <td class="px-3 py-2 whitespace-nowrap text-sm">
-                  <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium {record.type === 'add' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">
-                    {record.type === 'add' ? 'Added' : 'Used'}
-                  </span>
-                </td>
-                <td class="px-3 py-2 whitespace-nowrap text-sm text-right font-medium {record.amount > 0 ? 'text-green-600' : 'text-red-600'}">
+                <td class="px-3 py-2 whitespace-nowrap text-sm text-right font-medium {record?.amount > 0 ? 'text-green-600' : 'text-red-600'}">
                   {record.amount}
                 </td>
                 <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500 capitalize">
