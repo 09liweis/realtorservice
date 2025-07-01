@@ -40,7 +40,7 @@ async function setUserProfile(userData: any) {
   user.set({
     ...userData,
     isAdmin: profile?.role === 'admin',
-    isApproved: profile?.is_approved,
+    isApproved: profile?.realtor_approved,
     name: `${profile.first_name} ${profile.last_name}`,
     profile
   });
