@@ -99,7 +99,7 @@
     <!-- Close button for mobile -->
     <button 
       class="md:hidden text-gray-500 hover:text-gray-700 transition-transform duration-300 ease-in-out hover:rotate-90"
-      on:click={() => dispatch('close')}
+      onclick={() => dispatch('close')}
       aria-label="Close navigation"
       in:scale={{ duration: 200, start: 0.5 }}
     >
@@ -194,8 +194,8 @@
     
     <div in:scale={{delay: 400, duration: 300, start: 0.95}}>
       <button
-        on:click={handleSignOut}
-        class="flex items-center space-x-3 w-full px-4 py-3 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 transition-all duration-300 ease-in-out transform hover:translate-x-1"
+        onclick={handleSignOut}
+        class="cursor-pointer flex items-center space-x-3 w-full px-4 py-3 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 transition-all duration-300 ease-in-out transform hover:translate-x-1"
       >
         <svg
           class="w-5 h-5 text-red-500 transition-transform duration-300 ease-in-out hover:scale-110"
