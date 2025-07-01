@@ -13,6 +13,7 @@
   import { EMPTY_STAGING, type Staging } from "$lib/types/staging";
   import { getStagings, upsertStaging, deleteStaging, getAllStagings } from "$lib/supabase";
   import { user } from "$lib/stores/auth";
+  import Add from "../icons/Add.svelte";
 
   // Props
   let user_id: string;
@@ -120,13 +121,7 @@
   <div class="flex justify-between items-center">
     <h1 class="text-2xl font-bold text-gray-900">Staging Requests</h1>
     <Button onclick={newRequest}>
-      <svg class="mr-2 -ml-1 h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
-        <path
-          fill-rule="evenodd"
-          d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-          clip-rule="evenodd"
-        />
-      </svg>
+      <Add />
       New Staging Request
     </Button>
   </div>
