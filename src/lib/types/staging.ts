@@ -1,4 +1,4 @@
-export type StagingStatus = 'draft' | 'submitted' | 'confirmed' | 'paid' | 'schedule';
+export type StagingStatus = 'draft' | 'submitted' | 'confirmed' | 'paid' | 'scheduled' | 'completed';
 
 export interface Staging {
   id?: string,

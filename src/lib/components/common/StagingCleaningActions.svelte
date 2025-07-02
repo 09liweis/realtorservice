@@ -6,6 +6,7 @@
   import type { CreditRecord } from '$lib/types/credit';
   import Button from '$lib/components/Button.svelte';
     import type { Cleaning } from '$lib/types/cleaning';
+    import Input from '../Input.svelte';
 
   export let staging: Staging;
   export let cleaning: Cleaning;
@@ -43,15 +44,7 @@
       if (updateCreditsError) throw new Error(updateCreditsError.message);
 
       // Update staging status
-      if (tp === 'staging') {
-        const updatedStaging = { ...staging, status: 'paid' as const };
-        const { error: updateStagingError } = await upsertStaging(updatedStaging);
-        if (updateStagingError) throw new Error(updateStagingError.message);
-      } else if (tp === 'cleaning') {
-        const updateCleaning = { ...cleaning, status: 'paid' as const };
-        const { error: updateStagingError } = await upsertCleaning(updateCleaning);
-        if (updateStagingError) throw new Error(updateStagingError.message);
-      }
+      await updateStatus('paid');
       
       paymentSuccess = true;
       dispatch('statusUpdate');
@@ -68,21 +61,50 @@
     }
   }
 
+  async function updateStatus(status:string) {
+    if (tp === 'staging') {
+      const updatedStaging = { ...staging, status };
+      const { error: updateStagingError } = await upsertStaging(updatedStaging);
+      if (updateStagingError) throw new Error(updateStagingError.message);
+    } else if (tp === 'cleaning') {
+      const updateCleaning = { ...cleaning, status };
+      const { error: updateStagingError } = await upsertCleaning(updateCleaning);
+      if (updateStagingError) throw new Error(updateStagingError.message);
+    }
+  }
+
+  async function handleConfirmQuotation() {
+    await updateStatus('confirmed');
+  }
+
   // Get next action based on status
   $: nextAction = (() => {
-    switch (staging.status) {
-      case 'draft':
-        return { text: 'Submit Request', action: 'submit', available: true };
-      case 'submitted':
-        return { text: 'Awaiting Quote', action: 'wait', available: false };
-      case 'confirmed':
-        return { text: 'Pay Now', action: 'pay', available: !!quotation_price };
-      case 'paid':
-        return { text: 'Payment Complete', action: 'complete', available: false };
-      case 'schedule':
-        return { text: 'Scheduled', action: 'scheduled', available: false };
-      default:
-        return { text: 'No Action', action: 'none', available: false };
+    if ($user?.isAdmin) {
+      switch (staging.status) {
+        case 'submitted':
+          return { text: 'Confirm Quote', action: 'confirmed', available: true };
+        case 'paid':
+          return { text: 'Schedule Staging', action: 'scheduled', available: true };
+        case 'scheduled':
+          return { text: 'Complete Staging', action: 'completed', available: true };
+        default:
+          return { text: 'No Action', action: 'none', available: false };
+      }
+    } else {
+      switch (staging.status) {
+        case 'submitted':
+          return { text: 'Awaiting Quote', action: 'wait', available: false };
+        case 'confirmed':
+          return { text: 'Pay Now', action: 'pay', available: !!quotation_price };
+        case 'paid':
+          return { text: 'Payment Complete', action: 'complete', available: false };
+        case 'scheduled':
+          return { text: 'Schedule Staging', action: 'scheduled', available: false };
+        case 'completed':
+          return { text: 'Completed Staging', available: false };
+        default:
+          return { text: 'No Action', action: 'none', available: false };
+      }
     }
   })();
 </script>
@@ -116,8 +138,13 @@
             {isPaying ? 'Processing Payment...' : `Pay ${quotation_price ? `$${quotation_price.toLocaleString()}` : ''}`}
           </Button>
         </div>
-      {:else}
-        <Button class_name="w-full" disabled>
+      {:else if nextAction.action === 'confirmed'}
+        <Input
+          label="Comfirm Quotaion Price"
+          value={staging.quotation_price?.toString()}
+          type="number"
+        />
+        <Button class_name="w-full" onclick={handleConfirmQuotation}>
           {nextAction.text}
         </Button>
       {/if}
@@ -132,7 +159,7 @@
             Our team is reviewing your request
           {:else if staging.status === 'paid'}
             We'll contact you to schedule staging
-          {:else if staging.status === 'schedule'}
+          {:else if staging.status === 'scheduled'}
             Staging installation is scheduled
           {:else}
             Please wait for the next step
