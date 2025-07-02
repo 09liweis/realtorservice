@@ -12,6 +12,7 @@
   export let onDelete;
 
   import type { CleaningStatus } from "$lib/types/cleaning";
+    import Link from "../Link.svelte";
 	
   let isPaying = false;
   let paymentError = '';
@@ -114,7 +115,7 @@
 	{/if}
 	<div class="px-6 py-5 border-b border-gray-200">
 		<div class="flex justify-between items-center">
-			<h3 class="text-lg font-medium text-gray-900 truncate">{request.location}</h3>
+			<Link href={`/dashboard/cleanings/${request.id}`} className="text-lg font-medium text-gray-900 truncate">{request.location}</Link>
 			<span
 				class={`px-2 py-1 text-xs font-medium rounded-full capitalize ${getStatusStyle(
 					request.status
