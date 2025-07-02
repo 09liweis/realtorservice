@@ -9,9 +9,8 @@
   import StagingPropertyInfo from '$lib/components/stagings/detail/StagingPropertyInfo.svelte';
   import StagingFinancialInfo from '$lib/components/stagings/detail/StagingFinancialInfo.svelte';
   import StagingTimeline from '$lib/components/stagings/detail/StagingTimeline.svelte';
-  import StagingActions from '$lib/components/stagings/detail/StagingActions.svelte';
-  import StagingNotes from '$lib/components/stagings/detail/StagingNotes.svelte';
   import { fade, fly } from 'svelte/transition';
+    import StagingCleaningActions from '$lib/components/common/StagingCleaningActions.svelte';
 
   const stagingId = $page.params.stagingId;
   
@@ -147,7 +146,8 @@
 
         <!-- Right Column - Actions and Summary -->
         <div class="lg:col-span-1">
-          <StagingActions 
+          <StagingCleaningActions
+            tp="staging" 
             {staging} 
             on:edit={handleEdit}
             on:statusUpdate={handleStatusUpdate}

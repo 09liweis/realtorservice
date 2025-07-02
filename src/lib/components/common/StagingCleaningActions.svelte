@@ -2,11 +2,15 @@
   import { createEventDispatcher } from 'svelte';
   import type { Staging } from '$lib/types/staging';
   import { user } from '$lib/stores/auth';
-  import { upsertCreditRecord, calcUserCredits, upsertStaging } from '$lib/supabase';
+  import { upsertCreditRecord, calcUserCredits, upsertStaging, upsertCleaning } from '$lib/supabase';
   import type { CreditRecord } from '$lib/types/credit';
   import Button from '$lib/components/Button.svelte';
+    import type { Cleaning } from '$lib/types/cleaning';
 
   export let staging: Staging;
+  export let cleaning: Cleaning;
+  export const tp:string = "staging";
+  const quotation_price = tp === "staging" ? staging?.quotation_price : cleaning.quotation_price;
 
   const dispatch = createEventDispatcher();
 
@@ -15,7 +19,7 @@
   let paymentSuccess = false;
 
   async function handlePaid() {
-    if (!$user || !staging.quotation_price) return;
+    if (!$user || !quotation_price) return;
     
     isPaying = true;
     paymentError = '';
@@ -24,7 +28,7 @@
     try {
       // Create credit record
       const creditRecord: CreditRecord = {
-        amount: -staging.quotation_price, // Negative amount for payment
+        amount: -quotation_price, // Negative amount for payment
         tp: 'staging',
         tp_id: staging.id,
         user_id: $user.id,
@@ -35,13 +39,19 @@
       if (creditRecordError) throw new Error(creditRecordError.message);
       
       // Update user credits
-      const { error: updateCreditsError } = await calcUserCredits($user.id, -staging.quotation_price);
+      const { error: updateCreditsError } = await calcUserCredits($user.id, -quotation_price);
       if (updateCreditsError) throw new Error(updateCreditsError.message);
 
       // Update staging status
-      const updatedStaging = { ...staging, status: 'paid' as const };
-      const { error: updateStagingError } = await upsertStaging(updatedStaging);
-      if (updateStagingError) throw new Error(updateStagingError.message);
+      if (tp === 'staging') {
+        const updatedStaging = { ...staging, status: 'paid' as const };
+        const { error: updateStagingError } = await upsertStaging(updatedStaging);
+        if (updateStagingError) throw new Error(updateStagingError.message);
+      } else if (tp === 'cleaning') {
+        const updateCleaning = { ...cleaning, status: 'paid' as const };
+        const { error: updateStagingError } = await upsertCleaning(updateCleaning);
+        if (updateStagingError) throw new Error(updateStagingError.message);
+      }
       
       paymentSuccess = true;
       dispatch('statusUpdate');
@@ -58,10 +68,6 @@
     }
   }
 
-  function handleEdit() {
-    dispatch('edit');
-  }
-
   // Get next action based on status
   $: nextAction = (() => {
     switch (staging.status) {
@@ -70,7 +76,7 @@
       case 'submitted':
         return { text: 'Awaiting Quote', action: 'wait', available: false };
       case 'confirmed':
-        return { text: 'Pay Now', action: 'pay', available: !!staging.quotation_price };
+        return { text: 'Pay Now', action: 'pay', available: !!quotation_price };
       case 'paid':
         return { text: 'Payment Complete', action: 'complete', available: false };
       case 'schedule':
@@ -107,7 +113,7 @@
             disabled={isPaying}
             class_name="w-full"
           >
-            {isPaying ? 'Processing Payment...' : `Pay ${staging.quotation_price ? `$${staging.quotation_price.toLocaleString()}` : ''}`}
+            {isPaying ? 'Processing Payment...' : `Pay ${quotation_price ? `$${quotation_price.toLocaleString()}` : ''}`}
           </Button>
         </div>
       {:else}
@@ -137,19 +143,6 @@
 
     <!-- Secondary Actions -->
     <div class="space-y-3 pt-4 border-t border-gray-200">
-      {#if !$user?.isAdmin && staging.status !== 'paid'}
-        <Button
-          variant="secondary"
-          onclick={handleEdit}
-          class_name="w-full"
-        >
-          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-          </svg>
-          Edit Request
-        </Button>
-      {/if}
-
       <button class="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors duration-200">
         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
