@@ -31,7 +31,7 @@ export const EMPTY_STAGING = {
   selling_price: 0,
   timeline: '',
   length: '',
-  status: 'draft' as StagingStatus,
+  status: 'submitted' as StagingStatus,
   estimate_price: 0,
   quotation_price: 0
 }

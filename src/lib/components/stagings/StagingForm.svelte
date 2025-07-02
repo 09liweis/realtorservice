@@ -2,8 +2,17 @@
   import { createEventDispatcher } from "svelte";
   import Button from "../Button.svelte";
   import Input from "../Input.svelte";
-  import { OCCUPATION_STATUS_OPTIONS, PROPERTY_TYPES, STAGING_STATUS_OPTIONS } from "$lib/types/constant";
-  import { EMPTY_STAGING, type Staging, calculateStagingFee } from "$lib/types/staging";
+  import {
+    formatAmount,
+    OCCUPATION_STATUS_OPTIONS,
+    PROPERTY_TYPES,
+    STAGING_STATUS_OPTIONS,
+  } from "$lib/types/constant";
+  import {
+    EMPTY_STAGING,
+    type Staging,
+    calculateStagingFee,
+  } from "$lib/types/staging";
   import Select from "../Select.svelte";
   import { user } from "$lib/stores/auth";
 
@@ -26,7 +35,7 @@
     parseFloat(request.size) || 0,
     parseFloat(request.rooms) || 0,
     parseFloat(request.length) || 1,
-    request.property_type || 'house'
+    request.property_type || "house",
   );
 
   // Update estimate_price when calculation changes
@@ -54,15 +63,6 @@
     dispatch("cancel");
   }
 
-  // Format currency
-  function formatCurrency(amount: number): string {
-    return new Intl.NumberFormat('en-CA', {
-      style: 'currency',
-      currency: 'CAD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }).format(amount);
-  }
 </script>
 
 <div class="bg-white shadow rounded-lg p-6 max-w-4xl mx-auto">
@@ -94,23 +94,26 @@
               id="property_type"
               label="Property Type"
               bind:value={request.property_type}
-              options={propertyTypeOptions.map(type => ({ value: type.toLowerCase(), label: type }))}
+              options={propertyTypeOptions.map((type) => ({
+                value: type.toLowerCase(),
+                label: type,
+              }))}
               disabled={$user?.isAdmin}
             />
           </div>
 
           <div>
-                          <Input
-                            id="size"
-                            label="Size (sq ft)*"
-                            type="number"
-                            bind:value={request.size}
-                            min="0"
-                            step="1"
-                            placeholder="Property square footage"
-                            helpText="Required for accurate pricing calculation"
-                            disabled={$user?.isAdmin}
-                          />
+            <Input
+              id="size"
+              label="Size (sq ft)*"
+              type="number"
+              bind:value={request.size}
+              min="0"
+              step="1"
+              placeholder="Property square footage"
+              helpText="Required for accurate pricing calculation"
+              disabled={$user?.isAdmin}
+            />
           </div>
         </div>
 
@@ -121,7 +124,10 @@
               id="occupation_status"
               label="Occupation Status"
               bind:value={request.occupation_status}
-              options={occupationStatusOptions.map(status => ({ value: status.toLowerCase(), label: status }))}
+              options={occupationStatusOptions.map((status) => ({
+                value: status.toLowerCase(),
+                label: status,
+              }))}
               disabled={$user?.isAdmin}
             />
           </div>
@@ -189,12 +195,15 @@
                 id="status"
                 label="Status"
                 bind:value={request.status}
-                options={statusOptions.map(status => ({ value: status.toLowerCase(), label: status }))}
+                options={statusOptions.map((status) => ({
+                  value: status.toLowerCase(),
+                  label: status,
+                }))}
               />
             </div>
           {/if}
         </div>
-        
+
         <!-- Admin Only Fields -->
         {#if $user?.isAdmin}
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -214,53 +223,76 @@
 
       <!-- Right Column - Price Calculator -->
       <div class="lg:col-span-1">
-        <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200 sticky top-4">
-          <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-            <svg class="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+        <div
+          class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200 sticky top-4"
+        >
+          <h3
+            class="text-lg font-semibold text-gray-900 mb-4 flex items-center"
+          >
+            <svg
+              class="w-5 h-5 text-blue-600 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+              ></path>
             </svg>
             Staging Fee Calculator
           </h3>
-          
+
           {#if request.size && request.rooms && request.length}
             <div class="space-y-4">
               <!-- Total Cost Display -->
               <div class="bg-white rounded-lg p-4 border border-blue-300">
                 <div class="text-center">
-                  <div class="text-sm text-gray-600 mb-1">Total Staging Cost</div>
+                  <div class="text-sm text-gray-600 mb-1">
+                    Total Staging Cost
+                  </div>
                   <div class="text-3xl font-bold text-blue-600">
-                    {formatCurrency(stagingCalculation.totalCost)}
+                    {formatAmount(stagingCalculation.totalCost)}
                   </div>
                   <div class="text-xs text-gray-500 mt-1">
-                    {formatCurrency(stagingCalculation.monthlyFee)}/month × {request.length} month{request.length !== '1' ? 's' : ''}
+                    {formatAmount(stagingCalculation.monthlyFee)}/month × {request.length}
+                    month{request.length !== "1" ? "s" : ""}
                   </div>
                 </div>
               </div>
 
               <!-- Cost Breakdown -->
               <div class="space-y-3">
-                <h4 class="text-sm font-semibold text-gray-700">Cost Breakdown:</h4>
-                
+                <h4 class="text-sm font-semibold text-gray-700">
+                  Cost Breakdown:
+                </h4>
+
                 {#each stagingCalculation.breakdown as item}
                   <div class="flex justify-between text-sm">
-                    <span class="text-gray-600">{item.split(':')[0]}:</span>
-                    <span class="font-medium">{item.split(':')[1]}</span>
+                    <span class="text-gray-600">{item.split(":")[0]}:</span>
+                    <span class="font-medium">{item.split(":")[1]}</span>
                   </div>
                 {/each}
-                
+
                 {#if stagingCalculation.discount > 0}
                   <div class="border-t border-blue-200 pt-2">
                     <div class="flex justify-between text-sm text-green-600">
                       <span>You save:</span>
-                      <span class="font-medium">{formatCurrency(stagingCalculation.discount)}</span>
+                      <span class="font-medium"
+                        >{formatAmount(stagingCalculation.discount)}</span
+                      >
                     </div>
                   </div>
                 {/if}
-                
+
                 <div class="border-t border-blue-200 pt-2">
                   <div class="flex justify-between text-base font-semibold">
                     <span>Total Cost:</span>
-                    <span class="text-blue-600">{formatCurrency(stagingCalculation.totalCost)}</span>
+                    <span class="text-blue-600"
+                      >{formatAmount(stagingCalculation.totalCost)}</span
+                    >
                   </div>
                 </div>
               </div>
@@ -280,17 +312,30 @@
                 <div class="bg-green-100 rounded-lg p-3 text-xs text-green-800">
                   <div class="font-medium mb-1">🎉 Term Discount Applied!</div>
                   <div class="text-green-700">
-                    You're saving {formatCurrency(stagingCalculation.discount)} with a {request.length}-month commitment.
+                    You're saving {formatAmount(stagingCalculation.discount)} with
+                    a {request.length}-month commitment.
                   </div>
                 </div>
               {/if}
             </div>
           {:else}
             <div class="text-center py-8">
-              <svg class="w-12 h-12 text-gray-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+              <svg
+                class="w-12 h-12 text-gray-400 mx-auto mb-3"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                ></path>
               </svg>
-              <p class="text-sm text-gray-600 mb-2">Enter property details to calculate staging fees</p>
+              <p class="text-sm text-gray-600 mb-2">
+                Enter property details to calculate staging fees
+              </p>
               <p class="text-xs text-gray-500">
                 Fill in size, rooms, and duration for instant pricing
               </p>
@@ -318,7 +363,7 @@
         {isEdit ? "Update Request" : "Submit Request"}
         {#if request.size && request.rooms && request.length}
           <span class="ml-2 text-sm opacity-75">
-            ({formatCurrency(stagingCalculation.totalCost)})
+            ({formatAmount(stagingCalculation.totalCost)})
           </span>
         {/if}
       </Button>

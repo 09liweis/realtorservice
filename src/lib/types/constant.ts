@@ -17,4 +17,12 @@ export const PROPERTY_TYPES = ['House', 'Condo', 'Townhouse', 'Apartment', 'Othe
 
 export const OCCUPATION_STATUS_OPTIONS = ["Vacant", "Occupied"];
 
-export const STAGING_STATUS_OPTIONS = ["draft", "submitted", "confirmed", "paid", "schedule"];
+export const STAGING_STATUS_OPTIONS = ["draft", "submitted", "confirmed", "paid", "schedule","completed"];
+
+export const STATUS_STEPS_NEXT = {
+  draft: "submitted",
+  submitted: "confirmed",
+  confirmed: "paid",
+  paid: "schedule",
+  schedule: "complete"
+}

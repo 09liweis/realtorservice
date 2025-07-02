@@ -35,7 +35,7 @@ export const EMPTY_CLEANING: Cleaning = {
   cleaning_type: 'deep_cleaning',
   frequency: 'one_time',
   special_requests: '',
-  status: 'draft' as CleaningStatus,
+  status: 'submitted' as CleaningStatus,
   estimate_price: 0,
   quotation_price: 0,
   scheduled_date: ''
