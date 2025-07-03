@@ -68,7 +68,6 @@
       const { error: updateStagingError } = await upsertStaging(request);
       if (updateStagingError) throw new Error(updateStagingError.message);
     } else if (tp === 'cleaning') {
-      const updateCleaning = { ...request, status };
       const { error: updateStagingError } = await upsertCleaning(request);
       if (updateStagingError) throw new Error(updateStagingError.message);
     }
@@ -90,7 +89,7 @@
     if ($user?.isAdmin) {
       switch (request.status) {
         case 'submitted':
-          return { text: 'Confirm Quote', action: 'confirmed', available: true };
+          return { text: 'Confirm Quotation Price', action: 'confirmed', available: true };
         case 'confirmed':
           return { text: 'Awaiting Paid', action: 'wait', available: false };
         case 'paid':
@@ -152,12 +151,12 @@
         </div>
       {:else if nextAction.action === 'confirmed'}
         <Input
-          label="Comfirm Quotaion Price"
+          label="Quotation Price"
           bind:value={request.quotation_price}
           type="number"
         />
-        <Button class_name="w-full" onclick={handleConfirmQuotation}>
-          {nextAction.text}
+        <Button loading={statusLoading} disabled={statusLoading} class_name="w-full" onclick={handleConfirmQuotation}>
+          {statusLoading ? 'Confirming Quotation Price' : nextAction.text}
         </Button>
       {/if}
     {:else}

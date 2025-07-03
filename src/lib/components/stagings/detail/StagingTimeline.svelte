@@ -35,8 +35,8 @@
     },
     {
       title: 'Staging Scheduled',
-      date: staging.timeline || (staging.status === 'schedule' ? 'Scheduled' : 'Pending'),
-      status: staging.status === 'schedule' ? 'completed' : 'pending',
+      date: staging.timeline || (staging.status === 'scheduled' ? 'Scheduled' : 'Pending'),
+      status: staging.status === 'scheduled' ? 'completed' : 'pending',
       icon: '📅',
       description: 'Staging installation date confirmed'
     },
