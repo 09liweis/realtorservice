@@ -1,4 +1,4 @@
-export type CleaningStatus = 'draft' | 'submitted' | 'confirmed' | 'paid' | 'scheduled' | 'completed';
+import type { StagingCleaningStatus } from "./constant";
 
 export interface Cleaning {
   id?: string;
@@ -11,7 +11,7 @@ export interface Cleaning {
   cleaning_type: string;
   frequency: string;
   special_requests?: string;
-  status: CleaningStatus;
+  status: StagingCleaningStatus;
   estimate_price?: number;
   quotation_price?: number;
   scheduled_date?: string;
@@ -35,7 +35,7 @@ export const EMPTY_CLEANING: Cleaning = {
   cleaning_type: 'deep_cleaning',
   frequency: 'one_time',
   special_requests: '',
-  status: 'submitted' as CleaningStatus,
+  status: 'submitted' as StagingCleaningStatus,
   estimate_price: 0,
   quotation_price: 0,
   scheduled_date: ''
@@ -59,7 +59,7 @@ export const CLEANING_FREQUENCIES = [
 export const CLEANING_STATUS_OPTIONS = ['draft', 'submitted', 'confirmed', 'paid', 'scheduled', 'completed'];
 
 // Cleaning pricing calculation based on Dolphin Cleaning estimator
-export const CLEANING_RATES = {
+export const CLEANING_RATES:Record<string, any> = {
   // Base rates per room type (CAD)
   ROOM_RATES: {
     bedroom: 25,

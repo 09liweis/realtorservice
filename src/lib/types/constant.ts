@@ -22,6 +22,8 @@ export const OCCUPATION_STATUS_OPTIONS = ["Vacant", "Occupied"];
 
 export const STAGING_STATUS_OPTIONS = ["draft", "submitted", "confirmed", "paid", "scheduled","completed"];
 
+export type StagingCleaningStatus = 'draft' | 'submitted' | 'confirmed' | 'paid' | 'scheduled' | 'completed';
+
 export const STATUS_STEPS_NEXT = {
   draft: "submitted",
   submitted: "confirmed",
