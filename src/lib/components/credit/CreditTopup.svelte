@@ -193,7 +193,7 @@
     });
   </script>
   
-  <div class="bg-white rounded-xl shadow-lg max-w-4xl mx-auto overflow-hidden">
+  <div class="bg-white rounded-xl shadow-lg max-w-10xl mx-auto overflow-hidden">
     <!-- Header -->
     <div class="bg-primary px-6 py-4 text-white">
       <div class="flex items-center justify-between">
@@ -212,10 +212,10 @@
   
     <div class="p-6">
       <!-- Amount Selection -->
-      <div class="grid grid-cols-1 md:grid-cols-2">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
       <div class="mb-6">
         <h3 class="text-lg font-semibold text-gray-900 mb-4">Select Amount</h3>
-        <div class="grid grid-cols-1 gap-3">
+        <div class="grid grid-cols-3 md:grid-cols-1 gap-3">
           {#each topupOptions as option}
             <button
               onclick={() => selectAmount(option.amount)}

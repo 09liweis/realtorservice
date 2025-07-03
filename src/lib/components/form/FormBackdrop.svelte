@@ -8,18 +8,8 @@
   </div>
 
   <div
-    class="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl min-w-lg"
+    class="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl"
   >
-    <div class="absolute top-0 right-0 pt-4 pr-4">
-      <button
-        type="button"
-        onclick={handleClose}
-        class="text-gray-400 bg-white rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-      >
-        <span class="sr-only">Close</span>
-        ❌
-      </button>
-    </div>
     <slot />
 
   </div>
