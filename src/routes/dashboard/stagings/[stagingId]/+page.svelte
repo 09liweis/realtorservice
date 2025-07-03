@@ -148,7 +148,7 @@
         <div class="lg:col-span-1">
           <StagingCleaningActions
             tp="staging" 
-            {staging} 
+            request={staging} 
             on:edit={handleEdit}
             on:statusUpdate={handleStatusUpdate}
           />

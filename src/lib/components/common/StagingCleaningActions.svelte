@@ -8,10 +8,10 @@
     import type { Cleaning } from '$lib/types/cleaning';
     import Input from '../Input.svelte';
 
-  export let staging: Staging;
-  export let cleaning: Cleaning;
-  export const tp:string = "staging";
-  const quotation_price = tp === "staging" ? staging?.quotation_price : cleaning.quotation_price;
+
+  export let request: Staging|Cleaning;
+  export let tp:string = "staging";
+  const quotation_price = request.quotation_price;
 
   const dispatch = createEventDispatcher();
 
@@ -30,8 +30,8 @@
       // Create credit record
       const creditRecord: CreditRecord = {
         amount: -quotation_price, // Negative amount for payment
-        tp: 'staging',
-        tp_id: staging.id,
+        tp,
+        tp_id: request.id,
         user_id: $user.id,
         status: 'done'
       };
@@ -63,11 +63,11 @@
 
   async function updateStatus(status:string) {
     if (tp === 'staging') {
-      const updatedStaging = { ...staging, status };
+      const updatedStaging = { ...request, status };
       const { error: updateStagingError } = await upsertStaging(updatedStaging);
       if (updateStagingError) throw new Error(updateStagingError.message);
     } else if (tp === 'cleaning') {
-      const updateCleaning = { ...cleaning, status };
+      const updateCleaning = { ...request, status };
       const { error: updateStagingError } = await upsertCleaning(updateCleaning);
       if (updateStagingError) throw new Error(updateStagingError.message);
     }
@@ -80,7 +80,7 @@
   // Get next action based on status
   $: nextAction = (() => {
     if ($user?.isAdmin) {
-      switch (staging.status) {
+      switch (request.status) {
         case 'submitted':
           return { text: 'Confirm Quote', action: 'confirmed', available: true };
         case 'paid':
@@ -91,7 +91,7 @@
           return { text: 'No Action', action: 'none', available: false };
       }
     } else {
-      switch (staging.status) {
+      switch (request.status) {
         case 'submitted':
           return { text: 'Awaiting Quote', action: 'wait', available: false };
         case 'confirmed':
@@ -141,7 +141,7 @@
       {:else if nextAction.action === 'confirmed'}
         <Input
           label="Comfirm Quotaion Price"
-          value={staging.quotation_price?.toString()}
+          value={request.quotation_price?.toString()}
           type="number"
         />
         <Button class_name="w-full" onclick={handleConfirmQuotation}>
@@ -155,11 +155,11 @@
         </div>
         <div class="text-sm font-medium text-gray-700">{nextAction.text}</div>
         <div class="text-xs text-gray-500 mt-1">
-          {#if staging.status === 'submitted'}
+          {#if request.status === 'submitted'}
             Our team is reviewing your request
-          {:else if staging.status === 'paid'}
+          {:else if request.status === 'paid'}
             We'll contact you to schedule staging
-          {:else if staging.status === 'scheduled'}
+          {:else if request.status === 'scheduled'}
             Staging installation is scheduled
           {:else}
             Please wait for the next step
@@ -184,15 +184,15 @@
       <div class="space-y-2 text-xs text-gray-600">
         <div class="flex justify-between">
           <span>Request ID:</span>
-          <span class="font-mono">{staging.id?.slice(-8) || 'N/A'}</span>
+          <span class="font-mono">{request.id?.slice(-8) || 'N/A'}</span>
         </div>
         <div class="flex justify-between">
           <span>Created:</span>
-          <span>{staging.created_at ? new Date(staging.created_at).toLocaleDateString() : 'N/A'}</span>
+          <span>{request.created_at ? new Date(request.created_at).toLocaleDateString() : 'N/A'}</span>
         </div>
         <div class="flex justify-between">
           <span>Last Updated:</span>
-          <span>{staging.updated_at ? new Date(staging.updated_at).toLocaleDateString() : 'N/A'}</span>
+          <span>{request.updated_at ? new Date(request.updated_at).toLocaleDateString() : 'N/A'}</span>
         </div>
       </div>
     </div>
