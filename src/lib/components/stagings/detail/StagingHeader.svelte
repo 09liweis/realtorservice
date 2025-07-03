@@ -1,15 +1,11 @@
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
-  import type { Staging, StagingStatus } from '$lib/types/staging';
-  import { formatAmount } from '$lib/types/constant';
-  import { user } from '$lib/stores/auth';
+  import type { Staging } from '$lib/types/staging';
+  import { formatAmount, type StagingCleaningStatus } from '$lib/types/constant';
 
   export let staging: Staging;
 
-  const dispatch = createEventDispatcher();
-
   // Get status badge style
-  function getStatusStyle(status: StagingStatus) {
+  function getStatusStyle(status: StagingCleaningStatus) {
     switch (status) {
       case 'draft':
         return 'bg-gray-100 text-gray-800 border-gray-200';
@@ -19,15 +15,11 @@
         return 'bg-blue-100 text-blue-800 border-blue-200';
       case 'paid':
         return 'bg-green-100 text-green-800 border-green-200';
-      case 'schedule':
+      case 'scheduled':
         return 'bg-purple-100 text-purple-800 border-purple-200';
       default:
         return 'bg-gray-100 text-gray-800 border-gray-200';
     }
-  }
-
-  function handleEdit() {
-    dispatch('edit');
   }
 </script>
 
@@ -58,21 +50,9 @@
 
       <!-- Status and Actions -->
       <div class="flex items-center space-x-4">
-        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border {getStatusStyle(staging.status)}">
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border capitalize {getStatusStyle(staging.status)}">
           {staging.status}
         </span>
-        
-        {#if !$user?.isAdmin}
-          <button
-            on:click={handleEdit}
-            class="flex items-center px-4 py-2 bg-white bg-opacity-20 hover:bg-opacity-30 text-white rounded-lg transition-all duration-200"
-          >
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-            </svg>
-            Edit Request
-          </button>
-        {/if}
       </div>
     </div>
   </div>

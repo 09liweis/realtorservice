@@ -116,8 +116,6 @@
       <!-- Header Section -->
       <StagingHeader 
         {staging} 
-        on:edit={handleEdit}
-        on:statusUpdate={handleStatusUpdate}
       />
 
       <!-- Content Grid -->

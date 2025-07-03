@@ -48,12 +48,6 @@
       await updateStatus('paid');
       
       paymentSuccess = true;
-      dispatch('statusUpdate');
-      
-      // Refresh the page after successful payment
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
     } catch (error: any) {
       console.error('Payment error:', error);
       paymentError = error.message || 'An error occurred during payment';
@@ -71,6 +65,7 @@
       const { error: updateStagingError } = await upsertCleaning(request);
       if (updateStagingError) throw new Error(updateStagingError.message);
     }
+    dispatch('statusUpdate');
   }
 
   async function handleConfirmQuotation() {
