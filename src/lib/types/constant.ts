@@ -6,6 +6,9 @@ export const getPageTitle = (title:string) => {
 
 export function formatAmount(amount:number|string|undefined) {
   if (!amount) return '';
+  if (typeof amount === 'string') {
+    amount = parseFloat(amount);
+  }
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
