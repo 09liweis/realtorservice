@@ -1,7 +1,7 @@
 <script lang="ts">
   import { createEventDispatcher, onMount } from 'svelte';
   import { user } from '$lib/stores/auth';
-  import { getUserCredits, getActiveCoupons, redeemCoupon } from '$lib/supabase';
+  import { getUserCredits, redeemCoupon, getUserCoupons } from '$lib/supabase';
   import Button from '$lib/components/Button.svelte';
   import FormBackdrop from '$lib/components/form/FormBackdrop.svelte';
   import { fade, fly, scale } from 'svelte/transition';
@@ -62,7 +62,7 @@
   async function loadAvailableCoupons() {
     try {
       loadingCoupons = true;
-      const { data, error } = await getActiveCoupons();
+      const { data, error } = await getUserCoupons($user?.id);
       if (error) throw error;
       availableCoupons = data || [];
     } catch (err) {
@@ -227,7 +227,7 @@
           {:else}
             <!-- Coupon Input -->
             <div class="space-y-3">
-              <div class="flex space-x-2">
+              <!-- <div class="flex space-x-2">
                 <input
                   type="text"
                   bind:value={couponCode}
@@ -244,7 +244,7 @@
                 >
                   Apply
                 </Button>
-              </div>
+              </div> -->
 
               {#if couponError}
                 <p class="text-sm text-red-600">{couponError}</p>

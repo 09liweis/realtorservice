@@ -8,6 +8,7 @@
     import type { Cleaning } from '$lib/types/cleaning';
     import Input from '../Input.svelte';
     import type { StagingCleaningStatus } from '$lib/types/constant';
+    import ConfirmPayModal from './ConfirmPayModal.svelte';
 
 
   export let request: Staging|Cleaning;
@@ -16,11 +17,16 @@
 
   const dispatch = createEventDispatcher();
 
+  let showConfirmPayModal = false;
   let statusLoading = false;
   let paymentError = '';
   let paymentSuccess = false;
 
-  async function handlePaid() {
+  const openPayModal = () => {
+    showConfirmPayModal = true;
+  }
+
+  async function confirmPayment() {
     if (!$user || !quotation_price) return;
     
     statusLoading = true;
@@ -136,7 +142,7 @@
             </div>
           {/if}
           <Button
-            onclick={handlePaid}
+            onclick={openPayModal}
             loading={statusLoading}
             disabled={statusLoading}
             class_name="w-full"
@@ -204,3 +210,9 @@
     </div>
   </div>
 </div>
+
+<ConfirmPayModal
+  amount={request.quotation_price}
+  show={showConfirmPayModal}
+  on:close={()=>showConfirmPayModal=false}
+/>
