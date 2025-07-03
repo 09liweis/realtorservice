@@ -7,6 +7,7 @@
   import Button from '$lib/components/Button.svelte';
     import type { Cleaning } from '$lib/types/cleaning';
     import Input from '../Input.svelte';
+    import type { StagingCleaningStatus } from '$lib/types/constant';
 
 
   export let request: Staging|Cleaning;
@@ -15,14 +16,14 @@
 
   const dispatch = createEventDispatcher();
 
-  let isPaying = false;
+  let statusLoading = false;
   let paymentError = '';
   let paymentSuccess = false;
 
   async function handlePaid() {
     if (!$user || !quotation_price) return;
     
-    isPaying = true;
+    statusLoading = true;
     paymentError = '';
     paymentSuccess = false;
     
@@ -57,24 +58,31 @@
       console.error('Payment error:', error);
       paymentError = error.message || 'An error occurred during payment';
     } finally {
-      isPaying = false;
+      statusLoading = false;
     }
   }
 
   async function updateStatus(status:string) {
+    request.status = status as StagingCleaningStatus;
     if (tp === 'staging') {
-      const updatedStaging = { ...request, status };
-      const { error: updateStagingError } = await upsertStaging(updatedStaging);
+      const { error: updateStagingError } = await upsertStaging(request);
       if (updateStagingError) throw new Error(updateStagingError.message);
     } else if (tp === 'cleaning') {
       const updateCleaning = { ...request, status };
-      const { error: updateStagingError } = await upsertCleaning(updateCleaning);
+      const { error: updateStagingError } = await upsertCleaning(request);
       if (updateStagingError) throw new Error(updateStagingError.message);
     }
   }
 
   async function handleConfirmQuotation() {
-    await updateStatus('confirmed');
+    try {
+      statusLoading = true;
+      await updateStatus('confirmed');
+    } catch (error:any) {
+      paymentError = error.message || 'An error occurred during payment';
+    } finally {
+      statusLoading = false;
+    }
   }
 
   // Get next action based on status
@@ -83,10 +91,14 @@
       switch (request.status) {
         case 'submitted':
           return { text: 'Confirm Quote', action: 'confirmed', available: true };
+        case 'confirmed':
+          return { text: 'Awaiting Paid', action: 'wait', available: false };
         case 'paid':
           return { text: 'Schedule Staging', action: 'scheduled', available: true };
         case 'scheduled':
           return { text: 'Complete Staging', action: 'completed', available: true };
+        case 'completed':
+          return { text: 'Request Completed', action: '', available: false };
         default:
           return { text: 'No Action', action: 'none', available: false };
       }
@@ -97,11 +109,11 @@
         case 'confirmed':
           return { text: 'Pay Now', action: 'pay', available: !!quotation_price };
         case 'paid':
-          return { text: 'Payment Complete', action: 'complete', available: false };
+          return { text: 'Awaiting Scheduled', action: 'wait', available: false };
         case 'scheduled':
-          return { text: 'Schedule Staging', action: 'scheduled', available: false };
+          return { text: 'Request Scheduled', available: false };
         case 'completed':
-          return { text: 'Completed Staging', available: false };
+          return { text: 'Request Completed', available: false };
         default:
           return { text: 'No Action', action: 'none', available: false };
       }
@@ -131,17 +143,17 @@
           {/if}
           <Button
             onclick={handlePaid}
-            loading={isPaying}
-            disabled={isPaying}
+            loading={statusLoading}
+            disabled={statusLoading}
             class_name="w-full"
           >
-            {isPaying ? 'Processing Payment...' : `Pay ${quotation_price ? `$${quotation_price.toLocaleString()}` : ''}`}
+            {statusLoading ? 'Processing Payment...' : `Pay ${quotation_price ? `$${quotation_price.toLocaleString()}` : ''}`}
           </Button>
         </div>
       {:else if nextAction.action === 'confirmed'}
         <Input
           label="Comfirm Quotaion Price"
-          value={request.quotation_price?.toString()}
+          bind:value={request.quotation_price}
           type="number"
         />
         <Button class_name="w-full" onclick={handleConfirmQuotation}>
