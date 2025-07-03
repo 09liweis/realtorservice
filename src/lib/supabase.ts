@@ -570,6 +570,22 @@ export const getActiveCoupons = async () => {
     .order('created_at', { ascending: false });
 }
 
+export const getUserCoupons = async (user_id:string) => {
+  const {data,error} = await supabase
+    .from('coupon_usage')
+    .select(`
+      *,
+      coupons (
+        *
+      )
+    `)
+    .eq('user_id', user_id);
+  const coupons = data?.map(coupon => {
+    return coupon.coupons
+  })
+  return {data: coupons, error};
+}
+
 // Get welcome coupons (for new user registration)
 export const getWelcomeCoupons = async () => {
   return await supabase
