@@ -7,11 +7,11 @@
   import type { Staging } from '$lib/types/staging';
   import StagingPropertyInfo from '$lib/components/stagings/detail/StagingPropertyInfo.svelte';
   import StagingFinancialInfo from '$lib/components/stagings/detail/StagingFinancialInfo.svelte';
-  import StagingTimeline from '$lib/components/stagings/detail/StagingTimeline.svelte';
+  import StagingCleaningTimeline from '$lib/components/common/StagingCleaningTimeline.svelte';
   import { fade, fly } from 'svelte/transition';
-    import StagingCleaningActions from '$lib/components/common/StagingCleaningActions.svelte';
-    import Link from '$lib/components/Link.svelte';
-    import StagingCleaningHeader from '$lib/components/common/StagingCleaningHeader.svelte';
+  import StagingCleaningActions from '$lib/components/common/StagingCleaningActions.svelte';
+  import Link from '$lib/components/Link.svelte';
+  import StagingCleaningHeader from '$lib/components/common/StagingCleaningHeader.svelte';
 
   const stagingId = $page.params.stagingId;
   
@@ -130,10 +130,7 @@
           <StagingFinancialInfo {staging} />
           
           <!-- Timeline -->
-          <StagingTimeline {staging} />
-          
-          <!-- Notes Section -->
-          <!-- <StagingNotes {staging} /> -->
+          <StagingCleaningTimeline request={staging} tp="staging" />
         </div>
 
         <!-- Right Column - Actions and Summary -->

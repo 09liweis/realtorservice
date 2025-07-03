@@ -7,10 +7,10 @@
   import type { Cleaning } from '$lib/types/cleaning';
   import CleaningPropertyInfo from '$lib/components/cleanings/detail/CleaningPropertyInfo.svelte';
   import CleaningFinancialInfo from '$lib/components/cleanings/detail/CleaningFinancialInfo.svelte';
-  import CleaningTimeline from '$lib/components/cleanings/detail/CleaningTimeline.svelte';
   import { fade, fly } from 'svelte/transition';
     import StagingCleaningHeader from '$lib/components/common/StagingCleaningHeader.svelte';
     import StagingCleaningActions from '$lib/components/common/StagingCleaningActions.svelte';
+    import StagingCleaningTimeline from '$lib/components/common/StagingCleaningTimeline.svelte';
 
   const cleaningId = $page.params.cleaningId;
   
@@ -137,7 +137,7 @@
           <CleaningFinancialInfo {cleaning} />
           
           <!-- Timeline -->
-          <CleaningTimeline {cleaning} />
+          <StagingCleaningTimeline request={cleaning} tp="cleaing" />
         </div>
 
         <!-- Right Column - Actions and Summary -->
