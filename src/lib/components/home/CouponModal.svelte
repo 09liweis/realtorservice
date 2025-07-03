@@ -88,7 +88,7 @@
       out:fade={{ duration: 200 }}
     >
       <!-- Header -->
-      <div class="bg-gradient-to-r from-blue-600 to-purple-700 px-8 py-6 text-white relative overflow-hidden">
+      <div class="bg-primary px-8 py-6 text-white relative overflow-hidden">
         <div class="absolute inset-0 bg-black opacity-10"></div>
         <div class="relative z-10">
           <div class="flex items-center justify-between">

@@ -53,9 +53,6 @@
             </button>
           </div>
         </div>
-        <!-- Decorative elements -->
-        <div class="absolute -top-2 -right-2 w-16 h-16 bg-white opacity-10 rounded-full"></div>
-        <div class="absolute -bottom-4 -left-4 w-20 h-20 bg-white opacity-5 rounded-full"></div>
       </div>
 
       <!-- Content -->
