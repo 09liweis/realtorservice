@@ -11,6 +11,7 @@
   import StagingTimeline from '$lib/components/stagings/detail/StagingTimeline.svelte';
   import { fade, fly } from 'svelte/transition';
     import StagingCleaningActions from '$lib/components/common/StagingCleaningActions.svelte';
+    import Link from '$lib/components/Link.svelte';
 
   const stagingId = $page.params.stagingId;
   
@@ -47,10 +48,6 @@
     }
   }
 
-  function handleBack() {
-    goto('/dashboard/stagings');
-  }
-
   function handleEdit() {
     if (staging) {
       goto(`/dashboard/stagings?edit=${staging.id}`);
@@ -70,15 +67,12 @@
 <div class="space-y-6">
   <!-- Back Navigation -->
   <div class="flex items-center space-x-4">
-    <button
-      on:click={handleBack}
-      class="flex items-center text-gray-600 hover:text-gray-900 transition-colors duration-200"
-    >
+    <Link href="/dashboard/stagings">
       <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
       </svg>
       Back to Stagings
-    </button>
+    </Link>
   </div>
 
   {#if loading}
@@ -109,12 +103,11 @@
         >
           Try Again
         </button>
-        <button
-          on:click={handleBack}
-          class="px-4 py-2 border border-red-300 text-red-700 rounded-lg hover:bg-red-50 transition-colors duration-200"
+        <Link
+          href="/dashboard/stagings"
         >
           Go Back
-        </button>
+        </Link>
       </div>
     </div>
   {:else if staging}

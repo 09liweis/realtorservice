@@ -128,7 +128,7 @@
         <div in:scale={{delay: 100 + i * 50, duration: 300, start: 0.95}}>
           <Link
             href={item.href}
-            className="flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-300 ease-in-out transform {isActive(
+            className="space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-300 ease-in-out transform {isActive(
               item.href,
             )
               ? 'bg-blue-50 text-blue-700 translate-x-1'
