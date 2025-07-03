@@ -5,13 +5,13 @@
   import { getStaging } from '$lib/supabase';
   import { getPageTitle } from '$lib/types/constant';
   import type { Staging } from '$lib/types/staging';
-  import StagingHeader from '$lib/components/stagings/detail/StagingHeader.svelte';
   import StagingPropertyInfo from '$lib/components/stagings/detail/StagingPropertyInfo.svelte';
   import StagingFinancialInfo from '$lib/components/stagings/detail/StagingFinancialInfo.svelte';
   import StagingTimeline from '$lib/components/stagings/detail/StagingTimeline.svelte';
   import { fade, fly } from 'svelte/transition';
     import StagingCleaningActions from '$lib/components/common/StagingCleaningActions.svelte';
     import Link from '$lib/components/Link.svelte';
+    import StagingCleaningHeader from '$lib/components/common/StagingCleaningHeader.svelte';
 
   const stagingId = $page.params.stagingId;
   
@@ -114,8 +114,9 @@
     <!-- Main Content -->
     <div class="space-y-6" in:fly={{ y: 20, duration: 400, delay: 100 }}>
       <!-- Header Section -->
-      <StagingHeader 
-        {staging} 
+      <StagingCleaningHeader 
+        tp="staging"
+        request={staging} 
       />
 
       <!-- Content Grid -->

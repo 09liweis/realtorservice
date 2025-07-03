@@ -5,12 +5,12 @@
   import { getCleaning } from '$lib/supabase';
   import { getPageTitle } from '$lib/types/constant';
   import type { Cleaning } from '$lib/types/cleaning';
-  import CleaningHeader from '$lib/components/cleanings/detail/CleaningHeader.svelte';
   import CleaningPropertyInfo from '$lib/components/cleanings/detail/CleaningPropertyInfo.svelte';
   import CleaningFinancialInfo from '$lib/components/cleanings/detail/CleaningFinancialInfo.svelte';
   import CleaningTimeline from '$lib/components/cleanings/detail/CleaningTimeline.svelte';
-  import CleaningActions from '$lib/components/cleanings/detail/CleaningActions.svelte';
   import { fade, fly } from 'svelte/transition';
+    import StagingCleaningHeader from '$lib/components/common/StagingCleaningHeader.svelte';
+    import StagingCleaningActions from '$lib/components/common/StagingCleaningActions.svelte';
 
   const cleaningId = $page.params.cleaningId;
   
@@ -121,10 +121,9 @@
     <!-- Main Content -->
     <div class="space-y-6" in:fly={{ y: 20, duration: 400, delay: 100 }}>
       <!-- Header Section -->
-      <CleaningHeader 
-        {cleaning} 
-        on:edit={handleEdit}
-        on:statusUpdate={handleStatusUpdate}
+      <StagingCleaningHeader
+        tp="cleaning"
+        request={cleaning} 
       />
 
       <!-- Content Grid -->
@@ -143,9 +142,9 @@
 
         <!-- Right Column - Actions and Summary -->
         <div class="lg:col-span-1">
-          <CleaningActions 
-            {cleaning} 
-            on:edit={handleEdit}
+          <StagingCleaningActions
+            request={cleaning}
+            tp="cleaning"
             on:statusUpdate={handleStatusUpdate}
           />
         </div>
