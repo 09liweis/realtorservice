@@ -12,6 +12,10 @@ export interface Coupon {
   updated_at?: string;
 }
 
+export function formatCredits(credits: number): string {
+  return new Intl.NumberFormat('en-US').format(credits);
+}
+
 export const COUPON_TYPES = [
   { value: 'general', label: 'General' },
   { value: 'staging', label: 'Staging Services' },

@@ -6,7 +6,7 @@
   import FormBackdrop from '$lib/components/form/FormBackdrop.svelte';
   import { fade, fly, scale } from 'svelte/transition';
   import { elasticOut } from 'svelte/easing';
-    import type { Coupon } from '$lib/types/coupon';
+    import { formatCredits, type Coupon } from '$lib/types/coupon';
 
   export let show = false;
   export let amount = 0;
@@ -125,9 +125,6 @@
     dispatch('close');
   }
 
-  function formatCredits(credits: number): string {
-    return new Intl.NumberFormat('en-US').format(credits);
-  }
 </script>
 
 {#if show}

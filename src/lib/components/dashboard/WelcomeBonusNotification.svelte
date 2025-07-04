@@ -2,6 +2,7 @@
   import { createEventDispatcher } from 'svelte';
   import { fade, fly, scale } from 'svelte/transition';
   import { elasticOut } from 'svelte/easing';
+    import { formatCredits } from '$lib/types/coupon';
 
   export let appliedCoupons: any[] = [];
   export let totalCredits: number = 0;
@@ -11,10 +12,6 @@
 
   function handleClose() {
     dispatch('close');
-  }
-
-  function formatCredits(credits: number): string {
-    return new Intl.NumberFormat('en-US').format(credits);
   }
 </script>
 
