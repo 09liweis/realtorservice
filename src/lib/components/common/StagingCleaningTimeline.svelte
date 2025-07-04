@@ -137,7 +137,7 @@
   </div>
 
   <div class="p-6">
-    <div class="space-y-6 grid grid-cols-1 md:grid-cols-3 xl:grid-cols-6 gap-3">
+    <div class="space-y-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3">
       {#each timelineEvents as event, index}
         <div class="flex items-start space-x-4">
           <!-- Timeline Icon -->
@@ -152,9 +152,9 @@
 
           <!-- Timeline Content -->
           <div class="flex-1 min-w-0">
-            <div class="flex flex-col mb-2 gap-2">
+            <div class="mb-2 space-y-2">
               <h3 class="text-base font-semibold text-gray-900">{event.title}</h3>
-              <span class="inline-block p-2 rounded-full text-xs font-medium border capitalize {getStatusStyle(event.status)}">
+              <span class="inline-block px-2 py-1 rounded-full text-xs font-medium border capitalize {getStatusStyle(event.status)}">
                 {event.status}
               </span>
             </div>
