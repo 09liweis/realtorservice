@@ -132,7 +132,7 @@
 {#if show}
   <FormBackdrop handleClose={handleClose}>
     <div 
-      class="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-auto overflow-hidden"
+      class="bg-white rounded-2xl shadow-2xl w-full overflow-hidden"
       in:scale={{ duration: 400, start: 0.9, easing: elasticOut }}
       out:fade={{ duration: 200 }}
     >
@@ -157,7 +157,8 @@
       </div>
 
       <!-- Content -->
-      <div class="p-6 space-y-6">
+      <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div class="space-y-6">
         <!-- Service Details -->
         <div class="text-center">
           <div class="text-3xl font-bold text-gray-900 mb-1">
@@ -282,7 +283,9 @@
             {/if}
           {/if}
         </div>
+        </div>
 
+        <div class="space-y-6">
         <!-- Payment Summary -->
         <div class="bg-gray-50 rounded-xl p-4 space-y-3">
           <h4 class="font-semibold text-gray-900">Payment Summary</h4>
@@ -363,6 +366,8 @@
           >
             Cancel
           </Button>
+        </div>
+        
         </div>
       </div>
     </div>
