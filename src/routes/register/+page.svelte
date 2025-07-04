@@ -21,12 +21,10 @@
   let reco_number = '';
   let phone = '';
   let password = '';
-  let confirmPassword = '';
   
   // Error and loading states
   let error = '';
   let loading = false;
-  let passwordsMatch = true;
   let successMessage = '';
 
   // Handle form submission
@@ -34,15 +32,6 @@
     // Reset error
     error = '';
     successMessage = '';
-    
-    // Validate password match
-    if (password !== confirmPassword) {
-      passwordsMatch = false;
-      error = 'Passwords do not match';
-      return;
-    }
-    
-    passwordsMatch = true;
     loading = true;
 
     try {
@@ -126,7 +115,7 @@
     
     <form class="mt-8 space-y-5" on:submit|preventDefault={handleRegister}>
       <div class="space-y-4">
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div class="grid gap-4 grid-cols-2">
           <Input
             id="first-name"
             name="first-name"
@@ -160,6 +149,18 @@
         />
 
         <Input
+          id="phone"
+          name="phone"
+          type="phone"
+          label="Phone Number"
+          placeholder="Phone Number"
+          autocomplete="phone"
+          required={true}
+          bind:value={phone}
+        />
+
+        <div class="grid gap-4 grid-cols-2">
+        <Input
           id="brokerage"
           name="brokerage"
           type="brokerage"
@@ -179,17 +180,7 @@
           required={true}
           bind:value={reco_number}
         />
-
-        <Input
-          id="phone"
-          name="phone"
-          type="phone"
-          label="Phone Number"
-          placeholder="Phone Number"
-          autocomplete="phone"
-          required={true}
-          bind:value={phone}
-        />
+        </div>
         
         <Input
           id="password"
@@ -202,20 +193,7 @@
           minlength="6"
           bind:value={password}
         />
-        
-        <Input
-          id="confirm-password"
-          name="confirm-password"
-          type="password"
-          label="Confirm Password"
-          placeholder="Confirm Password"
-          autocomplete="new-password"
-          required={true}
-          minlength="6"
-          error={!passwordsMatch}
-          errorMessage={!passwordsMatch ? 'Passwords do not match' : ''}
-          bind:value={confirmPassword}
-        />
+
       </div>
 
       {#if successMessage}
