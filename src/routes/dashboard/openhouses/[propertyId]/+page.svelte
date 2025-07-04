@@ -57,6 +57,10 @@
   }
 
   const handleUpsertGuest = async()=> {
+    if (!$user?.isApproved) {
+      alert('Your account is not yet approved. Please contact admin to get approval.');
+      return;
+    }
     if (!user_id) return;
     await upsertOpenHouseGuest({
       user_id,
@@ -76,7 +80,17 @@
 <div class="space-y-6">
 	<div class="flex items-center justify-between">
 		<h1 class="text-2xl font-semibold text-gray-900">Open House Guests Management</h1>
-    <Button onclick={addNewGuest}>
+    <Button 
+      onclick={() => {
+        if (!$user.isApproved) {
+          alert('Your account is not yet approved. Please contact admin to get approval.');
+          return;
+        }
+        addNewGuest();
+      }}
+      disabled={!$user.isApproved}
+      title={!$user.isApproved ? 'Account not approved - contact admin' : ''}
+    >
       Add New Guest
     </Button>
 	</div>

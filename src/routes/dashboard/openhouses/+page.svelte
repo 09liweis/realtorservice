@@ -46,6 +46,10 @@
 
   // 添加新开放看房
   async function addOpenHouse() {
+    if (!$user?.isApproved) {
+      alert('Your account is not yet approved. Please contact admin to get approval.');
+      return;
+    }
     await upsertOpenHouse({
       user_id,
       ...newOpenHouse
@@ -117,9 +121,14 @@
 		<h1 class="text-2xl font-semibold text-gray-900">Open Houses Management</h1>
 		<Button
 			onclick={() => {
+				if (!$user?.isApproved) {
+					alert('Your account is not yet approved. Please contact admin to get approval.');
+					return;
+				}
 				showAddForm = true;
 				resetForm();
 			}}
+			disabled={!$user?.isApproved}
 		>
       <Add />
 			Add Open House

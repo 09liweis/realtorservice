@@ -55,6 +55,10 @@
 
   // New request
   function newRequest() {
+    if (!$user?.isApproved) {
+      alert('Your account is not yet approved. Please contact admin to get approval.');
+      return;
+    }
     currentRequest = { ...EMPTY_CLEANING };
     isEditMode = false;
     showForm = true;
@@ -70,6 +74,10 @@
 
   // Submit form
   async function handleSubmit(event: any) {
+    if (!$user?.isApproved) {
+      alert('Your account is not yet approved. Please contact admin to get approval.');
+      return;
+    }
     const formData = event.detail;
     const cleaningData = {...formData};
     if (!$user?.isAdmin) {
@@ -89,7 +97,10 @@
 <div class="space-y-6">
   <div class="flex justify-between items-center">
     <h1 class="text-2xl font-bold text-gray-900">Cleaning Requests</h1>
-    <Button onclick={newRequest}>
+    <Button 
+      onclick={newRequest}
+      disabled={!$user?.isApproved}
+    >
       <svg class="mr-2 -ml-1 h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
         <path
           fill-rule="evenodd"

@@ -66,6 +66,10 @@
 	}
 
   async function handleSubmit() {
+    if (!$user?.isApproved) {
+      alert('Your account is not yet approved. Please contact admin to get approval.');
+      return;
+    }
     if (!user_id) return;
     const listing = {
       ...newListing,
@@ -88,9 +92,14 @@
 		<h1 class="text-2xl font-semibold text-gray-900">Listings Management</h1>
 		<Button
 			onclick={() => {
+        if (!$user?.isApproved) {
+          alert('Your account is not yet approved. Please contact admin to get approval.');
+          return;
+        }
 				showForm = true;
 				resetForm();
 			}}
+      disabled={!$user?.isApproved}
 		>
       <Add />
 			Add New Listings

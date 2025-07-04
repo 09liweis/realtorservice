@@ -81,6 +81,10 @@
 
   // 新建请求
   function newRequest() {
+    if (!$user?.isApproved) {
+      alert('Your account is not yet approved. Please contact admin to get approval.');
+      return;
+    }
     currentRequest = { ...EMPTY_STAGING };
     isEditMode = false;
     showForm = true;
@@ -96,6 +100,10 @@
 
   // 提交表单
   async function handleSubmit(event: any) {
+    if (!$user.isApproved) {
+      alert('Your account is not yet approved. Please contact admin to get approval.');
+      return;
+    }
     const formData = event.detail;
     const stagingData = {...formData};
     if (!$user?.isAdmin) {
@@ -120,7 +128,11 @@
 <div class="space-y-6">
   <div class="flex justify-between items-center">
     <h1 class="text-2xl font-bold text-gray-900">Staging Requests</h1>
-    <Button onclick={newRequest}>
+    <Button 
+      onclick={newRequest}
+      disabled={!$user.isApproved}
+      title={!$user.isApproved ? 'Account not approved - contact admin' : ''}
+    >
       <Add />
       New Staging Request
     </Button>
