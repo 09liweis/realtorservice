@@ -6,6 +6,7 @@
   import FormBackdrop from '$lib/components/form/FormBackdrop.svelte';
   import { fade, fly, scale } from 'svelte/transition';
   import { elasticOut } from 'svelte/easing';
+    import type { Coupon } from '$lib/types/coupon';
 
   export let show = false;
   export let amount = 0;
@@ -15,8 +16,8 @@
 
   // Component state
   let userCredits = 0;
-  let availableCoupons: any[] = [];
-  let selectedCoupon: any = null;
+  let availableCoupons: Coupon[] = [];
+  let selectedCoupon: Coupon ;
   let loading = false;
   let loadingCredits = false;
   let loadingCoupons = false;
