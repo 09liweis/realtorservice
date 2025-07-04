@@ -8,7 +8,7 @@
   </div>
 
   <div
-    class="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl w-4xl max-w-4xl"
+    class="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-2xl shadow-xl w-4xl max-w-4xl"
   >
     <slot />
 
