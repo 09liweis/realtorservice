@@ -3,7 +3,6 @@
 	import Services from '$lib/components/home/Services.svelte';
 	import About from '$lib/components/home/About.svelte';
 	import Testimonials from '$lib/components/home/Testimonials.svelte';
-	import Contact from '$lib/components/home/Contact.svelte';
 	import CouponModal from '$lib/components/home/CouponModal.svelte';
 	import { onMount } from 'svelte';
 	import { user } from '$lib/stores/auth';
@@ -33,7 +32,6 @@
 <Services />
 <About />
 <Testimonials />
-<Contact />
 
 <!-- Coupon Modal for New Users -->
 <CouponModal 
