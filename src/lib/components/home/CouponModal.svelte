@@ -58,20 +58,6 @@
     });
   }
 
-  function getCouponGradient(index: number): string {
-    const gradients = [
-      'from-blue-500 to-purple-600',
-      'from-emerald-500 to-teal-600',
-      'from-pink-500 to-rose-600',
-      'from-orange-500 to-red-600',
-      'from-indigo-500 to-blue-600',
-      'from-green-500 to-emerald-600',
-      'from-purple-500 to-pink-600',
-      'from-yellow-500 to-orange-600'
-    ];
-    return gradients[index % gradients.length];
-  }
-
   function copyToClipboard(text: string) {
     navigator.clipboard.writeText(text).then(() => {
       // You could add a toast notification here
@@ -88,9 +74,7 @@
       out:fade={{ duration: 200 }}
     >
       <!-- Header -->
-      <div class="bg-primary px-8 py-6 text-white relative overflow-hidden">
-        <div class="absolute inset-0 bg-black opacity-10"></div>
-        <div class="relative z-10">
+      <div class="bg-primary p-4 text-white relative overflow-hidden">
           <div class="flex items-center justify-between">
             <div>
               <h2 class="text-3xl font-bold mb-2">🎉 Welcome Bonus Coupons!</h2>
@@ -98,17 +82,13 @@
             </div>
             <button
               on:click={handleClose}
-              class="text-white hover:text-gray-200 transition-colors duration-200 p-2 hover:bg-white hover:bg-opacity-20 rounded-full"
+              class="text-white hover:text-gray-200 transition-colors duration-200 p-2 cursor-pointer hover:bg-opacity-20 rounded-full"
             >
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
               </svg>
             </button>
           </div>
-        </div>
-        <!-- Decorative elements -->
-        <div class="absolute -top-4 -right-4 w-24 h-24 bg-white opacity-10 rounded-full"></div>
-        <div class="absolute -bottom-6 -left-6 w-32 h-32 bg-white opacity-5 rounded-full"></div>
       </div>
 
       <!-- Content -->
@@ -149,7 +129,7 @@
                   in:fly={{ y: 30, duration: 400, delay: index * 100 }}
                 >
                   <!-- Coupon Card -->
-                  <div class="bg-gradient-to-br {getCouponGradient(index)} rounded-xl p-6 text-white shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
+                  <div class="bg-primary rounded-xl p-3 text-white shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
                     <!-- Coupon Header -->
                     <div class="text-center mb-4">
                       <div class="text-sm font-medium opacity-90 mb-1">
@@ -158,14 +138,11 @@
                       <div class="text-3xl font-bold mb-2">
                         {coupon.credits} Credits
                       </div>
-                      <div class="font-mono text-lg font-bold bg-white bg-opacity-20 rounded-lg px-3 py-2 inline-block">
-                        {coupon.name}
-                      </div>
                     </div>
 
                     <!-- Description -->
                     {#if coupon.description}
-                      <p class="text-sm opacity-90 text-center mb-4 line-clamp-2">
+                      <p class="text-sm opacity-90 text-center mb-2 line-clamp-2">
                         {coupon.description}
                       </p>
                     {/if}
@@ -195,16 +172,6 @@
                       {/if}
                     </div>
 
-                    <!-- Copy Button -->
-                    <button
-                      on:click={() => copyToClipboard(coupon.name)}
-                      class="w-full mt-4 bg-white bg-opacity-20 hover:bg-opacity-30 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 text-sm"
-                    >
-                      📋 Copy Code
-                    </button>
-
-                    <!-- Decorative corner -->
-                    <div class="absolute top-2 right-2 w-6 h-6 bg-white bg-opacity-20 rounded-full"></div>
                   </div>
                 </div>
               {/each}
@@ -226,7 +193,7 @@
             <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <a
                 href="/register"
-                class="inline-flex items-center justify-center px-8 py-4 border border-transparent text-lg font-medium rounded-xl text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                class="inline-flex items-center justify-center p-3 border border-transparent text-lg font-medium rounded-xl text-white bg-primary transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
               >
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>

@@ -30,28 +30,25 @@
       out:scale={{ duration: 200, start: 0.9 }}
     >
       <!-- Header -->
-      <div class="bg-gradient-to-r from-green-500 to-emerald-600 px-6 py-4 text-white relative overflow-hidden">
-        <div class="absolute inset-0 bg-black opacity-10"></div>
-        <div class="relative z-10">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-              <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-                <span class="text-2xl">🎉</span>
-              </div>
-              <div>
-                <h2 class="text-xl font-bold">Welcome Bonus!</h2>
-                <p class="text-green-100 text-sm">You've received free credits</p>
-              </div>
+      <div class="bg-primary p-3 text-white relative overflow-hidden">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+              <span class="text-2xl">🎉</span>
             </div>
-            <button
-              on:click={handleClose}
-              class="text-white hover:text-gray-200 transition-colors duration-200 p-1 hover:bg-white hover:bg-opacity-20 rounded-full"
-            >
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-              </svg>
-            </button>
+            <div>
+              <h2 class="text-xl font-bold">Welcome Bonus for new user!</h2>
+              <p class="text-green-100 text-sm">You've received free credits</p>
+            </div>
           </div>
+          <button
+            on:click={handleClose}
+            class="text-white hover:text-gray-200 transition-colors duration-200 p-1 hover:bg-white hover:bg-opacity-20 rounded-full"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
         </div>
       </div>
 
