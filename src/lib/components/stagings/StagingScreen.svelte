@@ -2,11 +2,8 @@
   // 导入所需的库和组件
   import { fade } from "svelte/transition";
   import {
-    StagingCard,
-    StagingFilters,
     StagingsList,
     StagingForm,
-    StagingDetailsModal,
   } from "$lib/components/stagings";
   import Button from "$lib/components/Button.svelte";
   import FormBackdrop from "$lib/components/form/FormBackdrop.svelte";
@@ -65,12 +62,6 @@
     applyFilters();
   }
 
-  // 查看请求详情
-  function viewRequest(request: Staging) {
-    currentRequest = request;
-    showDetails = true;
-  }
-
   // 编辑请求
   function editRequest(request: Staging) {
     currentRequest = { ...request };
@@ -118,11 +109,6 @@
   function cancelForm() {
     showForm = false;
   }
-
-  // 关闭详情模态框
-  function closeDetails() {
-    showDetails = false;
-  }
 </script>
 
 <div class="space-y-6">
@@ -168,13 +154,5 @@
     on:edit={(e) => editRequest(e.detail)}
     on:delete={(e) => deleteRequest(e.detail)}
     on:new={newRequest}
-  />
-
-  <!-- 详情模态框 -->
-  <StagingDetailsModal
-    request={currentRequest}
-    show={showDetails}
-    on:close={closeDetails}
-    on:edit={(e) => editRequest(e.detail)}
   />
 </div>
