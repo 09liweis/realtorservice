@@ -137,7 +137,7 @@
   </div>
 
   <div class="p-6">
-    <div class="space-y-6">
+    <div class="space-y-6 grid grid-cols-1 md:grid-cols-3 xl:grid-cols-6 gap-3">
       {#each timelineEvents as event, index}
         <div class="flex items-start space-x-4">
           <!-- Timeline Icon -->
@@ -145,16 +145,16 @@
             <div class="w-10 h-10 rounded-full flex items-center justify-center {getIconStyle(event.status)} shadow-sm">
               <span class="text-sm">{event.icon}</span>
             </div>
-            {#if index < timelineEvents.length - 1}
+            <!-- {#if index < timelineEvents.length - 1}
               <div class="absolute top-10 left-1/2 transform -translate-x-1/2 w-0.5 h-6 {event.status === 'completed' ? 'bg-green-300' : 'bg-gray-300'}"></div>
-            {/if}
+            {/if} -->
           </div>
 
           <!-- Timeline Content -->
           <div class="flex-1 min-w-0">
-            <div class="flex items-center justify-between mb-2">
+            <div class="flex flex-col mb-2 gap-2">
               <h3 class="text-base font-semibold text-gray-900">{event.title}</h3>
-              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border capitalize {getStatusStyle(event.status)}">
+              <span class="inline-block p-2 rounded-full text-xs font-medium border capitalize {getStatusStyle(event.status)}">
                 {event.status}
               </span>
             </div>
@@ -171,7 +171,7 @@
     </div>
 
     <!-- Timeline Summary -->
-    <div class="mt-8 p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg border border-purple-200">
+    <div class="mt-8 p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg border border-purple-200 grid grid-cols-1 md:grid-cols-2">
       <div class="flex items-center space-x-3">
         <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
           <span class="text-lg">{getServiceIcon(tp)}</span>
