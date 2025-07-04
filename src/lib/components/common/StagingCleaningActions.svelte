@@ -122,9 +122,7 @@
 </script>
 
 <div class="bg-white rounded-xl shadow-sm border border-gray-200 sticky top-6">
-  <div class="px-6 py-4 border-b border-gray-200">
-    <h2 class="text-xl font-semibold text-gray-900">Quick Actions</h2>
-  </div>
+  <h2 class="px-6 py-4 border-b border-gray-200 text-xl font-semibold text-gray-900">Quick Actions</h2>
 
   <div class="p-6 space-y-4">
     <!-- Primary Action -->
