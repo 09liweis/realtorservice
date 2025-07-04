@@ -212,6 +212,7 @@
 </div>
 
 <ConfirmPayModal
+  {tp}
   amount={request.quotation_price}
   show={showConfirmPayModal}
   on:close={()=>showConfirmPayModal=false}

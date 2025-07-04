@@ -9,8 +9,7 @@
 
   export let show = false;
   export let amount = 0;
-  export let serviceName = '';
-  export let serviceDescription = '';
+  export let tp;
 
   const dispatch = createEventDispatcher();
 
@@ -60,6 +59,7 @@
   }
 
   async function loadAvailableCoupons() {
+    if (!$user?.id) return;
     try {
       loadingCoupons = true;
       const { data, error } = await getUserCoupons($user?.id);
@@ -142,7 +142,7 @@
           <div class="flex items-center justify-between">
             <div>
               <h2 class="text-xl font-bold mb-1">Confirm Payment</h2>
-              <p class="text-blue-100 text-sm">{serviceName}</p>
+              <p class="text-blue-100 text-sm">{tp}</p>
             </div>
             <button
               on:click={handleClose}
@@ -164,7 +164,6 @@
           <div class="text-3xl font-bold text-gray-900 mb-1">
             {formatCredits(amount)} Credits
           </div>
-          <p class="text-gray-600 text-sm">{serviceDescription}</p>
         </div>
 
         <!-- Current Credits -->
@@ -264,14 +263,11 @@
                   {#each availableCoupons.slice(0, 3) as coupon}
                     <button
                       on:click={() => selectCoupon(coupon)}
-                      class="w-full text-left p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200"
-                      disabled={loading}
+                      class={`w-full text-left p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200 ${tp !== coupon.tp ? 'cursor-not-allowed':''}`}
+                      disabled={loading || tp !== coupon.tp}
                     >
                       <div class="flex items-center justify-between">
-                        <div>
-                          <div class="font-medium text-gray-900 text-sm">{coupon.name}</div>
-                          <div class="text-xs text-gray-500">{coupon.description || 'No description'}</div>
-                        </div>
+                        <div class="text-gray-500">{coupon.description || 'No description'}</div>
                         <div class="text-sm font-bold text-blue-600">
                           {formatCredits(coupon.credits)}
                         </div>
