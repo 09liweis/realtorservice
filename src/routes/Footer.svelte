@@ -37,18 +37,6 @@
 				</div>
 			</div>
 			
-			<!-- Services -->
-			<div>
-				<h4 class="text-lg font-semibold mb-4">Our Services</h4>
-				<ul class="space-y-2 text-gray-300">
-					<li><Link href="#services" className="hover:text-white transition-colors">Open House Management</Link></li>
-					<li><Link href="#services" className="hover:text-white transition-colors">Professional Staging</Link></li>
-					<li><Link href="#services" className="hover:text-white transition-colors">Assignment Listings</Link></li>
-					<li><Link href="#services" className="hover:text-white transition-colors">Social Media Management</Link></li>
-					<li><Link href="#services" className="hover:text-white transition-colors">Offer Management</Link></li>
-					<li><Link href="#services" className="hover:text-white transition-colors">Market Analysis</Link></li>
-				</ul>
-			</div>
 		</div>
 	</div>
 </footer>
