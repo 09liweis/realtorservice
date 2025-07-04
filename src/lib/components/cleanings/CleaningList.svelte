@@ -12,11 +12,6 @@
 
   const dispatch = createEventDispatcher();
 
-  // Handle view request
-  function handleView(request: Cleaning) {
-    dispatch("view", request);
-  }
-
   // Handle edit request
   function handleEdit(request: Cleaning) {
     dispatch("edit", request);
@@ -93,7 +88,6 @@
         >
           <CleaningCard
             {request}
-            onView={handleView}
             onEdit={handleEdit}
             onDelete={handleDelete}
           />

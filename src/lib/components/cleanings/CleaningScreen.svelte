@@ -39,13 +39,6 @@
     user_id = $user?.id;
     fetchCleanings();
   }
-
-  // View request details
-  function viewRequest(request: Cleaning) {
-    currentRequest = request;
-    // Could implement a details modal here
-  }
-
   // Edit request
   function editRequest(request: Cleaning) {
     currentRequest = { ...request };
@@ -131,7 +124,6 @@
     requests={filteredRequests}
     {loading}
     {error}
-    on:view={(e) => viewRequest(e.detail)}
     on:edit={(e) => editRequest(e.detail)}
     on:delete={(e) => deleteRequest(e.detail)}
     on:new={newRequest}
