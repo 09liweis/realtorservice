@@ -119,6 +119,8 @@
         request={staging} 
       />
 
+      <StagingCleaningTimeline request={staging} tp="staging" />
+
       <!-- Content Grid -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Left Column - Main Information -->
@@ -128,9 +130,6 @@
           
           <!-- Financial Information -->
           <StagingFinancialInfo {staging} />
-          
-          <!-- Timeline -->
-          <StagingCleaningTimeline request={staging} tp="staging" />
         </div>
 
         <!-- Right Column - Actions and Summary -->
