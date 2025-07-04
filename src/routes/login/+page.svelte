@@ -93,7 +93,7 @@
       </div>
 
       <div class="flex items-center justify-between mt-4">
-        <div class="flex items-center">
+        <!-- <div class="flex items-center">
           <input
             id="remember-me"
             name="remember-me"
@@ -103,7 +103,7 @@
           <label for="remember-me" class="ml-2 block text-sm text-gray-700">
             Remember me
           </label>
-        </div>
+        </div> -->
 
         <div class="text-sm">
           <Link href="/forgot-password">
