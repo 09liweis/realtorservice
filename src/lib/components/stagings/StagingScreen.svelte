@@ -100,7 +100,7 @@
 
   // 提交表单
   async function handleSubmit(event: any) {
-    if (!$user.isApproved) {
+    if (!$user?.isApproved) {
       alert('Your account is not yet approved. Please contact admin to get approval.');
       return;
     }
@@ -130,8 +130,7 @@
     <h1 class="text-2xl font-bold text-gray-900">Staging Requests</h1>
     <Button 
       onclick={newRequest}
-      disabled={!$user.isApproved}
-      title={!$user.isApproved ? 'Account not approved - contact admin' : ''}
+      disabled={!$user?.isApproved}
     >
       <Add />
       New Staging Request
@@ -166,7 +165,6 @@
     requests={filteredRequests}
     {loading}
     {error}
-    on:view={(e) => viewRequest(e.detail)}
     on:edit={(e) => editRequest(e.detail)}
     on:delete={(e) => deleteRequest(e.detail)}
     on:new={newRequest}

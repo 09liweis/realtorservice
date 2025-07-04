@@ -1,68 +1,16 @@
 <script lang="ts">
   import { user } from "$lib/stores/auth";
-  import { formatAmount } from "$lib/types/constant";
+  import { formatAmount, type StagingCleaningStatus } from "$lib/types/constant";
   import type { Staging } from "$lib/types/staging";
-  import { upsertCreditRecord, calcUserCredits, upsertStaging } from "$lib/supabase";
-  import type { CreditRecord } from "$lib/types/credit";
 
   export let request:Staging;
-  export let onView;
   export let onEdit;
   export let onDelete;
 
-  import type { StagingStatus } from "$lib/types/staging";
     import Link from "../Link.svelte";
-	
-  let isPaying = false;
-  let paymentError = '';
-  let paymentSuccess = false;
-	
-  async function handlePaid() {
-    if (!$user) return;
-		
-    isPaying = true;
-    paymentError = '';
-    paymentSuccess = false;
-		
-    try {
-			if (!request.quotation_price) {
-				throw new Error('Quotation price is required');
-			}
-      // Create credit record
-      const creditRecord: CreditRecord = {
-        amount: -request.quotation_price, // Negative amount for payment
-        tp: 'staging',
-        tp_id: request.id,
-        user_id: $user.id,
-        status: 'done'
-      };
-			
-      const { error: creditRecordError } = await upsertCreditRecord(creditRecord);
-      if (creditRecordError) throw new Error(creditRecordError.message);
-			
-      // Update user credits
-      const { error: updateCreditsError } = await calcUserCredits($user.id, -request.quotation_price);
-      if (updateCreditsError) throw new Error(updateCreditsError.message);
-
-			request.status = 'paid';
-			const { error: updateStagingError } = await upsertStaging(request);
-      if (updateStagingError) throw new Error(updateStagingError.message);
-			
-      paymentSuccess = true;
-      // Refresh the page after successful payment
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
-    } catch (error:any) {
-      console.error('Payment error:', error);
-      paymentError = error.message || 'An error occurred during payment';
-    } finally {
-      isPaying = false;
-    }
-  }
 
 	// 获取状态标签的样式
-	function getStatusStyle(status: StagingStatus) {
+	function getStatusStyle(status: StagingCleaningStatus) {
 		switch (status) {
 			case 'draft':
 				return 'bg-gray-100 text-gray-800';
@@ -72,7 +20,7 @@
 				return 'bg-blue-100 text-blue-800';
 			case 'paid':
 				return 'bg-green-100 text-green-800';
-			case 'schedule':
+			case 'scheduled':
 				return 'bg-purple-100 text-purple-800';
 			default:
 				return 'bg-gray-100 text-gray-800';
@@ -161,46 +109,28 @@
 
 	{#if request.status !== 'paid'}
 	<div class="px-6 py-3 bg-gray-50">
-		{#if paymentError}
-			<div class="mb-3 text-sm text-red-600">{paymentError}</div>
-		{/if}
-		{#if paymentSuccess}
-			<div class="mb-3 text-sm text-green-600">Payment processed successfully!</div>
-		{/if}
 		<div class="flex justify-end space-x-3">
-			<button
-				on:click={() => onView(request)}
-				class="text-sm text-blue-600 hover:text-blue-900"
+			<Link
+				href={`/dashboard/stagings/${request.id}`}
 			>
 				View
-			</button>
-			<button
+			</Link>
+			<!-- <button
 				on:click={() => onEdit(request)}
 				class="text-sm text-blue-600 hover:text-blue-900"
 			>
 				Edit
-			</button>
-			{#if request.status === 'confirmed' && !$user?.isAdmin}
-				<button
-					on:click={handlePaid}
-					disabled={isPaying}
-					class="text-sm text-green-600 hover:text-green-900 disabled:opacity-50 disabled:cursor-not-allowed"
-				>
-					{#if isPaying}
-						Processing...
-					{:else}
-						Paid
-					{/if}
-				</button>
-			{/if}
-			{#if !$user?.isAdmin}
+			</button> -->
+
+			<!-- {#if !$user?.isAdmin}
 				<button
 					on:click={() => onDelete(request.id)}
 					class="text-sm text-red-600 hover:text-red-900"
 				>
 					Delete
 				</button>
-			{/if}
+			{/if} -->
+
 		</div>
 	</div>
 	{/if}

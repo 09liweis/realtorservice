@@ -12,11 +12,6 @@
 
   const dispatch = createEventDispatcher();
 
-  // 处理查看请求
-  function handleView(request:Staging) {
-    dispatch("view", request);
-  }
-
   // 处理编辑请求
   function handleEdit(request:Staging) {
     dispatch("edit", request);
@@ -93,7 +88,6 @@
         >
           <StagingCard
             {request}
-            onView={handleView}
             onEdit={handleEdit}
             onDelete={handleDelete}
           />
