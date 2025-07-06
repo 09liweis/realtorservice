@@ -1,0 +1,15 @@
+src/routes/forgot-password/*
+src/routes/register/*
+src/routes/login/*
+src/routes/listings/*
+src/routes/about/*
+src/routes/api/*
+
+src/routes/dashboard/admin/*
+src/routes/dashboard/cleanings/*
+src/routes/dashboard/stagings/*
+src/routes/dashboard/offers/*
+src/routes/dashboard/openhouses/*
+src/routes/dashboard/profile/*
+
+src/routes/dashboard/cleanings/*
