@@ -1,10 +1,11 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
   import type { VideoService } from '$lib/types/video';
-  import { VIDEO_SERVICE_TYPES, EMPTY_VIDEO_SERVICE, calculateVideoServicePrice } from '$lib/types/video';
+  import { VIDEO_SERVICE_TYPES, VIDEO_SERVICE_ADDONS, EMPTY_VIDEO_SERVICE, calculateVideoServicePrice } from '$lib/types/video';
   import Button from '$lib/components/Button.svelte';
   import Input from '$lib/components/Input.svelte';
   import Select from '$lib/components/Select.svelte';
+  import CheckBox from '$lib/components/common/CheckBox.svelte';
   import { user } from '$lib/stores/auth';
 
   export let videoService: VideoService = { ...EMPTY_VIDEO_SERVICE };
@@ -16,10 +17,16 @@
   // Form validation
   let errors: Record<string, string> = {};
 
+  // Initialize addons if not present
+  if (!videoService.addons) {
+    videoService.addons = [];
+  }
+
   // Calculate pricing
   $: pricingInfo = calculateVideoServicePrice(
     videoService.service_type, 
-    videoService.number_of_videos, 
+    videoService.number_of_videos,
+    videoService.addons || [],
     videoService.price
   );
 
@@ -61,6 +68,20 @@
     dispatch('cancel');
   }
 
+  function handleAddonChange(addonValue: string, checked: boolean) {
+    if (!videoService.addons) {
+      videoService.addons = [];
+    }
+    
+    if (checked) {
+      if (!videoService.addons.includes(addonValue)) {
+        videoService.addons = [...videoService.addons, addonValue];
+      }
+    } else {
+      videoService.addons = videoService.addons.filter(addon => addon !== addonValue);
+    }
+  }
+
   // Format currency
   function formatCurrency(amount: number): string {
     return new Intl.NumberFormat('en-CA', {
@@ -72,7 +93,7 @@
   }
 </script>
 
-<div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden max-w-4xl mx-auto">
+<div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden max-w-5xl mx-auto">
   <!-- Header -->
   <div class="bg-primary px-6 py-4 text-white">
     <div class="flex items-center justify-between">
@@ -133,6 +154,32 @@
             <p class="mt-1 text-sm text-red-600">{errors.number_of_videos}</p>
           {/if}
           <p class="text-xs text-gray-500 mt-1">How many videos do you need edited?</p>
+        </div>
+
+        <!-- Add-on Services -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-3">
+            Add-on Services
+          </label>
+          <div class="space-y-3">
+            {#each VIDEO_SERVICE_ADDONS as addon}
+              <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                <CheckBox
+                  id="addon_{addon.value}"
+                  label="{addon.label} - {formatCurrency(addon.price)}"
+                  checked={videoService.addons?.includes(addon.value) || false}
+                  disabled={loading}
+                  on:change={(e) => handleAddonChange(addon.value, e.detail.checked)}
+                />
+                <p class="text-xs text-gray-500 mt-1 ml-6">
+                  {addon.description} • {addon.turnaround}
+                </p>
+              </div>
+            {/each}
+          </div>
+          <p class="text-xs text-gray-500 mt-2">
+            Select additional services to enhance your video editing package
+          </p>
         </div>
 
         <!-- Custom Price (Admin Only) -->
@@ -206,7 +253,7 @@
                 <h4 class="text-sm font-semibold text-gray-700">Pricing Breakdown:</h4>
                 
                 <div class="flex justify-between text-sm">
-                  <span class="text-gray-600">Price per video:</span>
+                  <span class="text-gray-600">Base price per video:</span>
                   <span class="font-medium">
                     {#if pricingInfo.serviceInfo.isCustomQuote && !pricingInfo.isCustomPrice}
                       Custom Quote
@@ -218,6 +265,23 @@
                     {/if}
                   </span>
                 </div>
+
+                <!-- Add-ons breakdown -->
+                {#if pricingInfo.addonInfo.length > 0}
+                  <div class="border-t border-purple-200 pt-2">
+                    <div class="text-sm font-medium text-gray-700 mb-2">Add-ons:</div>
+                    {#each pricingInfo.addonInfo as addon}
+                      <div class="flex justify-between text-sm text-purple-600">
+                        <span>{addon.label}:</span>
+                        <span>+{formatCurrency(addon.price)}</span>
+                      </div>
+                    {/each}
+                    <div class="flex justify-between text-sm font-medium text-purple-700 mt-1 pt-1 border-t border-purple-100">
+                      <span>Add-ons subtotal:</span>
+                      <span>+{formatCurrency(pricingInfo.addonPrice)}</span>
+                    </div>
+                  </div>
+                {/if}
                 
                 <div class="flex justify-between text-sm">
                   <span class="text-gray-600">Number of videos:</span>
@@ -253,15 +317,6 @@
                   <li>• 2 rounds of revisions</li>
                 </ul>
               </div>
-
-              {#if pricingInfo.serviceInfo.isAddon}
-                <div class="bg-blue-100 rounded-lg p-3 text-xs text-blue-800">
-                  <div class="font-medium mb-1">ℹ️ Add-on Service</div>
-                  <div class="text-blue-700">
-                    This is an add-on service that requires a base video editing service.
-                  </div>
-                </div>
-              {/if}
 
               {#if videoService.number_of_videos >= 5}
                 <div class="bg-green-100 rounded-lg p-3 text-xs text-green-800">

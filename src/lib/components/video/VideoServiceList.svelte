@@ -1,7 +1,7 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
   import type { VideoService } from '$lib/types/video';
-  import { VIDEO_SERVICE_TYPES, VIDEO_SERVICE_STATUS, calculateVideoServicePrice } from '$lib/types/video';
+  import { VIDEO_SERVICE_TYPES, VIDEO_SERVICE_ADDONS, VIDEO_SERVICE_STATUS, calculateVideoServicePrice } from '$lib/types/video';
   import { fade, fly, scale } from 'svelte/transition';
   import { flip } from 'svelte/animate';
 
@@ -20,6 +20,10 @@
 
   function getServiceTypeInfo(serviceType: string) {
     return VIDEO_SERVICE_TYPES.find(type => type.value === serviceType);
+  }
+
+  function getAddonInfo(addonType: string) {
+    return VIDEO_SERVICE_ADDONS.find(addon => addon.value === addonType);
   }
 
   function getStatusInfo(status: string) {
@@ -67,13 +71,17 @@
       return formatCurrency(videoService.price);
     }
 
-    // Otherwise calculate from service type
+    // Otherwise calculate from service type and addons
     const serviceInfo = getServiceTypeInfo(videoService.service_type);
     if (serviceInfo?.isCustomQuote) {
       return 'Custom Quote';
     }
 
-    const pricingInfo = calculateVideoServicePrice(videoService.service_type, videoService.number_of_videos);
+    const pricingInfo = calculateVideoServicePrice(
+      videoService.service_type, 
+      videoService.number_of_videos,
+      videoService.addons || []
+    );
     return pricingInfo.totalPrice > 0 ? formatCurrency(pricingInfo.totalPrice) : 'Quote Pending';
   }
 </script>
@@ -152,6 +160,24 @@
                   {getStatusInfo(videoService.status).label}
                 </span>
               </div>
+
+              <!-- Add-ons Display -->
+              {#if videoService.addons && videoService.addons.length > 0}
+                <div class="bg-purple-50 rounded-lg p-3">
+                  <div class="text-xs font-medium text-purple-800 mb-2">Add-ons:</div>
+                  <div class="space-y-1">
+                    {#each videoService.addons as addonType}
+                      {@const addonInfo = getAddonInfo(addonType)}
+                      {#if addonInfo}
+                        <div class="flex justify-between text-xs text-purple-700">
+                          <span>{addonInfo.label}</span>
+                          <span>+{formatCurrency(addonInfo.price)}</span>
+                        </div>
+                      {/if}
+                    {/each}
+                  </div>
+                </div>
+              {/if}
 
               <!-- Pricing Info -->
               <div class="bg-gray-50 rounded-lg p-3">

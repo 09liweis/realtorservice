@@ -6,6 +6,7 @@ export interface VideoService {
   price?: number;
   notes?: string;
   status: string;
+  addons?: string[]; // Array of addon service types
   created_at?: string;
   updated_at?: string;
 }
@@ -33,6 +34,24 @@ export const VIDEO_SERVICE_TYPES = [
     description: 'Personal branding and introduction videos'
   },
   {
+    value: 'custom_long_form',
+    label: 'Custom Long-Form Video (3+ min)',
+    price: 300,
+    turnaround: 'Based on complexity',
+    description: 'Custom video projects over 3 minutes'
+  },
+  {
+    value: 'bulk_package',
+    label: 'Bulk Editing Package (5+ videos/month)',
+    price: 0,
+    turnaround: 'Priority turnaround',
+    description: 'Custom quote for bulk video editing',
+    isCustomQuote: true
+  }
+];
+
+export const VIDEO_SERVICE_ADDONS = [
+  {
     value: 'bilingual_subtitles',
     label: 'Bilingual Subtitles (EN+CN)',
     price: 40,
@@ -47,21 +66,6 @@ export const VIDEO_SERVICE_TYPES = [
     turnaround: '+1 day',
     description: 'Professional voice-over integration',
     isAddon: true
-  },
-  {
-    value: 'custom_long_form',
-    label: 'Custom Long-Form Video (3+ min)',
-    price: 300,
-    turnaround: 'Based on complexity',
-    description: 'Custom video projects over 3 minutes'
-  },
-  {
-    value: 'bulk_package',
-    label: 'Bulk Editing Package (5+ videos/month)',
-    price: 0,
-    turnaround: 'Priority turnaround',
-    description: 'Custom quote for bulk video editing',
-    isCustomQuote: true
   }
 ];
 
@@ -80,34 +84,61 @@ export const EMPTY_VIDEO_SERVICE: VideoService = {
   number_of_videos: 1,
   price: 0,
   notes: '',
-  status: 'pending'
+  status: 'pending',
+  addons: []
 };
 
-// Calculate total price for video service
-export function calculateVideoServicePrice(serviceType: string, numberOfVideos: number, customPrice?: number): {
+// Calculate total price for video service including addons
+export function calculateVideoServicePrice(serviceType: string, numberOfVideos: number, addons: string[] = [], customPrice?: number): {
   basePrice: number;
+  addonPrice: number;
   totalPrice: number;
   serviceInfo: any;
+  addonInfo: any[];
   isCustomPrice: boolean;
 } {
   const serviceInfo = VIDEO_SERVICE_TYPES.find(type => type.value === serviceType);
   
   if (!serviceInfo) {
-    return { basePrice: 0, totalPrice: 0, serviceInfo: null, isCustomPrice: false };
+    return { 
+      basePrice: 0, 
+      addonPrice: 0, 
+      totalPrice: 0, 
+      serviceInfo: null, 
+      addonInfo: [], 
+      isCustomPrice: false 
+    };
   }
 
   // If custom price is provided, use it
   if (customPrice !== undefined && customPrice > 0) {
     return { 
       basePrice: customPrice, 
+      addonPrice: 0,
       totalPrice: customPrice * numberOfVideos, 
       serviceInfo, 
+      addonInfo: [],
       isCustomPrice: true 
     };
   }
 
   const basePrice = serviceInfo.price;
-  const totalPrice = serviceInfo.isCustomQuote ? 0 : basePrice * numberOfVideos;
+  
+  // Calculate addon prices
+  const addonInfo = addons.map(addonType => 
+    VIDEO_SERVICE_ADDONS.find(addon => addon.value === addonType)
+  ).filter(Boolean);
+  
+  const addonPrice = addonInfo.reduce((total, addon) => total + (addon?.price || 0), 0);
+  
+  const totalPrice = serviceInfo.isCustomQuote ? 0 : (basePrice + addonPrice) * numberOfVideos;
 
-  return { basePrice, totalPrice, serviceInfo, isCustomPrice: false };
+  return { 
+    basePrice, 
+    addonPrice, 
+    totalPrice, 
+    serviceInfo, 
+    addonInfo, 
+    isCustomPrice: false 
+  };
 }
