@@ -8,6 +8,7 @@ import type { Cleaning } from './types/cleaning';
 import type { CreditRecord } from './types/credit';
 import type { SocialMediaAccount } from './types/social';
 import type { Coupon } from './types/coupon';
+import type { VideoService } from './types/video';
 
 // Get Supabase URL and anonymous key from environment variables
 const supabaseUrl = PUBLIC_SUPABASE_URL;
@@ -507,6 +508,46 @@ export const upsertSocialMediaAccount = async (account: SocialMediaAccount) => {
 export const deleteSocialMediaAccount = async (id: string) => {
   return await supabase
     .from('social_media_accounts')
+    .delete()
+    .eq('id', id);
+}
+
+// Video Services CRUD operations
+export const getUserVideoServices = async (user_id: string) => {
+  return await supabase
+    .from('video_services')
+    .select('*')
+    .eq('user_id', user_id)
+    .order('created_at', { ascending: false });
+}
+
+export const getVideoService = async (id: string) => {
+  return await supabase
+    .from('video_services')
+    .select('*')
+    .eq('id', id)
+    .single();
+}
+
+export const upsertVideoService = async (videoService: VideoService) => {
+  if (videoService.id) {
+    return await supabase
+      .from('video_services')
+      .update({
+        updated_at: new Date(),
+        ...videoService
+      })
+      .eq('id', videoService.id);
+  } else {
+    return await supabase
+      .from('video_services')
+      .insert(videoService);
+  }
+}
+
+export const deleteVideoService = async (id: string) => {
+  return await supabase
+    .from('video_services')
     .delete()
     .eq('id', id);
 }

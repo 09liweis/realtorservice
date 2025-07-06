@@ -30,6 +30,12 @@
       description: "Manage Social Links",
     },
     {
+      name: "Video Services",
+      href: "/dashboard/video",
+      icon: "🎬",
+      description: "Video Editing Services",
+    },
+    {
       name: "Listings",
       href: "/dashboard/listings",
       icon: "📋",
