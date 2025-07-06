@@ -3,6 +3,7 @@ export interface VideoService {
   user_id?: string;
   service_type: string;
   number_of_videos: number;
+  price?: number;
   notes?: string;
   status: string;
   created_at?: string;
@@ -66,6 +67,8 @@ export const VIDEO_SERVICE_TYPES = [
 
 export const VIDEO_SERVICE_STATUS = [
   { value: 'pending', label: 'Pending Review', color: 'yellow' },
+  { value: 'quoted', label: 'Quote Provided', color: 'blue' },
+  { value: 'approved', label: 'Approved', color: 'green' },
   { value: 'in_progress', label: 'In Progress', color: 'blue' },
   { value: 'review', label: 'Under Review', color: 'purple' },
   { value: 'completed', label: 'Completed', color: 'green' },
@@ -75,24 +78,36 @@ export const VIDEO_SERVICE_STATUS = [
 export const EMPTY_VIDEO_SERVICE: VideoService = {
   service_type: '',
   number_of_videos: 1,
+  price: 0,
   notes: '',
   status: 'pending'
 };
 
 // Calculate total price for video service
-export function calculateVideoServicePrice(serviceType: string, numberOfVideos: number): {
+export function calculateVideoServicePrice(serviceType: string, numberOfVideos: number, customPrice?: number): {
   basePrice: number;
   totalPrice: number;
   serviceInfo: any;
+  isCustomPrice: boolean;
 } {
   const serviceInfo = VIDEO_SERVICE_TYPES.find(type => type.value === serviceType);
   
   if (!serviceInfo) {
-    return { basePrice: 0, totalPrice: 0, serviceInfo: null };
+    return { basePrice: 0, totalPrice: 0, serviceInfo: null, isCustomPrice: false };
+  }
+
+  // If custom price is provided, use it
+  if (customPrice !== undefined && customPrice > 0) {
+    return { 
+      basePrice: customPrice, 
+      totalPrice: customPrice * numberOfVideos, 
+      serviceInfo, 
+      isCustomPrice: true 
+    };
   }
 
   const basePrice = serviceInfo.price;
   const totalPrice = serviceInfo.isCustomQuote ? 0 : basePrice * numberOfVideos;
 
-  return { basePrice, totalPrice, serviceInfo };
+  return { basePrice, totalPrice, serviceInfo, isCustomPrice: false };
 }

@@ -60,6 +60,22 @@
       day: 'numeric'
     });
   }
+
+  function getDisplayPrice(videoService: VideoService): string {
+    // If there's a custom price set, use it
+    if (videoService.price && videoService.price > 0) {
+      return formatCurrency(videoService.price);
+    }
+
+    // Otherwise calculate from service type
+    const serviceInfo = getServiceTypeInfo(videoService.service_type);
+    if (serviceInfo?.isCustomQuote) {
+      return 'Custom Quote';
+    }
+
+    const pricingInfo = calculateVideoServicePrice(videoService.service_type, videoService.number_of_videos);
+    return pricingInfo.totalPrice > 0 ? formatCurrency(pricingInfo.totalPrice) : 'Quote Pending';
+  }
 </script>
 
 <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
@@ -138,25 +154,21 @@
               </div>
 
               <!-- Pricing Info -->
-              {#if getServiceTypeInfo(videoService.service_type)}
-                {@const serviceInfo = getServiceTypeInfo(videoService.service_type)}
-                {@const pricingInfo = calculateVideoServicePrice(videoService.service_type, videoService.number_of_videos)}
-                <div class="bg-gray-50 rounded-lg p-3">
-                  <div class="flex justify-between items-center text-sm">
-                    <span class="text-gray-600">Estimated Cost:</span>
-                    <span class="font-bold text-purple-600">
-                      {#if serviceInfo.isCustomQuote}
-                        Custom Quote
-                      {:else}
-                        {formatCurrency(pricingInfo.totalPrice)}
-                      {/if}
-                    </span>
-                  </div>
-                  <div class="text-xs text-gray-500 mt-1">
-                    Turnaround: {serviceInfo.turnaround}
-                  </div>
+              <div class="bg-gray-50 rounded-lg p-3">
+                <div class="flex justify-between items-center text-sm">
+                  <span class="text-gray-600">
+                    {videoService.price && videoService.price > 0 ? 'Final Price:' : 'Estimated Cost:'}
+                  </span>
+                  <span class="font-bold text-purple-600">
+                    {getDisplayPrice(videoService)}
+                  </span>
                 </div>
-              {/if}
+                {#if getServiceTypeInfo(videoService.service_type)}
+                  <div class="text-xs text-gray-500 mt-1">
+                    Turnaround: {getServiceTypeInfo(videoService.service_type).turnaround}
+                  </div>
+                {/if}
+              </div>
 
               <!-- Notes Preview -->
               {#if videoService.notes}
@@ -215,8 +227,8 @@
           <div class="flex items-center space-x-2">
             <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
             <span>
-              <span class="font-medium text-gray-900">{videoServices.filter(v => v.status === 'in_progress').length}</span>
-              In Progress
+              <span class="font-medium text-gray-900">{videoServices.filter(v => v.status === 'quoted').length}</span>
+              Quoted
             </span>
           </div>
           <div class="flex items-center space-x-2">

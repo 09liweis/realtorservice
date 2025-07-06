@@ -5,6 +5,7 @@
   import Button from '$lib/components/Button.svelte';
   import Input from '$lib/components/Input.svelte';
   import Select from '$lib/components/Select.svelte';
+  import { user } from '$lib/stores/auth';
 
   export let videoService: VideoService = { ...EMPTY_VIDEO_SERVICE };
   export let isEdit = false;
@@ -16,7 +17,11 @@
   let errors: Record<string, string> = {};
 
   // Calculate pricing
-  $: pricingInfo = calculateVideoServicePrice(videoService.service_type, videoService.number_of_videos);
+  $: pricingInfo = calculateVideoServicePrice(
+    videoService.service_type, 
+    videoService.number_of_videos, 
+    videoService.price
+  );
 
   // Service type options for select
   const serviceTypeOptions = VIDEO_SERVICE_TYPES.map(type => ({
@@ -35,11 +40,19 @@
       errors.number_of_videos = 'Number of videos must be at least 1';
     }
 
+    if (videoService.price !== undefined && videoService.price < 0) {
+      errors.price = 'Price cannot be negative';
+    }
+
     return Object.keys(errors).length === 0;
   }
 
   function handleSubmit() {
     if (validateForm()) {
+      // Set the calculated price if not custom
+      if (!pricingInfo.isCustomPrice && pricingInfo.totalPrice > 0) {
+        videoService.price = pricingInfo.totalPrice;
+      }
       dispatch('submit', videoService);
     }
   }
@@ -122,6 +135,28 @@
           <p class="text-xs text-gray-500 mt-1">How many videos do you need edited?</p>
         </div>
 
+        <!-- Custom Price (Admin Only) -->
+        {#if $user?.isAdmin}
+          <div>
+            <Input
+              id="price"
+              label="Custom Price (CAD)"
+              type="number"
+              bind:value={videoService.price}
+              min="0"
+              step="0.01"
+              placeholder="Leave empty for standard pricing"
+              disabled={loading}
+            />
+            {#if errors.price}
+              <p class="mt-1 text-sm text-red-600">{errors.price}</p>
+            {/if}
+            <p class="text-xs text-gray-500 mt-1">
+              Override standard pricing. Leave empty to use calculated price.
+            </p>
+          </div>
+        {/if}
+
         <!-- Notes -->
         <div>
           <label for="notes" class="block text-sm font-medium text-gray-700 mb-2">
@@ -173,10 +208,13 @@
                 <div class="flex justify-between text-sm">
                   <span class="text-gray-600">Price per video:</span>
                   <span class="font-medium">
-                    {#if pricingInfo.serviceInfo.isCustomQuote}
+                    {#if pricingInfo.serviceInfo.isCustomQuote && !pricingInfo.isCustomPrice}
                       Custom Quote
                     {:else}
                       {formatCurrency(pricingInfo.basePrice)}
+                      {#if pricingInfo.isCustomPrice}
+                        <span class="text-xs text-purple-600">(Custom)</span>
+                      {/if}
                     {/if}
                   </span>
                 </div>
@@ -190,10 +228,13 @@
                   <div class="flex justify-between text-base font-semibold">
                     <span>Total Cost:</span>
                     <span class="text-purple-600">
-                      {#if pricingInfo.serviceInfo.isCustomQuote}
+                      {#if pricingInfo.serviceInfo.isCustomQuote && !pricingInfo.isCustomPrice}
                         Contact for Quote
                       {:else}
                         {formatCurrency(pricingInfo.totalPrice)}
+                        {#if pricingInfo.isCustomPrice}
+                          <span class="text-xs text-purple-600">(Custom)</span>
+                        {/if}
                       {/if}
                     </span>
                   </div>
