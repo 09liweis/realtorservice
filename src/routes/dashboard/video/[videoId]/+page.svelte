@@ -4,21 +4,23 @@
   import { user } from '$lib/stores/auth';
   import { getPageTitle } from '$lib/types/constant';
   import type { VideoService } from '$lib/types/video';
-  import { VIDEO_SERVICE_TYPES, VIDEO_SERVICE_ADDONS, VIDEO_SERVICE_STATUS, calculateVideoServicePrice, EMPTY_VIDEO_SERVICE } from '$lib/types/video';
+  import { VIDEO_SERVICE_TYPES, VIDEO_SERVICE_ADDONS, VIDEO_SERVICE_STATUS, calculateVideoServicePrice } from '$lib/types/video';
   import VideoServiceHeader from '$lib/components/video/detail/VideoServiceHeader.svelte';
   import VideoServiceInfo from '$lib/components/video/detail/VideoServiceInfo.svelte';
   import VideoServicePricing from '$lib/components/video/detail/VideoServicePricing.svelte';
   import VideoServiceActions from '$lib/components/video/detail/VideoServiceActions.svelte';
+  import { getVideoService } from '$lib/supabase';
+  import { onMount } from 'svelte';
 
-  const videoServiceId = $page.params.videoServiceId;
+  export let data;
   
-  let videoService: VideoService = EMPTY_VIDEO_SERVICE;
+  let videoService: VideoService = data.videoService;
+  let loading = false;
+  let error = '';
 
   // Redirect if user is not logged in
   $: if (!$user) {
     goto('/login');
-  } else {
-
   }
 
   // Get service type information
@@ -40,10 +42,27 @@
   // Get status information
   $: statusInfo = VIDEO_SERVICE_STATUS.find(s => s.value === videoService.status) || VIDEO_SERVICE_STATUS[0];
 
-  // Handle status updates
-  function handleStatusUpdate() {
-    // Refresh the page data or refetch the video service
-    window.location.reload();
+  // Handle status updates - refresh the data
+  async function handleStatusUpdate() {
+    try {
+      loading = true;
+      error = '';
+      
+      const { data: updatedVideoService, error: fetchError } = await getVideoService(videoService.id!);
+      
+      if (fetchError) {
+        throw fetchError;
+      }
+
+      if (updatedVideoService) {
+        videoService = updatedVideoService;
+      }
+    } catch (err) {
+      console.error('Error refreshing video service:', err);
+      error = 'Failed to refresh data';
+    } finally {
+      loading = false;
+    }
   }
 </script>
 
@@ -64,6 +83,28 @@
       Back to Video Services
     </button>
   </div>
+
+  <!-- Error Message -->
+  {#if error}
+    <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+      <div class="flex items-center">
+        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+        </svg>
+        {error}
+      </div>
+    </div>
+  {/if}
+
+  <!-- Loading Overlay -->
+  {#if loading}
+    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div class="bg-white rounded-lg p-6 flex items-center space-x-3">
+        <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-purple-600"></div>
+        <span class="text-gray-700">Refreshing data...</span>
+      </div>
+    </div>
+  {/if}
 
   <!-- Main Content Grid -->
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">

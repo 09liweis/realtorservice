@@ -11,5 +11,3 @@ src/routes/dashboard/stagings/*
 src/routes/dashboard/offers/*
 src/routes/dashboard/openhouses/*
 src/routes/dashboard/profile/*
-
-src/routes/dashboard/cleanings/*

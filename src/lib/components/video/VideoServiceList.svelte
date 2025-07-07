@@ -4,6 +4,7 @@
   import { VIDEO_SERVICE_TYPES, VIDEO_SERVICE_ADDONS, VIDEO_SERVICE_STATUS, calculateVideoServicePrice } from '$lib/types/video';
   import { fade, fly, scale } from 'svelte/transition';
   import { flip } from 'svelte/animate';
+    import Link from '../Link.svelte';
 
   export let videoServices: VideoService[] = [];
   export let loading = false;
@@ -128,11 +129,11 @@
             animate:flip={{ duration: 300 }}
           >
             <!-- Service Header -->
-            <div class="bg-gradient-to-r from-purple-500 to-pink-600 px-4 py-3 text-white">
+            <div class="px-4 py-3">
               <div class="flex items-center justify-between">
-                <div class="text-sm font-medium opacity-90">
+                <Link href={`/dashboard/video/${videoService.id}`} className="text-white">
                   Video Service Request
-                </div>
+                </Link>
                 <div class="text-right">
                   <div class="text-lg font-bold">
                     {videoService.number_of_videos}
