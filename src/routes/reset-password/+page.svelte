@@ -1,9 +1,9 @@
 <script>
-  import { supabase } from '$lib/supabase';
   import { goto } from '$app/navigation';
   import { onMount } from 'svelte';
   import Input from '$lib/components/Input.svelte';
   import Button from '$lib/components/Button.svelte';
+    import supabase from '$lib/db/client';
 
   let password = '';
   let confirmPassword = '';

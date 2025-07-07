@@ -1,9 +1,9 @@
 <script>
-  import { supabase } from '$lib/supabase';
   import { goto } from '$app/navigation';
   import Input from '$lib/components/Input.svelte';
   import Button from '$lib/components/Button.svelte';
   import Link from '$lib/components/Link.svelte';
+    import supabase from '$lib/db/client';
 
   let email = '';
   let loading = false;
