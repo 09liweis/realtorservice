@@ -1,11 +1,12 @@
 <script lang="ts">
-  import { supabase, autoApplyWelcomeCoupons } from '$lib/supabase';
+  import { autoApplyWelcomeCoupons } from '$lib/supabase';
   import { goto } from '$app/navigation';
   import { user } from '$lib/stores/auth';
   import { onMount } from 'svelte';
   import Button from '$lib/components/Button.svelte';
   import Input from '$lib/components/Input.svelte';
     import { getPageTitle } from '$lib/types/constant';
+    import supabase from '$lib/db/client';
 
   $: {
     if ($user) {
