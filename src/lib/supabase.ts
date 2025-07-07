@@ -1,6 +1,3 @@
-import { createClient } from '@supabase/supabase-js';
-import { browser } from '$app/environment';
-import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from "$env/static/public"
 import type { Listing, ListingSearch } from './types/listing';
 import type { Offer, OfferProperty } from './types/offer';
 import type { Staging } from './types/staging';
@@ -9,14 +6,7 @@ import type { CreditRecord } from './types/credit';
 import type { SocialMediaAccount } from './types/social';
 import type { Coupon } from './types/coupon';
 import type { VideoService } from './types/video';
-
-// Get Supabase URL and anonymous key from environment variables
-const supabaseUrl = PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = PUBLIC_SUPABASE_ANON_KEY;
-
-// Create Supabase client
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
+import supabase from './db/client';
 
 export const getOpenHouses = async ({user_id}) => {
   return await supabase

@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
-import { supabase } from '$lib/supabase';
 import { browser } from '$app/environment';
+import supabase from '$lib/db/client';
 
 interface User {
   id: string;

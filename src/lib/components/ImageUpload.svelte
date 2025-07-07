@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { supabase } from "$lib/supabase";
+    import supabase from "$lib/db/client";
   import { user } from "$lib/stores/auth";
   import { createEventDispatcher } from "svelte";
 
