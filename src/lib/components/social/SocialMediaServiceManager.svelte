@@ -27,7 +27,7 @@
     try {
       loading = true;
       error = null;
-      const { data, error: fetchError } = await getUserSocialMediaServices(userId);
+      const { data, error: fetchError } = await getUserSocialMediaServices({user_id:userId});
       if (fetchError) throw fetchError;
       socialMediaServices = data || [];
     } catch (err) {

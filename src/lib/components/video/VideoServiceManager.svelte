@@ -27,7 +27,7 @@
     try {
       loading = true;
       error = null;
-      const { data, error: fetchError } = await getUserVideoServices(userId);
+      const { data, error: fetchError } = await getUserVideoServices({user_id:userId});
       if (fetchError) throw fetchError;
       videoServices = data || [];
     } catch (err) {

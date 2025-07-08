@@ -2,10 +2,20 @@
   import { user } from '$lib/stores/auth';
   import { goto } from '$app/navigation';
   import { onMount } from 'svelte';
-  import { getListings, getOfferProperties, getOpenHouses, getStagings } from '$lib/supabase';
+  import { 
+    getListings, 
+    getOfferProperties, 
+    getOpenHouses, 
+    getStagings,
+    getCleanings,
+    getUserVideoServices,
+    getUserSocialMediaServices
+  } from '$lib/supabase';
   import { getPageTitle } from '$lib/types/constant';
   import DashboardHeader from './DashboardHeader.svelte';
   import WelcomeBonusNotification from '$lib/components/dashboard/WelcomeBonusNotification.svelte';
+  import ServiceStatsCard from '$lib/components/dashboard/ServiceStatsCard.svelte';
+  import PerformanceChart from '$lib/components/dashboard/PerformanceChart.svelte';
 
   // Redirect if user is not logged in
   onMount(() => {
@@ -19,16 +29,30 @@
 
   // Dashboard data
   let dashboardStats = {
-    totalListings: 0,
-    activeListings: 0,
-    soldListings: 0,
-    totalOffers: 0,
-    openHouses: 0,
-    stagingRequests: 0
+    listings: {
+      total: 0,
+      active: 0,
+      sold: 0
+    },
+    services: {
+      stagings: 0,
+      cleanings: 0,
+      videos: 0,
+      social: 0
+    },
+    activities: {
+      offers: 0,
+      openHouses: 0
+    },
+    credits: {
+      available: 0,
+      used: 0
+    }
   };
 
   let recentActivity = [];
   let loading = true;
+  let performanceData = [];
 
   // Welcome bonus notification
   let showWelcomeBonus = false;
@@ -68,30 +92,68 @@
       loading = true;
       
       // Fetch all data in parallel
-      const [listingsResult, offersResult, openHousesResult, stagingsResult] = await Promise.all([
+      const [
+        listingsResult, 
+        offersResult, 
+        openHousesResult, 
+        stagingsResult,
+        cleaningsResult,
+        videoResult,
+        socialResult
+      ] = await Promise.all([
         getListings({ user_id: $user.id }),
         getOfferProperties({ user_id: $user.id }),
         getOpenHouses({ user_id: $user.id }),
-        getStagings({ user_id: $user.id })
+        getStagings({ user_id: $user.id }),
+        getCleanings({ user_id: $user.id }),
+        getUserVideoServices({ user_id: $user.id }),
+        getUserSocialMediaServices({ user_id: $user.id })
       ]);
 
       // Process listings data
       const listings = listingsResult.data || [];
-      dashboardStats.totalListings = listings.length;
-      dashboardStats.activeListings = listings.filter(l => !l.is_sold).length;
-      dashboardStats.soldListings = listings.filter(l => l.is_sold).length;
+      dashboardStats.listings = {
+        total: listings.length,
+        active: listings.filter(l => !l.is_sold).length,
+        sold: listings.filter(l => l.is_sold).length
+      };
 
-      // Process other data
-      dashboardStats.totalOffers = offersResult.data?.length || 0;
-      dashboardStats.openHouses = openHousesResult.data?.length || 0;
-      dashboardStats.stagingRequests = stagingsResult.data?.length || 0;
+      // Process services data
+      dashboardStats.services = {
+        stagings: stagingsResult.data?.length || 0,
+        cleanings: cleaningsResult.data?.length || 0,
+        videos: videoResult.data?.length || 0,
+        social: socialResult.data?.length || 0
+      };
 
-      // Create recent activity (mock data for now)
+      // Process activities data
+      dashboardStats.activities = {
+        offers: offersResult.data?.length || 0,
+        openHouses: openHousesResult.data?.length || 0
+      };
+
+      // Mock credit data (would come from API in real app)
+      dashboardStats.credits = {
+        available: 1250,
+        used: 750
+      };
+
+      // Create performance data for chart
+      performanceData = [
+        { month: 'Jan', listings: 5, sales: 2 },
+        { month: 'Feb', listings: 8, sales: 3 },
+        { month: 'Mar', listings: 12, sales: 5 },
+        { month: 'Apr', listings: 15, sales: 7 },
+        { month: 'May', listings: 18, sales: 10 },
+        { month: 'Jun', listings: 22, sales: 14 }
+      ];
+
+      // Create recent activity
       recentActivity = [
         { type: 'listing', action: 'New listing added', time: '2 hours ago', icon: '🏠' },
-        { type: 'offer', action: 'Offer received', time: '4 hours ago', icon: '💰' },
-        { type: 'staging', action: 'Staging completed', time: '1 day ago', icon: '✨' },
-        { type: 'openhouse', action: 'Open house scheduled', time: '2 days ago', icon: '🚪' }
+        { type: 'cleaning', action: 'Cleaning scheduled', time: '4 hours ago', icon: '🧹' },
+        { type: 'video', action: 'Video service completed', time: '1 day ago', icon: '🎥' },
+        { type: 'social', action: 'Social media post published', time: '2 days ago', icon: '📱' }
       ];
 
     } catch (error) {
@@ -101,7 +163,7 @@
     }
   }
 
-  // Quick action handlers
+  // Navigation handlers
   function navigateToSection(path: string) {
     goto(path);
   }
@@ -118,163 +180,88 @@
 <div class="space-y-8">
   <DashboardHeader />
 
-  <!-- Statistics Cards -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    <!-- Total Listings -->
-    <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-200">
-      <div class="flex items-center justify-between">
-        <div>
-          <p class="text-sm font-medium text-gray-600">Total Listings</p>
-          <p class="text-3xl font-bold text-gray-900 mt-2">
-            {loading ? '...' : dashboardStats.totalListings}
-          </p>
-          <p class="text-sm text-green-600 mt-1">
-            <span class="font-medium">{dashboardStats.activeListings}</span> active
-          </p>
-        </div>
-        <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-          <span class="text-2xl">🏠</span>
-        </div>
+  <!-- Main Stats Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <!-- Listings Stats -->
+    <ServiceStatsCard 
+      title="Listings"
+      value={dashboardStats.listings.total}
+      change={dashboardStats.listings.active}
+      changeLabel="Active"
+      icon="🏠"
+      color="blue"
+      loading={loading}
+      on:click={() => navigateToSection('/dashboard/listings')}
+    >
+      <div class="text-sm text-gray-600 mt-1">
+        <span class="font-medium text-green-600">{dashboardStats.listings.sold}</span> sold
       </div>
-      <div class="mt-4">
-        <button 
-          on:click={() => navigateToSection('/dashboard/listings')}
-          class="text-blue-600 hover:text-blue-700 text-sm font-medium"
-        >
-          Manage Listings →
-        </button>
-      </div>
-    </div>
+    </ServiceStatsCard>
 
-    <!-- Offers -->
-    <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-200">
-      <div class="flex items-center justify-between">
-        <div>
-          <p class="text-sm font-medium text-gray-600">Properties with Offers</p>
-          <p class="text-3xl font-bold text-gray-900 mt-2">
-            {loading ? '...' : dashboardStats.totalOffers}
-          </p>
-          <p class="text-sm text-orange-600 mt-1">
-            <span class="font-medium">Active</span> negotiations
-          </p>
-        </div>
-        <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
-          <span class="text-2xl">💰</span>
-        </div>
+    <!-- Offers Stats -->
+    <ServiceStatsCard 
+      title="Offers"
+      value={dashboardStats.activities.offers}
+      change={0}
+      icon="💰"
+      color="green"
+      loading={loading}
+      on:click={() => navigateToSection('/dashboard/offers')}
+    >
+      <div class="text-sm text-gray-600 mt-1">
+        <span class="font-medium">Active</span> negotiations
       </div>
-      <div class="mt-4">
-        <button 
-          on:click={() => navigateToSection('/dashboard/offers')}
-          class="text-green-600 hover:text-green-700 text-sm font-medium"
-        >
-          Review Offers →
-        </button>
-      </div>
-    </div>
+    </ServiceStatsCard>
 
-    <!-- Open Houses -->
-    <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-200">
-      <div class="flex items-center justify-between">
-        <div>
-          <p class="text-sm font-medium text-gray-600">Open Houses</p>
-          <p class="text-3xl font-bold text-gray-900 mt-2">
-            {loading ? '...' : dashboardStats.openHouses}
-          </p>
-          <p class="text-sm text-purple-600 mt-1">
-            <span class="font-medium">Scheduled</span> events
-          </p>
-        </div>
-        <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
-          <span class="text-2xl">🚪</span>
-        </div>
+    <!-- Staging Stats -->
+    <ServiceStatsCard 
+      title="Staging"
+      value={dashboardStats.services.stagings}
+      change={0}
+      icon="✨"
+      color="purple"
+      loading={loading}
+      on:click={() => navigateToSection('/dashboard/stagings')}
+    >
+      <div class="text-sm text-gray-600 mt-1">
+        <span class="font-medium">Active</span> projects
       </div>
-      <div class="mt-4">
-        <button 
-          on:click={() => navigateToSection('/dashboard/openhouses')}
-          class="text-purple-600 hover:text-purple-700 text-sm font-medium"
-        >
-          Manage Events →
-        </button>
-      </div>
-    </div>
+    </ServiceStatsCard>
 
-    <!-- Staging Requests -->
-    <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-200">
-      <div class="flex items-center justify-between">
-        <div>
-          <p class="text-sm font-medium text-gray-600">Staging Requests</p>
-          <p class="text-3xl font-bold text-gray-900 mt-2">
-            {loading ? '...' : dashboardStats.stagingRequests}
-          </p>
-          <p class="text-sm text-pink-600 mt-1">
-            <span class="font-medium">Active</span> projects
-          </p>
-        </div>
-        <div class="w-12 h-12 bg-pink-100 rounded-xl flex items-center justify-center">
-          <span class="text-2xl">✨</span>
-        </div>
+    <!-- Cleaning Stats -->
+    <ServiceStatsCard 
+      title="Cleaning"
+      value={dashboardStats.services.cleanings}
+      change={0}
+      icon="🧹"
+      color="orange"
+      loading={loading}
+      on:click={() => navigateToSection('/dashboard/cleanings')}
+    >
+      <div class="text-sm text-gray-600 mt-1">
+        <span class="font-medium">Scheduled</span> services
       </div>
-      <div class="mt-4">
-        <button 
-          on:click={() => navigateToSection('/dashboard/stagings')}
-          class="text-pink-600 hover:text-pink-700 text-sm font-medium"
-        >
-          View Stagings →
-        </button>
-      </div>
-    </div>
-
-    <!-- Sold Properties -->
-    <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-200">
-      <div class="flex items-center justify-between">
-        <div>
-          <p class="text-sm font-medium text-gray-600">Sold Properties</p>
-          <p class="text-3xl font-bold text-gray-900 mt-2">
-            {loading ? '...' : dashboardStats.soldListings}
-          </p>
-          <p class="text-sm text-green-600 mt-1">
-            <span class="font-medium">This month</span>
-          </p>
-        </div>
-        <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
-          <span class="text-2xl">🎉</span>
-        </div>
-      </div>
-      <div class="mt-4">
-        <span class="text-green-600 text-sm font-medium">
-          Great work! 🎯
-        </span>
-      </div>
-    </div>
-
-    <!-- Quick Actions -->
-    <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-6 border border-gray-200">
-      <div class="text-center">
-        <div class="w-12 h-12 bg-gray-200 rounded-xl flex items-center justify-center mx-auto mb-4">
-          <span class="text-2xl">⚡</span>
-        </div>
-        <h3 class="text-lg font-semibold text-gray-900 mb-2">Quick Actions</h3>
-        <p class="text-sm text-gray-600 mb-4">Get things done faster</p>
-        <div class="space-y-2">
-          <button 
-            on:click={() => navigateToSection('/dashboard/listings')}
-            class="w-full bg-primary text-white py-2 px-4 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors duration-200"
-          >
-            Add New Listing
-          </button>
-          <button 
-            on:click={() => navigateToSection('/dashboard/openhouses')}
-            class="w-full bg-white text-gray-700 py-2 px-4 rounded-lg text-sm font-medium border border-gray-300 hover:bg-gray-50 transition-colors duration-200"
-          >
-            Schedule Open House
-          </button>
-        </div>
-      </div>
-    </div>
+    </ServiceStatsCard>
   </div>
 
-  <!-- Recent Activity and Performance -->
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+  <!-- Performance and Activity Section -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Performance Chart -->
+    <div class="lg:col-span-2 bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h2 class="text-xl font-semibold text-gray-900">Performance</h2>
+          <p class="text-sm text-gray-600">Your business growth over time</p>
+        </div>
+        <div class="flex space-x-2">
+          <button class="text-xs font-medium px-3 py-1 bg-gray-100 rounded-full">6M</button>
+          <button class="text-xs font-medium px-3 py-1 text-gray-500 hover:text-gray-900">1Y</button>
+          <button class="text-xs font-medium px-3 py-1 text-gray-500 hover:text-gray-900">All</button>
+        </div>
+      </div>
+      <PerformanceChart data={performanceData} loading={loading} />
+    </div>
+
     <!-- Recent Activity -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-200">
       <div class="p-6 border-b border-gray-200">
@@ -311,77 +298,102 @@
         {/if}
       </div>
     </div>
+  </div>
 
-    <!-- Performance Overview -->
-    <div class="bg-white rounded-xl shadow-sm border border-gray-200">
-      <div class="p-6 border-b border-gray-200">
-        <h2 class="text-xl font-semibold text-gray-900">Performance Overview</h2>
-        <p class="text-sm text-gray-600 mt-1">Your business metrics at a glance</p>
+  <!-- Secondary Services Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <!-- Video Services -->
+    <ServiceStatsCard 
+      title="Video Services"
+      value={dashboardStats.services.videos}
+      change={0}
+      icon="🎥"
+      color="indigo"
+      loading={loading}
+      on:click={() => navigateToSection('/dashboard/videos')}
+    >
+      <div class="text-sm text-gray-600 mt-1">
+        <span class="font-medium">Media</span> production
       </div>
-      <div class="p-6">
-        <div class="space-y-6">
-          <!-- Success Rate -->
-          <div>
-            <div class="flex justify-between items-center mb-2">
-              <span class="text-sm font-medium text-gray-700">Success Rate</span>
-              <span class="text-sm font-bold text-green-600">
-                {dashboardStats.totalListings > 0 ? Math.round((dashboardStats.soldListings / dashboardStats.totalListings) * 100) : 0}%
-              </span>
-            </div>
-            <div class="w-full bg-gray-200 rounded-full h-2">
-              <div 
-                class="bg-green-500 h-2 rounded-full transition-all duration-500"
-                style="width: {dashboardStats.totalListings > 0 ? (dashboardStats.soldListings / dashboardStats.totalListings) * 100 : 0}%"
-              ></div>
-            </div>
-          </div>
+    </ServiceStatsCard>
 
-          <!-- Active Listings -->
-          <div>
-            <div class="flex justify-between items-center mb-2">
-              <span class="text-sm font-medium text-gray-700">Active Listings</span>
-              <span class="text-sm font-bold text-blue-600">{dashboardStats.activeListings}</span>
-            </div>
-            <div class="w-full bg-gray-200 rounded-full h-2">
-              <div 
-                class="bg-blue-500 h-2 rounded-full transition-all duration-500"
-                style="width: {dashboardStats.totalListings > 0 ? (dashboardStats.activeListings / dashboardStats.totalListings) * 100 : 0}%"
-              ></div>
-            </div>
-          </div>
+    <!-- Social Media -->
+    <ServiceStatsCard 
+      title="Social Media"
+      value={dashboardStats.services.social}
+      change={0}
+      icon="📱"
+      color="pink"
+      loading={loading}
+      on:click={() => navigateToSection('/dashboard/social')}
+    >
+      <div class="text-sm text-gray-600 mt-1">
+        <span class="font-medium">Posts</span> published
+      </div>
+    </ServiceStatsCard>
 
-          <!-- Engagement Score -->
-          <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-4">
-            <div class="flex items-center justify-between">
-              <div>
-                <h3 class="text-sm font-medium text-gray-700">Engagement Score</h3>
-                <p class="text-2xl font-bold text-gray-900 mt-1">8.5/10</p>
-              </div>
-              <div class="text-3xl">📈</div>
-            </div>
-            <p class="text-xs text-gray-600 mt-2">Based on client interactions and activity</p>
-          </div>
+    <!-- Credits -->
+    <ServiceStatsCard 
+      title="Credits"
+      value={dashboardStats.credits.available}
+      change={dashboardStats.credits.used}
+      changeLabel="Used"
+      icon="🪙"
+      color="amber"
+      loading={loading}
+      on:click={() => navigateToSection('/dashboard/credit')}
+    >
+      <div class="text-sm text-gray-600 mt-1">
+        <span class="font-medium">Balance</span> available
+      </div>
+    </ServiceStatsCard>
+
+    <!-- Quick Actions -->
+    <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-6 border border-gray-200">
+      <div class="text-center">
+        <div class="w-12 h-12 bg-gray-200 rounded-xl flex items-center justify-center mx-auto mb-4">
+          <span class="text-2xl">⚡</span>
+        </div>
+        <h3 class="text-lg font-semibold text-gray-900 mb-2">Quick Actions</h3>
+        <p class="text-sm text-gray-600 mb-4">Get things done faster</p>
+        <div class="space-y-2">
+          <button 
+            on:click={() => navigateToSection('/dashboard/listings/new')}
+            class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors duration-200"
+          >
+            Add Listing
+          </button>
+          <button 
+            on:click={() => navigateToSection('/dashboard/services')}
+            class="w-full bg-white text-gray-700 py-2 px-4 rounded-lg text-sm font-medium border border-gray-300 hover:bg-gray-50 transition-colors duration-200"
+          >
+            Book Service
+          </button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Tips and Recommendations -->
-  <div class="bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-6 border border-amber-200">
+  <!-- Recommendations -->
+  <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200">
     <div class="flex items-start space-x-4">
-      <div class="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0">
+      <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
         <span class="text-2xl">💡</span>
       </div>
       <div>
-        <h3 class="text-lg font-semibold text-gray-900 mb-2">Today's Recommendations</h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="bg-white rounded-lg p-4 border border-amber-200">
-            <h4 class="font-medium text-gray-900 mb-1">Follow up on offers</h4>
-            <p class="text-sm text-gray-600">You have {dashboardStats.totalOffers} properties with pending offers that need attention.</p>
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">Recommendations</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="bg-white rounded-lg p-4 border border-blue-200">
+            <h4 class="font-medium text-gray-900 mb-1">Boost listings</h4>
+            <p class="text-sm text-gray-600">Use social media to promote your active listings.</p>
           </div>
-          <div class="bg-white rounded-lg p-4 border border-amber-200">
-            <h4 class="font-medium text-gray-900 mb-1">Schedule open houses</h4>
-            <p class="text-sm text-gray-600">Consider scheduling open houses for your active listings to increase visibility.</p>
+          <div class="bg-white rounded-lg p-4 border border-blue-200">
+            <h4 class="font-medium text-gray-900 mb-1">Schedule cleanings</h4>
+            <p class="text-sm text-gray-600">Regular cleanings improve property presentation.</p>
+          </div>
+          <div class="bg-white rounded-lg p-4 border border-blue-200">
+            <h4 class="font-medium text-gray-900 mb-1">Use credits</h4>
+            <p class="text-sm text-gray-600">You have {dashboardStats.credits.available} credits available to use.</p>
           </div>
         </div>
       </div>

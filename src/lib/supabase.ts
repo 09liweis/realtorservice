@@ -452,7 +452,7 @@ export const getUserCredits = async (user_id: string) => {
 }
 
 // Social Media Services CRUD operations
-export const getUserSocialMediaServices = async (user_id: string) => {
+export const getUserSocialMediaServices = async ({user_id}: any) => {
   return await supabase
     .from('social_media_services')
     .select('*')
@@ -492,7 +492,7 @@ export const deleteSocialMediaService = async (id: string) => {
 }
 
 // Video Services CRUD operations
-export const getUserVideoServices = async (user_id: string) => {
+export const getUserVideoServices = async ({user_id}: any) => {
   return await supabase
     .from('video_services')
     .select('*')
