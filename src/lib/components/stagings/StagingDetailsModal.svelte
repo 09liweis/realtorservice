@@ -2,7 +2,7 @@
   import { createEventDispatcher } from 'svelte';
   import FormBackdrop from '../form/FormBackdrop.svelte';
   import type { Staging } from '$lib/types/staging';
-    import { formatAmount, type StagingCleaningStatus } from '$lib/types/constant';
+    import { formatAmount, getStatusStyle, type StagingCleaningStatus } from '$lib/types/constant';
     import { formatDate } from '$lib/helper';
 
   export let request: Staging;
@@ -18,24 +18,6 @@
   // Edit request
   function handleEdit() {
     dispatch('edit', request);
-  }
-
-  // Get status badge style
-  function getStatusStyle(status: StagingCleaningStatus) {
-    switch (status) {
-      case 'draft':
-        return 'bg-gray-100 text-gray-800';
-      case 'submitted':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'confirmed':
-        return 'bg-blue-100 text-blue-800';
-      case 'paid':
-        return 'bg-green-100 text-green-800';
-      case 'scheduled':
-        return 'bg-purple-100 text-purple-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
-    }
   }
 </script>
 

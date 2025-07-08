@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Staging } from '$lib/types/staging';
   import type { Cleaning } from '$lib/types/cleaning';
+    import { getStatusStyle } from '$lib/types/constant';
 
   export let request: Staging | Cleaning;
   export let tp: string = "staging"; // "staging" or "cleaning"
@@ -76,19 +77,6 @@
           description: 'Cleaning service completed successfully'
         }
       ];
-    }
-  }
-
-  function getStatusStyle(status: string) {
-    switch (status) {
-      case 'completed':
-        return 'bg-green-100 text-green-800 border-green-200';
-      case 'current':
-        return 'bg-blue-100 text-blue-800 border-blue-200';
-      case 'pending':
-        return 'bg-gray-100 text-gray-600 border-gray-200';
-      default:
-        return 'bg-gray-100 text-gray-600 border-gray-200';
     }
   }
 
