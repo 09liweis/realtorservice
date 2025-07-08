@@ -2,6 +2,7 @@
   import Input from '$lib/components/Input.svelte';
   import Button from '$lib/components/Button.svelte';
   import ImageUpload from '$lib/components/ImageUpload.svelte';
+  import Select from '$lib/components/Select.svelte';
   import type { Listing } from '$lib/types/listing';
 
   export let listing: Listing;
@@ -97,9 +98,17 @@
     'Financial Information',
     'Images'
   ];
+
+  // Helper function to convert options array to Select component format
+  function formatSelectOptions(options: string[]) {
+    return [
+      { value: '', label: 'Select an option' },
+      ...options.map(option => ({ value: option, label: option }))
+    ];
+  }
 </script>
 
-<div class="bg-white rounded shadow-xl max-w-4xl mx-auto max-h-[90vh] overflow-hidden flex flex-col">
+<div class="bg-white shadow rounded-xl max-w-4xl mx-auto max-h-[90vh] overflow-hidden flex flex-col">
   <!-- Header -->
   <div class="bg-primary px-8 py-6 text-white">
     <h2 class="text-2xl font-bold">
@@ -164,28 +173,20 @@
             {#each basicInfoFields as field}
               {#if field.type === 'select'}
                 <div>
-                  <label for={field.name} class="block text-sm font-medium text-gray-700 mb-2">
-                    {field.label}
-                    {#if field.required}<span class="text-red-500">*</span>{/if}
-                  </label>
-                  <select
+                  <Select
                     id={field.name}
+                    label={field.label + (field.required ? ' *' : '')}
                     bind:value={listing[field.name]}
+                    options={formatSelectOptions(field.options)}
                     required={field.required}
-                    class="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                  >
-                    <option value="">Select {field.label}</option>
-                    {#each field.options as option}
-                      <option value={option}>{option}</option>
-                    {/each}
-                  </select>
+                  />
                 </div>
               {:else}
                 <Input 
                   id={field.name}
                   bind:value={listing[field.name]}
                   type={field.type}
-                  label={field.label}
+                  label={field.label + (field.required ? ' *' : '')}
                   required={field.required}
                   placeholder="Enter {field.label.toLowerCase()}"
                 />
@@ -207,19 +208,12 @@
             {#each propertyDetailsFields as field}
               {#if field.type === 'select'}
                 <div>
-                  <label for={field.name} class="block text-sm font-medium text-gray-700 mb-2">
-                    {field.label}
-                  </label>
-                  <select
+                  <Select
                     id={field.name}
+                    label={field.label}
                     bind:value={listing[field.name]}
-                    class="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                  >
-                    <option value="">Select {field.label}</option>
-                    {#each field.options as option}
-                      <option value={option}>{option}</option>
-                    {/each}
-                  </select>
+                    options={formatSelectOptions(field.options)}
+                  />
                 </div>
               {:else}
                 <Input 
@@ -249,19 +243,12 @@
             {#each amenitiesFields as field}
               {#if field.type === 'select'}
                 <div>
-                  <label for={field.name} class="block text-sm font-medium text-gray-700 mb-2">
-                    {field.label}
-                  </label>
-                  <select
+                  <Select
                     id={field.name}
+                    label={field.label}
                     bind:value={listing[field.name]}
-                    class="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                  >
-                    <option value="">Select {field.label}</option>
-                    {#each field.options as option}
-                      <option value={option}>{option}</option>
-                    {/each}
-                  </select>
+                    options={formatSelectOptions(field.options)}
+                  />
                 </div>
               {:else}
                 <Input 
