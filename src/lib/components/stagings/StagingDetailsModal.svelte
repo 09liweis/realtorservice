@@ -2,6 +2,8 @@
   import { createEventDispatcher } from 'svelte';
   import FormBackdrop from '../form/FormBackdrop.svelte';
   import type { Staging } from '$lib/types/staging';
+    import { formatAmount, type StagingCleaningStatus } from '$lib/types/constant';
+    import { formatDate } from '$lib/helper';
 
   export let request: Staging;
   export let show = false;
@@ -18,40 +20,8 @@
     dispatch('edit', request);
   }
 
-  // Format currency for Canadian dollars
-  function formatCurrency(amount: number): string {
-    if (!amount) return 'Quote pending';
-    return new Intl.NumberFormat('en-CA', {
-      style: 'currency',
-      currency: 'CAD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }).format(amount);
-  }
-
-  // Format amount
-  function formatAmount(amount) {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      maximumFractionDigits: 0
-    }).format(amount);
-  }
-
-  // Format date
-  function formatDate(dateString) {
-    if (!dateString) return 'Not scheduled';
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  }
-
-  import type { StagingStatus } from '$lib/types/staging';
-
   // Get status badge style
-  function getStatusStyle(status: StagingStatus) {
+  function getStatusStyle(status: StagingCleaningStatus) {
     switch (status) {
       case 'draft':
         return 'bg-gray-100 text-gray-800';
@@ -61,7 +31,7 @@
         return 'bg-blue-100 text-blue-800';
       case 'paid':
         return 'bg-green-100 text-green-800';
-      case 'schedule':
+      case 'scheduled':
         return 'bg-purple-100 text-purple-800';
       default:
         return 'bg-gray-100 text-gray-800';
@@ -99,14 +69,14 @@
               <!-- Property Information -->
               <div>
                 <h4 class="text-sm font-medium text-gray-500">Property Location</h4>
-                <p class="mt-1 text-sm text-gray-900">{request.location || request.property}</p>
+                <p class="mt-1 text-sm text-gray-900">{request.location}</p>
               </div>
 
               <!-- Property Details -->
               <div class="grid grid-cols-2 gap-4">
                 <div>
                   <h4 class="text-sm font-medium text-gray-500">Property Type</h4>
-                  <p class="mt-1 text-sm text-gray-900">{request.property_type || request.type}</p>
+                  <p class="mt-1 text-sm text-gray-900">{request.property_type}</p>
                 </div>
                 <div>
                   <h4 class="text-sm font-medium text-gray-500">Size</h4>
@@ -139,7 +109,7 @@
                 <div>
                   <h4 class="text-sm font-medium text-gray-500">Staging Quote</h4>
                   <p class="mt-1 text-lg font-bold text-blue-600">
-                    {formatCurrency(request.estimate_price)}
+                    {formatAmount(request.estimate_price)}
                   </p>
                 </div>
               </div>
@@ -149,7 +119,7 @@
                 <div>
                   <h4 class="text-sm font-medium text-gray-500">Start Date</h4>
                   <p class="mt-1 text-sm text-gray-900">
-                    {request.timeline || (request.scheduledDate ? formatDate(request.scheduledDate) : 'Not specified')}
+                    {request.timeline || (request.timeline ? formatDate(request.timeline) : 'Not specified')}
                   </p>
                 </div>
                 <div>
@@ -160,36 +130,12 @@
                 </div>
               </div>
 
-              <!-- Contact Information -->
-              <div>
-                <h4 class="text-sm font-medium text-gray-500">Contact Information</h4>
-                <div class="mt-1 text-sm text-gray-900">
-                  <p>{request.contactPerson}</p>
-                  {#if request.contactEmail}
-                    <p class="mt-1">
-                      <span class="text-gray-500">Email:</span>
-                      <a href="mailto:{request.contactEmail}" class="text-blue-600 hover:underline">
-                        {request.contactEmail}
-                      </a>
-                    </p>
-                  {/if}
-                  {#if request.contactPhone}
-                    <p class="mt-1">
-                      <span class="text-gray-500">Phone:</span>
-                      <a href="tel:{request.contactPhone}" class="text-blue-600 hover:underline">
-                        {request.contactPhone}
-                      </a>
-                    </p>
-                  {/if}
-                </div>
-              </div>
-
               <!-- Pricing Breakdown -->
               {#if request.estimate_price}
                 <div class="bg-blue-50 rounded-lg p-4 border border-blue-200">
                   <h4 class="text-sm font-medium text-blue-900 mb-2">💰 Staging Investment</h4>
                   <div class="text-2xl font-bold text-blue-600 mb-2">
-                    {formatCurrency(request.estimate_price)}
+                    {formatAmount(request.estimate_price)}
                   </div>
                   <div class="text-xs text-blue-700 space-y-1">
                     <div>✓ Professional furniture & decor</div>
