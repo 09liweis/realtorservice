@@ -1,3 +1,5 @@
+import type { ProjectStatus } from './constant';
+
 export interface VideoService {
   id?: string;
   user_id?: string;
@@ -5,7 +7,7 @@ export interface VideoService {
   number_of_videos: number;
   price?: number;
   notes?: string;
-  status: string;
+  status: ProjectStatus;
   addons?: string[]; // Array of addon service types
   created_at?: string;
   updated_at?: string;

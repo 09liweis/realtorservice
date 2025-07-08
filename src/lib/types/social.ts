@@ -1,3 +1,5 @@
+import type { ProjectStatus } from './constant';
+
 export interface SocialMediaService {
   id?: string;
   user_id?: string;
@@ -8,7 +10,7 @@ export interface SocialMediaService {
   estimate_price?: number;
   quotation_price?: number;
   addons: string[]; // Array of addon service types
-  status: string;
+  status: ProjectStatus;
   created_at?: string;
   updated_at?: string;
 }
@@ -102,7 +104,7 @@ export const EMPTY_SOCIAL_MEDIA_SERVICE: SocialMediaService = {
   estimate_price: 0,
   quotation_price: 0,
   addons: [],
-  status: 'pending'
+  status: 'submitted' as ProjectStatus
 };
 
 // Calculate pricing for social media service
