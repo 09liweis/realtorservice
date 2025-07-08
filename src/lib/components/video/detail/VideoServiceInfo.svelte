@@ -1,19 +1,10 @@
 <script lang="ts">
+    import { formatAmount } from '$lib/types/constant';
   import type { VideoService } from '$lib/types/video';
 
   export let videoService: VideoService;
   export let serviceTypeInfo: any;
   export let addonInfo: any[];
-
-  // Format currency
-  function formatCurrency(amount: number): string {
-    return new Intl.NumberFormat('en-CA', {
-      style: 'currency',
-      currency: 'CAD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }).format(amount);
-  }
 </script>
 
 <div class="bg-white rounded-xl shadow-sm border border-gray-200">
@@ -49,7 +40,7 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
                 </svg>
                 <span class="text-purple-700">
-                  {serviceTypeInfo.isCustomQuote ? 'Custom Quote' : formatCurrency(serviceTypeInfo.price)}
+                  {serviceTypeInfo.isCustomQuote ? 'Custom Quote' : formatAmount(serviceTypeInfo.price)}
                 </span>
               </div>
               <div class="flex items-center space-x-2">
@@ -77,7 +68,7 @@
                   <p class="text-sm text-gray-600 mt-1">{addon.description}</p>
                 </div>
                 <div class="text-right">
-                  <div class="font-bold text-purple-600">+{formatCurrency(addon.price)}</div>
+                  <div class="font-bold text-purple-600">+{formatAmount(addon.price)}</div>
                   <div class="text-xs text-gray-500">{addon.turnaround}</div>
                 </div>
               </div>

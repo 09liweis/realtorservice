@@ -1,18 +1,10 @@
 <script lang="ts">
+    import { formatAmount } from '$lib/types/constant';
   import type { VideoService } from '$lib/types/video';
 
   export let videoService: VideoService;
   export let pricingInfo: any;
 
-  // Format currency
-  function formatCurrency(amount: number): string {
-    return new Intl.NumberFormat('en-CA', {
-      style: 'currency',
-      currency: 'CAD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }).format(amount);
-  }
 </script>
 
 <div class="bg-white rounded-xl shadow-sm border border-gray-200">
@@ -44,7 +36,7 @@
           {#if pricingInfo.serviceInfo?.isCustomQuote && !pricingInfo.isCustomPrice}
             Contact for Quote
           {:else}
-            {formatCurrency(pricingInfo.totalPrice)}
+            {formatAmount(pricingInfo.totalPrice)}
           {/if}
         </div>
         <div class="text-sm text-blue-700">
@@ -63,7 +55,7 @@
           </span>
         </div>
         <div class="text-2xl font-bold text-green-900 mb-1">
-          {videoService.price ? formatCurrency(videoService.price) : 'Pending Quote'}
+          {videoService.price ? formatAmount(videoService.price) : 'Pending Quote'}
         </div>
         <div class="text-sm text-green-700">Final Quoted Price</div>
       </div>
@@ -83,7 +75,7 @@
           <div class="flex justify-between items-center py-2 border-b border-gray-200">
             <span class="text-gray-700">Base price per video:</span>
             <span class="font-medium text-gray-900">
-              {formatCurrency(pricingInfo.basePrice)}
+              {formatAmount(pricingInfo.basePrice)}
               {#if pricingInfo.isCustomPrice}
                 <span class="text-xs text-purple-600">(Custom)</span>
               {/if}
@@ -102,19 +94,19 @@
               {#each pricingInfo.addonInfo as addon}
                 <div class="flex justify-between text-sm text-purple-600 py-1">
                   <span>{addon.label}:</span>
-                  <span>+{formatCurrency(addon.price)}</span>
+                  <span>+{formatAmount(addon.price)}</span>
                 </div>
               {/each}
               <div class="flex justify-between text-sm font-medium text-purple-700 mt-1 pt-1 border-t border-purple-100">
                 <span>Add-ons subtotal:</span>
-                <span>+{formatCurrency(pricingInfo.addonPrice)}</span>
+                <span>+{formatAmount(pricingInfo.addonPrice)}</span>
               </div>
             </div>
           {/if}
           
           <div class="flex justify-between items-center py-3 border-t-2 border-gray-300 text-lg font-bold">
             <span class="text-gray-900">Total Cost:</span>
-            <span class="text-purple-600">{formatCurrency(pricingInfo.totalPrice)}</span>
+            <span class="text-purple-600">{formatAmount(pricingInfo.totalPrice)}</span>
           </div>
         </div>
       </div>
