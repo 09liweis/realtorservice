@@ -9,7 +9,7 @@
   import CleaningFinancialInfo from '$lib/components/cleanings/detail/CleaningFinancialInfo.svelte';
   import { fade, fly } from 'svelte/transition';
     import StagingCleaningHeader from '$lib/components/common/StagingCleaningHeader.svelte';
-    import StagingCleaningActions from '$lib/components/common/StagingCleaningActions.svelte';
+    import DetailActions from '$lib/components/common/DetailActions.svelte';
     import StagingCleaningTimeline from '$lib/components/common/StagingCleaningTimeline.svelte';
 
   const cleaningId = $page.params.cleaningId;
@@ -142,7 +142,7 @@
 
         <!-- Right Column - Actions and Summary -->
         <div class="lg:col-span-1">
-          <StagingCleaningActions
+          <DetailActions
             request={cleaning}
             tp="cleaning"
             on:statusUpdate={handleStatusUpdate}

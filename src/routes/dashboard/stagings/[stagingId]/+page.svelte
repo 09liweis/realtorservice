@@ -9,7 +9,7 @@
   import StagingFinancialInfo from '$lib/components/stagings/detail/StagingFinancialInfo.svelte';
   import StagingCleaningTimeline from '$lib/components/common/StagingCleaningTimeline.svelte';
   import { fade, fly } from 'svelte/transition';
-  import StagingCleaningActions from '$lib/components/common/StagingCleaningActions.svelte';
+  import DetailActions from '$lib/components/common/DetailActions.svelte';
   import Link from '$lib/components/Link.svelte';
   import StagingCleaningHeader from '$lib/components/common/StagingCleaningHeader.svelte';
 
@@ -134,7 +134,7 @@
 
         <!-- Right Column - Actions and Summary -->
         <div class="lg:col-span-1">
-          <StagingCleaningActions
+          <DetailActions
             tp="staging" 
             request={staging} 
             on:edit={handleEdit}
