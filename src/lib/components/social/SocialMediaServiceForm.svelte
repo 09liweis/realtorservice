@@ -14,6 +14,7 @@
   import Select from '$lib/components/Select.svelte';
   import CheckBox from '$lib/components/common/CheckBox.svelte';
   import { user } from '$lib/stores/auth';
+    import { formatAmount } from '$lib/types/constant';
 
   export let socialMediaService: SocialMediaService = { ...EMPTY_SOCIAL_MEDIA_SERVICE };
   export let isEdit = false;
@@ -109,16 +110,6 @@
     } else {
       socialMediaService.addons = socialMediaService.addons.filter(addon => addon !== addonValue);
     }
-  }
-
-  // Format currency
-  function formatCurrency(amount: number): string {
-    return new Intl.NumberFormat('en-CA', {
-      style: 'currency',
-      currency: 'CAD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }).format(amount);
   }
 
   // Get discount percentage
@@ -234,7 +225,7 @@
               <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
                 <CheckBox
                   id="addon_{addon.value}"
-                  label="{addon.label} - {formatCurrency(addon.price)}/{addon.unit}"
+                  label="{addon.label} - {formatAmount(addon.price)}/{addon.unit}"
                   checked={socialMediaService.addons?.includes(addon.value) || false}
                   disabled={loading}
                   on:change={(e) => handleAddonChange(addon.value, e.detail.checked)}
@@ -328,7 +319,7 @@
                 <div class="flex justify-between text-sm">
                   <span class="text-gray-600">Base service price:</span>
                   <span class="font-medium">
-                    {formatCurrency(pricingInfo.basePrice)}
+                    {formatAmount(pricingInfo.basePrice)}
                     {#if pricingInfo.isCustomPrice}
                       <span class="text-xs text-pink-600">(Custom)</span>
                     {/if}
@@ -338,7 +329,7 @@
                 {#if socialMediaService.subscription_type !== 'Monthly'}
                   <div class="flex justify-between text-sm text-gray-600">
                     <span>Monthly equivalent:</span>
-                    <span>{formatCurrency(pricingInfo.monthlyEquivalent)}/month</span>
+                    <span>{formatAmount(pricingInfo.monthlyEquivalent)}/month</span>
                   </div>
                 {/if}
 
@@ -349,12 +340,12 @@
                     {#each pricingInfo.addonInfo as addon}
                       <div class="flex justify-between text-sm text-pink-600">
                         <span>{addon.label}:</span>
-                        <span>+{formatCurrency(addon.price)}/{addon.unit}</span>
+                        <span>+{formatAmount(addon.price)}/{addon.unit}</span>
                       </div>
                     {/each}
                     <div class="flex justify-between text-sm font-medium text-pink-700 mt-1 pt-1 border-t border-pink-100">
                       <span>Add-ons total:</span>
-                      <span>+{formatCurrency(pricingInfo.addonPrice)}</span>
+                      <span>+{formatAmount(pricingInfo.addonPrice)}</span>
                     </div>
                   </div>
                 {/if}
@@ -363,7 +354,7 @@
                   <div class="border-t border-pink-200 pt-2">
                     <div class="flex justify-between text-sm text-green-600 font-medium">
                       <span>You save:</span>
-                      <span>{formatCurrency(pricingInfo.savings)}</span>
+                      <span>{formatAmount(pricingInfo.savings)}</span>
                     </div>
                   </div>
                 {/if}
@@ -372,7 +363,7 @@
                   <div class="flex justify-between text-base font-semibold">
                     <span>Total Cost:</span>
                     <span class="text-pink-600">
-                      {formatCurrency(pricingInfo.totalPrice)}
+                      {formatAmount(pricingInfo.totalPrice)}
                       {#if pricingInfo.isCustomPrice}
                         <span class="text-xs text-pink-600">(Custom)</span>
                       {/if}
@@ -447,7 +438,7 @@
         {isEdit ? 'Update Service' : 'Request Service'}
         {#if pricingInfo.totalPrice > 0}
           <span class="ml-2 text-sm opacity-75">
-            ({formatCurrency(pricingInfo.totalPrice)})
+            ({formatAmount(pricingInfo.totalPrice)})
           </span>
         {/if}
       </Button>
