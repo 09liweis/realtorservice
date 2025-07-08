@@ -13,17 +13,6 @@ export interface SocialMediaService {
   updated_at?: string;
 }
 
-export enum SocialMediaPlatform {
-  FACEBOOK = 'Facebook',
-  TWITTER = 'Twitter',
-  INSTAGRAM = 'Instagram',
-  LINKEDIN = 'LinkedIn',
-  YOUTUBE = 'YouTube',
-  TIKTOK = 'TikTok',
-  PINTEREST = 'Pinterest',
-  OTHER = 'Other'
-}
-
 export const SOCIAL_MEDIA_PLATFORMS = [
   { value: 'Facebook', label: 'Facebook' },
   { value: 'Instagram', label: 'Instagram' },

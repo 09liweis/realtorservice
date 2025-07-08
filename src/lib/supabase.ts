@@ -451,23 +451,6 @@ export const getUserCredits = async (user_id: string) => {
   return { data: totalCredits, error: null };
 }
 
-// Temporary function to check if social_media_accounts table exists
-export const checkSocialMediaTableExists = async () => {
-  try {
-    const { data, error } = await supabase
-      .from('social_media_accounts')
-      .select('*')
-      .limit(1);
-    
-    if (error) {
-      return { exists: false, error };
-    }
-    return { exists: true, error: null };
-  } catch (err) {
-    return { exists: false, error: err };
-  }
-}
-
 // Social Media Services CRUD operations
 export const getUserSocialMediaServices = async (user_id: string) => {
   return await supabase
