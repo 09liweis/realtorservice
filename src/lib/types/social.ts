@@ -16,12 +16,10 @@ export interface SocialMediaService {
 export const SOCIAL_MEDIA_PLATFORMS = [
   { value: 'Facebook', label: 'Facebook' },
   { value: 'Instagram', label: 'Instagram' },
-  { value: 'LinkedIn', label: 'LinkedIn' },
-  { value: 'Twitter', label: 'Twitter (X)' },
   { value: 'TikTok', label: 'TikTok' },
   { value: 'YouTube', label: 'YouTube' },
-  { value: 'Pinterest', label: 'Pinterest' },
-  { value: 'Other', label: 'Other' }
+  { value: 'WeChat', label: 'WeChat' },
+  { value: 'XiaoHongShu', label: 'XiaoHongShu (RED)' },
 ];
 
 export const SUBSCRIPTION_TYPES = [
