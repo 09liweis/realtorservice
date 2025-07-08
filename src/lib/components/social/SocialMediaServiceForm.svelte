@@ -144,7 +144,7 @@
 
 <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden max-w-6xl mx-auto">
   <!-- Header -->
-  <div class="bg-gradient-to-r from-pink-600 to-purple-600 px-6 py-4 text-white">
+  <div class="bg-primary px-6 py-4 text-white">
     <div class="flex items-center justify-between">
       <h2 class="text-xl font-bold">
         {isEdit ? 'Edit Social Media Service' : 'New Social Media Service'}

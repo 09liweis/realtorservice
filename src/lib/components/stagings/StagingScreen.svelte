@@ -126,33 +126,31 @@
   <!-- 主内容区域 -->
   {#if showForm}
     <div transition:fade={{ duration: 200 }}>
-      <FormBackdrop handleClose={cancelForm}>
-        <StagingForm
-          isEdit={isEditMode}
-          request={currentRequest}
-          on:submit={handleSubmit}
-          on:cancel={cancelForm}
-        />
-      </FormBackdrop>
+      <StagingForm
+        isEdit={isEditMode}
+        request={currentRequest}
+        on:submit={handleSubmit}
+        on:cancel={cancelForm}
+      />
     </div>
+  {:else}
+    <!-- 过滤器 -->
+    <!-- <StagingFilters
+      {searchQuery}
+      {statusFilter}
+      {typeFilter}
+      {sortBy}
+      on:filter={handleFilterChange}
+    /> -->
+
+    <!-- 请求列表 -->
+    <StagingsList
+      requests={filteredRequests}
+      {loading}
+      {error}
+      on:edit={(e) => editRequest(e.detail)}
+      on:delete={(e) => deleteRequest(e.detail)}
+      on:new={newRequest}
+    />
   {/if}
-
-  <!-- 过滤器 -->
-  <!-- <StagingFilters
-    {searchQuery}
-    {statusFilter}
-    {typeFilter}
-    {sortBy}
-    on:filter={handleFilterChange}
-  /> -->
-
-  <!-- 请求列表 -->
-  <StagingsList
-    requests={filteredRequests}
-    {loading}
-    {error}
-    on:edit={(e) => editRequest(e.detail)}
-    on:delete={(e) => deleteRequest(e.detail)}
-    on:new={newRequest}
-  />
 </div>

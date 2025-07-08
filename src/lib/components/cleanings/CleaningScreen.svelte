@@ -108,24 +108,22 @@
   <!-- Main content area -->
   {#if showForm}
     <div transition:fade={{ duration: 200 }}>
-      <FormBackdrop handleClose={cancelForm}>
-        <CleaningForm
-          isEdit={isEditMode}
-          request={currentRequest}
-          on:submit={handleSubmit}
-          on:cancel={cancelForm}
-        />
-      </FormBackdrop>
+      <CleaningForm
+        isEdit={isEditMode}
+        request={currentRequest}
+        on:submit={handleSubmit}
+        on:cancel={cancelForm}
+      />
     </div>
+  {:else}
+    <!-- Request list -->
+    <CleaningList
+      requests={filteredRequests}
+      {loading}
+      {error}
+      on:edit={(e) => editRequest(e.detail)}
+      on:delete={(e) => deleteRequest(e.detail)}
+      on:new={newRequest}
+    />
   {/if}
-
-  <!-- Request list -->
-  <CleaningList
-    requests={filteredRequests}
-    {loading}
-    {error}
-    on:edit={(e) => editRequest(e.detail)}
-    on:delete={(e) => deleteRequest(e.detail)}
-    on:new={newRequest}
-  />
 </div>
