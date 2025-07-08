@@ -7,6 +7,7 @@
   import Select from '$lib/components/Select.svelte';
   import CheckBox from '$lib/components/common/CheckBox.svelte';
   import { user } from '$lib/stores/auth';
+    import { formatAmount } from '$lib/types/constant';
 
   export let videoService: VideoService = { ...EMPTY_VIDEO_SERVICE };
   export let isEdit = false;
@@ -80,16 +81,6 @@
     } else {
       videoService.addons = videoService.addons.filter(addon => addon !== addonValue);
     }
-  }
-
-  // Format currency
-  function formatCurrency(amount: number): string {
-    return new Intl.NumberFormat('en-CA', {
-      style: 'currency',
-      currency: 'CAD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }).format(amount);
   }
 </script>
 
@@ -166,7 +157,7 @@
               <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
                 <CheckBox
                   id="addon_{addon.value}"
-                  label="{addon.label} - {formatCurrency(addon.price)}"
+                  label="{addon.label} - {formatAmount(addon.price)}"
                   checked={videoService.addons?.includes(addon.value) || false}
                   disabled={loading}
                   on:change={(e) => handleAddonChange(addon.value, e.detail.checked)}
@@ -258,7 +249,7 @@
                     {#if pricingInfo.serviceInfo.isCustomQuote && !pricingInfo.isCustomPrice}
                       Custom Quote
                     {:else}
-                      {formatCurrency(pricingInfo.basePrice)}
+                      {formatAmount(pricingInfo.basePrice)}
                       {#if pricingInfo.isCustomPrice}
                         <span class="text-xs text-purple-600">(Custom)</span>
                       {/if}
@@ -273,12 +264,12 @@
                     {#each pricingInfo.addonInfo as addon}
                       <div class="flex justify-between text-sm text-purple-600">
                         <span>{addon.label}:</span>
-                        <span>+{formatCurrency(addon.price)}</span>
+                        <span>+{formatAmount(addon.price)}</span>
                       </div>
                     {/each}
                     <div class="flex justify-between text-sm font-medium text-purple-700 mt-1 pt-1 border-t border-purple-100">
                       <span>Add-ons subtotal:</span>
-                      <span>+{formatCurrency(pricingInfo.addonPrice)}</span>
+                      <span>+{formatAmount(pricingInfo.addonPrice)}</span>
                     </div>
                   </div>
                 {/if}
@@ -295,7 +286,7 @@
                       {#if pricingInfo.serviceInfo.isCustomQuote && !pricingInfo.isCustomPrice}
                         Contact for Quote
                       {:else}
-                        {formatCurrency(pricingInfo.totalPrice)}
+                        {formatAmount(pricingInfo.totalPrice)}
                         {#if pricingInfo.isCustomPrice}
                           <span class="text-xs text-purple-600">(Custom)</span>
                         {/if}
@@ -371,7 +362,7 @@
         {isEdit ? 'Update Request' : 'Submit Request'}
         {#if pricingInfo.totalPrice > 0}
           <span class="ml-2 text-sm opacity-75">
-            ({formatCurrency(pricingInfo.totalPrice)})
+            ({formatAmount(pricingInfo.totalPrice)})
           </span>
         {/if}
       </Button>
