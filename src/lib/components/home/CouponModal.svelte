@@ -7,6 +7,7 @@
   import Button from '$lib/components/Button.svelte';
   import { fade, fly, scale } from 'svelte/transition';
   import { elasticOut } from 'svelte/easing';
+    import { formatDate } from '$lib/helper';
 
   export let show = false;
 
@@ -47,15 +48,6 @@
 
   function getCouponTypeLabel(type: string): string {
     return COUPON_TYPES.find(t => t.value === type)?.label || type;
-  }
-
-  function formatDate(dateString: string): string {
-    if (!dateString) return '';
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    });
   }
 
   function copyToClipboard(text: string) {

@@ -12,6 +12,7 @@
   import { fade, fly, scale } from 'svelte/transition';
   import { flip } from 'svelte/animate';
     import { formatAmount } from '$lib/types/constant';
+    import { formatDate } from '$lib/helper';
 
   export let socialMediaServices: SocialMediaService[] = [];
   export let loading = false;
@@ -48,13 +49,6 @@
     }
   }
 
-  function formatDate(dateString: string): string {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    });
-  }
 
   function getDisplayPrice(service: SocialMediaService): string {
     // If there's a custom price set, use it

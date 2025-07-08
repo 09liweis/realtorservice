@@ -4,6 +4,7 @@
   import { COUPON_TYPES } from '$lib/types/coupon';
   import { fade, fly } from 'svelte/transition';
   import { flip } from 'svelte/animate';
+    import { formatDate } from '$lib/helper';
 
   export let coupons: Coupon[] = [];
   export let loading = false;
@@ -30,15 +31,6 @@
     return active 
       ? 'bg-green-100 text-green-800 border-green-200' 
       : 'bg-red-100 text-red-800 border-red-200';
-  }
-
-  function formatDate(dateString: string): string {
-    if (!dateString) return 'No expiry';
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    });
   }
 
   function isExpired(dateString: string): boolean {
