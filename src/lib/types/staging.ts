@@ -1,4 +1,4 @@
-import type { StagingCleaningStatus } from "./constant";
+import type { ProjectStatus } from "./constant";
 
 export interface Staging {
   id?: string,
@@ -10,7 +10,7 @@ export interface Staging {
   selling_price: number,
   timeline: string,
   length: string,
-  status: StagingCleaningStatus,
+  status: ProjectStatus,
   created_at?: string,
   updated_at?: string
   estimate_price?: number,
@@ -31,7 +31,7 @@ export const EMPTY_STAGING = {
   selling_price: 0,
   timeline: '',
   length: '',
-  status: 'submitted' as StagingCleaningStatus,
+  status: 'submitted' as ProjectStatus,
   estimate_price: 0,
   quotation_price: 0
 }

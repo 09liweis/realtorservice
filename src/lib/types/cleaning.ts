@@ -1,4 +1,4 @@
-import type { StagingCleaningStatus } from "./constant";
+import type { ProjectStatus } from "./constant";
 
 export interface Cleaning {
   id?: string;
@@ -11,7 +11,7 @@ export interface Cleaning {
   cleaning_type: string;
   frequency: string;
   special_requests?: string;
-  status: StagingCleaningStatus;
+  status: ProjectStatus;
   estimate_price?: number;
   quotation_price?: number;
   scheduled_date?: string;
@@ -35,7 +35,7 @@ export const EMPTY_CLEANING: Cleaning = {
   cleaning_type: 'deep_cleaning',
   frequency: 'one_time',
   special_requests: '',
-  status: 'submitted' as StagingCleaningStatus,
+  status: 'submitted' as ProjectStatus,
   estimate_price: 0,
   quotation_price: 0,
   scheduled_date: ''

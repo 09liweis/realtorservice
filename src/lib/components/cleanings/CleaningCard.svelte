@@ -1,6 +1,6 @@
 <script lang="ts">
   import { user } from "$lib/stores/auth";
-  import { formatAmount, type StagingCleaningStatus } from "$lib/types/constant";
+  import { formatAmount, type ProjectStatus } from "$lib/types/constant";
   import type { Cleaning } from "$lib/types/cleaning";
   import { CLEANING_TYPES, CLEANING_FREQUENCIES } from "$lib/types/cleaning";
   import { upsertCreditRecord, calcUserCredits, upsertCleaning } from "$lib/supabase";
@@ -13,7 +13,7 @@
     import Link from "../Link.svelte";
 
 	// Get status badge style
-	function getStatusStyle(status: StagingCleaningStatus) {
+	function getStatusStyle(status: ProjectStatus) {
 		switch (status) {
 			case 'draft':
 				return 'bg-gray-100 text-gray-800';
