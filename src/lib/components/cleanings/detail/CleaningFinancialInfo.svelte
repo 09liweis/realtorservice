@@ -15,15 +15,7 @@
     parseFloat(cleaning.size) || 0
   );
 
-  // Format currency
-  function formatCurrency(amount: number): string {
-    return new Intl.NumberFormat('en-CA', {
-      style: 'currency',
-      currency: 'CAD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }).format(amount);
-  }
+  // Using formatAmount from constants
 </script>
 
 <div class="bg-white rounded-xl shadow-sm border border-gray-200">
@@ -52,7 +44,7 @@
           </span>
         </div>
         <div class="text-2xl font-bold text-blue-900 mb-1">
-          {cleaning.estimate_price ? formatCurrency(cleaning.estimate_price) : 'Calculating...'}
+          {cleaning.estimate_price ? formatAmount(cleaning.estimate_price) : 'Calculating...'}
         </div>
         <div class="text-sm text-blue-700">System Calculated Price</div>
       </div>
@@ -68,7 +60,7 @@
           </span>
         </div>
         <div class="text-2xl font-bold text-green-900 mb-1">
-          {cleaning.quotation_price ? formatCurrency(cleaning.quotation_price) : 'Pending Quote'}
+          {cleaning.quotation_price ? formatAmount(cleaning.quotation_price) : 'Pending Quote'}
         </div>
         <div class="text-sm text-green-700">Final Quoted Price</div>
       </div>
@@ -95,13 +87,13 @@
           {#if cleaningCalculation.frequencyDiscount > 0}
             <div class="flex justify-between items-center py-2 text-green-600 bg-green-50 px-3 rounded-lg">
               <span class="font-medium">Frequency Discount</span>
-              <span class="font-bold">-{formatCurrency(cleaningCalculation.frequencyDiscount)}</span>
+              <span class="font-bold">-{formatAmount(cleaningCalculation.frequencyDiscount)}</span>
             </div>
           {/if}
           
           <div class="flex justify-between items-center py-3 border-t-2 border-gray-300 text-lg font-bold">
             <span class="text-gray-900">Total Cost</span>
-            <span class="text-green-600">{formatCurrency(cleaningCalculation.totalPrice)}</span>
+            <span class="text-green-600">{formatAmount(cleaningCalculation.totalPrice)}</span>
           </div>
         </div>
       </div>
