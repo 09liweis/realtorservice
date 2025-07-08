@@ -2,7 +2,7 @@
   import { createEventDispatcher } from "svelte";
   import Button from "../Button.svelte";
   import Input from "../Input.svelte";
-  import { PROPERTY_TYPES } from "$lib/types/constant";
+  import { formatAmount, PROPERTY_TYPES } from "$lib/types/constant";
   import { EMPTY_CLEANING, type Cleaning, calculateCleaningPrice, CLEANING_TYPES, CLEANING_FREQUENCIES } from "$lib/types/cleaning";
   import Select from "../Select.svelte";
   import { user } from "$lib/stores/auth";
@@ -56,15 +56,6 @@
     dispatch("cancel");
   }
 
-  // Format currency
-  function formatCurrency(amount: number): string {
-    return new Intl.NumberFormat('en-CA', {
-      style: 'currency',
-      currency: 'CAD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }).format(amount);
-  }
 </script>
 
 <div class="bg-white shadow rounded-lg p-6 max-w-4xl mx-auto">
@@ -244,7 +235,7 @@
                 <div class="text-center">
                   <div class="text-sm text-gray-600 mb-1">Estimated Total Cost</div>
                   <div class="text-3xl font-bold text-green-600">
-                    {formatCurrency(cleaningCalculation.totalPrice)}
+                    {formatAmount(cleaningCalculation.totalPrice)}
                   </div>
                   <div class="text-xs text-gray-500 mt-1">
                     {CLEANING_TYPES.find(t => t.value === request.cleaning_type)?.label || 'Regular Cleaning'}
@@ -269,7 +260,7 @@
                 <div class="border-t border-green-200 pt-2">
                   <div class="flex justify-between text-base font-semibold">
                     <span>Total Cost:</span>
-                    <span class="text-green-600">{formatCurrency(cleaningCalculation.totalPrice)}</span>
+                    <span class="text-green-600">{formatAmount(cleaningCalculation.totalPrice)}</span>
                   </div>
                 </div>
               </div>
@@ -289,7 +280,7 @@
                 <div class="bg-blue-100 rounded-lg p-3 text-xs text-blue-800">
                   <div class="font-medium mb-1">💰 Frequency Savings!</div>
                   <div class="text-blue-700">
-                    You're saving {formatCurrency(cleaningCalculation.frequencyDiscount)} with {CLEANING_FREQUENCIES.find(f => f.value === request.frequency)?.label} service.
+                    You're saving {formatAmount(cleaningCalculation.frequencyDiscount)} with {CLEANING_FREQUENCIES.find(f => f.value === request.frequency)?.label} service.
                   </div>
                 </div>
               {/if}
@@ -327,7 +318,7 @@
         {isEdit ? "Update Request" : "Submit Request"}
         {#if request.rooms && request.bathrooms}
           <span class="ml-2 text-sm opacity-75">
-            ({formatCurrency(cleaningCalculation.totalPrice)})
+            ({formatAmount(cleaningCalculation.totalPrice)})
           </span>
         {/if}
       </Button>
