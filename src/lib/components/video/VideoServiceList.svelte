@@ -5,6 +5,8 @@
   import { fade, fly, scale } from 'svelte/transition';
   import { flip } from 'svelte/animate';
     import Link from '../Link.svelte';
+    import { formatAmount } from '$lib/types/constant';
+    import { formatDate } from '$lib/helper';
 
   export let videoServices: VideoService[] = [];
   export let loading = false;
@@ -49,27 +51,10 @@
     }
   }
 
-  function formatCurrency(amount: number): string {
-    return new Intl.NumberFormat('en-CA', {
-      style: 'currency',
-      currency: 'CAD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }).format(amount);
-  }
-
-  function formatDate(dateString: string): string {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    });
-  }
-
   function getDisplayPrice(videoService: VideoService): string {
     // If there's a custom price set, use it
     if (videoService.price && videoService.price > 0) {
-      return formatCurrency(videoService.price);
+      return formatAmount(videoService.price);
     }
 
     // Otherwise calculate from service type and addons
@@ -83,7 +68,7 @@
       videoService.number_of_videos,
       videoService.addons || []
     );
-    return pricingInfo.totalPrice > 0 ? formatCurrency(pricingInfo.totalPrice) : 'Quote Pending';
+    return pricingInfo.totalPrice > 0 ? formatAmount(pricingInfo.totalPrice) : 'Quote Pending';
   }
 </script>
 
@@ -172,7 +157,7 @@
                       {#if addonInfo}
                         <div class="flex justify-between text-xs text-purple-700">
                           <span>{addonInfo.label}</span>
-                          <span>+{formatCurrency(addonInfo.price)}</span>
+                          <span>+{formatAmount(addonInfo.price)}</span>
                         </div>
                       {/if}
                     {/each}
