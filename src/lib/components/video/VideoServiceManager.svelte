@@ -140,18 +140,8 @@
     </div>
   {/if}
 
-  <!-- Video Service List -->
-  <VideoServiceList 
-    {videoServices} 
-    {loading}
-    on:edit={handleEdit}
-    on:delete={handleDelete}
-  />
-</div>
-
-<!-- Create/Edit Form Modal -->
-{#if showForm}
-  <FormBackdrop handleClose={handleFormCancel}>
+  <!-- Video Service List or Form -->
+  {#if showForm}
     <VideoServiceForm
       videoService={editingVideoService || { ...EMPTY_VIDEO_SERVICE }}
       isEdit={!!editingVideoService}
@@ -159,8 +149,15 @@
       on:submit={handleFormSubmit}
       on:cancel={handleFormCancel}
     />
-  </FormBackdrop>
-{/if}
+  {:else}
+    <VideoServiceList 
+      {videoServices} 
+      {loading}
+      on:edit={handleEdit}
+      on:delete={handleDelete}
+    />
+  {/if}
+</div>
 
 <!-- Delete Confirmation Modal -->
 {#if showDeleteConfirm && videoServiceToDelete}
