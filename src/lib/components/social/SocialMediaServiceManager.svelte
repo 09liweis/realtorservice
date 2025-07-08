@@ -140,18 +140,8 @@
     </div>
   {/if}
 
-  <!-- Social Media Service List -->
-  <SocialMediaServiceList 
-    {socialMediaServices} 
-    {loading}
-    on:edit={handleEdit}
-    on:delete={handleDelete}
-  />
-</div>
-
-<!-- Create/Edit Form Modal -->
-{#if showForm}
-  <FormBackdrop handleClose={handleFormCancel}>
+  <!-- Social Media Service List or Form -->
+  {#if showForm}
     <SocialMediaServiceForm
       socialMediaService={editingService || { ...EMPTY_SOCIAL_MEDIA_SERVICE }}
       isEdit={!!editingService}
@@ -159,8 +149,15 @@
       on:submit={handleFormSubmit}
       on:cancel={handleFormCancel}
     />
-  </FormBackdrop>
-{/if}
+  {:else}
+    <SocialMediaServiceList 
+      {socialMediaServices} 
+      {loading}
+      on:edit={handleEdit}
+      on:delete={handleDelete}
+    />
+  {/if}
+</div>
 
 <!-- Delete Confirmation Modal -->
 {#if showDeleteConfirm && serviceToDelete}
