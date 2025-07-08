@@ -12,16 +12,6 @@
     parseFloat(staging.length) || 1,
     staging.property_type || 'house'
   );
-
-  // Format currency
-  function formatCurrency(amount: number): string {
-    return new Intl.NumberFormat('en-CA', {
-      style: 'currency',
-      currency: 'CAD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }).format(amount);
-  }
 </script>
 
 <div class="bg-white rounded-xl shadow-sm border border-gray-200">
@@ -50,7 +40,7 @@
           </span>
         </div>
         <div class="text-2xl font-bold text-blue-900 mb-1">
-          {staging.estimate_price ? formatCurrency(staging.estimate_price) : 'Calculating...'}
+          {staging.estimate_price ? formatAmount(staging.estimate_price) : 'Calculating...'}
         </div>
         <div class="text-sm text-blue-700">System Calculated Price</div>
       </div>
@@ -66,7 +56,7 @@
           </span>
         </div>
         <div class="text-2xl font-bold text-green-900 mb-1">
-          {staging.quotation_price ? formatCurrency(staging.quotation_price) : 'Pending Quote'}
+          {staging.quotation_price ? formatAmount(staging.quotation_price) : 'Pending Quote'}
         </div>
         <div class="text-sm text-green-700">Final Quoted Price</div>
       </div>
@@ -93,13 +83,13 @@
           {#if stagingCalculation.discount > 0}
             <div class="flex justify-between items-center py-2 text-green-600 bg-green-50 px-3 rounded-lg">
               <span class="font-medium">Term Discount</span>
-              <span class="font-bold">-{formatCurrency(stagingCalculation.discount)}</span>
+              <span class="font-bold">-{formatAmount(stagingCalculation.discount)}</span>
             </div>
           {/if}
           
           <div class="flex justify-between items-center py-3 border-t-2 border-gray-300 text-lg font-bold">
             <span class="text-gray-900">Total Cost</span>
-            <span class="text-green-600">{formatCurrency(stagingCalculation.totalCost)}</span>
+            <span class="text-green-600">{formatAmount(stagingCalculation.totalCost)}</span>
           </div>
         </div>
       </div>
