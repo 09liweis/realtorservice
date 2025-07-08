@@ -1,6 +1,5 @@
 <script lang="ts">
-  import { user } from "$lib/stores/auth";
-  import { formatAmount, type ProjectStatus } from "$lib/types/constant";
+  import { formatAmount, getStatusStyle } from "$lib/types/constant";
   import type { Cleaning } from "$lib/types/cleaning";
   import { CLEANING_TYPES, CLEANING_FREQUENCIES } from "$lib/types/cleaning";
   import { upsertCreditRecord, calcUserCredits, upsertCleaning } from "$lib/supabase";
@@ -11,26 +10,6 @@
   export let onDelete;
 
     import Link from "../Link.svelte";
-
-	// Get status badge style
-	function getStatusStyle(status: ProjectStatus) {
-		switch (status) {
-			case 'draft':
-				return 'bg-gray-100 text-gray-800';
-			case 'submitted':
-				return 'bg-yellow-100 text-yellow-800';
-			case 'confirmed':
-				return 'bg-blue-100 text-blue-800';
-			case 'paid':
-				return 'bg-green-100 text-green-800';
-			case 'scheduled':
-				return 'bg-purple-100 text-purple-800';
-			case 'completed':
-				return 'bg-emerald-100 text-emerald-800';
-			default:
-				return 'bg-gray-100 text-gray-800';
-		}
-	}
 
   function getCleaningTypeLabel(type: string): string {
     return CLEANING_TYPES.find(t => t.value === type)?.label || type;
