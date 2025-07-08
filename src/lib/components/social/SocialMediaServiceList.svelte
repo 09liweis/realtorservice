@@ -11,7 +11,7 @@
   } from '$lib/types/social';
   import { fade, fly, scale } from 'svelte/transition';
   import { flip } from 'svelte/animate';
-  import Link from '../Link.svelte';
+    import { formatAmount } from '$lib/types/constant';
 
   export let socialMediaServices: SocialMediaService[] = [];
   export let loading = false;
@@ -48,15 +48,6 @@
     }
   }
 
-  function formatCurrency(amount: number): string {
-    return new Intl.NumberFormat('en-CA', {
-      style: 'currency',
-      currency: 'CAD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }).format(amount);
-  }
-
   function formatDate(dateString: string): string {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
@@ -68,7 +59,7 @@
   function getDisplayPrice(service: SocialMediaService): string {
     // If there's a custom price set, use it
     if (service.quotation_price && service.quotation_price > 0) {
-      return formatCurrency(service.quotation_price);
+      return formatAmount(service.quotation_price);
     }
 
     // Otherwise calculate from service details
@@ -77,7 +68,7 @@
       service.subscription_type,
       service.addons || []
     );
-    return pricingInfo.totalPrice > 0 ? formatCurrency(pricingInfo.totalPrice) : 'Quote Pending';
+    return pricingInfo.totalPrice > 0 ? formatAmount(pricingInfo.totalPrice) : 'Quote Pending';
   }
 
   function getPlatformIcons(platforms: string[]): string {
@@ -202,7 +193,7 @@
                       {#if addonInfo}
                         <div class="flex justify-between text-xs text-purple-700">
                           <span>{addonInfo.label}</span>
-                          <span>+{formatCurrency(addonInfo.price)}</span>
+                          <span>+{formatAmount(addonInfo.price)}</span>
                         </div>
                       {/if}
                     {/each}
