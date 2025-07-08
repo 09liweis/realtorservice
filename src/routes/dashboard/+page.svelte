@@ -50,7 +50,6 @@
     }
   };
 
-  let recentActivity = [];
   let loading = true;
   let performanceData = [];
 
@@ -244,60 +243,20 @@
     </ServiceStatsCard>
   </div>
 
-  <!-- Performance and Activity Section -->
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-    <!-- Performance Chart -->
-    <div class="lg:col-span-2 bg-white rounded-xl shadow-sm p-6 border border-gray-200">
-      <div class="flex items-center justify-between mb-6">
-        <div>
-          <h2 class="text-xl font-semibold text-gray-900">Performance</h2>
-          <p class="text-sm text-gray-600">Your business growth over time</p>
-        </div>
-        <div class="flex space-x-2">
-          <button class="text-xs font-medium px-3 py-1 bg-gray-100 rounded-full">6M</button>
-          <button class="text-xs font-medium px-3 py-1 text-gray-500 hover:text-gray-900">1Y</button>
-          <button class="text-xs font-medium px-3 py-1 text-gray-500 hover:text-gray-900">All</button>
-        </div>
+  <!-- Performance Section -->
+  <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h2 class="text-xl font-semibold text-gray-900">Performance</h2>
+        <p class="text-sm text-gray-600">Your business growth over time</p>
       </div>
-      <PerformanceChart data={performanceData} loading={loading} />
-    </div>
-
-    <!-- Recent Activity -->
-    <div class="bg-white rounded-xl shadow-sm border border-gray-200">
-      <div class="p-6 border-b border-gray-200">
-        <h2 class="text-xl font-semibold text-gray-900">Recent Activity</h2>
-        <p class="text-sm text-gray-600 mt-1">Your latest business updates</p>
-      </div>
-      <div class="p-6">
-        {#if loading}
-          <div class="space-y-4">
-            {#each Array(4) as _}
-              <div class="animate-pulse flex items-center space-x-4">
-                <div class="w-10 h-10 bg-gray-200 rounded-lg"></div>
-                <div class="flex-1">
-                  <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-                  <div class="h-3 bg-gray-200 rounded w-1/2"></div>
-                </div>
-              </div>
-            {/each}
-          </div>
-        {:else}
-          <div class="space-y-4">
-            {#each recentActivity as activity}
-              <div class="flex items-center space-x-4 p-3 rounded-lg hover:bg-gray-50 transition-colors duration-200">
-                <div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
-                  <span class="text-lg">{activity.icon}</span>
-                </div>
-                <div class="flex-1">
-                  <p class="text-sm font-medium text-gray-900">{activity.action}</p>
-                  <p class="text-xs text-gray-500">{activity.time}</p>
-                </div>
-              </div>
-            {/each}
-          </div>
-        {/if}
+      <div class="flex space-x-2">
+        <button class="text-xs font-medium px-3 py-1 bg-gray-100 rounded-full">6M</button>
+        <button class="text-xs font-medium px-3 py-1 text-gray-500 hover:text-gray-900">1Y</button>
+        <button class="text-xs font-medium px-3 py-1 text-gray-500 hover:text-gray-900">All</button>
       </div>
     </div>
+    <PerformanceChart data={performanceData} loading={loading} />
   </div>
 
   <!-- Secondary Services Grid -->
@@ -341,7 +300,7 @@
       icon="🪙"
       color="amber"
       loading={loading}
-      on:click={() => navigateToSection('/dashboard/credit')}
+      on:click={() => navigateToSection('/dashboard/profile')}
     >
       <div class="text-sm text-gray-600 mt-1">
         <span class="font-medium">Balance</span> available
