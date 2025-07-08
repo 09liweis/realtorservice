@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { formatAmount } from "$lib/types/constant";
+    import { formatAmount, getStatusStyle } from "$lib/types/constant";
     import Link from "../Link.svelte";
     import { fade, fly, slide } from "svelte/transition";
     import { flip } from 'svelte/animate';
@@ -8,23 +8,6 @@
   export let offers;
   export let handleClick;
 
-  // 获取状态标签的样式
-	function getStatusStyle(status) {
-		switch (status) {
-			case 'Pending':
-				return 'bg-yellow-100 text-yellow-800';
-			case 'Under Review':
-				return 'bg-blue-100 text-blue-800';
-			case 'Accepted':
-				return 'bg-green-100 text-green-800';
-			case 'Rejected':
-				return 'bg-red-100 text-red-800';
-			case 'Withdrawn':
-				return 'bg-gray-100 text-gray-800';
-			default:
-				return 'bg-gray-100 text-gray-800';
-		}
-	}
 </script>
 
 <!-- Offers Grid -->

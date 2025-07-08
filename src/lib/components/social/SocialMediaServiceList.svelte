@@ -11,7 +11,7 @@
   } from '$lib/types/social';
   import { fade, fly, scale } from 'svelte/transition';
   import { flip } from 'svelte/animate';
-    import { formatAmount } from '$lib/types/constant';
+    import { formatAmount, getStatusStyle } from '$lib/types/constant';
     import { formatDate } from '$lib/helper';
 
   export let socialMediaServices: SocialMediaService[] = [];
@@ -31,24 +31,6 @@
     return SOCIAL_MEDIA_STATUS.find(s => s.value === status) || SOCIAL_MEDIA_STATUS[0];
   }
 
-  function getStatusStyle(status: string): string {
-    const statusInfo = getStatusInfo(status);
-    switch (statusInfo.color) {
-      case 'yellow':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'blue':
-        return 'bg-blue-100 text-blue-800 border-blue-200';
-      case 'green':
-        return 'bg-green-100 text-green-800 border-green-200';
-      case 'orange':
-        return 'bg-orange-100 text-orange-800 border-orange-200';
-      case 'red':
-        return 'bg-red-100 text-red-800 border-red-200';
-      default:
-        return 'bg-gray-100 text-gray-800 border-gray-200';
-    }
-  }
-
 
   function getDisplayPrice(service: SocialMediaService): string {
     // If there's a custom price set, use it
@@ -65,19 +47,6 @@
     return pricingInfo.totalPrice > 0 ? formatAmount(pricingInfo.totalPrice) : 'Quote Pending';
   }
 
-  function getPlatformIcons(platforms: string[]): string {
-    const iconMap: Record<string, string> = {
-      'Facebook': '📘',
-      'Instagram': '📷',
-      'LinkedIn': '💼',
-      'Twitter': '🐦',
-      'TikTok': '🎵',
-      'YouTube': '📺',
-      'Pinterest': '📌',
-      'Other': '🌐'
-    };
-    return platforms.map(p => iconMap[p] || '🌐').join(' ');
-  }
 </script>
 
 <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">

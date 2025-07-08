@@ -1,6 +1,6 @@
 <script lang="ts">
   import { user } from "$lib/stores/auth";
-  import { formatAmount, type StagingCleaningStatus } from "$lib/types/constant";
+  import { formatAmount, getStatusStyle } from "$lib/types/constant";
   import type { Staging } from "$lib/types/staging";
 
   export let request:Staging;
@@ -9,23 +9,6 @@
 
     import Link from "../Link.svelte";
 
-	// 获取状态标签的样式
-	function getStatusStyle(status: StagingCleaningStatus) {
-		switch (status) {
-			case 'draft':
-				return 'bg-gray-100 text-gray-800';
-			case 'submitted':
-				return 'bg-yellow-100 text-yellow-800';
-			case 'confirmed':
-				return 'bg-blue-100 text-blue-800';
-			case 'paid':
-				return 'bg-green-100 text-green-800';
-			case 'scheduled':
-				return 'bg-purple-100 text-purple-800';
-			default:
-				return 'bg-gray-100 text-gray-800';
-		}
-	}
 </script>
 
 <div class="bg-white overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-200">

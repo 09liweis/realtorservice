@@ -1,28 +1,10 @@
 <script lang="ts">
   import type { Staging } from '$lib/types/staging';
-  import { formatAmount, type StagingCleaningStatus } from '$lib/types/constant';
+  import { formatAmount, getStatusStyle } from '$lib/types/constant';
     import { CLEANING_FREQUENCIES, CLEANING_TYPES, type Cleaning } from '$lib/types/cleaning';
 
   export let request: Staging|Cleaning;
   export let tp: string = "staging";
-
-  // Get status badge style
-  function getStatusStyle(status: StagingCleaningStatus) {
-    switch (status) {
-      case 'draft':
-        return 'bg-gray-100 text-gray-800 border-gray-200';
-      case 'submitted':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'confirmed':
-        return 'bg-blue-100 text-blue-800 border-blue-200';
-      case 'paid':
-        return 'bg-green-100 text-green-800 border-green-200';
-      case 'scheduled':
-        return 'bg-purple-100 text-purple-800 border-purple-200';
-      default:
-        return 'bg-gray-100 text-gray-800 border-gray-200';
-    }
-  }
 
   function getCleaningTypeLabel(type: string): string {
     return CLEANING_TYPES.find(t => t.value === type)?.label || type;
