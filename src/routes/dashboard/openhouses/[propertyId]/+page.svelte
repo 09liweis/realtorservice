@@ -4,6 +4,7 @@
   import FormBackdrop from '$lib/components/form/FormBackdrop.svelte';
   import Input from '$lib/components/Input.svelte';
     import OpenHouseGuestList from '$lib/components/openhouses/OpenHouseGuestList.svelte';
+    import Select from '$lib/components/Select.svelte';
   import { user } from '$lib/stores/auth';
   import { getOpenHouseGuests, upsertOpenHouseGuest } from '$lib/supabase';
     import { getPageTitle } from '$lib/types/constant';
@@ -19,7 +20,7 @@
     name: '',
     phone: '',
     email: '',
-    buy_lease: '',
+    buy_lease: 'buy',
     has_agent: '',
   };
 
@@ -82,14 +83,14 @@
 		<h1 class="text-2xl font-semibold text-gray-900">Open House Guests Management</h1>
     <Button 
       onclick={() => {
-        if (!$user.isApproved) {
+        if (!$user?.isApproved) {
           alert('Your account is not yet approved. Please contact admin to get approval.');
           return;
         }
         addNewGuest();
       }}
-      disabled={!$user.isApproved}
-      title={!$user.isApproved ? 'Account not approved - contact admin' : ''}
+      disabled={!$user?.isApproved}
+      title={!$user?.isApproved ? 'Account not approved - contact admin' : ''}
     >
       Add New Guest
     </Button>
@@ -135,12 +136,14 @@
           type="email"
         />
 
-        <Input
+        <Select 
           id="buy_lease"
           bind:value={newGuest.buy_lease}
-          placeholder="Buy Or Lease"
           label="Buy Or Lease"
-          type="text"
+          options={[
+            { value: 'buy', label: 'Buy' },
+            { value: 'lease', label: 'Lease' },
+          ]}
         />
 
         <Input
