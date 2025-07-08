@@ -3,9 +3,9 @@ import type { Offer, OfferProperty } from './types/offer';
 import type { Staging } from './types/staging';
 import type { Cleaning } from './types/cleaning';
 import type { CreditRecord } from './types/credit';
-import type { SocialMediaAccount } from './types/social';
 import type { Coupon } from './types/coupon';
 import type { VideoService } from './types/video';
+import type { SocialMediaService } from './types/social';
 import supabase from './db/client';
 
 export const getOpenHouses = async ({user_id}) => {
@@ -468,36 +468,42 @@ export const checkSocialMediaTableExists = async () => {
   }
 }
 
-// Get user's social media accounts
-export const getUserSocialMedia = async (user_id: string) => {
+// Social Media Services CRUD operations
+export const getUserSocialMediaServices = async (user_id: string) => {
   return await supabase
-    .from('social_media_accounts')
+    .from('social_media_services')
     .select('*')
     .eq('user_id', user_id)
     .order('created_at', { ascending: false });
 }
 
-// Add or update social media account
-export const upsertSocialMediaAccount = async (account: SocialMediaAccount) => {
-  if (account.id) {
+export const getSocialMediaService = async (id: string) => {
+  return await supabase
+    .from('social_media_services')
+    .select('*')
+    .eq('id', id)
+    .single();
+}
+
+export const upsertSocialMediaService = async (service: SocialMediaService) => {
+  if (service.id) {
     return await supabase
-      .from('social_media_accounts')
+      .from('social_media_services')
       .update({
         updated_at: new Date(),
-        ...account
+        ...service
       })
-      .eq('id', account.id);
+      .eq('id', service.id);
   } else {
     return await supabase
-      .from('social_media_accounts')
-      .insert(account);
+      .from('social_media_services')
+      .insert(service);
   }
 }
 
-// Delete social media account
-export const deleteSocialMediaAccount = async (id: string) => {
+export const deleteSocialMediaService = async (id: string) => {
   return await supabase
-    .from('social_media_accounts')
+    .from('social_media_services')
     .delete()
     .eq('id', id);
 }
