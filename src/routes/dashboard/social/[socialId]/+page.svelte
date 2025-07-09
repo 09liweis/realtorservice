@@ -9,7 +9,6 @@
     SUBSCRIPTION_TYPES, 
     POSTING_FREQUENCIES, 
     SOCIAL_MEDIA_ADDONS,
-    SOCIAL_MEDIA_STATUS,
     calculateSocialMediaPrice
   } from '$lib/types/social';
   import SocialMediaServiceHeader from '$lib/components/social/detail/SocialMediaServiceHeader.svelte';
@@ -47,9 +46,6 @@
     socialMediaService.addons || [],
     socialMediaService.quotation_price
   );
-
-  // Get status information
-  $: statusInfo = SOCIAL_MEDIA_STATUS.find(s => s.value === socialMediaService.status) || SOCIAL_MEDIA_STATUS[0];
 
   // Handle status updates - refresh the data
   async function handleStatusUpdate() {

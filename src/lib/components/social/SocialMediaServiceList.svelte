@@ -6,7 +6,6 @@
     SUBSCRIPTION_TYPES, 
     POSTING_FREQUENCIES, 
     SOCIAL_MEDIA_ADDONS,
-    SOCIAL_MEDIA_STATUS,
     calculateSocialMediaPrice
   } from '$lib/types/social';
   import { fade, fly, scale } from 'svelte/transition';
@@ -25,10 +24,6 @@
 
   function handleDelete(service: SocialMediaService) {
     dispatch('delete', service);
-  }
-
-  function getStatusInfo(status: string) {
-    return SOCIAL_MEDIA_STATUS.find(s => s.value === status) || SOCIAL_MEDIA_STATUS[0];
   }
 
 
@@ -144,7 +139,7 @@
               <!-- Status -->
               <div class="flex items-center justify-between">
                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border {getStatusStyle(service.status)}">
-                  {getStatusInfo(service.status).label}
+                  {service.status}
                 </span>
               </div>
 
@@ -218,38 +213,6 @@
             </div>
           </div>
         {/each}
-      </div>
-    </div>
-
-    <!-- Summary Footer -->
-    <div class="px-6 py-4 bg-gray-50 border-t border-gray-200">
-      <div class="flex items-center justify-between text-sm text-gray-600">
-        <div class="flex items-center space-x-6">
-          <div class="flex items-center space-x-2">
-            <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
-            <span>
-              <span class="font-medium text-gray-900">{socialMediaServices.filter(s => s.status === 'pending').length}</span>
-              Pending
-            </span>
-          </div>
-          <div class="flex items-center space-x-2">
-            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
-            <span>
-              <span class="font-medium text-gray-900">{socialMediaServices.filter(s => s.status === 'active').length}</span>
-              Active
-            </span>
-          </div>
-          <div class="flex items-center space-x-2">
-            <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
-            <span>
-              <span class="font-medium text-gray-900">{socialMediaServices.filter(s => s.status === 'quoted').length}</span>
-              Quoted
-            </span>
-          </div>
-        </div>
-        <div>
-          Total: <span class="font-medium text-gray-900">{socialMediaServices.length}</span> services
-        </div>
       </div>
     </div>
   {/if}

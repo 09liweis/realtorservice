@@ -67,16 +67,6 @@ export const SOCIAL_MEDIA_ADDONS = [
   }
 ];
 
-export const SOCIAL_MEDIA_STATUS = [
-  { value: 'pending', label: 'Pending Review', color: 'yellow' },
-  { value: 'quoted', label: 'Quote Provided', color: 'blue' },
-  { value: 'approved', label: 'Approved', color: 'green' },
-  { value: 'active', label: 'Active Service', color: 'green' },
-  { value: 'paused', label: 'Service Paused', color: 'orange' },
-  { value: 'completed', label: 'Completed', color: 'green' },
-  { value: 'cancelled', label: 'Cancelled', color: 'red' }
-];
-
 // Pricing structure based on posting frequency and subscription type
 export const SOCIAL_MEDIA_PRICING = {
   Weekly: {
