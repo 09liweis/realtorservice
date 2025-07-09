@@ -8,7 +8,7 @@
   import VideoServiceHeader from '$lib/components/video/detail/VideoServiceHeader.svelte';
   import VideoServiceInfo from '$lib/components/video/detail/VideoServiceInfo.svelte';
   import VideoServicePricing from '$lib/components/video/detail/VideoServicePricing.svelte';
-  import VideoServiceActions from '$lib/components/video/detail/VideoServiceActions.svelte';
+  import DetailActions from '$lib/components/common/DetailActions.svelte';
   import { getVideoService } from '$lib/supabase';
   import { onMount } from 'svelte';
 
@@ -122,8 +122,9 @@
 
     <!-- Right Column - Actions -->
     <div class="lg:col-span-1">
-      <VideoServiceActions 
-        {videoService} 
+      <DetailActions 
+        request={videoService}
+        tp="video"
         on:statusUpdate={handleStatusUpdate}
       />
     </div>

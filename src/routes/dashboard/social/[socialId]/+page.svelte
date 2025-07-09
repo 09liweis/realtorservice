@@ -15,7 +15,7 @@
   import SocialMediaServiceHeader from '$lib/components/social/detail/SocialMediaServiceHeader.svelte';
   import SocialMediaServiceInfo from '$lib/components/social/detail/SocialMediaServiceInfo.svelte';
   import SocialMediaServicePricing from '$lib/components/social/detail/SocialMediaServicePricing.svelte';
-  import SocialMediaServiceActions from '$lib/components/social/detail/SocialMediaServiceActions.svelte';
+  import DetailActions from '$lib/components/common/DetailActions.svelte';
   import { getSocialMediaService } from '$lib/supabase';
   import { onMount } from 'svelte';
 
@@ -131,8 +131,9 @@
 
     <!-- Right Column - Actions -->
     <div class="lg:col-span-1">
-      <SocialMediaServiceActions 
-        {socialMediaService} 
+      <DetailActions 
+        request={socialMediaService}
+        tp="social"
         on:statusUpdate={handleStatusUpdate}
       />
     </div>

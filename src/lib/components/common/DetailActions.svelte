@@ -2,16 +2,18 @@
   import { createEventDispatcher } from 'svelte';
   import type { Staging } from '$lib/types/staging';
   import { user } from '$lib/stores/auth';
-  import { upsertCreditRecord, calcUserCredits, upsertStaging, upsertCleaning } from '$lib/supabase';
+  import { upsertCreditRecord, calcUserCredits, upsertStaging, upsertCleaning, upsertSocialMediaService, upsertVideoService } from '$lib/supabase';
   import type { CreditRecord } from '$lib/types/credit';
   import Button from '$lib/components/Button.svelte';
     import type { Cleaning } from '$lib/types/cleaning';
     import Input from '../Input.svelte';
-    import type { StagingCleaningStatus } from '$lib/types/constant';
+    import type { ProjectStatus } from '$lib/types/constant';
     import ConfirmPayModal from './ConfirmPayModal.svelte';
+    import type { VideoService } from '$lib/types/video';
+    import type { SocialMediaService } from '$lib/types/social';
 
 
-  export let request: Staging|Cleaning;
+  export let request: Staging|Cleaning|VideoService|SocialMediaService;
   export let tp:string = "staging";
   const quotation_price = request.quotation_price;
 
@@ -62,15 +64,19 @@
     }
   }
 
+  const UPSERT_TP_FUNCTIONS:{[key:string]:Function} = {
+    staging: upsertStaging,
+    cleaning: upsertCleaning,
+    social: upsertSocialMediaService,
+    video: upsertVideoService
+  }
+
   async function updateStatus(status:string) {
-    request.status = status as StagingCleaningStatus;
-    if (tp === 'staging') {
-      const { error: updateStagingError } = await upsertStaging(request);
-      if (updateStagingError) throw new Error(updateStagingError.message);
-    } else if (tp === 'cleaning') {
-      const { error: updateStagingError } = await upsertCleaning(request);
-      if (updateStagingError) throw new Error(updateStagingError.message);
-    }
+    request.status = status as ProjectStatus;
+    const upsertFunction = UPSERT_TP_FUNCTIONS[tp];
+    const { error: updateError } = await upsertFunction(request);
+    
+    if (updateError) throw new Error(updateError.message);
     dispatch('statusUpdate');
   }
 

@@ -6,6 +6,7 @@ export interface VideoService {
   service_type: string;
   number_of_videos: number;
   price?: number;
+  quotation_price?: number;
   notes?: string;
   status: ProjectStatus;
   addons?: string[]; // Array of addon service types
