@@ -86,7 +86,7 @@
             animate:flip={{ duration: 300 }}
           >
             <!-- Service Header -->
-            <div class="bg-gradient-to-r from-pink-500 to-purple-600 px-4 py-3 text-white">
+            <div class="bg-primary px-4 py-3 text-white">
               <div class="flex items-center justify-between">
                 <div class="text-lg font-bold">
                   <a href="/dashboard/social/{service.id}" class="text-white">
@@ -138,7 +138,7 @@
 
               <!-- Status -->
               <div class="flex items-center justify-between">
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border {getStatusStyle(service.status)}">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border capitalize {getStatusStyle(service.status)}">
                   {service.status}
                 </span>
               </div>
