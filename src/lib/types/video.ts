@@ -87,7 +87,7 @@ export const EMPTY_VIDEO_SERVICE: VideoService = {
   number_of_videos: 1,
   price: 0,
   notes: '',
-  status: 'pending',
+  status: 'submitted',
   addons: []
 };
 
