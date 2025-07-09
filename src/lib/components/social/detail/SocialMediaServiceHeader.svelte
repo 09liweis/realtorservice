@@ -1,0 +1,73 @@
+<script lang="ts">
+  import { getStatusStyle } from '$lib/types/constant';
+  import type { SocialMediaService } from '$lib/types/social';
+  import { SOCIAL_MEDIA_STATUS } from '$lib/types/social';
+
+  export let socialMediaService: SocialMediaService;
+
+  function getStatusInfo(status: string) {
+    return SOCIAL_MEDIA_STATUS.find(s => s.value === status) || SOCIAL_MEDIA_STATUS[0];
+  }
+</script>
+
+<div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+  <!-- Header Background -->
+  <div class="bg-gradient-to-r from-pink-600 to-purple-600 px-8 py-6 text-white">
+    <div class="flex items-center justify-between">
+      <div class="flex-1">
+        <div class="flex items-center space-x-3 mb-2">
+          <div class="w-12 h-12 bg-white bg-opacity-20 rounded-xl flex items-center justify-center">
+            <span class="text-2xl">📱</span>
+          </div>
+          <div>
+            <h1 class="text-2xl font-bold">Social Media Service</h1>
+            <p class="text-pink-100">Professional Social Media Management</p>
+          </div>
+        </div>
+        
+        <!-- Request ID -->
+        <div class="flex items-center space-x-2 mt-4">
+          <svg class="w-5 h-5 text-pink-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+          </svg>
+          <span class="text-lg font-medium">Service #{socialMediaService.id?.slice(-8) || 'N/A'}</span>
+        </div>
+      </div>
+
+      <!-- Status -->
+      <div class="flex items-center space-x-4">
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border capitalize {getStatusStyle(socialMediaService.status)}">
+          {getStatusInfo(socialMediaService.status).label}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Stats -->
+  <div class="px-8 py-6 bg-gray-50 border-b border-gray-200">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="text-center">
+        <div class="text-2xl font-bold text-gray-900">
+          {socialMediaService.platforms?.length || 0}
+        </div>
+        <div class="text-sm text-gray-600">
+          {socialMediaService.platforms?.length === 1 ? 'Platform' : 'Platforms'}
+        </div>
+      </div>
+      
+      <div class="text-center">
+        <div class="text-2xl font-bold text-gray-900">
+          {socialMediaService.addons?.length || 0}
+        </div>
+        <div class="text-sm text-gray-600">Add-on Services</div>
+      </div>
+      
+      <div class="text-center">
+        <div class="text-2xl font-bold text-pink-600">
+          {socialMediaService.created_at ? new Date(socialMediaService.created_at).toLocaleDateString() : 'N/A'}
+        </div>
+        <div class="text-sm text-gray-600">Request Date</div>
+      </div>
+    </div>
+  </div>
+</div>

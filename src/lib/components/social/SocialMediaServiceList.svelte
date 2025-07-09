@@ -94,7 +94,9 @@
             <div class="bg-gradient-to-r from-pink-500 to-purple-600 px-4 py-3 text-white">
               <div class="flex items-center justify-between">
                 <div class="text-lg font-bold">
-                  Social Media Service
+                  <a href="/dashboard/social/{service.id}" class="text-white">
+                    Social Media Service
+                  </a>
                 </div>
                 <div class="text-right">
                   <div class="text-lg font-bold">
