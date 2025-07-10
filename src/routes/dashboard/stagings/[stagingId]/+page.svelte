@@ -7,11 +7,11 @@
   import type { Staging } from '$lib/types/staging';
   import StagingPropertyInfo from '$lib/components/stagings/detail/StagingPropertyInfo.svelte';
   import StagingFinancialInfo from '$lib/components/stagings/detail/StagingFinancialInfo.svelte';
-  import StagingCleaningTimeline from '$lib/components/common/StagingCleaningTimeline.svelte';
   import { fade, fly } from 'svelte/transition';
   import DetailActions from '$lib/components/common/DetailActions.svelte';
   import Link from '$lib/components/Link.svelte';
   import StagingCleaningHeader from '$lib/components/common/StagingCleaningHeader.svelte';
+    import Timeline from '$lib/components/common/Timeline.svelte';
 
   const stagingId = $page.params.stagingId;
   
@@ -119,7 +119,7 @@
         request={staging} 
       />
 
-      <StagingCleaningTimeline request={staging} tp="staging" />
+      <Timeline request={staging} tp="staging" />
 
       <!-- Content Grid -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">

@@ -10,7 +10,8 @@
   import { fade, fly } from 'svelte/transition';
     import StagingCleaningHeader from '$lib/components/common/StagingCleaningHeader.svelte';
     import DetailActions from '$lib/components/common/DetailActions.svelte';
-    import StagingCleaningTimeline from '$lib/components/common/StagingCleaningTimeline.svelte';
+    import Timeline from '$lib/components/common/Timeline.svelte';
+
 
   const cleaningId = $page.params.cleaningId;
   
@@ -126,7 +127,7 @@
         request={cleaning} 
       />
 
-      <StagingCleaningTimeline request={cleaning} tp="cleaing" />
+      <Timeline request={cleaning} tp="cleaing" />
 
       <!-- Content Grid -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">

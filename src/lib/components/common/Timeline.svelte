@@ -1,15 +1,17 @@
 <script lang="ts">
   import type { Staging } from '$lib/types/staging';
   import type { Cleaning } from '$lib/types/cleaning';
-    import { getStatusStyle } from '$lib/types/constant';
+  import type { VideoService } from '$lib/types/video';
+  import type { SocialMediaService } from '$lib/types/social';
+  import { getStatusStyle } from '$lib/types/constant';
 
-  export let request: Staging | Cleaning;
-  export let tp: string = "staging"; // "staging" or "cleaning"
+  export let request: Staging | Cleaning | VideoService | SocialMediaService;
+  export let tp: string = "staging"; // "staging", "cleaning", "video" or "social"
 
   // Timeline events based on request data and type
   $: timelineEvents = getTimelineEvents(request, tp);
 
-  function getTimelineEvents(request: Staging | Cleaning, type: string) {
+  function getTimelineEvents(request: Staging | Cleaning | VideoService | SocialMediaService, type: string) {
     const baseEvents = [
       {
         title: 'Request Created',
@@ -59,7 +61,7 @@
           description: 'Property staging installation completed'
         }
       ];
-    } else {
+    } else if (type === 'cleaning') {
       return [
         ...baseEvents,
         {
@@ -75,6 +77,42 @@
           status: request.status === 'completed' ? 'completed' : 'pending',
           icon: '🎉',
           description: 'Cleaning service completed successfully'
+        }
+      ];
+    } else if (type === 'video') {
+      return [
+        ...baseEvents,
+        {
+          title: 'Shooting Scheduled',
+          date: (request as VideoService).shooting_date ? new Date((request as VideoService).shooting_date!).toLocaleDateString() : (request.status === 'scheduled' ? 'Scheduled' : 'Pending'),
+          status: request.status === 'scheduled' ? 'completed' : 'pending',
+          icon: '🎥',
+          description: 'Video shooting date confirmed'
+        },
+        {
+          title: 'Video Delivered',
+          date: request.status === 'completed' ? 'Completed' : 'Pending',
+          status: request.status === 'completed' ? 'completed' : 'pending',
+          icon: '🎬',
+          description: 'Final video delivered'
+        }
+      ];
+    } else { // social
+      return [
+        ...baseEvents,
+        {
+          title: 'Content Scheduled',
+          date: (request as SocialMediaService).posting_date ? new Date((request as SocialMediaService).posting_date!).toLocaleDateString() : (request.status === 'scheduled' ? 'Scheduled' : 'Pending'),
+          status: request.status === 'scheduled' ? 'completed' : 'pending',
+          icon: '📱',
+          description: 'Content posting date confirmed'
+        },
+        {
+          title: 'Content Published',
+          date: request.status === 'completed' ? 'Completed' : 'Pending',
+          status: request.status === 'completed' ? 'completed' : 'pending',
+          icon: '📢',
+          description: 'Content published on social media'
         }
       ];
     }
@@ -99,11 +137,23 @@
   }
 
   function getServiceTypeLabel(type: string): string {
-    return type === 'staging' ? 'Property Staging' : 'Cleaning Service';
+    switch (type) {
+      case 'staging': return 'Property Staging';
+      case 'cleaning': return 'Cleaning Service';
+      case 'video': return 'Video Production';
+      case 'social': return 'Social Media Service';
+      default: return 'Service';
+    }
   }
 
   function getServiceIcon(type: string): string {
-    return type === 'staging' ? '✨' : '🧽';
+    switch (type) {
+      case 'staging': return '✨';
+      case 'cleaning': return '🧽';
+      case 'video': return '🎥';
+      case 'social': return '📱';
+      default: return '🛠️';
+    }
   }
 
   function getDurationLabel(request: Staging | Cleaning, type: string): string {
@@ -127,7 +177,7 @@
       </div>
       <h2 class="text-xl font-semibold text-gray-900">Service Timeline</h2>
     </div>
-  </div>
+  </div>div>
 
   <div class="p-6">
     <div class="space-y-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3">
