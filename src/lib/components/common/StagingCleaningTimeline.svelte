@@ -19,23 +19,23 @@
         description: `${type.charAt(0).toUpperCase() + type.slice(1)} request was submitted`
       },
       {
-        title: 'Under Review',
-        date: request.status !== 'draft' ? 'In Progress' : 'Pending',
-        status: request.status !== 'draft' ? 'completed' : 'pending',
-        icon: '👀',
-        description: 'Request is being reviewed by our team'
+        title: 'Request Submitted',
+        date: request.status !== 'draft' ? 'Submitted' : 'Draft',
+        status: request.status !== 'draft' ? 'submitted' : 'draft',
+        icon: '�',
+        description: 'Request has been submitted for review'
       },
       {
-        title: 'Quote Provided',
-        date: request.quotation_price ? 'Completed' : 'Pending',
-        status: request.quotation_price ? 'completed' : 'pending',
+        title: 'Quote Confirmed',
+        date: request.quotation_price ? 'Confirmed' : 'Pending',
+        status: request.quotation_price ? 'confirmed' : 'submitted',
         icon: '💰',
-        description: 'Final pricing quote has been provided'
+        description: 'Pricing quote has been confirmed'
       },
       {
-        title: 'Payment Confirmed',
-        date: request.status === 'paid' ? 'Completed' : 'Pending',
-        status: request.status === 'paid' ? 'completed' : 'pending',
+        title: 'Payment Processed',
+        date: request.status === 'paid' ? 'Paid' : 'Pending',
+        status: request.status === 'paid' ? 'paid' : 'confirmed',
         icon: '✅',
         description: 'Payment has been processed'
       }
@@ -84,9 +84,14 @@
     switch (status) {
       case 'completed':
         return 'bg-green-500 text-white';
-      case 'current':
+      case 'paid':
+      case 'scheduled':
         return 'bg-blue-500 text-white';
-      case 'pending':
+      case 'confirmed':
+        return 'bg-purple-500 text-white';
+      case 'submitted':
+        return 'bg-yellow-500 text-white';
+      case 'draft':
         return 'bg-gray-300 text-gray-600';
       default:
         return 'bg-gray-300 text-gray-600';
