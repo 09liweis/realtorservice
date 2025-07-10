@@ -178,13 +178,14 @@
           // Payment successful, add credit record
           await upsertCreditRecord({
             user_id: $user?.id,
-            amount: selectedAmount >= 500 ? selectedAmount + 500 : selectedAmount,
+            amount: selectedAmount >= 500 ? selectedAmount + 50 : selectedAmount,
             tp: 'topup',
             stripe_client_secret: clientSecret,
-            status: 'done'
+            status: 'done',
+            notes: selectedAmount >= 500 ? 'Bonus 50 credits for topup over $500' : null
           });
 
-          await calcUserCredits($user?.id, selectedAmount);
+          await calcUserCredits($user?.id, selectedAmount >= 500 ? selectedAmount + 50 : selectedAmount);
   
           // Dispatch success event
           dispatch('success', { amount: selectedAmount });

@@ -6,6 +6,7 @@ export interface CreditRecord {
   id?: string,
   user_id: string,
   tp_id?: string,
+  notes?: string,
   created_at?: string,
   updated_at?: string
 }
