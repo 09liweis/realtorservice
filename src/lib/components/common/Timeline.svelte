@@ -12,19 +12,19 @@
   $: timelineEvents = getTimelineEvents(request, tp);
 
   function getTimelineEvents(request: Staging | Cleaning | VideoService | SocialMediaService, type: string) {
-    const baseEvents = [
+    return [
       {
         title: 'Request Created',
         date: request.created_at ? new Date(request.created_at).toLocaleDateString() : 'Unknown',
         status: 'completed',
         icon: '📝',
-        description: `${type.charAt(0).toUpperCase() + type.slice(1)} request was submitted`
+        description: `${getServiceTypeLabel(type)} request was submitted`
       },
       {
         title: 'Request Submitted',
         date: request.status !== 'draft' ? 'Submitted' : 'Draft',
         status: request.status !== 'draft' ? 'submitted' : 'draft',
-        icon: '�',
+        icon: '📤',
         description: 'Request has been submitted for review'
       },
       {
@@ -40,82 +40,22 @@
         status: request.status === 'paid' ? 'paid' : 'confirmed',
         icon: '✅',
         description: 'Payment has been processed'
+      },
+      {
+        title: `${getServiceTypeLabel(type)} Scheduled`,
+        date: request.scheduled_date ? new Date(request.scheduled_date).toLocaleDateString() : (request.status === 'scheduled' ? 'Scheduled' : 'Pending'),
+        status: request.status === 'scheduled' ? 'completed' : 'pending',
+        icon: getServiceIcon(type),
+        description: `${getServiceTypeLabel(type)} has been scheduled`
+      },
+      {
+        title: `${getServiceTypeLabel(type)} Completed`,
+        date: request.status === 'completed' ? 'Completed' : 'Pending',
+        status: request.status === 'completed' ? 'completed' : 'pending',
+        icon: '🎉',
+        description: `${getServiceTypeLabel(type)} has been completed`
       }
     ];
-
-    if (type === 'staging') {
-      return [
-        ...baseEvents,
-        {
-          title: 'Staging Scheduled',
-          date: (request as Staging).timeline || (request.status === 'scheduled' ? 'Scheduled' : 'Pending'),
-          status: request.status === 'scheduled' ? 'completed' : 'pending',
-          icon: '📅',
-          description: 'Staging installation date confirmed'
-        },
-        {
-          title: 'Staging Complete',
-          date: request.status === 'completed' ? 'Completed' : 'Pending',
-          status: request.status === 'completed' ? 'completed' : 'pending',
-          icon: '🎉',
-          description: 'Property staging installation completed'
-        }
-      ];
-    } else if (type === 'cleaning') {
-      return [
-        ...baseEvents,
-        {
-          title: 'Service Scheduled',
-          date: (request as Cleaning).scheduled_date ? new Date((request as Cleaning).scheduled_date!).toLocaleDateString() : (request.status === 'scheduled' ? 'Scheduled' : 'Pending'),
-          status: request.status === 'scheduled' ? 'completed' : 'pending',
-          icon: '📅',
-          description: 'Cleaning service date confirmed'
-        },
-        {
-          title: 'Service Complete',
-          date: request.status === 'completed' ? 'Completed' : 'Pending',
-          status: request.status === 'completed' ? 'completed' : 'pending',
-          icon: '🎉',
-          description: 'Cleaning service completed successfully'
-        }
-      ];
-    } else if (type === 'video') {
-      return [
-        ...baseEvents,
-        {
-          title: 'Shooting Scheduled',
-          date: (request as VideoService).shooting_date ? new Date((request as VideoService).shooting_date!).toLocaleDateString() : (request.status === 'scheduled' ? 'Scheduled' : 'Pending'),
-          status: request.status === 'scheduled' ? 'completed' : 'pending',
-          icon: '🎥',
-          description: 'Video shooting date confirmed'
-        },
-        {
-          title: 'Video Delivered',
-          date: request.status === 'completed' ? 'Completed' : 'Pending',
-          status: request.status === 'completed' ? 'completed' : 'pending',
-          icon: '🎬',
-          description: 'Final video delivered'
-        }
-      ];
-    } else { // social
-      return [
-        ...baseEvents,
-        {
-          title: 'Content Scheduled',
-          date: (request as SocialMediaService).posting_date ? new Date((request as SocialMediaService).posting_date!).toLocaleDateString() : (request.status === 'scheduled' ? 'Scheduled' : 'Pending'),
-          status: request.status === 'scheduled' ? 'completed' : 'pending',
-          icon: '📱',
-          description: 'Content posting date confirmed'
-        },
-        {
-          title: 'Content Published',
-          date: request.status === 'completed' ? 'Completed' : 'Pending',
-          status: request.status === 'completed' ? 'completed' : 'pending',
-          icon: '📢',
-          description: 'Content published on social media'
-        }
-      ];
-    }
   }
 
   function getIconStyle(status: string) {
@@ -177,7 +117,7 @@
       </div>
       <h2 class="text-xl font-semibold text-gray-900">Service Timeline</h2>
     </div>
-  </div>div>
+  </div>
 
   <div class="p-6">
     <div class="space-y-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3">
