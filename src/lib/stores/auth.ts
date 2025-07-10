@@ -75,6 +75,16 @@ export async function initializeAuth() {
   });
 }
 
+// 添加页面可见性变化监听
+if (browser) {
+  document.addEventListener('visibilitychange', async () => {
+    if (document.visibilityState === 'visible') {
+      //TODO: need to fix later
+      location.reload();
+    }
+  });
+}
+
 // 登出函数
 export async function signOut() {
   try {
