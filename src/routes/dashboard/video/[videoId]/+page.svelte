@@ -12,35 +12,45 @@
   import { getVideoService } from '$lib/supabase';
   import { onMount } from 'svelte';
 
-  export let data;
+  const videoServiceId = $page.params.videoId;
   
-  let videoService: VideoService = data.videoService;
+  let videoService: VideoService;
   let loading = false;
   let error = '';
 
-  // Redirect if user is not logged in
-  $: if (!$user) {
-    goto('/login');
+  let user_id:string|undefined;
+
+  $: {
+    user_id = $user?.id;
+    fetchSocialMediaService();
+  }
+
+  const fetchSocialMediaService = async ()=> {
+    if (user_id) {
+      const {data, error} = await getVideoService(videoServiceId);
+      if (error) throw error;
+      videoService = data;
+    }
   }
 
   // Get service type information
-  $: serviceTypeInfo = VIDEO_SERVICE_TYPES.find(type => type.value === videoService.service_type);
+  $: serviceTypeInfo = VIDEO_SERVICE_TYPES.find(type => type.value === videoService?.service_type);
   
   // Get addon information
-  $: addonInfo = (videoService.addons || []).map(addonType => 
+  $: addonInfo = (videoService?.addons || []).map(addonType => 
     VIDEO_SERVICE_ADDONS.find(addon => addon.value === addonType)
   ).filter(Boolean);
 
   // Calculate pricing information
   $: pricingInfo = calculateVideoServicePrice(
-    videoService.service_type,
-    videoService.number_of_videos,
-    videoService.addons || [],
-    videoService.price
+    videoService?.service_type,
+    videoService?.number_of_videos,
+    videoService?.addons || [],
+    videoService?.estimate_price
   );
 
   // Get status information
-  $: statusInfo = VIDEO_SERVICE_STATUS.find(s => s.value === videoService.status) || VIDEO_SERVICE_STATUS[0];
+  $: statusInfo = VIDEO_SERVICE_STATUS.find(s => s.value === videoService?.status) || VIDEO_SERVICE_STATUS[0];
 
   // Handle status updates - refresh the data
   async function handleStatusUpdate() {
@@ -48,7 +58,7 @@
       loading = true;
       error = '';
       
-      const { data: updatedVideoService, error: fetchError } = await getVideoService(videoService.id!);
+      const { data: updatedVideoService, error: fetchError } = await getVideoService(videoService?.id!);
       
       if (fetchError) {
         throw fetchError;
@@ -67,7 +77,7 @@
 </script>
 
 <svelte:head>
-  <title>{getPageTitle(`Video Service Request #${videoService.id?.slice(-8) || 'N/A'}`)}</title>
+  <title>{getPageTitle(`Video Service Request #${videoService?.id?.slice(-8) || 'N/A'}`)}</title>
 </svelte:head>
 
 <div class="space-y-8">

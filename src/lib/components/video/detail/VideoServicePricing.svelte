@@ -51,11 +51,11 @@
             <span class="text-white text-xl">✅</span>
           </div>
           <span class="text-xs font-medium text-green-700 bg-green-200 px-2 py-1 rounded-full">
-            {videoService.price ? 'Final' : 'Pending'}
+            {videoService?.price ? 'Final' : 'Pending'}
           </span>
         </div>
         <div class="text-2xl font-bold text-green-900 mb-1">
-          {videoService.price ? formatAmount(videoService.price) : 'Pending Quote'}
+          {videoService?.price ? formatAmount(videoService?.price) : 'Pending Quote'}
         </div>
         <div class="text-sm text-green-700">Final Quoted Price</div>
       </div>
@@ -84,7 +84,7 @@
 
           <div class="flex justify-between items-center py-2 border-b border-gray-200">
             <span class="text-gray-700">Number of videos:</span>
-            <span class="font-medium text-gray-900">{videoService.number_of_videos}</span>
+            <span class="font-medium text-gray-900">{videoService?.number_of_videos}</span>
           </div>
 
           <!-- Add-ons breakdown -->

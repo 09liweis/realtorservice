@@ -79,7 +79,7 @@
     {/if}
 
     <!-- Project Notes -->
-    {#if videoService.notes}
+    {#if videoService?.notes}
       <div class="bg-yellow-50 rounded-lg p-4 border border-yellow-200">
         <div class="flex items-start space-x-3">
           <div class="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -88,7 +88,7 @@
           <div>
             <div class="text-sm font-medium text-yellow-800 mb-1">Project Requirements</div>
             <div class="text-sm text-yellow-900 leading-relaxed whitespace-pre-line">
-              {videoService.notes}
+              {videoService?.notes}
             </div>
           </div>
         </div>
