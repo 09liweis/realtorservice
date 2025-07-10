@@ -18,9 +18,29 @@
   
     // Component state
     let selectedAmount = topupOptions[0].amount;
+    let customAmount: number | null = null;
     let loading = false;
     let error = '';
     let processing = false;
+
+    // Handle custom amount
+    async function handleCustomAmount() {
+      if (!customAmount || customAmount < 1 || processing) return;
+      
+      error = '';
+      loading = true;
+      paymentElementMounted = false;
+      selectedAmount = customAmount;
+      
+      try {
+        await initializeStripe();
+        clientSecret = await createPaymentIntent(customAmount);
+        await setupPaymentElement();
+      } catch (err: any) {
+        error = err.message || 'Failed to setup payment';
+        loading = false;
+      }
+    }
   
     // Stripe elements
     let stripe: any = null;
@@ -250,6 +270,29 @@
               </div>
             </button>
           {/each}
+        </div>
+
+        <!-- Custom Amount Input -->
+        <div class="mt-4">
+          <label for="custom-amount" class="block text-sm font-medium text-gray-700 mb-1">
+            Or enter custom amount
+          </label>
+          <div class="flex gap-2">
+            <input
+              id="custom-amount"
+              type="number"
+              min="1"
+              placeholder="Enter amount"
+              class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+              bind:value={customAmount}
+            />
+            <Button
+              onclick={handleCustomAmount}
+              disabled={!customAmount || customAmount < 1 || loading || processing}
+            >
+              Confirm
+            </Button>
+          </div>
         </div>
       </div>
   
