@@ -27,31 +27,23 @@
         <p>No credit history found</p>
       </div>
     {:else}
-      <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-gray-50">
-            <tr>
-              <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-              <th scope="col" class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
-              <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
-            </tr>
-          </thead>
-          <tbody class="bg-white divide-y divide-gray-200">
-            {#each creditRecords as record}
-              <tr>
-                <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900">
-                  {formatDate(record?.created_at)}
-                </td>
-                <td class="px-3 py-2 whitespace-nowrap text-sm text-right font-medium {record?.amount > 0 ? 'text-green-600' : 'text-red-600'}">
-                  {record.amount}
-                </td>
-                <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500 capitalize">
-                  {record.tp || 'N/A'}
-                </td>
-              </tr>
-            {/each}
-          </tbody>
-        </table>
+      <div class="space-y-3">
+        {#each creditRecords as record}
+          <div class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="text-sm font-medium text-gray-900 capitalize">{record.tp || 'N/A'}</p>
+                <p class="text-xs text-gray-500">{formatDate(record?.created_at)}</p>
+                {#if record.notes}
+                  <p class="text-xs mt-1 text-blue-600">{record.notes}</p>
+                {/if}
+              </div>
+              <span class="text-sm font-medium {record?.amount > 0 ? 'text-green-600' : 'text-red-600'}">
+                {record.amount > 0 ? '+' : ''}{record.amount}
+              </span>
+            </div>
+          </div>
+        {/each}
       </div>
     {/if}
   </div>
