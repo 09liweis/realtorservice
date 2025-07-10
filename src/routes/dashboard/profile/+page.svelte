@@ -1,6 +1,6 @@
 <script lang="ts">
   import { user } from '$lib/stores/auth';
-  import { getUserProfile, updateUserProfile, getUserCredits } from '$lib/supabase';
+  import { getUserProfile, updateUserProfile, getUserCredits, getCreditRecords } from '$lib/supabase';
   import { getPageTitle } from '$lib/types/constant';
   import Button from '$lib/components/Button.svelte';
   import Input from '$lib/components/Input.svelte';
@@ -10,6 +10,7 @@
   import CreditTopup from '$lib/components/credit/CreditTopup.svelte';
   import CreditHistory from '$lib/components/CreditHistory.svelte';
     import { formatDate } from '$lib/helper';
+    import type { CreditRecord } from '$lib/types/credit';
 
   // Profile data
   let profile:UserProfile = {
@@ -39,6 +40,7 @@
     if ($user) {
       loadUserProfile();
       loadUserCredits();
+      loadCreditHistory();
     }
   });
 
@@ -46,6 +48,28 @@
   $: if ($user && !profile.email) {
     loadUserProfile();
     loadUserCredits();
+    loadCreditHistory();
+  }
+
+  let loadingCreditRecords = false;
+  let creditRecords: CreditRecord[] = [];
+  async function loadCreditHistory() {
+    if (!$user?.id) return;
+    
+    try {
+      loadingCreditRecords = true;
+      const { data, error: recordsError } = await getCreditRecords($user?.id);
+      
+      if (recordsError) {
+        throw recordsError;
+      }
+      
+      creditRecords = data || [];
+    } catch (err) {
+      console.error('Error loading credit history:', err);
+    } finally {
+      loadingCreditRecords = false;
+    }
   }
 
   async function loadUserProfile() {
@@ -141,6 +165,7 @@
     showTopup = false;
     successMessage = `Successfully added $${amount} to your account!`;
     loadUserCredits(); // Reload credits
+    loadCreditHistory();
     
     // Clear success message after 5 seconds
     setTimeout(() => {
@@ -387,7 +412,7 @@
       </div>
 
       <!-- Credit History Section -->
-      <CreditHistory userId={$user?.id} />
+      <CreditHistory {loadingCreditRecords} {creditRecords} />
 
       <!-- Account Status -->
       <div class="bg-white rounded-xl shadow-sm border border-gray-200">

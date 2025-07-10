@@ -1,44 +1,11 @@
 <script lang="ts">
     import { formatDate } from '$lib/helper';
-  import { getCreditRecords } from '$lib/supabase';
   import type { CreditRecord } from '$lib/types/credit';
-  import { onMount } from 'svelte';
   
-  export let userId: string|undefined;
   export let showTitle: boolean = true;
 
-  let creditRecords:CreditRecord[] = [];
-  let loadingCreditRecords = false;
-
-  async function loadCreditHistory() {
-    if (!userId) return;
-    
-    try {
-      loadingCreditRecords = true;
-      const { data, error: recordsError } = await getCreditRecords(userId);
-      
-      if (recordsError) {
-        throw recordsError;
-      }
-      
-      creditRecords = data || [];
-    } catch (err) {
-      console.error('Error loading credit history:', err);
-    } finally {
-      loadingCreditRecords = false;
-    }
-  }
-
-  onMount(() => {
-    if (userId) {
-      loadCreditHistory();
-    }
-  });
-
-  // Watch for userId changes
-  $: if (userId) {
-    loadCreditHistory();
-  }
+  export let creditRecords:CreditRecord[] = [];
+  export let loadingCreditRecords = false;
 </script>
 
 <div class="bg-white rounded-xl shadow-sm border border-gray-200">
