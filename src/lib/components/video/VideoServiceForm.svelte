@@ -28,7 +28,7 @@
     videoService.service_type, 
     videoService.number_of_videos,
     videoService.addons || [],
-    videoService.price
+    videoService.estimate_price
   );
 
   // Service type options for select
@@ -48,7 +48,7 @@
       errors.number_of_videos = 'Number of videos must be at least 1';
     }
 
-    if (videoService.price !== undefined && videoService.price < 0) {
+    if (videoService.estimate_price !== undefined && videoService.estimate_price < 0) {
       errors.price = 'Price cannot be negative';
     }
 
@@ -59,7 +59,7 @@
     if (validateForm()) {
       // Set the calculated price if not custom
       if (!pricingInfo.isCustomPrice && pricingInfo.totalPrice > 0) {
-        videoService.price = pricingInfo.totalPrice;
+        videoService.estimate_price = pricingInfo.totalPrice;
       }
       dispatch('submit', videoService);
     }
@@ -180,7 +180,7 @@
               id="price"
               label="Custom Price (CAD)"
               type="number"
-              bind:value={videoService.price}
+              bind:value={videoService.estimate_price}
               min="0"
               step="0.01"
               placeholder="Leave empty for standard pricing"

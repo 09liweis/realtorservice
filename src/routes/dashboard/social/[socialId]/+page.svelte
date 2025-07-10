@@ -16,35 +16,44 @@
   import SocialMediaServicePricing from '$lib/components/social/detail/SocialMediaServicePricing.svelte';
   import DetailActions from '$lib/components/common/DetailActions.svelte';
   import { getSocialMediaService } from '$lib/supabase';
-  import { onMount } from 'svelte';
 
-  export let data;
+  const socialServiceId = $page.params.socialId;
   
-  let socialMediaService: SocialMediaService = data.socialMediaService;
+  let socialMediaService: SocialMediaService;
   let loading = false;
   let error = '';
+  let user_id:string|undefined;
 
   // Redirect if user is not logged in
-  $: if (!$user) {
-    goto('/login');
+  $: {
+    user_id = $user?.id;
+    fetchSocialMediaService();
+  }
+
+  const fetchSocialMediaService = async ()=> {
+    if (user_id) {
+      const {data, error} = await getSocialMediaService(socialServiceId);
+      if (error) throw error;
+      socialMediaService = data;
+    }
   }
 
   // Get platform information
-  $: platformInfo = (socialMediaService.platforms || []).map(platform => 
+  $: platformInfo = (socialMediaService?.platforms || []).map(platform => 
     SOCIAL_MEDIA_PLATFORMS.find(p => p.value === platform)
   ).filter(Boolean);
   
   // Get addon information
-  $: addonInfo = (socialMediaService.addons || []).map(addonType => 
+  $: addonInfo = (socialMediaService?.addons || []).map(addonType => 
     SOCIAL_MEDIA_ADDONS.find(addon => addon.value === addonType)
   ).filter(Boolean);
 
   // Calculate pricing information
   $: pricingInfo = calculateSocialMediaPrice(
-    socialMediaService.posting_frequency,
-    socialMediaService.subscription_type,
-    socialMediaService.addons || [],
-    socialMediaService.quotation_price
+    socialMediaService?.posting_frequency,
+    socialMediaService?.subscription_type,
+    socialMediaService?.addons || [],
+    socialMediaService?.quotation_price
   );
 
   // Handle status updates - refresh the data
@@ -53,7 +62,7 @@
       loading = true;
       error = '';
       
-      const { data: updatedSocialMediaService, error: fetchError } = await getSocialMediaService(socialMediaService.id!);
+      const { data: updatedSocialMediaService, error: fetchError } = await getSocialMediaService(socialMediaService?.id!);
       
       if (fetchError) {
         throw fetchError;
@@ -72,7 +81,7 @@
 </script>
 
 <svelte:head>
-  <title>{getPageTitle(`Social Media Service #${socialMediaService.id?.slice(-8) || 'N/A'}`)}</title>
+  <title>{getPageTitle(`Social Media Service #${socialMediaService?.id?.slice(-8) || 'N/A'}`)}</title>
 </svelte:head>
 
 <div class="space-y-8">

@@ -5,7 +5,7 @@ export interface VideoService {
   user_id?: string;
   service_type: string;
   number_of_videos: number;
-  price?: number;
+  estimate_price?: number;
   quotation_price?: number;
   notes?: string;
   status: ProjectStatus;
@@ -85,7 +85,8 @@ export const VIDEO_SERVICE_STATUS = [
 export const EMPTY_VIDEO_SERVICE: VideoService = {
   service_type: '',
   number_of_videos: 1,
-  price: 0,
+  estimate_price: 0,
+  quotation_price: 0,
   notes: '',
   status: 'submitted',
   addons: []

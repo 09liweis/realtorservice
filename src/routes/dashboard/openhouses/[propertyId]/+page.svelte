@@ -8,11 +8,7 @@
   import { user } from '$lib/stores/auth';
   import { getOpenHouseGuests, upsertOpenHouseGuest } from '$lib/supabase';
     import { getPageTitle } from '$lib/types/constant';
-  import { onMount } from 'svelte';
   
-  export let data;
-  // $: ({ property } = data);
-
   const property_id = $page.params.propertyId;
 
   const EMPTY_GUEST = {

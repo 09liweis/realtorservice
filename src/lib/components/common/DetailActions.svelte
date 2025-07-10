@@ -15,7 +15,7 @@
 
   export let request: Staging|Cleaning|VideoService|SocialMediaService;
   export let tp:string = "staging";
-  const quotation_price = request.quotation_price;
+  const quotation_price = request?.quotation_price;
 
   const dispatch = createEventDispatcher();
 
@@ -40,7 +40,7 @@
       const creditRecord: CreditRecord = {
         amount: -quotation_price, // Negative amount for payment
         tp,
-        tp_id: request.id,
+        tp_id: request?.id,
         user_id: $user.id,
         status: 'done'
       };
@@ -94,7 +94,7 @@
   // Get next action based on status
   $: nextAction = (() => {
     if ($user?.isAdmin) {
-      switch (request.status) {
+      switch (request?.status) {
         case 'submitted':
           return { text: 'Confirm Quotation Price', action: 'confirmed', available: true };
         case 'confirmed':
@@ -109,7 +109,7 @@
           return { text: 'No Action', action: 'none', available: false };
       }
     } else {
-      switch (request.status) {
+      switch (request?.status) {
         case 'submitted':
           return { text: 'Awaiting Quote', action: 'wait', available: false };
         case 'confirmed':
@@ -171,11 +171,11 @@
         </div>
         <div class="text-sm font-medium text-gray-700">{nextAction.text}</div>
         <div class="text-xs text-gray-500 mt-1">
-          {#if request.status === 'submitted'}
+          {#if request?.status === 'submitted'}
             Our team is reviewing your request
-          {:else if request.status === 'paid'}
+          {:else if request?.status === 'paid'}
             We'll contact you to schedule staging
-          {:else if request.status === 'scheduled'}
+          {:else if request?.status === 'scheduled'}
             Staging installation is scheduled
           {:else}
             Please wait for the next step
@@ -200,15 +200,15 @@
       <div class="space-y-2 text-xs text-gray-600">
         <div class="flex justify-between">
           <span>Request ID:</span>
-          <span class="font-mono">{request.id?.slice(-8) || 'N/A'}</span>
+          <span class="font-mono">{request?.id?.slice(-8) || 'N/A'}</span>
         </div>
         <div class="flex justify-between">
           <span>Created:</span>
-          <span>{request.created_at ? new Date(request.created_at).toLocaleDateString() : 'N/A'}</span>
+          <span>{request?.created_at ? new Date(request?.created_at).toLocaleDateString() : 'N/A'}</span>
         </div>
         <div class="flex justify-between">
           <span>Last Updated:</span>
-          <span>{request.updated_at ? new Date(request.updated_at).toLocaleDateString() : 'N/A'}</span>
+          <span>{request?.updated_at ? new Date(request?.updated_at).toLocaleDateString() : 'N/A'}</span>
         </div>
       </div>
     </div>
@@ -217,7 +217,7 @@
 
 <ConfirmPayModal
   {tp}
-  amount={request.quotation_price}
+  amount={request?.quotation_price}
   show={showConfirmPayModal}
   on:close={()=>showConfirmPayModal=false}
 />

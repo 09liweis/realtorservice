@@ -46,11 +46,11 @@
             <span class="text-white text-xl">✅</span>
           </div>
           <span class="text-xs font-medium text-green-700 bg-green-200 px-2 py-1 rounded-full">
-            {socialMediaService.quotation_price ? 'Final' : 'Pending'}
+            {socialMediaService?.quotation_price ? 'Final' : 'Pending'}
           </span>
         </div>
         <div class="text-2xl font-bold text-green-900 mb-1">
-          {socialMediaService.quotation_price ? formatAmount(socialMediaService.quotation_price) : 'Pending Quote'}
+          {socialMediaService?.quotation_price ? formatAmount(socialMediaService?.quotation_price) : 'Pending Quote'}
         </div>
         <div class="text-sm text-green-700">Final Quoted Price</div>
       </div>
@@ -74,7 +74,7 @@
             </span>
           </div>
 
-          {#if socialMediaService.subscription_type !== 'Monthly'}
+          {#if socialMediaService?.subscription_type !== 'Monthly'}
             <div class="flex justify-between items-center py-2 border-b border-gray-200">
               <span class="text-gray-700">Monthly equivalent:</span>
               <span class="font-medium text-gray-900">{formatAmount(pricingInfo.monthlyEquivalent)}/month</span>

@@ -45,7 +45,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
               </svg>
               <span class="text-pink-700">
-                <strong>Frequency:</strong> {getPostingFrequencyLabel(socialMediaService.posting_frequency)}
+                <strong>Frequency:</strong> {getPostingFrequencyLabel(socialMediaService?.posting_frequency)}
               </span>
             </div>
             <div class="flex items-center space-x-2">
@@ -53,7 +53,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
               </svg>
               <span class="text-pink-700">
-                <strong>Plan:</strong> {getSubscriptionTypeLabel(socialMediaService.subscription_type)}
+                <strong>Plan:</strong> {getSubscriptionTypeLabel(socialMediaService?.subscription_type)}
               </span>
             </div>
           </div>
@@ -100,7 +100,7 @@
     {/if}
 
     <!-- Project Notes -->
-    {#if socialMediaService.notes}
+    {#if socialMediaService?.notes}
       <div class="bg-yellow-50 rounded-lg p-4 border border-yellow-200">
         <div class="flex items-start space-x-3">
           <div class="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -109,7 +109,7 @@
           <div>
             <div class="text-sm font-medium text-yellow-800 mb-1">Project Requirements</div>
             <div class="text-sm text-yellow-900 leading-relaxed whitespace-pre-line">
-              {socialMediaService.notes}
+              {socialMediaService?.notes}
             </div>
           </div>
         </div>
