@@ -1,19 +1,11 @@
-import type { ProjectStatus } from './constant';
+import type { Service } from '../../types/service.types';
+import { EMPTY_SERVICE } from '../../types/service.types';
 
-export interface SocialMediaService {
-  id?: string;
-  user_id?: string;
+export interface SocialMediaService extends Service {
   platforms: string[]; // Array of social media platforms
   subscription_type: 'Monthly' | 'Semi-Annual' | 'Annual';
   posting_frequency: 'Weekly' | 'Bi-Weekly' | 'Monthly';
-  notes?: string;
-  estimate_price?: number;
-  quotation_price?: number;
   addons: string[]; // Array of addon service types
-  status: ProjectStatus;
-  created_at?: string;
-  updated_at?: string;
-  history?: Array<{status: string, date: string, note?: string}>;
 }
 
 export const SOCIAL_MEDIA_PLATFORMS = [
@@ -88,15 +80,11 @@ export const SOCIAL_MEDIA_PRICING = {
 };
 
 export const EMPTY_SOCIAL_MEDIA_SERVICE: SocialMediaService = {
+  ...EMPTY_SERVICE,
   platforms: [],
   subscription_type: 'Monthly',
   posting_frequency: 'Weekly',
-  notes: '',
-  estimate_price: 0,
-  quotation_price: 0,
-  addons: [],
-  status: 'submitted' as ProjectStatus,
-  history: []
+  addons: []
 };
 
 // Calculate pricing for social media service
