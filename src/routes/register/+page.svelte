@@ -4,7 +4,7 @@
   import { user } from '$lib/stores/auth';
   import { onMount } from 'svelte';
   import Button from '$lib/components/Button.svelte';
-  import Input from '$lib/components/Input.svelte';
+  import Input from '$lib/components/common/Input.svelte';
     import { getPageTitle } from '$lib/types/constant';
     import supabase from '$lib/db/client';
 

@@ -3,7 +3,7 @@
   import { getUserProfile, updateUserProfile, getUserCredits, getCreditRecords } from '$lib/supabase';
   import { getPageTitle } from '$lib/types/constant';
   import Button from '$lib/components/Button.svelte';
-  import Input from '$lib/components/Input.svelte';
+  import Input from '$lib/components/common/Input.svelte';
   import FormBackdrop from '$lib/components/form/FormBackdrop.svelte';
   import { onMount } from 'svelte';
   import type { UserProfile } from '$lib/types/user';

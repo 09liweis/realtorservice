@@ -2,7 +2,7 @@
   import { goto } from '$app/navigation';
   import { user } from '$lib/stores/auth';
   import Button from '$lib/components/Button.svelte';
-  import Input from '$lib/components/Input.svelte';
+  import Input from '$lib/components/common/Input.svelte';
   import Link from '$lib/components/Link.svelte';
     import { getPageTitle } from '$lib/types/constant';
     import supabase from '$lib/db/client';
