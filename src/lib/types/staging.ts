@@ -1,33 +1,24 @@
-import type { ProjectStatus } from "./constant";
+import type { Service } from "../../types/service.types";
+import { EMPTY_SERVICE } from "../../types/service.types";
 
-export interface Staging {
-  id?: string,
-  location: string,
-  size: string,
-  occupation_status: string,
-  property_type: string,
-  rooms: string,
-  selling_price: number,
-  timeline: string,
-  length: string,
-  status: ProjectStatus,
-  created_at?: string,
-  updated_at?: string
-  estimate_price?: number,
-  quotation_price?: number,
+export interface StagingService extends Service {
+  location: string;
+  size: string;
+  occupation_status: string;
+  property_type: string;
+  rooms: string;
+  selling_price: number;
+  timeline: string;
+  length: string;
   user_profiles?: {
-    first_name: string,
-    last_name: string,
-    brokerage: string
-  },
-  history?: Array<{
-    status: ProjectStatus;
-    date: string;
-    note?: string;
-  }>,
+    first_name: string;
+    last_name: string;
+    brokerage: string;
+  };
 }
 
-export const EMPTY_STAGING = {
+export const EMPTY_STAGING_SERVICE = {
+  ...EMPTY_SERVICE,
   location: '',
   size: '',
   occupation_status: 'vacant',
@@ -35,11 +26,7 @@ export const EMPTY_STAGING = {
   rooms: '',
   selling_price: 0,
   timeline: '',
-  length: '',
-  status: 'submitted' as ProjectStatus,
-  estimate_price: 0,
-  quotation_price: 0,
-  history: []
+  length: ''
 }
 
 // Toronto-based staging fee calculation constants

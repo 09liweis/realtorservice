@@ -58,7 +58,7 @@
     if (!request.history) request.history = [];
     request.history.push({
       status: request.status,
-      date: new Date().toISOString()
+      date: new Date()
     });
 
     // Submit form
