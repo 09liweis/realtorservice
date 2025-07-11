@@ -4,7 +4,7 @@
   import { user } from '$lib/stores/auth';
   import { getPageTitle } from '$lib/types/constant';
   import type { VideoService } from '$lib/types/video';
-  import { VIDEO_SERVICE_TYPES, VIDEO_SERVICE_ADDONS, VIDEO_SERVICE_STATUS, calculateVideoServicePrice } from '$lib/types/video';
+  import { VIDEO_SERVICE_TYPES, VIDEO_SERVICE_ADDONS, calculateVideoServicePrice } from '$lib/types/video';
   import VideoServiceHeader from '$lib/components/video/detail/VideoServiceHeader.svelte';
   import VideoServiceInfo from '$lib/components/video/detail/VideoServiceInfo.svelte';
   import VideoServicePricing from '$lib/components/video/detail/VideoServicePricing.svelte';
@@ -48,9 +48,6 @@
     videoService?.addons || [],
     videoService?.estimate_price
   );
-
-  // Get status information
-  $: statusInfo = VIDEO_SERVICE_STATUS.find(s => s.value === videoService?.status) || VIDEO_SERVICE_STATUS[0];
 
   // Handle status updates - refresh the data
   async function handleStatusUpdate() {

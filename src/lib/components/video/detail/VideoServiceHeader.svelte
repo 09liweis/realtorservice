@@ -1,13 +1,8 @@
 <script lang="ts">
     import { getStatusStyle } from '$lib/types/constant';
   import type { VideoService } from '$lib/types/video';
-  import { VIDEO_SERVICE_STATUS } from '$lib/types/video';
 
   export let videoService: VideoService;
-
-  function getStatusInfo(status: string) {
-    return VIDEO_SERVICE_STATUS.find(s => s.value === status) || VIDEO_SERVICE_STATUS[0];
-  }
 </script>
 
 <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
@@ -37,7 +32,7 @@
       <!-- Status -->
       <div class="flex items-center space-x-4">
         <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border capitalize {getStatusStyle(videoService?.status)}">
-          {getStatusInfo(videoService?.status).label}
+          {videoService?.status}
         </span>
       </div>
     </div>

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
   import type { VideoService } from '$lib/types/video';
-  import { VIDEO_SERVICE_TYPES, VIDEO_SERVICE_ADDONS, VIDEO_SERVICE_STATUS, calculateVideoServicePrice } from '$lib/types/video';
+  import { VIDEO_SERVICE_TYPES, VIDEO_SERVICE_ADDONS, calculateVideoServicePrice } from '$lib/types/video';
   import { fade, fly, scale } from 'svelte/transition';
   import { flip } from 'svelte/animate';
     import Link from '../Link.svelte';
@@ -27,10 +27,6 @@
 
   function getAddonInfo(addonType: string) {
     return VIDEO_SERVICE_ADDONS.find(addon => addon.value === addonType);
-  }
-
-  function getStatusInfo(status: string) {
-    return VIDEO_SERVICE_STATUS.find(s => s.value === status) || VIDEO_SERVICE_STATUS[0];
   }
 
   function getDisplayPrice(videoService: VideoService): string {
@@ -124,8 +120,8 @@
               </div>
 
               <div class="flex items-center justify-between">
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border {getStatusStyle(videoService.status)}">
-                  {getStatusInfo(videoService.status).label}
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border capitalize {getStatusStyle(videoService.status)}">
+                  {videoService.status}
                 </span>
               </div>
 

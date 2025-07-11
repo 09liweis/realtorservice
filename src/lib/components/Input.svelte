@@ -11,7 +11,6 @@
   export let value = '';
   export let checked = false;
   export let min = 0;
-  export let max = 0;
   export let placeholder = '';
   export let required = false;
   export let minlength = 1;
@@ -92,7 +91,6 @@
       {name}
       {type}
       {min}
-      {max}
       {placeholder}
       {required}
       {minlength}

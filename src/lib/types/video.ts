@@ -66,16 +66,6 @@ export const VIDEO_SERVICE_ADDONS = [
   }
 ];
 
-export const VIDEO_SERVICE_STATUS = [
-  { value: 'pending', label: 'Pending Review', color: 'yellow' },
-  { value: 'quoted', label: 'Quote Provided', color: 'blue' },
-  { value: 'approved', label: 'Approved', color: 'green' },
-  { value: 'in_progress', label: 'In Progress', color: 'blue' },
-  { value: 'review', label: 'Under Review', color: 'purple' },
-  { value: 'completed', label: 'Completed', color: 'green' },
-  { value: 'cancelled', label: 'Cancelled', color: 'red' }
-];
-
 export const EMPTY_VIDEO_SERVICE: VideoService = {
   ...EMPTY_SERVICE,
   service_type: '',
