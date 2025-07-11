@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { createEventDispatcher } from 'svelte';
   
   const dispatch = createEventDispatcher();
@@ -10,31 +10,33 @@
   export let label = '';
   export let value = '';
   export let checked = false;
+  export let min = 0;
+  export let max = 0;
   export let placeholder = '';
   export let required = false;
-  export let minlength = '';
+  export let minlength = 1;
   export let error = false;
   export let errorMessage = '';
   export let disabled = false;
   export let classes = '';
   
   // Handle input event
-  function handleInput(event) {
+  function handleInput(event:any) {
     dispatch('input', event);
   }
   
   // Handle change event
-  function handleChange(event) {
+  function handleChange(event:any) {
     dispatch('change', event);
   }
   
   // Handle focus event
-  function handleFocus(event) {
+  function handleFocus(event:any) {
     dispatch('focus', event);
   }
   
   // Handle blur event
-  function handleBlur(event) {
+  function handleBlur(event:any) {
     dispatch('blur', event);
   }
   
@@ -89,6 +91,8 @@
       {id}
       {name}
       {type}
+      {min}
+      {max}
       {placeholder}
       {required}
       {minlength}

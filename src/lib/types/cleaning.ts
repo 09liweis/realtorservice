@@ -1,7 +1,7 @@
 import type { Service } from "../../types/service.types";
 import { EMPTY_SERVICE } from "../../types/service.types";
 
-export interface CleaningService extends Service {
+export interface Cleaning extends Service {
   location: string;
   property_type: string;
   size: string;
@@ -20,7 +20,7 @@ export interface CleaningService extends Service {
   };
 }
 
-export const EMPTY_CLEANING: CleaningService = {
+export const EMPTY_CLEANING: Cleaning = {
   ...EMPTY_SERVICE,
   location: '',
   property_type: 'house',

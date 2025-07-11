@@ -99,8 +99,7 @@
               label="Size (sq ft)"
               type="number"
               bind:value={request.size}
-              min="0"
-              step="1"
+              min={1}
               placeholder="Property square footage"
               disabled={$user?.isAdmin}
             />
@@ -115,8 +114,7 @@
               label="Number of Rooms*"
               type="number"
               bind:value={request.rooms}
-              min="1"
-              step="1"
+              min={1}
               placeholder="e.g., 5"
               helpText="Total number of rooms to clean"
               disabled={$user?.isAdmin}
@@ -129,7 +127,7 @@
               label="Number of Bathrooms*"
               type="number"
               bind:value={request.bathrooms}
-              min="1"
+              min={1}
               step="1"
               placeholder="e.g., 2"
               helpText="Number of bathrooms to clean"
