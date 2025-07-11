@@ -6,7 +6,7 @@
   import type { CreditRecord } from '$lib/types/credit';
   import Button from '$lib/components/Button.svelte';
     import type { Cleaning } from '$lib/types/cleaning';
-    import Input from '../Input.svelte';
+    import Input from '$lib/components/common/Input.svelte';
     import type { ProjectStatus } from '$lib/types/constant';
     import ConfirmPayModal from './ConfirmPayModal.svelte';
     import type { VideoService } from '$lib/types/video';

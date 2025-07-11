@@ -1,7 +1,7 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
   import Button from "../Button.svelte";
-  import Input from "../Input.svelte";
+  import Input from '$lib/components/common/Input.svelte';
   import {
     formatAmount,
     OCCUPATION_STATUS_OPTIONS,

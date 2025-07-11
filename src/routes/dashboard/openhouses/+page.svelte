@@ -2,7 +2,7 @@
   import Button from '$lib/components/Button.svelte';
   import FormBackdrop from '$lib/components/form/FormBackdrop.svelte';
     import Add from '$lib/components/icons/Add.svelte';
-  import Input from '$lib/components/Input.svelte';
+  import Input from '$lib/components/common/Input.svelte';
   import OpenHouseList from '$lib/components/openhouses/OpenHouseList.svelte';
   import { user } from '$lib/stores/auth';  
   import { deleteOpenhouse, getOpenHouses, upsertOpenHouse } from '$lib/supabase';

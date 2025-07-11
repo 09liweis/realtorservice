@@ -1,7 +1,7 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
   import Button from "../Button.svelte";
-  import Input from "../Input.svelte";
+  import Input from '$lib/components/common/Input.svelte';
   import { formatAmount, PROPERTY_TYPES } from "$lib/types/constant";
   import { EMPTY_CLEANING, type Cleaning, calculateCleaningPrice, CLEANING_TYPES, CLEANING_FREQUENCIES } from "$lib/types/cleaning";
   import Select from "../Select.svelte";

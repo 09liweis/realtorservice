@@ -10,7 +10,7 @@
     calculateSocialMediaPrice
   } from '$lib/types/social';
   import Button from '$lib/components/Button.svelte';
-  import Input from '$lib/components/Input.svelte';
+  import Input from '$lib/components/common/Input.svelte';
   import Select from '$lib/components/Select.svelte';
   import CheckBox from '$lib/components/common/CheckBox.svelte';
   import { user } from '$lib/stores/auth';

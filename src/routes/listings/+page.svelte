@@ -3,7 +3,7 @@
   import { goto } from '$app/navigation';
   import ListingList from '$lib/components/listings/ListingList.svelte';
   import Button from '$lib/components/Button.svelte';
-  import Input from '$lib/components/Input.svelte';
+  import Input from '$lib/components/common/Input.svelte';
 
   export let data;
 

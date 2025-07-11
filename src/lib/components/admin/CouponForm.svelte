@@ -3,7 +3,7 @@
   import type { Coupon } from '$lib/types/coupon';
   import { COUPON_TYPES, EMPTY_COUPON } from '$lib/types/coupon';
   import Button from '$lib/components/Button.svelte';
-  import Input from '$lib/components/Input.svelte';
+  import Input from '$lib/components/common/Input.svelte';
   import Select from '$lib/components/Select.svelte';
   import CheckBox from '$lib/components/common/CheckBox.svelte';
 
