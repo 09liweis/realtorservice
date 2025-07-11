@@ -76,6 +76,7 @@
       if (!pricingInfo.isCustomPrice && pricingInfo.totalPrice > 0) {
         socialMediaService.estimate_price = pricingInfo.totalPrice;
       }
+      socialMediaService.history?.push({status:'submitted',date:new Date()})
       dispatch('submit', socialMediaService);
     }
   }

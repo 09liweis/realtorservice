@@ -71,8 +71,9 @@
     video: upsertVideoService
   }
 
-  async function updateStatus(status:string) {
+  async function updateStatus(status:ProjectStatus) {
     request.status = status as ProjectStatus;
+    request.history?.push({status, date: new Date()});
     const upsertFunction = UPSERT_TP_FUNCTIONS[tp];
     const { error: updateError } = await upsertFunction(request);
     

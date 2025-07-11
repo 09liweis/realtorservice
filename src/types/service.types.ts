@@ -7,9 +7,9 @@ export type Service = {
   estimate_price?: number;
   quotation_price?: number;
   status: ProjectStatus;
-  history?: Array<{status: string, date: string, note?: string}>;
-  created_at?: Date;
-  updated_at?: Date;
+  history?: Array<{status: string, date: Date, note?: string}>;
+  created_at?: string;
+  updated_at?: string;
 };
 
 export const EMPTY_SERVICE: Service = {
