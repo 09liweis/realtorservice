@@ -1,8 +1,7 @@
-import type { ProjectStatus } from "./constant";
+import type { Service } from "../../types/service.types";
+import { EMPTY_SERVICE } from "../../types/service.types";
 
-export interface Cleaning {
-  id?: string;
-  user_id?: string;
+export interface CleaningService extends Service {
   location: string;
   property_type: string;
   size: string;
@@ -11,12 +10,7 @@ export interface Cleaning {
   cleaning_type: string;
   frequency: string;
   special_requests?: string;
-  status: ProjectStatus;
-  estimate_price?: number;
-  quotation_price?: number;
   scheduled_date?: string;
-  created_at?: string;
-  updated_at?: string;
   user_profiles?: {
     first_name: string;
     last_name: string;
@@ -24,10 +18,10 @@ export interface Cleaning {
     phone: string;
     brokerage: string;
   };
-  history?: Array<{status: string, date: string, note?: string}>;
 }
 
-export const EMPTY_CLEANING: Cleaning = {
+export const EMPTY_CLEANING_SERVICE: CleaningService = {
+  ...EMPTY_SERVICE,
   location: '',
   property_type: 'house',
   size: '',
@@ -36,11 +30,7 @@ export const EMPTY_CLEANING: Cleaning = {
   cleaning_type: 'deep_cleaning',
   frequency: 'one_time',
   special_requests: '',
-  status: 'submitted' as ProjectStatus,
-  estimate_price: 0,
-  quotation_price: 0,
-  scheduled_date: '',
-  history: []
+  scheduled_date: ''
 };
 
 export const CLEANING_TYPES = [

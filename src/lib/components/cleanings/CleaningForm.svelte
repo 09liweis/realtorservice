@@ -46,6 +46,7 @@
 
     // Ensure estimate_price is set
     request.estimate_price = cleaningCalculation.totalPrice;
+    request.history?.push({status:request.status, date: new Date()});
 
     // Submit form
     dispatch("submit", { ...request });

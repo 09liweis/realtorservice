@@ -1,18 +1,11 @@
 import type { ProjectStatus } from './constant';
+import type { Service } from '../../types/service.types';
+import { EMPTY_SERVICE } from '../../types/service.types';
 
-export interface VideoService {
-  id?: string;
-  user_id?: string;
+export interface VideoService extends Service {
   service_type: string;
   number_of_videos: number;
-  estimate_price?: number;
-  quotation_price?: number;
-  notes?: string;
-  status: ProjectStatus;
   addons?: string[]; // Array of addon service types
-  created_at?: string;
-  updated_at?: string;
-  history?: Array<{status: string, date: string, note?: string}>;
 }
 
 export const VIDEO_SERVICE_TYPES = [
@@ -84,14 +77,10 @@ export const VIDEO_SERVICE_STATUS = [
 ];
 
 export const EMPTY_VIDEO_SERVICE: VideoService = {
+  ...EMPTY_SERVICE,
   service_type: '',
   number_of_videos: 1,
-  estimate_price: 0,
-  quotation_price: 0,
-  notes: '',
-  status: 'submitted',
-  addons: [],
-  history: []
+  addons: []
 };
 
 // Calculate total price for video service including addons
