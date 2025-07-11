@@ -24,6 +24,7 @@ export interface Cleaning {
     phone: string;
     brokerage: string;
   };
+  history?: Array<{status: string, date: string, note?: string}>;
 }
 
 export const EMPTY_CLEANING: Cleaning = {
@@ -38,7 +39,8 @@ export const EMPTY_CLEANING: Cleaning = {
   status: 'submitted' as ProjectStatus,
   estimate_price: 0,
   quotation_price: 0,
-  scheduled_date: ''
+  scheduled_date: '',
+  history: []
 };
 
 export const CLEANING_TYPES = [

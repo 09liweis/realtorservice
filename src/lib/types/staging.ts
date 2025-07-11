@@ -19,7 +19,12 @@ export interface Staging {
     first_name: string,
     last_name: string,
     brokerage: string
-  }
+  },
+  history?: Array<{
+    status: ProjectStatus;
+    date: string;
+    note?: string;
+  }>,
 }
 
 export const EMPTY_STAGING = {
@@ -33,7 +38,8 @@ export const EMPTY_STAGING = {
   length: '',
   status: 'submitted' as ProjectStatus,
   estimate_price: 0,
-  quotation_price: 0
+  quotation_price: 0,
+  history: []
 }
 
 // Toronto-based staging fee calculation constants

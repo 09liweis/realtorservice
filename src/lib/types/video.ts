@@ -12,6 +12,7 @@ export interface VideoService {
   addons?: string[]; // Array of addon service types
   created_at?: string;
   updated_at?: string;
+  history?: Array<{status: string, date: string, note?: string}>;
 }
 
 export const VIDEO_SERVICE_TYPES = [
@@ -89,7 +90,8 @@ export const EMPTY_VIDEO_SERVICE: VideoService = {
   quotation_price: 0,
   notes: '',
   status: 'submitted',
-  addons: []
+  addons: [],
+  history: []
 };
 
 // Calculate total price for video service including addons

@@ -54,6 +54,13 @@
     // Ensure estimate_price is set
     request.estimate_price = stagingCalculation.totalCost;
 
+    // Add status change to history
+    if (!request.history) request.history = [];
+    request.history.push({
+      status: request.status,
+      date: new Date().toISOString()
+    });
+
     // Submit form
     dispatch("submit", { ...request });
   }

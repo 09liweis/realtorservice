@@ -13,6 +13,7 @@ export interface SocialMediaService {
   status: ProjectStatus;
   created_at?: string;
   updated_at?: string;
+  history?: Array<{status: string, date: string, note?: string}>;
 }
 
 export const SOCIAL_MEDIA_PLATFORMS = [
@@ -94,7 +95,8 @@ export const EMPTY_SOCIAL_MEDIA_SERVICE: SocialMediaService = {
   estimate_price: 0,
   quotation_price: 0,
   addons: [],
-  status: 'submitted' as ProjectStatus
+  status: 'submitted' as ProjectStatus,
+  history: []
 };
 
 // Calculate pricing for social media service
