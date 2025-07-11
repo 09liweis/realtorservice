@@ -1,7 +1,7 @@
 import type { Service } from "../../types/service.types";
 import { EMPTY_SERVICE } from "../../types/service.types";
 
-export interface StagingService extends Service {
+export interface Staging extends Service {
   location: string;
   size: string;
   occupation_status: string;
