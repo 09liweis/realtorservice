@@ -9,7 +9,6 @@
   export let type = 'text';
   export let label = '';
   export let value = '';
-  export let checked = false;
   export let min = 0;
   export let placeholder = '';
   export let required = false;
@@ -40,9 +39,7 @@
   }
   
   // Base input classes with enhanced styling
-  const baseClasses = type === 'checkbox' 
-    ? 'h-4 w-4 rounded border-gray-300 text-primary focus:ring-[#0d7377] transition-colors duration-200 ease-in-out'
-    : 'appearance-none relative block w-full px-4 py-3 border rounded-lg placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#0d7377] focus:border-[#0d7377] transition-colors duration-200 ease-in-out sm:text-sm';
+  const baseClasses = 'appearance-none relative block w-full px-4 py-3 border rounded-lg placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#0d7377] focus:border-[#0d7377] transition-colors duration-200 ease-in-out sm:text-sm';
   
   // Compute input classes based on error state and disabled state
   $: inputClasses = `${baseClasses} ${
@@ -53,7 +50,7 @@
 </script>
 
 <div class="space-y-1">
-  {#if label && type !== 'checkbox'}
+  {#if label}
     <label for={id} class="block text-sm font-medium text-gray-700">
       {label}
       {#if required}
@@ -62,47 +59,22 @@
     </label>
   {/if}
   
-  {#if type === 'checkbox'}
-    <div class="flex items-center space-x-3">
-      <input
-        {id}
-        {name}
-        type="checkbox"
-        bind:checked
-        {disabled}
-        class={inputClasses}
-        on:input={handleInput}
-        on:change={handleChange}
-        on:focus={handleFocus}
-        on:blur={handleBlur}
-      />
-      {#if label}
-        <label for={id} class="text-sm font-medium text-gray-700">
-          {label}
-          {#if required}
-            <span class="text-red-500 ml-1">*</span>
-          {/if}
-        </label>
-      {/if}
-    </div>
-  {:else}
-    <input
-      {id}
-      {name}
-      {type}
-      {min}
-      {placeholder}
-      {required}
-      {minlength}
-      {disabled}
-      bind:value
-      class={inputClasses}
-      on:input={handleInput}
-      on:change={handleChange}
-      on:focus={handleFocus}
-      on:blur={handleBlur}
-    />
-  {/if}
+  <input
+    {id}
+    {name}
+    {type}
+    {min}
+    {placeholder}
+    {required}
+    {minlength}
+    {disabled}
+    bind:value
+    class={inputClasses}
+    on:input={handleInput}
+    on:change={handleChange}
+    on:focus={handleFocus}
+    on:blur={handleBlur}
+  />
   
   {#if error && errorMessage}
     <p class="text-sm text-red-600 flex items-center mt-1">
