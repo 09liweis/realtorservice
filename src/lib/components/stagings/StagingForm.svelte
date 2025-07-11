@@ -13,7 +13,7 @@
     type Staging,
     calculateStagingFee,
   } from "$lib/types/staging";
-  import Select from "../Select.svelte";
+  import Select from '$lib/components/common/Select.svelte';
   import { user } from "$lib/stores/auth";
 
   export let isEdit = false;

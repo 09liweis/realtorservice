@@ -4,7 +4,7 @@
   import FormBackdrop from '$lib/components/form/FormBackdrop.svelte';
   import Input from '$lib/components/common/Input.svelte';
     import OpenHouseGuestList from '$lib/components/openhouses/OpenHouseGuestList.svelte';
-    import Select from '$lib/components/Select.svelte';
+    import Select from '$lib/components/common/Select.svelte';
   import { user } from '$lib/stores/auth';
   import { getOpenHouseGuests, upsertOpenHouseGuest } from '$lib/supabase';
     import { getPageTitle } from '$lib/types/constant';

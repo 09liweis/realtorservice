@@ -4,7 +4,7 @@
   import Input from '$lib/components/common/Input.svelte';
   import { formatAmount, PROPERTY_TYPES } from "$lib/types/constant";
   import { EMPTY_CLEANING, type Cleaning, calculateCleaningPrice, CLEANING_TYPES, CLEANING_FREQUENCIES } from "$lib/types/cleaning";
-  import Select from "../Select.svelte";
+  import Select from '$lib/components/common/Select.svelte';
   import { user } from "$lib/stores/auth";
 
   export let isEdit = false;
