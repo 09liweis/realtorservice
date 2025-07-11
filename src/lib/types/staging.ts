@@ -17,7 +17,7 @@ export interface StagingService extends Service {
   };
 }
 
-export const EMPTY_STAGING_SERVICE = {
+export const EMPTY_STAGING = {
   ...EMPTY_SERVICE,
   location: '',
   size: '',

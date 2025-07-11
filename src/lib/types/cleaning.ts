@@ -20,7 +20,7 @@ export interface CleaningService extends Service {
   };
 }
 
-export const EMPTY_CLEANING_SERVICE: CleaningService = {
+export const EMPTY_CLEANING: CleaningService = {
   ...EMPTY_SERVICE,
   location: '',
   property_type: 'house',
