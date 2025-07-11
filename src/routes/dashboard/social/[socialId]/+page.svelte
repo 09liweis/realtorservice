@@ -16,6 +16,7 @@
   import SocialMediaServicePricing from '$lib/components/social/detail/SocialMediaServicePricing.svelte';
   import DetailActions from '$lib/components/common/DetailActions.svelte';
   import { getSocialMediaService } from '$lib/supabase';
+    import Link from '$lib/components/Link.svelte';
 
   const socialServiceId = $page.params.socialId;
   
@@ -87,15 +88,14 @@
 <div class="space-y-8">
   <!-- Back Navigation -->
   <div class="flex items-center space-x-4">
-    <button
-      on:click={() => goto('/dashboard/social')}
-      class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors duration-200"
+    <Link
+      href={'/dashboard/social'}
     >
       <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
       </svg>
       Back to Social Media Services
-    </button>
+    </Link>
   </div>
 
   <!-- Error Message -->

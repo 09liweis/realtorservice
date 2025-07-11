@@ -11,6 +11,7 @@
     import StagingCleaningHeader from '$lib/components/common/StagingCleaningHeader.svelte';
     import DetailActions from '$lib/components/common/DetailActions.svelte';
     import Timeline from '$lib/components/common/Timeline.svelte';
+    import Link from '$lib/components/Link.svelte';
 
 
   const cleaningId = $page.params.cleaningId;
@@ -48,10 +49,6 @@
     }
   }
 
-  function handleBack() {
-    goto('/dashboard/cleanings');
-  }
-
   function handleEdit() {
     if (cleaning) {
       goto(`/dashboard/cleanings?edit=${cleaning.id}`);
@@ -71,15 +68,14 @@
 <div class="space-y-6">
   <!-- Back Navigation -->
   <div class="flex items-center space-x-4">
-    <button
-      on:click={handleBack}
-      class="flex items-center text-gray-600 hover:text-gray-900 transition-colors duration-200"
+    <Link
+      href={'/dashboard/cleanings'}
     >
       <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
       </svg>
       Back to Cleanings
-    </button>
+    </Link>
   </div>
 
   {#if loading}
