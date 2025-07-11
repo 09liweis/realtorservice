@@ -15,7 +15,6 @@
   import DashboardHeader from './DashboardHeader.svelte';
   import WelcomeBonusNotification from '$lib/components/dashboard/WelcomeBonusNotification.svelte';
   import ServiceStatsCard from '$lib/components/dashboard/ServiceStatsCard.svelte';
-  import PerformanceChart from '$lib/components/dashboard/PerformanceChart.svelte';
 
   // Redirect if user is not logged in
   onMount(() => {
@@ -51,7 +50,6 @@
   };
 
   let loading = true;
-  let performanceData = [];
 
   // Welcome bonus notification
   let showWelcomeBonus = false;
@@ -136,24 +134,6 @@
         available: 1250,
         used: 750
       };
-
-      // Create performance data for chart
-      performanceData = [
-        { month: 'Jan', listings: 5, sales: 2 },
-        { month: 'Feb', listings: 8, sales: 3 },
-        { month: 'Mar', listings: 12, sales: 5 },
-        { month: 'Apr', listings: 15, sales: 7 },
-        { month: 'May', listings: 18, sales: 10 },
-        { month: 'Jun', listings: 22, sales: 14 }
-      ];
-
-      // Create recent activity
-      recentActivity = [
-        { type: 'listing', action: 'New listing added', time: '2 hours ago', icon: '🏠' },
-        { type: 'cleaning', action: 'Cleaning scheduled', time: '4 hours ago', icon: '🧹' },
-        { type: 'video', action: 'Video service completed', time: '1 day ago', icon: '🎥' },
-        { type: 'social', action: 'Social media post published', time: '2 days ago', icon: '📱' }
-      ];
 
     } catch (error) {
       console.error('Error loading dashboard data:', error);
@@ -241,22 +221,6 @@
         <span class="font-medium">Scheduled</span> services
       </div>
     </ServiceStatsCard>
-  </div>
-
-  <!-- Performance Section -->
-  <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
-    <div class="flex items-center justify-between mb-6">
-      <div>
-        <h2 class="text-xl font-semibold text-gray-900">Performance</h2>
-        <p class="text-sm text-gray-600">Your business growth over time</p>
-      </div>
-      <div class="flex space-x-2">
-        <button class="text-xs font-medium px-3 py-1 bg-gray-100 rounded-full">6M</button>
-        <button class="text-xs font-medium px-3 py-1 text-gray-500 hover:text-gray-900">1Y</button>
-        <button class="text-xs font-medium px-3 py-1 text-gray-500 hover:text-gray-900">All</button>
-      </div>
-    </div>
-    <PerformanceChart data={performanceData} loading={loading} />
   </div>
 
   <!-- Secondary Services Grid -->
