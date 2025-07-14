@@ -8,6 +8,36 @@ import type { VideoService } from './types/video';
 import type { SocialMediaService } from './types/social';
 import supabase from './db/client';
 
+interface SelectOptions {
+  table: string;
+  selectFields: string;
+  conditions?: Record<string, any>;
+  single?: boolean;
+}
+
+const commonSelect = async ({
+  table,
+  selectFields,
+  conditions,
+  single = false
+}: SelectOptions) => {
+  let query = supabase
+    .from(table)
+    .select(selectFields);
+
+  if (conditions) {
+    Object.entries(conditions).forEach(([key, value]) => {
+      query = query.eq(key, value);
+    });
+  }
+
+  if (single) {
+    query = query.single();
+  }
+
+  return await query;
+};
+
 export const getOpenHouses = async ({user_id}) => {
   return await supabase
     .from('openhouses')
@@ -144,16 +174,19 @@ export const deleteOfferProperty = async (id:string) => {
 }
 
 export const getOffers = async ({user_id, property_id}) => {
-  return await supabase
-    .from('offers')
-    .select(`
-      *
-    `)
-    .eq('user_id',user_id)
-    .eq('property_id',property_id)
-    ;
+  const conditions = { user_id };
+  if (property_id) {
+    conditions.property_id = property_id;
+  }
+  
+  return await commonSelect({
+    table: 'offers',
+    selectFields: '*',
+    conditions
+  });
 }
 
+// Cannot use commonSelect here due to upsert operation
 export const upsertOffer = async (offer:Offer) => {
   if (offer.id) {
     return await supabase
@@ -170,6 +203,7 @@ export const upsertOffer = async (offer:Offer) => {
   }
 }
 
+// Cannot use commonSelect here due to delete operation
 export const deleteOffer = async (id:string) => {
   return await supabase
     .from('offers')
@@ -178,6 +212,7 @@ export const deleteOffer = async (id:string) => {
 }
 
 // Updated Listings CRUD operations
+// Cannot use commonSelect here due to the join with user_profiles and ordering
 export const getListings = async (params?: ListingSearch) => {
   let query = supabase
     .from('listings')
@@ -371,18 +406,32 @@ export const deleteCleaning = async (id:string) => {
 
 // User Profiles operations
 export const getUserProfiles = async () => {
-  return await supabase
-    .from('user_profiles')
-    .select('*')
-    .order('created_at', { ascending: false });
+  const { data, error } = await commonSelect({
+    table: 'user_profiles',
+    selectFields: '*'
+  });
+
+  if (error) {
+    return { data: null, error };
+  }
+
+  // Manually apply ordering since commonSelect doesn't handle it
+  const orderedData = data.sort((a, b) => 
+    new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+  );
+
+  return { data: orderedData, error: null };
 }
 
 export const getUserProfile = async (user_id: string) => {
-  return await supabase
-    .from('user_profiles')
-    .select('*')
-    .eq('user_id', user_id)
-    .single();
+  const { data, error } = await commonSelect({
+    table: 'user_profiles',
+    selectFields: '*',
+    conditions: { user_id },
+    single: true
+  });
+
+  return { data, error };
 }
 
 export const updateUserProfile = async (user_id: string, updates: any) => {
