@@ -12,7 +12,9 @@
 	});
 
 	function handleShowCoupons() {
-		showCouponModal = true;
+		if (!$user) {
+			showCouponModal = true;
+		}
 	}
 
 	function handleCloseCouponModal() {
