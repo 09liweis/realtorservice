@@ -74,7 +74,7 @@
             </div>
             <button
               on:click={handleClose}
-              class="text-white hover:text-gray-200 transition-colors duration-200 p-2 cursor-pointer hover:bg-opacity-20 rounded-full"
+              class="text-white hover:text-gray-200 transition-colors duration-200 cursor-pointer p-2 cursor-pointer hover:bg-opacity-20 rounded-full"
             >
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>

@@ -80,7 +80,7 @@
       </h2>
       <button
         on:click={handleCancel}
-        class="text-white hover:text-gray-200 transition-colors duration-200"
+        class="text-white hover:text-gray-200 transition-colors duration-200 cursor-pointer"
         disabled={loading}
       >
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
