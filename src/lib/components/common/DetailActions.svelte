@@ -28,8 +28,9 @@
     showConfirmPayModal = true;
   }
 
-  async function confirmPayment() {
-    if (!$user || !quotation_price) return;
+  async function confirmPayment(event:any) {
+    const { amount, coupon, savings } = event.detail;
+    if (!$user || !amount) return;
     
     statusLoading = true;
     paymentError = '';
@@ -38,18 +39,19 @@
     try {
       // Create credit record
       const creditRecord: CreditRecord = {
-        amount: -quotation_price, // Negative amount for payment
+        amount: -amount, // Negative amount for payment
         tp,
         tp_id: request?.id,
         user_id: $user.id,
-        status: 'done'
+        status: 'done',
+        //coupon_id: coupon?.id // Add coupon ID if a coupon was used
       };
       
       const { error: creditRecordError } = await upsertCreditRecord(creditRecord);
       if (creditRecordError) throw new Error(creditRecordError.message);
       
       // Update user credits
-      const { error: updateCreditsError } = await calcUserCredits($user.id, -quotation_price);
+      const { error: updateCreditsError } = await calcUserCredits($user.id, -amount);
       if (updateCreditsError) throw new Error(updateCreditsError.message);
 
       // Update staging status
@@ -185,16 +187,6 @@
       </div>
     {/if}
 
-    <!-- Secondary Actions -->
-    <div class="space-y-3 pt-4 border-t border-gray-200">
-      <button class="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors duration-200">
-        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
-        </svg>
-        Contact Support
-      </button>
-    </div>
-
     <!-- Status Information -->
     <div class="mt-6 p-4 bg-gray-50 rounded-lg">
       <h3 class="text-sm font-medium text-gray-700 mb-3">Request Information</h3>
@@ -220,5 +212,6 @@
   {tp}
   amount={request?.quotation_price}
   show={showConfirmPayModal}
+  on:confirm={confirmPayment}
   on:close={()=>showConfirmPayModal=false}
 />
