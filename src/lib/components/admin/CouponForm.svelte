@@ -148,7 +148,7 @@
           label="Credit Value *"
           type="number"
           bind:value={coupon.credits}
-          min="1"
+          min={1}
           step="1"
           placeholder="100"
           disabled={loading}
@@ -196,7 +196,7 @@
           label="Usage Limit"
           type="number"
           bind:value={coupon.usage_limit}
-          min="1"
+          min={1}
           step="1"
           placeholder="Leave empty for unlimited"
           disabled={loading}
