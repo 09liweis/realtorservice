@@ -5,7 +5,7 @@
     StagingsList,
     StagingForm,
   } from "$lib/components/stagings";
-  import Button from "$lib/components/Button.svelte";
+  import Button from "$lib/components/common/Button.svelte";
   import FormBackdrop from "$lib/components/form/FormBackdrop.svelte";
   import { EMPTY_STAGING, type Staging } from "$lib/types/staging";
   import { getStagings, upsertStaging, deleteStaging, getAllStagings } from "$lib/supabase";

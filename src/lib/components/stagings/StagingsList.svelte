@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Staging } from "$lib/types/staging";
-  import Button from "../Button.svelte";
+  import Button from "../common/Button.svelte";
   import StagingCard from "./StagingCard.svelte";
   import { createEventDispatcher } from "svelte";
   import { fade, fly, slide } from "svelte/transition";
