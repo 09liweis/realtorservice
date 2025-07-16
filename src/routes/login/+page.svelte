@@ -1,7 +1,7 @@
 <script>
   import { goto } from '$app/navigation';
   import { user } from '$lib/stores/auth';
-  import Button from '$lib/components/Button.svelte';
+  import Button from '$lib/components/common/Button.svelte';
   import Input from '$lib/components/common/Input.svelte';
   import Link from '$lib/components/Link.svelte';
     import { getPageTitle } from '$lib/types/constant';

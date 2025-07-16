@@ -1,7 +1,7 @@
 <script>
   import { goto } from '$app/navigation';
   import Input from '$lib/components/common/Input.svelte';
-  import Button from '$lib/components/Button.svelte';
+  import Button from '$lib/components/common/Button.svelte';
   import Link from '$lib/components/Link.svelte';
     import supabase from '$lib/db/client';
 

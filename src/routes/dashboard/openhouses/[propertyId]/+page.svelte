@@ -1,6 +1,6 @@
 <script lang="ts">
     import { page } from '$app/stores';
-  import Button from '$lib/components/Button.svelte';
+  import Button from '$lib/components/common/Button.svelte';
   import FormBackdrop from '$lib/components/form/FormBackdrop.svelte';
   import Input from '$lib/components/common/Input.svelte';
     import OpenHouseGuestList from '$lib/components/openhouses/OpenHouseGuestList.svelte';
