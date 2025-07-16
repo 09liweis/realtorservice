@@ -2,7 +2,7 @@
   import { createEventDispatcher, onMount } from 'svelte';
   import { user } from '$lib/stores/auth';
   import { getUserCredits, redeemCoupon, getUserCoupons } from '$lib/supabase';
-  import Button from '$lib/components/Button.svelte';
+  import Button from '$lib/components/common/Button.svelte';
   import FormBackdrop from '$lib/components/form/FormBackdrop.svelte';
   import { fade, fly, scale } from 'svelte/transition';
   import { elasticOut } from 'svelte/easing';
