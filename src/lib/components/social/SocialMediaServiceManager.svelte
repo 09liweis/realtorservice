@@ -5,7 +5,7 @@
   import { getUserSocialMediaServices, upsertSocialMediaService, deleteSocialMediaService } from '$lib/supabase';
   import SocialMediaServiceForm from './SocialMediaServiceForm.svelte';
   import SocialMediaServiceList from './SocialMediaServiceList.svelte';
-  import Button from '$lib/components/Button.svelte';
+  import Button from '$lib/components/common/Button.svelte';
   import FormBackdrop from '$lib/components/form/FormBackdrop.svelte';
 
   export let userId: string;
