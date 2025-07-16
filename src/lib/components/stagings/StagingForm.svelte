@@ -1,6 +1,6 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
-  import Button from "../Button.svelte";
+  import Button from "../common/Button.svelte";
   import Input from '$lib/components/common/Input.svelte';
   import {
     formatAmount,

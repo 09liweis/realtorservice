@@ -1,6 +1,6 @@
 <script lang="ts">
   import Input from '$lib/components/common/Input.svelte';
-  import Button from '$lib/components/Button.svelte';
+  import Button from '$lib/components/common/Button.svelte';
   import ImageUpload from '$lib/components/ImageUpload.svelte';
   import Select from '$lib/components/common/Select.svelte';
   import type { Listing } from '$lib/types/listing';

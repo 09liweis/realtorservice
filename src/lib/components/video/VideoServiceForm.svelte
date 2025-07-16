@@ -2,7 +2,7 @@
   import { createEventDispatcher } from 'svelte';
   import type { VideoService } from '$lib/types/video';
   import { VIDEO_SERVICE_TYPES, VIDEO_SERVICE_ADDONS, EMPTY_VIDEO_SERVICE, calculateVideoServicePrice } from '$lib/types/video';
-  import Button from '$lib/components/Button.svelte';
+  import Button from '$lib/components/common/Button.svelte';
   import Input from '$lib/components/common/Input.svelte';
   import Select from '$lib/components/common/Select.svelte';
   import CheckBox from '$lib/components/common/CheckBox.svelte';
