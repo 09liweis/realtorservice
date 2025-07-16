@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Cleaning } from "$lib/types/cleaning";
-  import Button from "../Button.svelte";
+  import Button from "../common/Button.svelte";
   import CleaningCard from "./CleaningCard.svelte";
   import { createEventDispatcher } from "svelte";
   import { fade, fly, slide } from "svelte/transition";
