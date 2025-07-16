@@ -7,8 +7,9 @@
   import VideoServiceList from './VideoServiceList.svelte';
   import Button from '$lib/components/common/Button.svelte';
   import FormBackdrop from '$lib/components/form/FormBackdrop.svelte';
+    import { user } from '$lib/stores/auth';
 
-  export let userId: string;
+  export let userId: string = $user?.id || '';
 
   let videoServices: VideoService[] = [];
   let loading = false;

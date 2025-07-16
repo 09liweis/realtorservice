@@ -1,13 +1,14 @@
 <script lang="ts">
-  import { getAllStagings, getUserProfiles } from '$lib/supabase';
+  import { getUserProfiles } from '$lib/supabase';
   import UserTable from '$lib/components/admin/UserTable.svelte';
-  import type { Staging } from '$lib/types/staging';
   import StagingScreen from '$lib/components/stagings/StagingScreen.svelte';
   import CouponManager from '$lib/components/admin/CouponManager.svelte';
   import CleaningScreen from '$lib/components/cleanings/CleaningScreen.svelte';
+  import VideoServiceManager from '$lib/components/video/VideoServiceManager.svelte';
+  import SocialMediaServiceManager from '$lib/components/social/SocialMediaServiceManager.svelte';
 
   // Tab management
-  type Tab = 'users' | 'stagings' | 'coupons' | 'cleanings';
+  type Tab = 'users' | 'stagings' | 'coupons' | 'cleanings' | 'videos' | 'social';
   let activeTab: Tab = 'users';
   
   const setActiveTab = (tab: Tab) => {
@@ -102,6 +103,28 @@
             <span>Coupons</span>
           </div>
         </button>
+        <button
+          class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 {activeTab === 'videos' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}"
+          on:click={() => setActiveTab('videos')}
+        >
+          <div class="flex items-center space-x-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+            </svg>
+            <span>Video Services</span>
+          </div>
+        </button>
+        <button
+          class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 {activeTab === 'social' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}"
+          on:click={() => setActiveTab('social')}
+        >
+          <div class="flex items-center space-x-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+            </svg>
+            <span>Social Media</span>
+          </div>
+        </button>
       </nav>
     </div>
 
@@ -118,6 +141,10 @@
         <CleaningScreen />
       {:else if activeTab === 'coupons'}
         <CouponManager />
+      {:else if activeTab === 'videos'}
+        <VideoServiceManager />
+      {:else if activeTab === 'social'}
+        <SocialMediaServiceManager />
       {/if}
     </div>
   {/if}
