@@ -4,7 +4,7 @@
   import type { Coupon } from '$lib/types/coupon';
   import { COUPON_TYPES } from '$lib/types/coupon';
   import FormBackdrop from '$lib/components/form/FormBackdrop.svelte';
-  import Button from '$lib/components/Button.svelte';
+  import Button from '$lib/components/common/Button.svelte';
   import { fade, fly, scale } from 'svelte/transition';
   import { elasticOut } from 'svelte/easing';
     import { formatDate } from '$lib/helper';

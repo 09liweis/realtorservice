@@ -5,7 +5,7 @@
   import { getCoupons, upsertCoupon, deleteCoupon, toggleCouponStatus } from '$lib/supabase';
   import CouponForm from './CouponForm.svelte';
   import CouponList from './CouponList.svelte';
-  import Button from '$lib/components/Button.svelte';
+  import Button from '$lib/components/common/Button.svelte';
   import FormBackdrop from '$lib/components/form/FormBackdrop.svelte';
 
   let coupons: Coupon[] = [];
