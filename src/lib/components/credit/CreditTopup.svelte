@@ -4,7 +4,7 @@
     import { calcUserCredits, getPendingTopUpCreditRecord, upsertCreditRecord } from '$lib/supabase';
     import { loadStripe } from '@stripe/stripe-js';
     import { PUBLIC_STRIPE_PUBLISHABLE_KEY } from '$env/static/public';
-    import Button from '../Button.svelte';
+    import Button from '../common/Button.svelte';
     import { sendRequest } from '$lib/helper';
   
     const dispatch = createEventDispatcher();
