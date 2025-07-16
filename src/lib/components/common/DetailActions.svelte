@@ -4,7 +4,7 @@
   import { user } from '$lib/stores/auth';
   import { upsertCreditRecord, calcUserCredits, upsertStaging, upsertCleaning, upsertSocialMediaService, upsertVideoService } from '$lib/supabase';
   import type { CreditRecord } from '$lib/types/credit';
-  import Button from '$lib/components/Button.svelte';
+  import Button from '$lib/components/common/Button.svelte';
     import type { Cleaning } from '$lib/types/cleaning';
     import Input from '$lib/components/common/Input.svelte';
     import type { ProjectStatus } from '$lib/types/constant';
