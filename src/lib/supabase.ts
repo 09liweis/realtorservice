@@ -547,12 +547,18 @@ export const deleteSocialMediaService = async (id: string) => {
 }
 
 // Video Services CRUD operations
-export const getUserVideoServices = async ({user_id}: any) => {
+export const getUserVideoServices = async ({user_id,isAdmin}: any) => {
+  if(isAdmin) {
+    return await supabase
+      .from('video_services')
+      .select('*')
+      .order('updated_at', { ascending: false });
+  }
   return await supabase
     .from('video_services')
     .select('*')
     .eq('user_id', user_id)
-    .order('created_at', { ascending: false });
+    .order('updated_at', { ascending: false });
 }
 
 export const getVideoService = async (id: string) => {

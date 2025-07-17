@@ -126,12 +126,14 @@
       <h2 class="text-2xl font-bold text-gray-900">Social Media Management</h2>
       <p class="text-gray-600 mt-1">Professional social media management services for your real estate business</p>
     </div>
+    {#if !isAdmin}
     <Button onclick={handleCreateNew}>
       <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4V2a1 1 0 011-1h8a1 1 0 011 1v2m-9 4v10a2 2 0 002 2h6a2 2 0 002 2V8M7 8h10M9 12h6m-6 4h6"></path>
       </svg>
       New Social Media Service
     </Button>
+    {/if}
   </div>
 
   <!-- Error Message -->

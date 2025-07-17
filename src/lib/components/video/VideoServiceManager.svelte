@@ -20,6 +20,11 @@
   let showDeleteConfirm = false;
   let videoServiceToDelete: VideoService | null = null;
 
+  let isAdmin = false;
+  $: {
+    isAdmin = $user?.isAdmin || false;
+  }
+
   onMount(() => {
     loadVideoServices();
   });
@@ -28,7 +33,7 @@
     try {
       loading = true;
       error = null;
-      const { data, error: fetchError } = await getUserVideoServices({user_id:userId});
+      const { data, error: fetchError } = await getUserVideoServices({user_id:userId,isAdmin});
       if (fetchError) throw fetchError;
       videoServices = data || [];
     } catch (err) {
@@ -121,12 +126,14 @@
       <h2 class="text-2xl font-bold text-gray-900">Video Editing Services</h2>
       <p class="text-gray-600 mt-1">Request professional video editing for your real estate content</p>
     </div>
+    {#if !isAdmin}
     <Button onclick={handleCreateNew}>
       <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
       </svg>
       New Video Request
     </Button>
+    {/if}
   </div>
 
   <!-- Error Message -->
