@@ -36,6 +36,29 @@
       description: "Video Editing Services",
     },
     {
+      name: "Stagings",
+      href: "/dashboard/stagings",
+      icon: "✨",
+      description: "Property Staging",
+    },
+    {
+      name: "Cleanings",
+      href: "/dashboard/cleanings",
+      icon: "🧽",
+      description: "Cleaning Services",
+    }
+  ];
+
+  // Admin navigation item
+  const adminNavItem = {
+    name: "Admin Panel",
+    href: "/dashboard/admin",
+    icon: "⚙️",
+    description: "System Administration",
+  };
+
+  const realtorNavItems = [
+    {
       name: "Listings",
       href: "/dashboard/listings",
       icon: "📋",
@@ -53,32 +76,12 @@
       icon: "💰",
       description: "Review & Negotiate",
     },
-    {
-      name: "Stagings",
-      href: "/dashboard/stagings",
-      icon: "✨",
-      description: "Property Staging",
-    },
-    {
-      name: "Cleanings",
-      href: "/dashboard/cleanings",
-      icon: "🧽",
-      description: "Cleaning Services",
-    },
-  ];
-
-  // Admin navigation item
-  const adminNavItem = {
-    name: "Admin Panel",
-    href: "/dashboard/admin",
-    icon: "⚙️",
-    description: "System Administration",
-  };
+  ]
 
   // Derive navigation items based on user role
   $: navItems = $user?.isAdmin 
     ? [...baseNavItems, adminNavItem] 
-    : baseNavItems;
+    : [...baseNavItems, ...realtorNavItems];
 
   // Check if current path matches navigation item
   function isActive(href: string) {
