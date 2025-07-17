@@ -114,6 +114,7 @@
 <div class="space-y-6">
   <div class="flex justify-between items-center">
     <h1 class="text-2xl font-bold text-gray-900">Staging Requests</h1>
+    {#if !$user?.isAdmin}
     <Button 
       onclick={newRequest}
       disabled={!$user?.isApproved}
@@ -121,6 +122,7 @@
       <Add />
       New Staging Request
     </Button>
+    {/if}
   </div>
 
   <!-- 主内容区域 -->

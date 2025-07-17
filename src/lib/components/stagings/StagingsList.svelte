@@ -5,6 +5,7 @@
   import { createEventDispatcher } from "svelte";
   import { fade, fly, slide } from "svelte/transition";
   import { flip } from "svelte/animate";
+  import { user } from "$lib/stores/auth";
 
   export let requests: Staging[] = [];
   export let loading = false;
@@ -60,6 +61,7 @@
         Get started by creating a new staging request.
       </p>
       <div class="mt-6" in:fade={{ delay: 300, duration: 300 }}>
+        {#if $user?.isAdmin}
         <Button
           onclick={() => dispatch("new")}
         >
@@ -76,6 +78,7 @@
           </svg>
           New Staging Request
         </Button>
+        {/if}
       </div>
     </div>
   {:else}
