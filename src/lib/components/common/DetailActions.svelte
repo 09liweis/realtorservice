@@ -73,6 +73,10 @@
     video: upsertVideoService
   }
 
+  const handleStatusUpdate = () => {
+    updateStatus(nextAction.action as ProjectStatus);
+  }
+
   async function updateStatus(status:ProjectStatus) {
     request.status = status as ProjectStatus;
     request.history?.push({status, date: new Date()});
@@ -165,6 +169,10 @@
         />
         <Button loading={statusLoading} disabled={statusLoading} class_name="w-full" onclick={handleConfirmQuotation}>
           {statusLoading ? 'Confirming Quotation Price' : nextAction.text}
+        </Button>
+      {:else}
+        <Button loading={statusLoading} disabled={statusLoading} class_name="w-full" onclick={handleStatusUpdate}>
+          {statusLoading ? 'Processing' : nextAction.text}
         </Button>
       {/if}
     {:else}
