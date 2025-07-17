@@ -501,12 +501,18 @@ export const getUserCredits = async (user_id: string) => {
 }
 
 // Social Media Services CRUD operations
-export const getUserSocialMediaServices = async ({user_id}: any) => {
+export const getUserSocialMediaServices = async ({user_id,isAdmin}: any) => {
+  if(isAdmin) {
+    return await supabase
+      .from('social_media_services')
+      .select('*')
+      .order('updated_at', { ascending: false });
+  }
   return await supabase
     .from('social_media_services')
     .select('*')
     .eq('user_id', user_id)
-    .order('created_at', { ascending: false });
+    .order('updated_at', { ascending: false });
 }
 
 export const getSocialMediaService = async (id: string) => {

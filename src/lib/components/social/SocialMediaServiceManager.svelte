@@ -20,6 +20,11 @@
   let showDeleteConfirm = false;
   let serviceToDelete: SocialMediaService | null = null;
 
+  let isAdmin = false;
+  $: {
+    isAdmin = $user?.isAdmin || false;
+  }
+
   onMount(() => {
     loadSocialMediaServices();
   });
@@ -28,7 +33,7 @@
     try {
       loading = true;
       error = null;
-      const { data, error: fetchError } = await getUserSocialMediaServices({user_id:userId});
+      const { data, error: fetchError } = await getUserSocialMediaServices({user_id:userId,isAdmin});
       if (fetchError) throw fetchError;
       socialMediaServices = data || [];
     } catch (err) {
