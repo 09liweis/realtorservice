@@ -37,12 +37,19 @@ A comprehensive platform for real estate professionals built with SvelteKit and 
 │   │   ├── dashboard/    # User dashboard
 │   │   ├── listings/     # Property listings
 │   │   ├── profile/      # User profile
-│   │   └── auth/         # Authentication flows
+│   │   ├── login/        # Login page
+│   │   ├── register/     # Registration
+│   │   ├── forgot-password/ # Password recovery
+│   │   ├── reset-password/ # Password reset
+│   │   ├── about/        # About page
+│   │   └── api/         # API routes
 │   └── lib/
 │       ├── components/   # Reusable UI components
 │       ├── db/           # Database operations
 │       ├── stores/       # State management
-│       └── supabase.ts   # Supabase client config
+│       ├── supabase.ts   # Supabase client and authentication
+│       ├── helper.ts     # Utility functions
+│       └── types/        # Type definitions
 ├── static/               # Static assets
 ├── svelte.config.js      # SvelteKit config
 └── tailwind.config.js    # TailwindCSS config
