@@ -393,7 +393,9 @@ export const upsertCleaning = async (cleaning:Cleaning) => {
   } else {
     return await supabase
       .from('cleanings')
-      .insert(cleaning);
+      .insert(cleaning)
+      .select('*')
+      .single();
   }
 }
 
