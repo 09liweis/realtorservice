@@ -1,4 +1,3 @@
-import type { ProjectStatus } from './constant';
 import type { Service } from '../../types/service.types';
 import { EMPTY_SERVICE } from '../../types/service.types';
 

@@ -8,6 +8,7 @@
   import Button from '$lib/components/common/Button.svelte';
   import FormBackdrop from '$lib/components/form/FormBackdrop.svelte';
     import { user } from '$lib/stores/auth';
+    import { sendEmailRequest } from '$lib/http';
 
   export let userId: string = $user?.id || '';
 
@@ -99,23 +100,12 @@
 
       // Send email notification
       try {
-        const emailResponse = await fetch('/api/send-status-email', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: $user?.email,
-            projectName: videoServiceData.service_type,
-            projectUrl: `/dashboard/video/${data?.id}`,
-            type: 'submission'
-          })
-        });
-
-        if (!emailResponse.ok) {
-          const errorData = await emailResponse.json();
-          console.error('Email notification failed:', errorData.error);
-        }
+        await sendEmailRequest(
+          $user?.email,
+          videoServiceData.service_type,
+          `/dashboard/video/${data?.id}`,
+          'submission'
+        );
       } catch (emailError) {
         console.error('Email notification error:', emailError);
       }
