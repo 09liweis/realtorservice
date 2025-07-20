@@ -94,8 +94,31 @@
         serviceToSave.id = editingVideoService.id;
       }
 
-      const { error: saveError } = await upsertVideoService(serviceToSave);
+      const { data, error: saveError } = await upsertVideoService(serviceToSave);
       if (saveError) throw saveError;
+
+      // Send email notification
+      try {
+        const emailResponse = await fetch('/api/send-status-email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: $user?.email,
+            projectName: videoServiceData.service_type,
+            projectUrl: `/dashboard/video/${data?.id}`,
+            type: 'submission'
+          })
+        });
+
+        if (!emailResponse.ok) {
+          const errorData = await emailResponse.json();
+          console.error('Email notification failed:', errorData.error);
+        }
+      } catch (emailError) {
+        console.error('Email notification error:', emailError);
+      }
 
       await loadVideoServices();
       showForm = false;

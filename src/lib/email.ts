@@ -1,8 +1,8 @@
-import { HOST } from '$env/static/private';
+import { HOST,RESEND_API_KEY } from '$env/static/private';
 import { Resend } from 'resend';
 
 // Initialize Resend client with API key from environment variables
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend(RESEND_API_KEY);
 
 interface EmailOptions {
   to: string | string[];

@@ -581,7 +581,9 @@ export const upsertVideoService = async (videoService: VideoService) => {
   } else {
     return await supabase
       .from('video_services')
-      .insert(videoService);
+      .insert(videoService)
+      .select('*')
+      .single();
   }
 }
 
