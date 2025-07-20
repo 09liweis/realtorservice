@@ -8,6 +8,7 @@
   import Button from '$lib/components/common/Button.svelte';
   import FormBackdrop from '$lib/components/form/FormBackdrop.svelte';
     import { user } from '$lib/stores/auth';
+  import { sendEmailRequest } from '$lib/http';
 
   export let userId: string = $user?.id || '';
 
@@ -94,7 +95,19 @@
         serviceToSave.id = editingService.id;
       }
 
-      const { error: saveError } = await upsertSocialMediaService(serviceToSave);
+      const { data, error: saveError } = await upsertSocialMediaService(serviceToSave);
+
+      try {
+        await sendEmailRequest({
+          email: $user?.email,
+          projectName: serviceData.platforms.join(', '),
+          projectUrl: `/dashboard/social/${data?.id}`,
+          type: 'submission'
+        });
+      } catch (emailError) {
+        console.error('Email notification error:', emailError);
+      }
+
       if (saveError) throw saveError;
 
       await loadSocialMediaServices();
