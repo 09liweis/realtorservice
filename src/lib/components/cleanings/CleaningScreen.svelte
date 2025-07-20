@@ -8,6 +8,7 @@
   import { EMPTY_CLEANING, type Cleaning } from "$lib/types/cleaning";
   import { getCleanings, upsertCleaning, deleteCleaning, getAllCleanings } from "$lib/supabase";
   import { user } from "$lib/stores/auth";
+  import { sendEmailRequest } from "$lib/http";
 
   // Props
   let user_id: string;
@@ -76,7 +77,19 @@
     if (!$user?.isAdmin) {
       cleaningData.user_id = user_id;
     }
-    await upsertCleaning(cleaningData);
+    const {data,error} = await upsertCleaning(cleaningData);
+    
+    try {
+      await sendEmailRequest({
+        email: $user?.email,
+        projectName: cleaningData.location,
+        projectUrl: `/dashboard/cleanings/${data?.id}`,
+        type: 'submission'
+      });
+    } catch (emailError) {
+      console.error('Email notification error:', emailError);
+    }
+
     showForm = false;
     fetchCleanings();
   }
