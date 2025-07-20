@@ -78,6 +78,7 @@
   }
 
   async function updateStatus(status:ProjectStatus) {
+    const oldStatus = request.status;
     request.status = status as ProjectStatus;
     request.history?.push({status, date: new Date()});
     const upsertFunction = UPSERT_TP_FUNCTIONS[tp];
@@ -85,6 +86,30 @@
     
     if (updateError) throw new Error(updateError.message);
     dispatch('statusUpdate');
+
+    // Send status change email
+    try {
+      const response = await fetch('/api/send-status-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: $user.email,
+          projectName: request?.location || `Project ${request.id?.slice(-8)}`,
+          oldStatus,
+          newStatus: status,
+          projectUrl: window.location.pathname
+        })
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        console.error('Email API error:', error);
+      }
+    } catch (error) {
+      console.error('Failed to send status email:', error);
+    }
   }
 
   async function handleConfirmQuotation() {
