@@ -89,3 +89,41 @@ export async function sendProjectStatusChange(
     html: html,
   });
 }
+
+/**
+ * Send project submission confirmation
+ * @param email Recipient email address
+ * @param projectName Name of the project
+ * @param projectUrl URL to access the project
+ */
+export async function sendProjectSubmitted(
+  email: string,
+  projectName: string,
+  projectUrl: string
+) {
+  const subject = `Project Submitted: ${projectName}`;
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+      <h2 style="color: #333;">Project Submission Confirmation</h2>
+      <p>Hello,</p>
+      <p>Your project <strong>${projectName}</strong> has been successfully submitted for review.</p>
+      <div style="margin-top: 20px; padding: 15px; background-color: #f5f5f5; border-radius: 5px; text-align: center;">
+        <a href="${HOST}${projectUrl}" 
+           style="display: inline-block; padding: 10px 20px; background-color: #2196F3; 
+                  color: white; text-decoration: none; border-radius: 5px;">
+          View Project
+        </a>
+      </div>
+      <p style="margin-top: 20px;">Our team will review your submission and get back to you soon.</p>
+      <p style="color: #666; font-size: 0.9em;">
+        Thank you for using our service.
+      </p>
+    </div>
+  `;
+
+  return sendMail({
+    to: email,
+    subject: subject,
+    html: html,
+  });
+}
