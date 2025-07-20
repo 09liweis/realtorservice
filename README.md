@@ -2,6 +2,8 @@
 
 A comprehensive platform for real estate professionals built with SvelteKit and Supabase.
 
+![Screenshot](static/screenshot.png) <!-- Add actual screenshot path -->
+
 ## Key Features
 
 - **Property Listings Management**: Create, update and manage property listings
@@ -12,6 +14,8 @@ A comprehensive platform for real estate professionals built with SvelteKit and 
   - Cleaning services management
 - **User Credit System**: Track and manage user credits
 - **Social Media Integration**: Manage social media promotions
+  - Pre-configured templates for Facebook, Instagram
+  - Scheduled posting
 - **Video Services**: Property video production coordination
 - **Payment Processing**: Integrated Stripe payments for services
 
@@ -25,6 +29,8 @@ A comprehensive platform for real estate professionals built with SvelteKit and 
   - Supabase 2.50.0 (Database & Auth)
 - **Payment**: 
   - Stripe 18.2.1
+- **Testing**:
+  - Playwright 1.42.0 (E2E testing)
 
 ## Project Structure
 
@@ -51,27 +57,52 @@ A comprehensive platform for real estate professionals built with SvelteKit and 
 │       ├── helper.ts     # Utility functions
 │       └── types/        # Type definitions
 ├── static/               # Static assets
+├── tests/                # Test files
 ├── svelte.config.js      # SvelteKit config
 └── tailwind.config.js    # TailwindCSS config
 ```
 
 ## Getting Started
 
+### Prerequisites
+
+- Node.js 18+
+- npm 9+
+- Supabase account
+- Stripe account
+
+### Installation
+
 1. Clone the repository
+```bash
+git clone https://github.com/your-repo/realtorservice.git
+cd realtorservice
+```
+
 2. Install dependencies:
 ```bash
 npm install
 ```
-3. Create a `.env` file with your Supabase and Stripe credentials:
+
+3. Set up environment variables:
+   - Create a `.env` file in the root directory
+   - Add your Supabase and Stripe credentials:
+
 ```env
-VITE_SUPABASE_URL=your-supabase-url
-VITE_SUPABASE_ANON_KEY=your-supabase-key
-VITE_STRIPE_PUBLIC_KEY=your-stripe-key
+# Supabase Configuration
+VITE_SUPABASE_URL=your-supabase-project-url
+VITE_SUPABASE_ANON_KEY=your-supabase-anon-key
+
+# Stripe Configuration
+VITE_STRIPE_PUBLIC_KEY=your-stripe-publishable-key
 ```
+
 4. Run the development server:
 ```bash
 npm run dev
 ```
+
+The application will be available at `http://localhost:5173`
 
 ## Available Scripts
 
@@ -79,27 +110,84 @@ npm run dev
 - `npm run build`: Build for production
 - `npm run preview`: Preview production build
 - `npm run check`: Run type checking
+- `npm run test`: Run E2E tests with Playwright
 
 ## Deployment
 
 The project is configured to deploy to Vercel, Netlify, or any Node.js hosting platform using the SvelteKit adapter-auto.
+
+### Vercel Deployment
+
+1. Install Vercel CLI:
+```bash
+npm install -g vercel
+```
+
+2. Deploy:
+```bash
+vercel
+```
+
+### Manual Deployment
 
 For production deployment:
 ```bash
 npm run build
 ```
 
+The built application will be in the `build` directory.
+
 ## API Documentation
 
-The platform integrates with the following APIs:
+### Supabase API
 
-1. **Supabase API**:
-   - Authentication
-   - Database operations
-   - Storage
+1. **Authentication**:
+   - Email/password login
+   - Social login (Google, Facebook)
+   - Magic link
 
-2. **Stripe API**:
-   - Payment processing
-   - Subscription management
+2. **Database**:
+   - PostgreSQL tables for:
+     - Users
+     - Properties
+     - Offers
+     - Services
 
-Refer to the respective API documentation for detailed integration information.
+3. **Storage**:
+   - Property images
+   - Document uploads
+
+### Stripe API
+
+- Payment processing
+- Subscription management
+- Webhook integration
+
+Refer to:
+- [Supabase Documentation](https://supabase.com/docs)
+- [Stripe Documentation](https://stripe.com/docs)
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch:
+```bash
+git checkout -b feature/your-feature
+```
+3. Commit your changes:
+```bash
+git commit -m "Add your feature"
+```
+4. Push to the branch:
+```bash
+git push origin feature/your-feature
+```
+5. Open a pull request
+
+## License
+
+MIT License
+
+## Support
+
+For support, please open an issue on GitHub or contact support@realtorservice.com
