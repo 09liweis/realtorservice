@@ -330,7 +330,9 @@ export const upsertStaging = async (staging:Staging) => {
   } else {
     return await supabase
       .from('stagings')
-      .insert(staging);
+      .insert(staging)
+      .select('*')
+      .single();
   }
 }
 
