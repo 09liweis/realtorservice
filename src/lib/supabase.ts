@@ -539,7 +539,9 @@ export const upsertSocialMediaService = async (service: SocialMediaService) => {
   } else {
     return await supabase
       .from('social_media_services')
-      .insert(service);
+      .insert(service)
+      .select('*')
+      .single();
   }
 }
 
