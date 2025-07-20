@@ -1,19 +1,29 @@
 import { json } from '@sveltejs/kit';
-import { sendProjectStatusChange } from '$lib/email';
+import { sendProjectStatusChange, sendProjectSubmitted } from '$lib/email';
 import type { RequestHandler } from './$types';
 
 export const POST: RequestHandler = async ({ request }) => {
     try {
-        const { email, projectName, oldStatus, newStatus, projectUrl } = await request.json();
+        const { email, projectName, oldStatus, newStatus, projectUrl, type } = await request.json();
         
-        if (!email || !projectName || !oldStatus || !newStatus || !projectUrl) {
+        if (!email || !projectName || !projectUrl) {
             return json(
                 { error: 'Missing required fields' },
                 { status: 400 }
             );
         }
 
-        await sendProjectStatusChange(email, projectName, oldStatus, newStatus, projectUrl);
+        if (type === 'submission') {
+            await sendProjectSubmitted(email, projectName, projectUrl);
+        } else {
+            if (!oldStatus || !newStatus) {
+                return json(
+                    { error: 'Missing status fields for status change email' },
+                    { status: 400 }
+                );
+            }
+            await sendProjectStatusChange(email, projectName, oldStatus, newStatus, projectUrl);
+        }
         
         return json({ success: true });
     } catch (error) {
