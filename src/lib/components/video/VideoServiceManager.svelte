@@ -100,12 +100,12 @@
 
       // Send email notification
       try {
-        await sendEmailRequest(
-          $user?.email,
-          videoServiceData.service_type,
-          `/dashboard/video/${data?.id}`,
-          'submission'
-        );
+        await sendEmailRequest({
+          email: $user?.email,
+          projectName: videoServiceData.service_type,
+          projectUrl: `/dashboard/video/${data?.id}`,
+          type: 'submission'
+        });
       } catch (emailError) {
         console.error('Email notification error:', emailError);
       }

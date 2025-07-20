@@ -5,11 +5,15 @@
  * @param projectUrl URL to access the project
  * @param type Email type (e.g. 'submission')
  */
+interface EmailRequestParams {
+  email: string | undefined;
+  projectName: string;
+  projectUrl: string;
+  type: string;
+}
+
 export async function sendEmailRequest(
-  email: string,
-  projectName: string,
-  projectUrl: string,
-  type: string
+  params: EmailRequestParams
 ): Promise<void> {
   try {
     const response = await fetch('/api/send-status-email', {
@@ -17,12 +21,7 @@ export async function sendEmailRequest(
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        email,
-        projectName,
-        projectUrl,
-        type
-      })
+      body: JSON.stringify(params)
     });
 
     if (!response.ok) {
