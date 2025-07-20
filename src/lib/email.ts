@@ -1,3 +1,4 @@
+import { HOST } from '$env/static/private';
 import { Resend } from 'resend';
 
 // Initialize Resend client with API key from environment variables
@@ -17,7 +18,7 @@ interface EmailOptions {
  */
 export async function sendMail(options: EmailOptions) {
   try {
-    const from = options.from || 'notifications@realtorservice.com';
+    const from = 'Acme <onboarding@resend.dev>'//'info@realtorservice.com';
     const { data, error } = await resend.emails.send({
       from: from,
       to: options.to,
@@ -48,7 +49,8 @@ export async function sendProjectStatusChange(
   email: string,
   projectName: string,
   oldStatus: string,
-  newStatus: string
+  newStatus: string,
+  projectUrl?: string
 ) {
   const subject = `Project Status Update: ${projectName}`;
   const html = `
@@ -61,12 +63,19 @@ export async function sendProjectStatusChange(
         <span style="color: #666;">To:</span> <strong style="color: #4CAF50;">${newStatus}</strong>
       </p>
       <p>Please log in to your account to view more details.</p>
-      <div style="margin-top: 20px; padding: 15px; background-color: #f5f5f5; border-radius: 5px;">
+      <div style="margin-top: 20px; padding: 15px; background-color: #f5f5f5; border-radius: 5px; text-align: center;">
         <a href="https://realtorservice.com/dashboard" 
            style="display: inline-block; padding: 10px 20px; background-color: #4CAF50; 
-                  color: white; text-decoration: none; border-radius: 5px;">
+                  color: white; text-decoration: none; border-radius: 5px; margin: 0 10px;">
           View Dashboard
         </a>
+        ${projectUrl ? `
+        <a href="${HOST}dashboard/${projectUrl}" 
+           style="display: inline-block; padding: 10px 20px; background-color: #2196F3; 
+                  color: white; text-decoration: none; border-radius: 5px; margin: 0 10px;">
+          View Project
+        </a>
+        ` : ''}
       </div>
       <p style="margin-top: 20px; color: #666; font-size: 0.9em;">
         If you did not request this notification, please ignore this email.
