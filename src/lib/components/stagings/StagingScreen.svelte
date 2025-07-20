@@ -11,6 +11,7 @@
   import { getStagings, upsertStaging, deleteStaging, getAllStagings } from "$lib/supabase";
   import { user } from "$lib/stores/auth";
   import Add from "../icons/Add.svelte";
+  import { sendEmailRequest } from "$lib/http";
 
   // Props
   let user_id: string;
@@ -100,7 +101,18 @@
     if (!$user?.isAdmin) {
       stagingData.user_id = user_id;
     }
-    await upsertStaging(stagingData);
+    const {data,error} = await upsertStaging(stagingData);
+    try {
+      await sendEmailRequest({
+        email: $user?.email,
+        projectName: stagingData.location,
+        projectUrl: `/dashboard/stagings/${data?.id}`,
+        type: 'submission'
+      });
+    } catch (emailError) {
+      console.error('Email notification error:', emailError);
+    }
+    
     showForm = false;
     fetchStagings();
   }
