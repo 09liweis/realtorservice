@@ -31,11 +31,23 @@ export const EMPTY_STAGING = {
   end_date: ''
 }
 
-export function getStagingEndDate(staging: Staging) {
-  if (staging.length && staging.timeline) {
-    return new Date(new Date(staging.timeline).setMonth(new Date(staging.timeline).getMonth() + parseInt(staging.length))).toISOString().split('T')[0]
-  }
-  return '';
+export function getStagingEndDate(staging: Staging): string {
+  if (!staging.length || !staging.timeline) return '';
+  
+  const startDate = new Date(staging.timeline);
+  const months = parseFloat(staging.length.toString());
+  
+  // Calculate full months and remaining days
+  const fullMonths = Math.floor(months);
+  const remainingDays = Math.round((months - fullMonths) * 30); // Approximate 30 days per month
+  
+  // Add full months first
+  const dateWithMonths = new Date(startDate.setMonth(startDate.getMonth() + fullMonths));
+  
+  // Then add remaining days
+  const endDate = new Date(dateWithMonths.setDate(dateWithMonths.getDate() + remainingDays));
+  
+  return endDate.toISOString().split('T')[0];
 }
 
 // Toronto-based staging fee calculation constants
