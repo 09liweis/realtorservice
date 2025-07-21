@@ -29,6 +29,8 @@ A comprehensive platform for real estate professionals built with SvelteKit and 
   - Supabase 2.50.0 (Database & Auth)
 - **Payment**: 
   - Stripe 18.2.1
+- **Email**: 
+  - Resend 3.0.0
 - **Testing**:
   - Playwright 1.42.0 (E2E testing)
 
@@ -39,23 +41,26 @@ A comprehensive platform for real estate professionals built with SvelteKit and 
 ├── src/
 │   ├── app.html          # Main HTML template
 │   ├── app.css           # Global styles
-│   ├── routes/           # Application pages
-│   │   ├── dashboard/    # User dashboard
-│   │   ├── listings/     # Property listings
-│   │   ├── profile/      # User profile
-│   │   ├── login/        # Login page
-│   │   ├── register/     # Registration
-│   │   ├── forgot-password/ # Password recovery
-│   │   ├── reset-password/ # Password reset
-│   │   ├── about/        # About page
-│   │   └── api/         # API routes
-│   └── lib/
-│       ├── components/   # Reusable UI components
-│       ├── db/           # Database operations
-│       ├── stores/       # State management
-│       ├── supabase.ts   # Supabase client and authentication
-│       ├── helper.ts     # Utility functions
-│       └── types/        # Type definitions
+│   ├── app.d.ts          # Type definitions
+│   ├── lib/
+│   │   ├── components/   # Reusable UI components
+│   │   │   ├── admin/    # Admin components (Coupon, User management)
+│   │   │   ├── cleanings/ # Cleaning service components
+│   │   │   ├── credit/   # Credit system components
+│   │   │   ├── dashboard/ # Dashboard components
+│   │   │   ├── form/     # Form components
+│   │   │   ├── home/     # Home page components
+│   │   │   ├── listings/ # Property listing components
+│   │   │   ├── offer/    # Property offer components
+│   │   │   ├── social/   # Social media service components
+│   │   │   ├── stagings/ # Property staging components
+│   │   │   └── video/    # Video service components
+│   │   ├── db/           # Database operations
+│   │   │   └── client.ts # Database client
+│   │   ├── email.ts      # Email service
+│   │   ├── helper.ts     # Utility functions
+│   │   ├── http.ts       # HTTP utilities
+│   │   └── stores/       # State management
 ├── static/               # Static assets
 ├── tests/                # Test files
 ├── svelte.config.js      # SvelteKit config
