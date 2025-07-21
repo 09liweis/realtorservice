@@ -9,6 +9,7 @@ export interface Staging extends Service {
   rooms: string;
   selling_price: number;
   timeline: string;
+  end_date: string;
   length: string;
   user_profiles?: {
     first_name: string;
