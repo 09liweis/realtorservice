@@ -31,6 +31,13 @@ export const EMPTY_STAGING = {
   end_date: ''
 }
 
+export function getStagingEndDate(staging: Staging) {
+  if (staging.length && staging.timeline) {
+    return new Date(new Date(staging.timeline).setMonth(new Date(staging.timeline).getMonth() + parseInt(staging.length))).toISOString().split('T')[0]
+  }
+  return '';
+}
+
 // Toronto-based staging fee calculation constants
 export const STAGING_RATES: Record<string, any> = {
   // Base rate per square foot per month (CAD)

@@ -12,6 +12,7 @@
     EMPTY_STAGING,
     type Staging,
     calculateStagingFee,
+    getStagingEndDate,
   } from "$lib/types/staging";
   import Select from '$lib/components/common/Select.svelte';
   import { user } from "$lib/stores/auth";
@@ -41,9 +42,7 @@
   // Update estimate_price when calculation changes
   $: {
     request.estimate_price = stagingCalculation.totalCost;
-    request.end_date = request.timeline && request.length 
-      ? new Date(new Date(request.timeline).setMonth(new Date(request.timeline).getMonth() + parseInt(request.length))).toISOString().split('T')[0]
-      : '';
+    request.end_date = getStagingEndDate(request);
   }
 
   // Handle form submission
