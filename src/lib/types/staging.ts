@@ -27,7 +27,8 @@ export const EMPTY_STAGING = {
   rooms: '',
   selling_price: 0,
   timeline: '',
-  length: ''
+  length: '',
+  end_date: ''
 }
 
 // Toronto-based staging fee calculation constants

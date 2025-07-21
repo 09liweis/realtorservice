@@ -41,6 +41,9 @@
   // Update estimate_price when calculation changes
   $: {
     request.estimate_price = stagingCalculation.totalCost;
+    request.end_date = request.timeline && request.length 
+      ? new Date(new Date(request.timeline).setMonth(new Date(request.timeline).getMonth() + parseInt(request.length))).toISOString().split('T')[0]
+      : '';
   }
 
   // Handle form submission
@@ -61,8 +64,10 @@
       date: new Date()
     });
 
-    // Submit form
-    dispatch("submit", { ...request });
+    // Submit form with calculated end_date
+    dispatch("submit", { 
+      ...request
+    });
   }
 
   // Handle cancel
@@ -194,6 +199,18 @@
               helpText="Longer terms receive discounts"
               disabled={$user?.isAdmin}
             />
+          </div>
+
+          <!-- Calculated End Date -->
+          <div>
+            <div class="text-sm font-medium text-gray-700 mb-1">Estimated End Date</div>
+            <div class="bg-gray-50 border border-gray-200 rounded-md px-3 py-2 text-sm">
+              {#if request.timeline && request.length}
+                {request.end_date}
+              {:else}
+                Enter start date and length
+              {/if}
+            </div>
           </div>
 
           {#if isEdit && $user?.isAdmin}
