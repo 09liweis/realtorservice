@@ -5,6 +5,7 @@
   import { formatAmount, PROPERTY_TYPES } from "$lib/types/constant";
   import { EMPTY_CLEANING, type Cleaning, calculateCleaningPrice, CLEANING_TYPES, CLEANING_FREQUENCIES } from "$lib/types/cleaning";
   import Select from '$lib/components/common/Select.svelte';
+  import Textarea from '$lib/components/common/Textarea.svelte';
   import { user } from "$lib/stores/auth";
 
   export let isEdit = false;
@@ -171,19 +172,14 @@
         </div>
 
         <!-- Special Requests -->
-        <div>
-          <label for="special_requests" class="block text-sm font-medium text-gray-700 mb-2">
-            Special Requests
-          </label>
-          <textarea
-            id="special_requests"
-            bind:value={request.special_requests}
-            rows="4"
-            class="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Any specific cleaning requirements, areas of focus, or special instructions..."
-            disabled={$user?.isAdmin}
-          ></textarea>
-        </div>
+        <Textarea
+          id="notes"
+          label="Special Requests"
+          bind:value={request.notes}
+          rows={4}
+          placeholder="Any specific cleaning requirements, areas of focus, or special instructions..."
+          disabled={$user?.isAdmin}
+        />
         
         <!-- Admin Only Fields -->
         {#if $user?.isAdmin}
