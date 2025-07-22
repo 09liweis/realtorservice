@@ -233,7 +233,7 @@
       icon="🎥"
       color="indigo"
       loading={loading}
-      on:click={() => navigateToSection('/dashboard/videos')}
+      on:click={() => navigateToSection('/dashboard/video')}
     >
       <div class="text-sm text-gray-600 mt-1">
         <span class="font-medium">Media</span> production
