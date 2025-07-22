@@ -12,6 +12,7 @@
   import Link from '$lib/components/Link.svelte';
   import StagingCleaningHeader from '$lib/components/common/StagingCleaningHeader.svelte';
     import Timeline from '$lib/components/common/Timeline.svelte';
+    import { formatDate } from '$lib/helper';
 
   const stagingId = $page.params.stagingId;
   
@@ -120,6 +121,19 @@
       />
 
       <Timeline request={staging} tp="staging" />
+
+      <!-- End Date Card -->
+      <div class="bg-white rounded-xl shadow-sm p-6" in:fade={{ duration: 300 }}>
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">Staging Completion</h3>
+        <div class="flex items-center space-x-2">
+          <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+          </svg>
+          <span class="text-gray-700">
+            {formatDate(staging.timeline)} - {formatDate(staging.end_date)}
+          </span>
+        </div>
+      </div>
 
       <!-- Content Grid -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
