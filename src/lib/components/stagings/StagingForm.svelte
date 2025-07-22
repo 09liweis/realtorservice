@@ -192,8 +192,8 @@
               label="Length of Staging (months)*"
               type="number"
               bind:value={request.length}
-              min="1"
-              step="1"
+              min={1}
+              step={0.1}
               placeholder="e.g., 3"
               helpText="Longer terms receive discounts"
               disabled={$user?.isAdmin}
