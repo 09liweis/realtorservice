@@ -144,6 +144,18 @@
           
           <!-- Financial Information -->
           <StagingFinancialInfo {staging} />
+
+          <!-- Notes Section -->
+          <div class="bg-white rounded-xl shadow-sm p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Notes</h3>
+            {#if staging.notes}
+              <div class="prose max-w-none text-gray-700 whitespace-pre-wrap">
+                {staging.notes}
+              </div>
+            {:else}
+              <p class="text-gray-500 italic">No notes provided</p>
+            {/if}
+          </div>
         </div>
 
         <!-- Right Column - Actions and Summary -->
