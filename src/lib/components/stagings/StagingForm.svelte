@@ -2,6 +2,7 @@
   import { createEventDispatcher } from "svelte";
   import Button from "../common/Button.svelte";
   import Input from '$lib/components/common/Input.svelte';
+  import Textarea from '$lib/components/common/Textarea.svelte';
   import {
     formatAmount,
     OCCUPATION_STATUS_OPTIONS,
@@ -242,6 +243,15 @@
             </div>
           </div>
         {/if}
+
+        <!-- Notes -->
+        <Textarea
+          id="notes"
+          label="Notes"
+          bind:value={request.notes}
+          placeholder="Additional notes about the staging request..."
+          rows={4}
+        />
       </div>
 
       <!-- Right Column - Price Calculator -->
