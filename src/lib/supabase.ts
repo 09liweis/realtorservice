@@ -312,7 +312,14 @@ export const getStaging = async ({property_id}:ListingSearch) => {
   return await supabase
     .from('stagings')
     .select(`
-      *
+      *,
+      user_profiles (
+        email,
+        first_name,
+        last_name,
+        phone,
+        brokerage
+      )
     `)
     .eq('id',property_id)
     .single();
@@ -377,7 +384,14 @@ export const getCleaning = async ({property_id}:ListingSearch) => {
   return await supabase
     .from('cleanings')
     .select(`
-      *
+      *,
+      user_profiles (
+        email,
+        first_name,
+        last_name,
+        phone,
+        brokerage
+      )
     `)
     .eq('id',property_id)
     .single();
@@ -523,7 +537,16 @@ export const getUserSocialMediaServices = async ({user_id,isAdmin}: any) => {
 export const getSocialMediaService = async (id: string) => {
   return await supabase
     .from('social_media_services')
-    .select('*')
+    .select(`
+      *,
+      user_profiles (
+        email,
+        first_name,
+        last_name,
+        phone,
+        brokerage
+      )
+    `)
     .eq('id', id)
     .single();
 }
@@ -571,7 +594,16 @@ export const getUserVideoServices = async ({user_id,isAdmin}: any) => {
 export const getVideoService = async (id: string) => {
   return await supabase
     .from('video_services')
-    .select('*')
+    .select(`
+      *,
+      user_profiles (
+        email,
+        first_name,
+        last_name,
+        phone,
+        brokerage
+      )
+    `)
     .eq('id', id)
     .single();
 }
