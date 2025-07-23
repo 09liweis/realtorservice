@@ -15,6 +15,7 @@
 
   export let request: Staging|Cleaning|VideoService|SocialMediaService;
   export let tp:string = "staging";
+  request.quotation_price = request.estimate_price;
   const quotation_price = request?.quotation_price;
 
   const dispatch = createEventDispatcher();
@@ -78,6 +79,7 @@
   }
 
   async function updateStatus(status:ProjectStatus) {
+    const email = request?.user_profiles?.email;
     const oldStatus = request.status;
     request.status = status as ProjectStatus;
     request.history?.push({status, date: new Date()});
@@ -85,7 +87,6 @@
     const { error: updateError } = await upsertFunction(request);
     
     if (updateError) throw new Error(updateError.message);
-    dispatch('statusUpdate');
 
     // Send status change email
     try {
@@ -95,7 +96,7 @@
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          email: request?.user_profiles?.email,
+          email,
           projectName: request?.location || `Project ${request.id?.slice(-8)}`,
           oldStatus,
           newStatus: status,
@@ -107,6 +108,8 @@
         const error = await response.json();
         console.error('Email API error:', error);
       }
+      
+      dispatch('statusUpdate');
     } catch (error) {
       console.error('Failed to send status email:', error);
     }
