@@ -95,7 +95,7 @@
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          email: $user.email,
+          email: $user?.email,
           projectName: request?.location || `Project ${request.id?.slice(-8)}`,
           oldStatus,
           newStatus: status,
@@ -203,7 +203,7 @@
     {:else}
       <div class="text-center py-4">
         <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
-          <span class="text-2xl">⏳</span>
+          <span class="text-2xl">{request?.status === 'completed' ? '✅' : '⏳'}</span>
         </div>
         <div class="text-sm font-medium text-gray-700">{nextAction.text}</div>
         <div class="text-xs text-gray-500 mt-1">
