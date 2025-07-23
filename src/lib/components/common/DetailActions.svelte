@@ -95,7 +95,7 @@
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          email: $user?.email,
+          email: request?.user_profiles?.email,
           projectName: request?.location || `Project ${request.id?.slice(-8)}`,
           oldStatus,
           newStatus: status,
