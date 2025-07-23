@@ -134,6 +134,18 @@
           
           <!-- Financial Information -->
           <CleaningFinancialInfo {cleaning} />
+
+          <!-- Special Requests Section -->
+          <div class="bg-white rounded-xl shadow-sm p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Notes</h3>
+            {#if cleaning.notes}
+              <div class="prose max-w-none text-gray-700 whitespace-pre-wrap">
+                {cleaning.notes}
+              </div>
+            {:else}
+              <p class="text-gray-500 italic">No special requests provided</p>
+            {/if}
+          </div>
           
         </div>
 

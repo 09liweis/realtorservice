@@ -9,6 +9,7 @@ export interface Staging extends Service {
   rooms: string;
   selling_price: number;
   timeline: string;
+  end_date: string;
   length: string;
   user_profiles?: {
     first_name: string;
@@ -26,7 +27,27 @@ export const EMPTY_STAGING = {
   rooms: '',
   selling_price: 0,
   timeline: '',
-  length: ''
+  length: '',
+  end_date: ''
+}
+
+export function getStagingEndDate(staging: Staging): string {
+  if (!staging.length || !staging.timeline) return '';
+  
+  const startDate = new Date(staging.timeline);
+  const months = parseFloat(staging.length.toString());
+  
+  // Calculate full months and remaining days
+  const fullMonths = Math.floor(months);
+  const remainingDays = Math.round((months - fullMonths) * 30); // Approximate 30 days per month
+  
+  // Add full months first
+  const dateWithMonths = new Date(startDate.setMonth(startDate.getMonth() + fullMonths));
+  
+  // Then add remaining days
+  const endDate = new Date(dateWithMonths.setDate(dateWithMonths.getDate() + remainingDays));
+  
+  return endDate.toISOString().split('T')[0];
 }
 
 // Toronto-based staging fee calculation constants

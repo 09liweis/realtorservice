@@ -2,6 +2,7 @@
   import { createEventDispatcher } from "svelte";
   import Button from "../common/Button.svelte";
   import Input from '$lib/components/common/Input.svelte';
+  import Textarea from '$lib/components/common/Textarea.svelte';
   import {
     formatAmount,
     OCCUPATION_STATUS_OPTIONS,
@@ -12,6 +13,7 @@
     EMPTY_STAGING,
     type Staging,
     calculateStagingFee,
+    getStagingEndDate,
   } from "$lib/types/staging";
   import Select from '$lib/components/common/Select.svelte';
   import { user } from "$lib/stores/auth";
@@ -41,6 +43,7 @@
   // Update estimate_price when calculation changes
   $: {
     request.estimate_price = stagingCalculation.totalCost;
+    request.end_date = getStagingEndDate(request);
   }
 
   // Handle form submission
@@ -61,8 +64,10 @@
       date: new Date()
     });
 
-    // Submit form
-    dispatch("submit", { ...request });
+    // Submit form with calculated end_date
+    dispatch("submit", { 
+      ...request
+    });
   }
 
   // Handle cancel
@@ -188,12 +193,24 @@
               label="Length of Staging (months)*"
               type="number"
               bind:value={request.length}
-              min="1"
-              step="1"
+              min={1}
+              step={0.1}
               placeholder="e.g., 3"
               helpText="Longer terms receive discounts"
               disabled={$user?.isAdmin}
             />
+          </div>
+
+          <!-- Calculated End Date -->
+          <div>
+            <div class="text-sm font-medium text-gray-700 mb-1">Estimated End Date</div>
+            <div class="bg-gray-50 border border-gray-200 rounded-md px-3 py-2 text-sm">
+              {#if request.timeline && request.length}
+                {request.end_date}
+              {:else}
+                Enter start date and length
+              {/if}
+            </div>
           </div>
 
           {#if isEdit && $user?.isAdmin}
@@ -226,6 +243,15 @@
             </div>
           </div>
         {/if}
+
+        <!-- Notes -->
+        <Textarea
+          id="notes"
+          label="Notes"
+          bind:value={request.notes}
+          placeholder="Additional notes about the staging request..."
+          rows={4}
+        />
       </div>
 
       <!-- Right Column - Price Calculator -->

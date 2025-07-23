@@ -1,7 +1,7 @@
 <script lang="ts">
   import { user } from "$lib/stores/auth";
   import { formatAmount, getStatusStyle } from "$lib/types/constant";
-  import type { Staging } from "$lib/types/staging";
+  import { getStagingEndDate, type Staging } from "$lib/types/staging";
 
   export let request:Staging;
   export let onEdit;
@@ -74,6 +74,12 @@
 			<div class="flex justify-between">
 				<span class="text-sm text-gray-500">Length</span>
 				<span class="text-sm text-gray-900">{request.length + ' Month' || 'Not specified'}</span>
+			</div>
+			<div class="flex justify-between">
+				<span class="text-sm text-gray-500">End Date</span>
+				<span class="text-sm text-gray-900">
+					{getStagingEndDate(request)}
+				</span>
 			</div>
       <div class="flex justify-between">
 				<span class="text-sm text-gray-500">Estimate Staging Price</span>

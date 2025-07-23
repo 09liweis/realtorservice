@@ -10,6 +10,7 @@
   export let label = '';
   export let value = '';
   export let min = 0;
+  export let step = 1;
   export let placeholder = '';
   export let required = false;
   export let minlength = 1;
@@ -64,6 +65,7 @@
     {name}
     {type}
     {min}
+    {step}
     {placeholder}
     {required}
     {minlength}
