@@ -7,6 +7,7 @@ import type { Coupon } from './types/coupon';
 import type { VideoService } from './types/video';
 import type { SocialMediaService } from './types/social';
 import supabase from './db/client';
+import type { OpenHouse } from './types/openhouse';
 
 interface SelectOptions {
   table: string;
@@ -38,7 +39,7 @@ const commonSelect = async ({
   return await query;
 };
 
-export const getOpenHouses = async ({user_id}) => {
+export const getOpenHouses = async ({user_id}:any) => {
   return await supabase
     .from('openhouses')
     .select(`
@@ -50,7 +51,7 @@ export const getOpenHouses = async ({user_id}) => {
     .eq('user_id',user_id);
 }
 
-export const getOpenHouse = async ({property_id}) => {
+export const getOpenHouse = async ({property_id}:any) => {
   return await supabase
     .from('openhouses')
     .select(`
@@ -64,7 +65,7 @@ export const getOpenHouse = async ({property_id}) => {
     ;
 }
 
-export const upsertOpenHouse = async (oh) => {
+export const upsertOpenHouse = async (oh:OpenHouse) => {
   if (oh.id) {
     return await supabase
       .from('openhouses')
@@ -90,7 +91,7 @@ export const deleteOpenhouse = async (id:string) => {
     .eq('id',id);
 }
 
-export const getOpenHouseGuests = async ({user_id, property_id}) => {
+export const getOpenHouseGuests = async ({user_id, property_id}:any) => {
   return await supabase
     .from('openhouse_guests')
     .select(`
@@ -101,7 +102,7 @@ export const getOpenHouseGuests = async ({user_id, property_id}) => {
     ;
 }
 
-export const upsertOpenHouseGuest = async (guest) => {
+export const upsertOpenHouseGuest = async (guest:any) => {
   if (guest.id) {
     return await supabase
       .from('openhouse_guests')
@@ -126,7 +127,7 @@ export const deleteOpenHouseGuest = async (id:string) => {
 
 
 
-export const getOfferProperties = async ({user_id}) => {
+export const getOfferProperties = async ({user_id}:any) => {
   return await supabase
     .from('offer_properties')
     .select(`
@@ -139,7 +140,7 @@ export const getOfferProperties = async ({user_id}) => {
     .eq('user_id',user_id);
 }
 
-export const getOfferProperty = async ({propertyId}) => {
+export const getOfferProperty = async ({propertyId}:any) => {
   return await supabase
     .from('offer_properties')
     .select(
@@ -173,8 +174,8 @@ export const deleteOfferProperty = async (id:string) => {
     .eq('id',id);
 }
 
-export const getOffers = async ({user_id, property_id}) => {
-  const conditions = { user_id };
+export const getOffers = async ({user_id, property_id}:any) => {
+  const conditions:any = { user_id };
   if (property_id) {
     conditions.property_id = property_id;
   }
