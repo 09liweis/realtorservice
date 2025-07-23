@@ -210,9 +210,11 @@
           {#if request?.status === 'submitted'}
             Our team is reviewing your request
           {:else if request?.status === 'paid'}
-            We'll contact you to schedule staging
+            We'll schedule the service soon
           {:else if request?.status === 'scheduled'}
-            Staging installation is scheduled
+            Service is scheduled
+          {:else if request?.status === 'completed'}
+            Service is completed
           {:else}
             Please wait for the next step
           {/if}
