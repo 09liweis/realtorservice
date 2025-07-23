@@ -11,13 +11,6 @@ export interface Cleaning extends Service {
   frequency: string;
   special_requests?: string;
   scheduled_date?: string;
-  user_profiles?: {
-    first_name: string;
-    last_name: string;
-    email: string;
-    phone: string;
-    brokerage: string;
-  };
 }
 
 export const EMPTY_CLEANING: Cleaning = {

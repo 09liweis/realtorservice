@@ -10,6 +10,13 @@ export type Service = {
   history?: Array<{status: string, date: Date, note?: string}>;
   created_at?: string;
   updated_at?: string;
+  user_profiles?: {
+    first_name: string;
+    last_name: string;
+    email: string;
+    phone: string;
+    brokerage: string;
+  }
 };
 
 export const EMPTY_SERVICE: Service = {
