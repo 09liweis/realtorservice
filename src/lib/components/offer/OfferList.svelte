@@ -3,9 +3,10 @@
     import { fade, fly, slide } from "svelte/transition";
     import { quintOut } from "svelte/easing";
     import {flip} from "svelte/animate";
+    import type { Offer } from "$lib/types/offer";
 
   export let isLoading;
-  export let offers;
+  export let offers:Offer[];
   export let handleEdit;
   export let handleDelete;
 
@@ -40,6 +41,12 @@
           break;
         case 'completion_date':
           comparison = (a.completion_date || '').localeCompare(b.completion_date || '');
+          break;
+        case 'title_search':
+          comparison = (a.title_search || '').localeCompare(b.title_search || '');
+          break;
+        case 'schedule_a_conditions':
+          comparison = (a.schedule_a_conditions || '').localeCompare(b.schedule_a_conditions || '');
           break;
       }
 
@@ -87,21 +94,8 @@
               on:click={() => sortOffers('buyer')}
             >
               <div class="flex items-center space-x-1">
-                <span>Buyer</span>
+                <span>Buyer & Agent</span>
                 <span class="transition-opacity {getSortIcon('buyer') ? 'opacity-100' : 'opacity-0 group-hover:opacity-50'}">
-                  <svg class="w-4 h-4 transition-transform {sortDirection === 'asc' ? 'transform rotate-0' : 'transform rotate-180'}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
-                  </svg>
-                </span>
-              </div>
-            </th>
-            <th 
-              class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider cursor-pointer group transition-all duration-200 hover:bg-gray-100 border-b-2 border-transparent hover:border-blue-500"
-              on:click={() => sortOffers('agent')}
-            >
-              <div class="flex items-center space-x-1">
-                <span>Agent</span>
-                <span class="transition-opacity {getSortIcon('agent') ? 'opacity-100' : 'opacity-0 group-hover:opacity-50'}">
                   <svg class="w-4 h-4 transition-transform {sortDirection === 'asc' ? 'transform rotate-0' : 'transform rotate-180'}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
                   </svg>
@@ -147,6 +141,19 @@
                 </span>
               </div>
             </th>
+            <th 
+              class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider cursor-pointer group transition-all duration-200 hover:bg-gray-100 border-b-2 border-transparent hover:border-blue-500"
+              on:click={() => sortOffers('schedule_a_conditions')}
+            >
+              <div class="flex items-center space-x-1">
+                <span>Conditions</span>
+                <span class="transition-opacity {getSortIcon('schedule_a_conditions') ? 'opacity-100' : 'opacity-0 group-hover:opacity-50'}">
+                  <svg class="w-4 h-4 transition-transform {sortDirection === 'asc' ? 'transform rotate-0' : 'transform rotate-180'}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+                  </svg>
+                </span>
+              </div>
+            </th>
             <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
               Actions
             </th>
@@ -163,9 +170,7 @@
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="text-sm font-medium text-gray-900">{offer.buyer}</div>
                 <div class="text-xs text-gray-500">{offer.email || 'No email'}</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900">{offer.agent || 'N/A'}</div>
+                <div class="text-sm text-gray-900 mt-1">{offer.agent || 'N/A'}</div>
                 <div class="text-xs text-gray-500">{offer.phone || 'No phone'}</div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
@@ -178,6 +183,11 @@
                 <div class="text-sm text-gray-900">{offer.completion_date || 'Not set'}</div>
                 {#if offer.title_search}
                   <div class="text-xs text-gray-500">Title: {offer.title_search}</div>
+                {/if}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                {#if offer.schedule_a_conditions}
+                  <div class="text-sm text-gray-900">Conditions: {offer.schedule_a_conditions}</div>
                 {/if}
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
