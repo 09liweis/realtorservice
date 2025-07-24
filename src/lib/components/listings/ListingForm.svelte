@@ -25,7 +25,7 @@
     { name: 'listing_type', type: 'select', label: 'Listing Type', required: true, options: ['Assignment Sale','Coming Soon'] },
     { name: 'project_name', type: 'text', label: 'Project Name', required: true },
     { name: 'developer', type: 'text', label: 'Developer' },
-    { name: 'address', type: 'text', label: 'Address', required: true },
+    { name: 'address', type: 'text', label: 'Address', required: true, autocomplete: 'address'},
     { name: 'location', type: 'text', label: 'Location/City' },
   ];
 
@@ -194,6 +194,7 @@
                   type={field.type}
                   label={field.label + (field.required ? ' *' : '')}
                   required={field.required}
+                  autocomplete={field.autocomplete}
                   placeholder="Enter {field.label.toLowerCase()}"
                 />
               {/if}
