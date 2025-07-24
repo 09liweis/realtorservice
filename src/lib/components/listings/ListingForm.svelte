@@ -3,6 +3,7 @@
   import Button from '$lib/components/common/Button.svelte';
   import ImageUpload from '$lib/components/ImageUpload.svelte';
   import Select from '$lib/components/common/Select.svelte';
+  import Textarea from '$lib/components/common/Textarea.svelte';
   import type { Listing } from '$lib/types/listing';
 
   export let listing: Listing;
@@ -51,9 +52,13 @@
     { name: 'occupancy', type: 'date', label: 'Occupancy Date' },
   ];
 
+  const additionalFields = [
+    { name: 'remark', type: 'textarea', label: 'Remarks' },
+  ];
+
   // Current step in the form
   let currentStep = 1;
-  const totalSteps = 5;
+  const totalSteps = 6;
 
   // Step navigation
   function nextStep() {
@@ -85,6 +90,8 @@
         return true; // Financial details are optional
       case 5:
         return true; // Images are optional
+      case 6:
+        return true; // Additional information is optional
       default:
         return true;
     }
@@ -96,7 +103,8 @@
     'Property Details',
     'Amenities & Features',
     'Financial Information',
-    'Images'
+    'Images',
+    'Additional Information'
   ];
 
   // Helper function to convert options array to Select component format
@@ -320,6 +328,30 @@
               on:update={handleImageUpdate}
               maxImages={30}
             />
+          </div>
+        </div>
+      {/if}
+
+      <!-- Step 6: Additional Information -->
+      {#if currentStep === 6}
+        <div class="space-y-6 animate-in slide-in-from-right-4 duration-300">
+          <div class="text-center mb-6">
+            <h3 class="text-xl font-semibold text-gray-900 mb-2">Additional Information</h3>
+            <p class="text-gray-600">Add any additional remarks or notes</p>
+          </div>
+          
+          <div class="space-y-4">
+            {#each additionalFields as field}
+              {#if field.type === 'textarea'}
+                <Textarea
+                  id={field.name}
+                  bind:value={listing[field.name]}
+                  label={field.label}
+                  placeholder="Enter {field.label.toLowerCase()}"
+                  rows={4}
+                />
+              {/if}
+            {/each}
           </div>
         </div>
       {/if}
