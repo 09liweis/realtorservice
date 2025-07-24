@@ -7,6 +7,7 @@
   import { onMount } from 'svelte';
   import OfferList from './OfferList.svelte';
     import type { Offer } from '$lib/types/offer';
+    import Link from '../Link.svelte';
   
   // 接收属性和属性ID作为props
   export let property;
@@ -122,6 +123,7 @@
 </script>
 
 <div class="space-y-6">
+  <Link href={`/dashboard/offers`}>Back to Properties</Link>
   <div class="flex items-center justify-between">
     <h1 class="text-2xl font-semibold text-gray-900">Offers for {property?.address || 'Property'}</h1>
     <Button onclick={addNewOffer}>
