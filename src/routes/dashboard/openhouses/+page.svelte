@@ -186,7 +186,7 @@
 	<!-- 删除确认对话框 -->
 	{#if showDeleteConfirm}
 		<FormBackdrop handleClose={cancelDelete}>
-			<div class="p-6 bg-white rounded-lg shadow max-w-md mx-auto">
+			<div class="p-6 bg-white rounded-lg shadow mx-auto">
 				<h2 class="text-lg font-medium text-gray-900 mb-4">Confirm Deletion</h2>
 				<p class="text-gray-600 mb-6">
 					Are you sure you want to delete the open house at <span class="font-medium">{deleteOpenHouseAddress}</span>? This action cannot be undone.

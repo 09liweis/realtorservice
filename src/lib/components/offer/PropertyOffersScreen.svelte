@@ -27,7 +27,7 @@
     schedule_a_conditions: '',
   };
 
-  let user_id;
+  let user_id:string|undefined;
 
   $: {
     user_id = $user?.id;
@@ -148,7 +148,7 @@
   <!-- Delete Confirmation Modal -->
   {#if showDeleteConfirm}
     <FormBackdrop handleClose={() => !isLoading && (showDeleteConfirm = false)}>
-      <div class="w-full mt-3">
+      <div class="w-full p-6">
         <h2 class="mb-4 text-lg font-medium text-gray-900">Confirm Delete</h2>
         <p class="mb-6 text-gray-600">
           Are you sure you want to delete the offer from {offerToDelete?.buyer}? This action cannot be undone.
@@ -183,7 +183,7 @@
   <!-- Details Modal -->
   {#if showDetailsModal}
     <FormBackdrop handleClose={() => !isLoading && (showDetailsModal = false)}>
-      <div class="w-full mt-3 p-6">
+      <div class="w-full p-6">
         <h2 class="mb-4 text-lg font-medium text-gray-900">
           {newOffer.id ? 'Edit Offer' : 'Add New Offer'}
         </h2>
