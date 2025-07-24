@@ -205,10 +205,11 @@ export const upsertOffer = async (offer:Offer) => {
 }
 
 // Cannot use commonSelect here due to delete operation
-export const deleteOffer = async (id:string) => {
+export const deleteOffer = async ({user_id, id}:any) => {
   return await supabase
     .from('offers')
     .delete()
+    .eq('user_id',user_id)
     .eq('id',id);
 }
 
