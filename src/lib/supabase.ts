@@ -256,6 +256,7 @@ export const getListing = async ({property_id}:ListingSearch) => {
 }
 
 export const upsertListing = async (listing:Listing) => {
+  delete listing.user_profiles;
   if (listing.id) {
     return await supabase
       .from('listings')

@@ -53,6 +53,7 @@
 
   function editListing(listing: Listing) {
     isEditing = true;
+    showForm = true;
     newListing = { ...listing };
   }
 
@@ -119,5 +120,5 @@
   </FormBackdrop>
   {/if}
 
-  <ListingList listings={listings} />
+  <ListingList listings={listings} editListing={editListing} />
 </div>

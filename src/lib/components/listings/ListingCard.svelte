@@ -4,8 +4,10 @@
   import Link from "$lib/components/Link.svelte";
   import { fade, fly, scale } from 'svelte/transition';
   import { elasticOut } from 'svelte/easing';
+    import { user } from "$lib/stores/auth";
 
   export let listing: Listing;
+  export let editListing: (listing: Listing) => void;
 
   // Get the first image from the pictures string
   function getFirstImage(pictures: string): string {
@@ -167,6 +169,22 @@
         {/if}
       </div>
     </div>
+
+    <!-- Edit Button -->
+     {#if $user?.id === listing.user_id}
+    <div class="border-t border-gray-100 pt-4 mt-4 flex justify-end" in:fly={{ y: 15, duration: 400, delay: 500 }}>
+      <button 
+        on:click={() => editListing(listing)}
+        class="inline-flex items-center px-3 py-1.5 border border-blue-600 text-xs font-medium rounded-md text-blue-600 bg-white hover:bg-blue-50 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300"
+        in:scale={{ duration: 300, delay: 600, easing: elasticOut }}
+      >
+        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+        </svg>
+        Edit
+      </button>
+    </div>
+    {/if}
 
     <!-- Contact Information -->
     {#if listing.user_profiles}

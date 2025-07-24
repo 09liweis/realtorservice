@@ -5,6 +5,7 @@
   import { flip } from 'svelte/animate';
 
   export let listings: Array<Listing> = [];
+  export let editListing: (listing: Listing) => void;
 </script>
 
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -14,7 +15,7 @@
     out:fade={{ duration: 300 }}
     animate:flip={{ duration: 300 }}
   >
-    <ListingCard {listing} />
+    <ListingCard {listing} editListing={editListing} />
   </div>
 {/each}
 </div>
