@@ -8,6 +8,8 @@ export type Service = {
   quotation_price?: number;
   status: ProjectStatus;
   history?: Array<{status: string, date: Date, note?: string}>;
+  is_admin_unread?: boolean;
+  is_user_unread?: boolean;
   created_at?: string;
   updated_at?: string;
   user_profiles?: {
