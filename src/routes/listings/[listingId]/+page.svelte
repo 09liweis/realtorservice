@@ -204,6 +204,16 @@
             </div>
           </div>
         </div>
+
+        <!-- Remarks -->
+        {#if listing.remark}
+          <div class="p-6 border-t border-gray-200">
+            <h2 class="text-xl font-bold text-gray-900 mb-4">Remarks</h2>
+            <div class="prose max-w-none text-gray-600">
+              {listing.remark}
+            </div>
+          </div>
+        {/if}
       </div>
 
       <!-- Right column - Contact and actions -->

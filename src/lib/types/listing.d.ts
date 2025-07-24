@@ -22,6 +22,7 @@ export interface Listing {
   pics?: string;
   original_price: string;
   deposit_paid: string;
+  remark: string;
   [key: string]: any; // 允许其他扩展属性
 }
 
