@@ -180,15 +180,13 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             {#each basicInfoFields as field}
               {#if field.type === 'select'}
-                <div>
-                  <Select
-                    id={field.name}
-                    label={field.label + (field.required ? ' *' : '')}
-                    bind:value={listing[field.name]}
-                    options={formatSelectOptions(field.options)}
-                    required={field.required}
-                  />
-                </div>
+                <Select
+                  id={field.name}
+                  label={field.label + (field.required ? ' *' : '')}
+                  bind:value={listing[field.name]}
+                  options={formatSelectOptions(field.options)}
+                  required={field.required}
+                />
               {:else}
                 <Input 
                   id={field.name}
