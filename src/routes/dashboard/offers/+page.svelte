@@ -52,10 +52,12 @@
 
   const handleUpsertOfferProperty = async()=> {
     if (!user_id) return;
-    await upsertOfferProperty({
-      user_id,
-      ...newOfferProperty
+    const {error} = await upsertOfferProperty({
+      ...newOfferProperty,
+      user_id
     });
+    if (error) throw error;
+    showDetailsModal = false;
     fetchOfferProperties();
   }
 	
