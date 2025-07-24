@@ -6,8 +6,6 @@
   import type { SocialMediaService } from '$lib/types/social';
   import { 
     SOCIAL_MEDIA_PLATFORMS, 
-    SUBSCRIPTION_TYPES, 
-    POSTING_FREQUENCIES, 
     SOCIAL_MEDIA_ADDONS,
     calculateSocialMediaPrice
   } from '$lib/types/social';
@@ -20,7 +18,7 @@
 
   const socialServiceId = $page.params.socialId;
   
-  let socialMediaService: SocialMediaService;
+  let socialMediaService: SocialMediaService | null = null;
   let loading = false;
   let error = '';
   let user_id:string|undefined;

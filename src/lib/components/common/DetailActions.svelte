@@ -15,7 +15,6 @@
 
   export let request: Staging|Cleaning|VideoService|SocialMediaService;
   export let tp:string = "staging";
-  request.quotation_price = request.estimate_price;
   const quotation_price = request?.quotation_price;
 
   const dispatch = createEventDispatcher();
