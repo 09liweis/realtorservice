@@ -7,11 +7,17 @@
   export let onEdit;
   export let onDelete;
 
-    import Link from "../Link.svelte";
+  import Link from "../Link.svelte";
 
+	let unreadStyle = 'border-t-4 ';
+	if ($user?.isAdmin) {
+		unreadStyle += (request.is_admin_unread ? 'border-red-500' : '');
+	} else {
+		unreadStyle += (request.is_user_unread ? 'border-red-500' : '');
+	}
 </script>
 
-<div class="bg-white overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-200">
+<div class={`bg-white overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-200 ${unreadStyle}`}>
 	{#if request.user_profiles}
 		<div class="px-6 py-3 bg-blue-50 border-b border-blue-100">
 			<div class="flex items-center">
