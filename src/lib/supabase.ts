@@ -554,6 +554,7 @@ export const getSocialMediaService = async (id: string) => {
 }
 
 export const upsertSocialMediaService = async (service: SocialMediaService) => {
+  delete service.user_profiles;
   if (service.id) {
     return await supabase
       .from('social_media_services')

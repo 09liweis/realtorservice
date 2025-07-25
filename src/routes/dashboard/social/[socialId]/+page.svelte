@@ -13,7 +13,7 @@
   import SocialMediaServiceInfo from '$lib/components/social/detail/SocialMediaServiceInfo.svelte';
   import SocialMediaServicePricing from '$lib/components/social/detail/SocialMediaServicePricing.svelte';
   import DetailActions from '$lib/components/common/DetailActions.svelte';
-  import { getSocialMediaService } from '$lib/supabase';
+  import { getSocialMediaService, upsertSocialMediaService } from '$lib/supabase';
     import Link from '$lib/components/Link.svelte';
 
   const socialServiceId = $page.params.socialId;
@@ -34,6 +34,16 @@
       const {data, error} = await getSocialMediaService(socialServiceId);
       if (error) throw error;
       socialMediaService = data;
+
+      const updatedSocialMediaService:SocialMediaService = {
+        ...socialMediaService
+      };
+      if ($user?.isAdmin) {
+        updatedSocialMediaService.is_admin_unread = false;
+      } else {
+        updatedSocialMediaService.is_user_unread = false;
+      }
+      await upsertSocialMediaService(updatedSocialMediaService)
     }
   }
 
