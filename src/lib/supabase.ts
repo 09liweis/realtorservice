@@ -612,6 +612,7 @@ export const getVideoService = async (id: string) => {
 }
 
 export const upsertVideoService = async (videoService: VideoService) => {
+  delete videoService.user_profiles;
   if (videoService.id) {
     return await supabase
       .from('video_services')
