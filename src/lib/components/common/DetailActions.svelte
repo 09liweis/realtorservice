@@ -15,6 +15,7 @@
 
   export let request: Staging|Cleaning|VideoService|SocialMediaService;
   export let tp:string = "staging";
+  let note = '';
   const quotation_price = request?.quotation_price;
 
   const dispatch = createEventDispatcher();
@@ -81,7 +82,7 @@
     const email = request?.user_profiles?.email;
     const oldStatus = request.status;
     request.status = status as ProjectStatus;
-    request.history?.push({status, date: new Date()});
+    request.history?.push({status, note, date: new Date()});
     const upsertFunction = UPSERT_TP_FUNCTIONS[tp];
     const { error: updateError } = await upsertFunction(request);
     
@@ -109,6 +110,7 @@
       }
       
       dispatch('statusUpdate');
+      note = '';
     } catch (error) {
       console.error('Failed to send status email:', error);
     }
@@ -198,6 +200,11 @@
           {statusLoading ? 'Confirming Quotation Price' : nextAction.text}
         </Button>
       {:else}
+        <Input
+          label="Note"
+          bind:value={note}
+          type="text"
+        />
         <Button loading={statusLoading} disabled={statusLoading} class_name="w-full" onclick={handleStatusUpdate}>
           {statusLoading ? 'Processing' : nextAction.text}
         </Button>
