@@ -88,7 +88,8 @@
 
       const serviceToSave = {
         ...serviceData,
-        user_id: userId
+        user_id: userId,
+        is_user_unread:false
       };
 
       if (editingService?.id) {

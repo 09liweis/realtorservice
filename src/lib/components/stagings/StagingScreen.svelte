@@ -97,7 +97,7 @@
       return;
     }
     const formData = event.detail;
-    const stagingData = {...formData};
+    const stagingData = {...formData,is_user_unread:false};
     if (!$user?.isAdmin) {
       stagingData.user_id = user_id;
     }

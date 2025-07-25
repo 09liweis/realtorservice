@@ -73,7 +73,7 @@
       return;
     }
     const formData = event.detail;
-    const cleaningData = {...formData};
+    const cleaningData = {...formData,is_user_unread:false};
     if (!$user?.isAdmin) {
       cleaningData.user_id = user_id;
     }
