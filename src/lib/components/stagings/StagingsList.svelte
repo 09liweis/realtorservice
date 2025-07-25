@@ -84,17 +84,11 @@
   {:else}
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {#each requests as request (request.id)}
-        <div
-          animate:flip={{ duration: 300 }}
-          in:fly={{ y: 20, duration: 300, delay: 100 }}
-          out:fade={{ duration: 200 }}
-        >
-          <StagingCard
-            {request}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-          />
-        </div>
+        <StagingCard
+          {request}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+        />
       {/each}
     </div>
   {/if}
