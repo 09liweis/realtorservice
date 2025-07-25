@@ -10,6 +10,7 @@
   export let onDelete;
 
     import Link from "../Link.svelte";
+  import CardWrapper from "../common/CardWrapper.svelte";
 
   function getCleaningTypeLabel(type: string): string {
     return CLEANING_TYPES.find(t => t.value === type)?.label || type;
@@ -20,7 +21,7 @@
   }
 </script>
 
-<div class="bg-white overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-200">
+<CardWrapper {request}>
 	{#if request.user_profiles}
 		<div class="px-6 py-3 bg-green-50 border-b border-green-100">
 			<div class="flex items-center">
@@ -126,4 +127,4 @@
 			{/if} -->
 		</div>
 	</div>
-</div>
+</CardWrapper>
