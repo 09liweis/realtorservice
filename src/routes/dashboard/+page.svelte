@@ -6,10 +6,10 @@
     getListings, 
     getOfferProperties, 
     getOpenHouses, 
-    getStagings,
-    getCleanings,
     getUserVideoServices,
-    getUserSocialMediaServices
+    getUserSocialMediaServices,
+    getAllCleanings,
+    getAllStagings
   } from '$lib/supabase';
   import { getPageTitle } from '$lib/types/constant';
   import DashboardHeader from './DashboardHeader.svelte';
@@ -101,10 +101,10 @@
         getListings({ user_id: $user.id }),
         getOfferProperties({ user_id: $user.id }),
         getOpenHouses({ user_id: $user.id }),
-        getStagings({ user_id: $user.id }),
-        getCleanings({ user_id: $user.id }),
-        getUserVideoServices({ user_id: $user.id }),
-        getUserSocialMediaServices({ user_id: $user.id })
+        getAllStagings(),
+        getAllCleanings(),
+        getUserVideoServices({ isAdmin:true }),
+        getUserSocialMediaServices({ isAdmin: true })
       ]);
 
       // Process listings data
@@ -117,10 +117,26 @@
 
       // Process services data
       dashboardStats.services = {
-        stagings: stagingsResult.data?.length || 0,
-        cleanings: cleaningsResult.data?.length || 0,
-        videos: videoResult.data?.length || 0,
-        social: socialResult.data?.length || 0
+        stagings: {
+          count: stagingsResult.data?.length || 0,
+          is_user_unread: stagingsResult.data?.filter(item => item.is_user_unread).length,
+          is_admin_unread: stagingsResult.data?.filter(item => item.is_admin_unread).length
+        },
+        cleanings: {
+          count: cleaningsResult.data?.length || 0,
+          is_user_unread: cleaningsResult.data?.filter(item => item.is_user_unread).length,
+          is_admin_unread: cleaningsResult.data?.filter(item => item.is_admin_unread).length
+        },
+        videos: {
+          count: videoResult.data?.length || 0,
+          is_user_unread: videoResult.data?.filter(item => item.is_user_unread).length,
+          is_admin_unread: videoResult.data?.filter(item => item.is_admin_unread).length
+        },
+        social: {
+          count: socialResult.data?.length || 0,
+          is_user_unread: socialResult.data?.filter(item => item.is_user_unread).length,
+          is_admin_unread: socialResult.data?.filter(item => item.is_admin_unread).length
+        }
       };
 
       // Process activities data
