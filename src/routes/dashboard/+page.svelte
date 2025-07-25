@@ -9,7 +9,13 @@
     getUserVideoServices,
     getUserSocialMediaServices,
     getAllCleanings,
-    getAllStagings
+    getAllStagings,
+
+    getStagings,
+
+    getCleanings
+
+
   } from '$lib/supabase';
   import { getPageTitle } from '$lib/types/constant';
   import DashboardHeader from './DashboardHeader.svelte';
@@ -101,10 +107,10 @@
         getListings({ user_id: $user.id }),
         getOfferProperties({ user_id: $user.id }),
         getOpenHouses({ user_id: $user.id }),
-        getAllStagings(),
-        getAllCleanings(),
-        getUserVideoServices({ isAdmin:true }),
-        getUserSocialMediaServices({ isAdmin: true })
+        $user?.isAdmin ? getAllStagings() : getStagings({ user_id: $user.id }),
+        $user?.isAdmin ? getAllCleanings() : getCleanings({ user_id: $user.id }),
+        $user?.isAdmin ? getUserVideoServices({ isAdmin:true }) : getUserVideoServices({ isAdmin:false, user_id: $user.id }),
+        $user?.isAdmin ? getUserSocialMediaServices({ isAdmin: true }) : getUserSocialMediaServices({ isAdmin: false, user_id: $user.id })
       ]);
 
       // Process listings data
