@@ -8,10 +8,10 @@
     SOCIAL_MEDIA_ADDONS,
     calculateSocialMediaPrice
   } from '$lib/types/social';
-  import { fade, fly, scale } from 'svelte/transition';
-  import { flip } from 'svelte/animate';
-    import { formatAmount, getStatusStyle } from '$lib/types/constant';
-    import { formatDate } from '$lib/helper';
+  import { formatAmount, getStatusStyle } from '$lib/types/constant';
+  import { formatDate } from '$lib/helper';
+  import CardWrapper from "../common/CardWrapper.svelte";
+  import Link from '../Link.svelte';
 
   export let socialMediaServices: SocialMediaService[] = [];
   export let loading = false;
@@ -79,19 +79,14 @@
     <div class="p-6">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {#each socialMediaServices as service, index (service.id)}
-          <div 
-            class="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-all duration-200"
-            in:fly={{ y: 20, duration: 300, delay: index * 50 }}
-            out:fade={{ duration: 200 }}
-            animate:flip={{ duration: 300 }}
-          >
+          <CardWrapper request={service}>
             <!-- Service Header -->
-            <div class="bg-primary px-4 py-3 text-white">
+            <div class="px-4 py-3">
               <div class="flex items-center justify-between">
                 <div class="text-lg font-bold">
-                  <a href="/dashboard/social/{service.id}" class="text-white">
+                  <Link href="/dashboard/social/{service.id}">
                     Social Media Service
-                  </a>
+                  </Link>
                 </div>
                 <div class="text-right">
                   <div class="text-lg font-bold">
@@ -211,7 +206,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </CardWrapper>
         {/each}
       </div>
     </div>
