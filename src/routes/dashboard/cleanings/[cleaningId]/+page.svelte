@@ -2,7 +2,7 @@
   import { page } from '$app/stores';
   import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
-  import { getCleaning } from '$lib/supabase';
+  import { getCleaning, upsertCleaning } from '$lib/supabase';
   import { getPageTitle } from '$lib/types/constant';
   import type { Cleaning } from '$lib/types/cleaning';
   import CleaningPropertyInfo from '$lib/components/cleanings/detail/CleaningPropertyInfo.svelte';
@@ -12,6 +12,7 @@
     import DetailActions from '$lib/components/common/DetailActions.svelte';
     import Timeline from '$lib/components/common/Timeline.svelte';
     import Link from '$lib/components/Link.svelte';
+  import { user } from '$lib/stores/auth';
 
 
   const cleaningId = $page.params.cleaningId;
@@ -41,6 +42,15 @@
       }
       
       cleaning = data;
+      const updateReadCleaning:Cleaning = {
+        ...cleaning
+      };
+      if ($user?.isAdmin) {
+        updateReadCleaning.is_admin_unread = false;
+      } else {
+        updateReadCleaning.is_user_unread = false;
+      }
+      await upsertCleaning(updateReadCleaning)
     } catch (err) {
       console.error('Error loading cleaning:', err);
       error = err instanceof Error ? err.message : 'Failed to load cleaning details';
