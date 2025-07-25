@@ -9,7 +9,7 @@
   import VideoServiceInfo from '$lib/components/video/detail/VideoServiceInfo.svelte';
   import VideoServicePricing from '$lib/components/video/detail/VideoServicePricing.svelte';
   import DetailActions from '$lib/components/common/DetailActions.svelte';
-  import { getVideoService } from '$lib/supabase';
+  import { getVideoService, upsertVideoService } from '$lib/supabase';
   import { onMount } from 'svelte';
     import Link from '$lib/components/Link.svelte';
 
@@ -31,6 +31,16 @@
       const {data, error} = await getVideoService(videoServiceId);
       if (error) throw error;
       videoService = data;
+
+      const updateReadVideo:VideoService = {
+        ...videoService
+      };
+      if ($user?.isAdmin) {
+        updateReadVideo.is_admin_unread = false;
+      } else {
+        updateReadVideo.is_user_unread = false;
+      }
+      await upsertVideoService(updateReadVideo)
     }
   }
 
