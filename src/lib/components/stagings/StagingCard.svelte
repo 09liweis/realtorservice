@@ -2,6 +2,7 @@
   import { user } from "$lib/stores/auth";
   import { formatAmount, getStatusStyle } from "$lib/types/constant";
   import { getStagingEndDate, type Staging } from "$lib/types/staging";
+  import CardWrapper from "../common/CardWrapper.svelte";
 
   export let request:Staging;
   export let onEdit;
@@ -17,7 +18,7 @@
 	}
 </script>
 
-<div class={`bg-white overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-200 ${unreadStyle}`}>
+<CardWrapper {request}>
 	{#if request.user_profiles}
 		<div class="px-6 py-3 bg-blue-50 border-b border-blue-100">
 			<div class="flex items-center">
@@ -129,4 +130,4 @@
 		</div>
 	</div>
 	{/if}
-</div>
+</CardWrapper>
