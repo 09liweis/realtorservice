@@ -14,6 +14,7 @@
     { name: "Listings", href: "/listings" },
     { name: "Services", href: "#services" },
     { name: "About", href: "/about" },
+    { name: "Mortgage Calculator", href: "/mortgage-calculator" },
   ];
 
   // Navigation items for logged-in users
