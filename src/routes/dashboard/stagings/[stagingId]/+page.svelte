@@ -2,7 +2,7 @@
   import { page } from '$app/stores';
   import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
-  import { getStaging } from '$lib/supabase';
+  import { getStaging, upsertStaging } from '$lib/supabase';
   import { getPageTitle } from '$lib/types/constant';
   import type { Staging } from '$lib/types/staging';
   import StagingPropertyInfo from '$lib/components/stagings/detail/StagingPropertyInfo.svelte';
@@ -13,6 +13,7 @@
   import StagingCleaningHeader from '$lib/components/common/StagingCleaningHeader.svelte';
     import Timeline from '$lib/components/common/Timeline.svelte';
     import { formatDate } from '$lib/helper';
+  import { user } from '$lib/stores/auth';
 
   const stagingId = $page.params.stagingId;
   
@@ -41,6 +42,17 @@
       }
       
       staging = data;
+
+      const updateReadStaging:Staging = {
+        ...staging
+      };
+      if ($user?.isAdmin) {
+        updateReadStaging.is_admin_unread = false;
+      } else {
+        updateReadStaging.is_user_unread = false;
+      }
+      await upsertStaging(updateReadStaging)
+
     } catch (err) {
       console.error('Error loading staging:', err);
       error = err instanceof Error ? err.message : 'Failed to load staging details';
