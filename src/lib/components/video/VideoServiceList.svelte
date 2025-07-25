@@ -2,11 +2,10 @@
   import { createEventDispatcher } from 'svelte';
   import type { VideoService } from '$lib/types/video';
   import { VIDEO_SERVICE_TYPES, VIDEO_SERVICE_ADDONS, calculateVideoServicePrice } from '$lib/types/video';
-  import { fade, fly, scale } from 'svelte/transition';
-  import { flip } from 'svelte/animate';
-    import Link from '../Link.svelte';
-    import { formatAmount, getStatusStyle } from '$lib/types/constant';
-    import { formatDate } from '$lib/helper';
+  import Link from '../Link.svelte';
+  import { formatAmount, getStatusStyle } from '$lib/types/constant';
+  import { formatDate } from '$lib/helper';
+  import CardWrapper from "../common/CardWrapper.svelte";
 
   export let videoServices: VideoService[] = [];
   export let loading = false;
@@ -85,12 +84,7 @@
     <div class="p-6">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {#each videoServices as videoService, index (videoService.id)}
-          <div 
-            class="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-all duration-200"
-            in:fly={{ y: 20, duration: 300, delay: index * 50 }}
-            out:fade={{ duration: 200 }}
-            animate:flip={{ duration: 300 }}
-          >
+          <CardWrapper request={videoService}>
             <!-- Service Header -->
             <div class="px-4 py-3">
               <div class="flex items-center justify-between">
@@ -198,7 +192,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </CardWrapper>
         {/each}
       </div>
     </div>
