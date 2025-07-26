@@ -127,85 +127,55 @@
       </div>
     </div>
 
-    <!-- Guest Cards -->
-    <div class="p-8">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {#each guests as guest, index (guest.id || index)}
-          <div 
-            class="group bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg hover:border-gray-300 transition-all duration-300 hover:-translate-y-1"
-            in:fly={{ y: 30, duration: 400, delay: 200 + index * 100, easing: quintOut }}
-            out:fade={{ duration: 200 }}
-            animate:flip={{ duration: 400, easing: quintOut }}
-          >
-            <!-- Guest Header -->
-            <div class="flex items-start space-x-4 mb-4">
-              <div class="flex-1 min-w-0">
-                <h4 class="text-lg font-semibold text-gray-900 truncate group-hover:text-blue-600 transition-colors duration-200">
-                  {guest.name || 'Unknown Guest'}
-                </h4>
-                <div class="flex items-center space-x-2 mt-1">
-                  {#if guest.buy_lease}
-                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium border {getStatusColor(guest.buy_lease)}">
-                      {guest.buy_lease}
-                    </span>
-                  {/if}
-                  {#if guest.has_agent}
-                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium border {getAgentStatusColor(guest.has_agent)}">
-                      {guest.has_agent?.toLowerCase() === 'yes' || guest.has_agent?.toLowerCase() === 'true' ? 'Has Agent' : 'No Agent'}
-                    </span>
-                  {/if}
-                </div>
-              </div>
-            </div>
-
-            <!-- Contact Information -->
-            <div class="space-y-3">
-              {#if guest.email}
-                <div class="flex items-center space-x-3 group/item">
-                  <div class="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center group-hover/item:bg-blue-100 transition-colors duration-200">
-                    <svg class="h-4 w-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                    </svg>
-                  </div>
-                  <a 
-                    href="mailto:{guest.email}" 
-                    class="text-sm text-gray-600 hover:text-blue-600 transition-colors duration-200 truncate flex-1"
-                  >
-                    {guest.email}
-                  </a>
-                </div>
-              {/if}
-              
-              {#if guest.phone}
-                <div class="flex items-center space-x-3 group/item">
-                  <div class="w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center group-hover/item:bg-green-100 transition-colors duration-200">
-                    <svg class="h-4 w-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
-                    </svg>
-                  </div>
-                  <a 
-                    href="tel:{guest.phone}" 
-                    class="text-sm text-gray-600 hover:text-green-600 transition-colors duration-200"
-                  >
-                    {formatPhone(guest.phone)}
-                  </a>
-                </div>
-              {/if}
-
-              {#if !guest.email && !guest.phone}
-                <div class="flex items-center space-x-3">
-                  <div class="w-8 h-8 bg-gray-50 rounded-lg flex items-center justify-center">
-                    <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                  </div>
+    <!-- Guest Table -->
+    <div class="p-8 overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contact</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Agent</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          {#each guests as guest, index (guest.id || index)}
+            <tr 
+              class="hover:bg-gray-50 transition-colors duration-200"
+              in:fly={{ y: 30, duration: 400, delay: 200 + index * 100, easing: quintOut }}
+              out:fade={{ duration: 200 }}
+              animate:flip={{ duration: 400, easing: quintOut }}
+            >
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm font-medium text-gray-900">{guest.name || 'Unknown Guest'}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                {#if guest.email}
+                  <a href="mailto:{guest.email}" class="text-sm text-blue-600 hover:text-blue-800">{guest.email}</a>
+                {:else if guest.phone}
+                  <a href="tel:{guest.phone}" class="text-sm text-green-600 hover:text-green-800">{formatPhone(guest.phone)}</a>
+                {:else}
                   <span class="text-sm text-gray-400 italic">No contact information</span>
-                </div>
-              {/if}
-            </div>
-          </div>
-        {/each}
-      </div>
+                {/if}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                {#if guest.buy_lease}
+                  <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium border {getStatusColor(guest.buy_lease)}">
+                    {guest.buy_lease}
+                  </span>
+                {/if}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                {#if guest.has_agent}
+                  <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium border {getAgentStatusColor(guest.has_agent)}">
+                    {guest.has_agent?.toLowerCase() === 'yes' || guest.has_agent?.toLowerCase() === 'true' ? 'Has Agent' : 'No Agent'}
+                  </span>
+                {/if}
+              </td>
+            </tr>
+          {/each}
+        </tbody>
+      </table>
     </div>
 
     <!-- Summary Footer -->
