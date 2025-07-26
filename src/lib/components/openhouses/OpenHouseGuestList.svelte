@@ -133,7 +133,8 @@
         <thead class="bg-gray-50">
           <tr>
             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contact</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Agent</th>
           </tr>
@@ -152,10 +153,15 @@
               <td class="px-6 py-4 whitespace-nowrap">
                 {#if guest.email}
                   <a href="mailto:{guest.email}" class="text-sm text-blue-600 hover:text-blue-800">{guest.email}</a>
-                {:else if guest.phone}
+                {:else}
+                  <span class="text-sm text-gray-400 italic">N/A</span>
+                {/if}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                {#if guest.phone}
                   <a href="tel:{guest.phone}" class="text-sm text-green-600 hover:text-green-800">{formatPhone(guest.phone)}</a>
                 {:else}
-                  <span class="text-sm text-gray-400 italic">No contact information</span>
+                  <span class="text-sm text-gray-400 italic">N/A</span>
                 {/if}
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
