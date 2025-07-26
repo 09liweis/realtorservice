@@ -9,13 +9,14 @@
    */
   export let href;
   export let className = "";
+  export let hoverClass = "hover:scale-105";
 
   // Automatically add noopener noreferrer for external links
 </script>
 
 <a 
   {href} 
-  class="font-medium text-primary hover:scale-105 transition-transform duration-300 flex items-center  {className}" 
+  class="font-medium text-primary {hoverClass} transition-transform duration-300 flex items-center  {className}" 
 >
   <slot />
 </a>
