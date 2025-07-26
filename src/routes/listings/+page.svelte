@@ -1,9 +1,9 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import { goto } from '$app/navigation';
-  import ListingList from '$lib/components/listings/ListingList.svelte';
   import Button from '$lib/components/common/Button.svelte';
   import Input from '$lib/components/common/Input.svelte';
+  import ListingListPublic from '$lib/components/listings/ListingListPublic.svelte';
 
   export let data;
 
@@ -340,7 +340,7 @@
       </div>
     {:else}
       <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
-        <ListingList {listings} />
+        <ListingListPublic {listings} />
       </div>
     {/if}
 
