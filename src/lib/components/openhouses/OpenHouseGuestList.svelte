@@ -37,32 +37,6 @@
         return 'bg-gray-100 text-gray-700 border-gray-200';
     }
   }
-
-  // Get agent status color
-  function getAgentStatusColor(hasAgent: string): string {
-    const hasAgentLower = hasAgent?.toLowerCase();
-    if (hasAgentLower === 'yes' || hasAgentLower === 'true') {
-      return 'bg-amber-100 text-amber-700 border-amber-200';
-    } else if (hasAgentLower === 'no' || hasAgentLower === 'false') {
-      return 'bg-purple-100 text-purple-700 border-purple-200';
-    }
-    return 'bg-gray-100 text-gray-700 border-gray-200';
-  }
-
-  // Get avatar gradient
-  function getAvatarGradient(index: number): string {
-    const gradients = [
-      'from-blue-500 to-purple-600',
-      'from-emerald-500 to-teal-600',
-      'from-pink-500 to-rose-600',
-      'from-orange-500 to-red-600',
-      'from-indigo-500 to-blue-600',
-      'from-green-500 to-emerald-600',
-      'from-purple-500 to-pink-600',
-      'from-yellow-500 to-orange-600'
-    ];
-    return gradients[index % gradients.length];
-  }
 </script>
 
 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
@@ -173,8 +147,8 @@
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 {#if guest.has_agent}
-                  <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium border {getAgentStatusColor(guest.has_agent)}">
-                    {guest.has_agent?.toLowerCase() === 'yes' || guest.has_agent?.toLowerCase() === 'true' ? 'Has Agent' : 'No Agent'}
+                  <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium">
+                    {guest.has_agent}
                   </span>
                 {/if}
               </td>
