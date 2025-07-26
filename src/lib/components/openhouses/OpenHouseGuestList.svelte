@@ -139,16 +139,6 @@
           >
             <!-- Guest Header -->
             <div class="flex items-start space-x-4 mb-4">
-              <div 
-                class="flex-shrink-0 relative"
-                in:scale={{ duration: 400, delay: 300 + index * 100, easing: elasticOut }}
-              >
-                <div class="h-12 w-12 rounded-full bg-gradient-to-br {getAvatarGradient(index)} flex items-center justify-center text-white font-semibold text-sm shadow-lg group-hover:scale-110 transition-transform duration-300">
-                  {getInitials(guest.name)}
-                </div>
-                <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 border-2 border-white rounded-full"></div>
-              </div>
-              
               <div class="flex-1 min-w-0">
                 <h4 class="text-lg font-semibold text-gray-900 truncate group-hover:text-blue-600 transition-colors duration-200">
                   {guest.name || 'Unknown Guest'}
