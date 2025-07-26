@@ -41,6 +41,7 @@
 	// 状态变量
 	let selectedOffer = null;
 	let showDetailsModal = false;
+let showThankYou = false;
 
 	// 查看报价详情
 	function viewDetails(offer) {
@@ -63,7 +64,7 @@
       user_id,
       ...newGuest
     });
-    fetchGuests();
+    showThankYou = true;
     showDetailsModal = false;
     newGuest = EMPTY_GUEST;
   }
@@ -92,7 +93,19 @@
     </Button>
 	</div>
 
+  {#if showThankYou}
+  <div class="bg-white rounded-lg p-8 text-center">
+    <h3 class="text-2xl font-bold text-gray-900 mb-4">Thank You!</h3>
+    <p class="text-gray-600 mb-6">We appreciate you signing up for this open house.</p>
+    <Button 
+      onclick={() => showThankYou = false}
+    >
+      Back to Open House
+    </Button>
+  </div>
+{:else}
   <OpenHouseGuestList guests={guests} />
+{/if}
 
 </div>
 
