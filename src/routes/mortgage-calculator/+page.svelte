@@ -265,16 +265,16 @@
         <div class="space-y-8">
           
           <!-- Payment Summary -->
-          <div class="bg-gradient-to-br from-primary to-blue-600 rounded-2xl p-8 text-white">
+          <div class="bg-primary rounded-2xl p-8 text-white">
             <h2 class="text-2xl font-bold mb-6">Monthly Payment Breakdown</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div class="bg-white bg-opacity-20 rounded-xl p-6">
+              <div class="rounded-xl p-6">
                 <div class="text-3xl font-bold mb-2">{formatCurrency(monthlyPayment)}</div>
                 <div class="text-blue-100">Principal & Interest</div>
               </div>
               
-              <div class="bg-white bg-opacity-20 rounded-xl p-6">
+              <div class="rounded-xl p-6">
                 <div class="text-3xl font-bold mb-2">{formatCurrency(totalMonthlyPayment)}</div>
                 <div class="text-blue-100">Total Monthly Payment</div>
               </div>
