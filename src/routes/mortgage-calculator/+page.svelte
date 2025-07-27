@@ -12,7 +12,7 @@
   let loanTerm = 25;
   let propertyTax = 3000;
   let homeInsurance = 1200;
-  let pmiRate = 0;
+  let pmiRate = 0.5;
 
   // Calculated values
   let monthlyPayment = 0;
@@ -33,7 +33,7 @@
 
   function calculateMortgage() {
     // Basic validations
-    if (homePrice <= 0 || downPayment < 0 || interestRate <= 0 || loanTerm <= 0) {
+    if (homePrice <= 0 || downPayment < 0 || interestRate <= 0 || loanTerm <= 0 || homePrice > 10000000 || downPayment > homePrice || interestRate > 20 || loanTerm > 35) {
       return;
     }
 
@@ -75,7 +75,7 @@
     let balance = loanAmount;
     const monthlyRate = interestRate / 100 / 12;
     
-    for (let year = 1; year <= Math.min(loanTerm, 30); year++) {
+    for (let year = 1; year <= Math.min(loanTerm, 35); year++) {
       let yearlyPrincipal = 0;
       let yearlyInterest = 0;
       
@@ -125,6 +125,7 @@
     downPayment = preset.downPayment;
     interestRate = preset.interestRate;
     loanTerm = preset.loanTerm;
+    calculateMortgage();
   }
 
   onMount(() => {
@@ -179,6 +180,7 @@
 
           <div class="space-y-6">
             <Input
+              on:input={calculateMortgage}
               id="homePrice"
               label="Home Price"
               type="number"
@@ -189,6 +191,7 @@
             />
 
             <Input
+              on:input={calculateMortgage}
               id="downPayment"
               label="Down Payment"
               type="number"
@@ -199,6 +202,7 @@
             />
 
             <Input
+              on:input={calculateMortgage}
               id="interestRate"
               label="Interest Rate (%)"
               type="number"
@@ -209,6 +213,7 @@
             />
 
             <Input
+              on:input={calculateMortgage}
               id="loanTerm"
               label="Loan Term (years)"
               type="number"
@@ -224,6 +229,7 @@
               
               <div class="space-y-4">
                 <Input
+                  on:input={calculateMortgage}
                   id="propertyTax"
                   label="Annual Property Tax"
                   type="number"
@@ -234,6 +240,7 @@
                 />
 
                 <Input
+                  on:input={calculateMortgage}
                   id="homeInsurance"
                   label="Annual Home Insurance"
                   type="number"
@@ -245,6 +252,7 @@
 
                 {#if downPaymentPercent < 20}
                   <Input
+                    on:input={calculateMortgage}
                     id="pmiRate"
                     label="PMI Rate (% annually)"
                     type="number"
