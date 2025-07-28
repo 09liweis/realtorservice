@@ -12,25 +12,24 @@
   $: timelineEvents = getTimelineEvents(request, tp);
 
   function getTimelineEvents(request: Staging | Cleaning | VideoService | SocialMediaService, type: string) {
-    if (!request.history || request.history.length === 0) {
-      return [
-        {
-          title: 'Request Created',
-          date: request.created_at ? new Date(request.created_at).toLocaleDateString() : 'Unknown',
-          status: 'completed',
-          icon: '📝',
-          description: `${getServiceTypeLabel(type)} request was submitted`
-        }
-      ];
-    }
+    const allStatuses = ['draft', 'submitted', 'confirmed', 'paid', 'scheduled', 'completed'];
+    const historyStatuses = request.history?.map(entry => entry.status) || [];
 
-    return request.history.map(entry => ({
-      title: entry.status.charAt(0).toUpperCase() + entry.status.slice(1),
-      date: entry.date ? new Date(entry.date).toLocaleDateString() : 'Unknown',
-      status: entry.status,
-      icon: getStatusIcon(entry.status),
-      description: entry.note || `${getServiceTypeLabel(type)} status updated to ${entry.status}`
-    }));
+    return allStatuses.map(status => {
+      const historyEntry = request.history?.find(entry => entry.status === status);
+      const isPending = !historyEntry;
+
+      return {
+        title: status.charAt(0).toUpperCase() + status.slice(1),
+        date: historyEntry?.date ? new Date(historyEntry.date).toLocaleDateString() : 'Pending',
+        status: isPending ? 'pending' : status,
+        icon: getStatusIcon(status),
+        description: historyEntry?.note || 
+          (isPending 
+            ? `${getServiceTypeLabel(type)} status is pending` 
+            : `${getServiceTypeLabel(type)} status updated to ${status}`)
+      };
+    });
   }
 
   function getStatusIcon(status: string): string {
