@@ -12,50 +12,37 @@
   $: timelineEvents = getTimelineEvents(request, tp);
 
   function getTimelineEvents(request: Staging | Cleaning | VideoService | SocialMediaService, type: string) {
-    return [
-      {
-        title: 'Request Created',
-        date: request.created_at ? new Date(request.created_at).toLocaleDateString() : 'Unknown',
-        status: 'completed',
-        icon: '📝',
-        description: `${getServiceTypeLabel(type)} request was submitted`
-      },
-      {
-        title: 'Request Submitted',
-        date: request.status !== 'draft' ? 'Submitted' : 'Draft',
-        status: request.status !== 'draft' ? 'submitted' : 'draft',
-        icon: '📤',
-        description: 'Request has been submitted for review'
-      },
-      {
-        title: 'Quote Confirmed',
-        date: request.quotation_price ? 'Confirmed' : 'Pending',
-        status: request.quotation_price ? 'confirmed' : 'submitted',
-        icon: '💰',
-        description: 'Pricing quote has been confirmed'
-      },
-      {
-        title: 'Payment Processed',
-        date: request.status === 'paid' ? 'Paid' : 'Pending',
-        status: request.status === 'paid' ? 'paid' : 'confirmed',
-        icon: '✅',
-        description: 'Payment has been processed'
-      },
-      {
-        title: `${getServiceTypeLabel(type)} Scheduled`,
-        date: request.scheduled_date ? new Date(request.scheduled_date).toLocaleDateString() : (request.status === 'scheduled' ? 'Scheduled' : 'Pending'),
-        status: request.status === 'scheduled' ? 'completed' : 'pending',
-        icon: getServiceIcon(type),
-        description: `${getServiceTypeLabel(type)} has been scheduled`
-      },
-      {
-        title: `${getServiceTypeLabel(type)} Completed`,
-        date: request.status === 'completed' ? 'Completed' : 'Pending',
-        status: request.status === 'completed' ? 'completed' : 'pending',
-        icon: '🎉',
-        description: `${getServiceTypeLabel(type)} has been completed`
-      }
-    ];
+    if (!request.history || request.history.length === 0) {
+      return [
+        {
+          title: 'Request Created',
+          date: request.created_at ? new Date(request.created_at).toLocaleDateString() : 'Unknown',
+          status: 'completed',
+          icon: '📝',
+          description: `${getServiceTypeLabel(type)} request was submitted`
+        }
+      ];
+    }
+
+    return request.history.map(entry => ({
+      title: entry.status.charAt(0).toUpperCase() + entry.status.slice(1),
+      date: entry.date ? new Date(entry.date).toLocaleDateString() : 'Unknown',
+      status: entry.status,
+      icon: getStatusIcon(entry.status),
+      description: entry.note || `${getServiceTypeLabel(type)} status updated to ${entry.status}`
+    }));
+  }
+
+  function getStatusIcon(status: string): string {
+    switch (status) {
+      case 'completed': return '🎉';
+      case 'paid': return '💰';
+      case 'scheduled': return '📅';
+      case 'confirmed': return '✅';
+      case 'submitted': return '📤';
+      case 'draft': return '📝';
+      default: return '🔄';
+    }
   }
 
   function getIconStyle(status: string) {
