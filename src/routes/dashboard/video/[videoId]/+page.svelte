@@ -12,6 +12,7 @@
   import { getVideoService, upsertVideoService } from '$lib/supabase';
   import { onMount } from 'svelte';
     import Link from '$lib/components/Link.svelte';
+    import Timeline from '$lib/components/common/Timeline.svelte';
 
   const videoServiceId = $page.params.videoId;
   
@@ -123,12 +124,14 @@
     </div>
   {/if}
 
+  <!-- Video Service Header -->
+  <VideoServiceHeader {videoService} />
+  <Timeline request={videoService} tp="video" />
+
   <!-- Main Content Grid -->
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
     <!-- Left Column - Main Content -->
     <div class="lg:col-span-2 space-y-8">
-      <!-- Video Service Header -->
-      <VideoServiceHeader {videoService} />
 
       <!-- Video Service Information -->
       <VideoServiceInfo {videoService} {serviceTypeInfo} {addonInfo} />
