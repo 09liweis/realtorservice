@@ -70,7 +70,7 @@ export async function sendProjectStatusChange(
           View Dashboard
         </a>
         ${projectUrl ? `
-        <a href="${HOST}dashboard/${projectUrl}" 
+        <a href="${HOST}/dashboard/${projectUrl}" 
            style="display: inline-block; padding: 10px 20px; background-color: #2196F3; 
                   color: white; text-decoration: none; border-radius: 5px; margin: 0 10px;">
           View Project
@@ -108,7 +108,7 @@ export async function sendProjectSubmitted(
       <p>Hello,</p>
       <p>Your project <strong>${projectName}</strong> has been successfully submitted for review.</p>
       <div style="margin-top: 20px; padding: 15px; background-color: #f5f5f5; border-radius: 5px; text-align: center;">
-        <a href="${HOST}${projectUrl}" 
+        <a href="${HOST}/${projectUrl}" 
            style="display: inline-block; padding: 10px 20px; background-color: #2196F3; 
                   color: white; text-decoration: none; border-radius: 5px;">
           View Project
