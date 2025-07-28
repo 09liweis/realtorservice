@@ -15,6 +15,7 @@
   import DetailActions from '$lib/components/common/DetailActions.svelte';
   import { getSocialMediaService, upsertSocialMediaService } from '$lib/supabase';
     import Link from '$lib/components/Link.svelte';
+    import Timeline from '$lib/components/common/Timeline.svelte';
 
   const socialServiceId = $page.params.socialId;
   
@@ -128,13 +129,14 @@
     </div>
   {/if}
 
+  <!-- Social Media Service Header -->
+  <SocialMediaServiceHeader {socialMediaService} />
+  <Timeline request={socialMediaService} tp='social'/>
+
   <!-- Main Content Grid -->
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
     <!-- Left Column - Main Content -->
     <div class="lg:col-span-2 space-y-8">
-      <!-- Social Media Service Header -->
-      <SocialMediaServiceHeader {socialMediaService} />
-
       <!-- Social Media Service Information -->
       <SocialMediaServiceInfo {socialMediaService} {platformInfo} {addonInfo} />
 

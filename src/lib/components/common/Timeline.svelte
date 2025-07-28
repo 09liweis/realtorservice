@@ -13,10 +13,10 @@
 
   function getTimelineEvents(request: Staging | Cleaning | VideoService | SocialMediaService, type: string) {
     const allStatuses = ['draft', 'submitted', 'confirmed', 'paid', 'scheduled', 'completed'];
-    const historyStatuses = request.history?.map(entry => entry.status) || [];
+    const historyStatuses = request?.history?.map(entry => entry.status) || [];
 
     return allStatuses.map(status => {
-      const historyEntry = request.history?.find(entry => entry.status === status);
+      const historyEntry = request?.history?.find(entry => entry.status === status);
       const isPending = !historyEntry;
 
       return {
@@ -86,7 +86,7 @@
     if (type === 'staging') {
       const staging = request as Staging;
       return staging.length ? `${staging.length} month${staging.length !== '1' ? 's' : ''}` : 'To be determined';
-    } else {
+    } else if (type === 'cleaning'){
       const cleaning = request as Cleaning;
       return cleaning.frequency ? cleaning.frequency.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase()) : 'One-time service';
     }
