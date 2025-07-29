@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { PUBLIC_MAPBOX_API_KEY } from '$env/static/public';
   import { createEventDispatcher } from 'svelte';
+  import AddressSuggestions from './AddressSuggestions.svelte';
   const dispatch = createEventDispatcher();
   
   // Props
@@ -20,44 +20,9 @@
   export let disabled = false;
   export let classes = '';
   
-  // State for address suggestions
-  let suggestions: any[] = [];
-  let loading = false;
-  
-  // Fetch address suggestions from Mapbox API
-  async function fetchAddressSuggestions(query: string) {
-    if (!query || autocomplete !== 'address') {
-      suggestions = [];
-      return;
-    }
-    
-    loading = true;
-    try {
-      const response = await fetch(
-        `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${PUBLIC_MAPBOX_API_KEY}&limit=5`
-      );
-      const data = await response.json();
-      suggestions = data.features || [];
-    } catch (err) {
-      console.error('Failed to fetch address suggestions:', err);
-      suggestions = [];
-    } finally {
-      loading = false;
-    }
-  }
-  
   // Handle input event
   function handleInput(event: any) {
     dispatch('input', event);
-    if (autocomplete === 'address') {
-      // Debounce the fetchAddressSuggestions call
-      if (window.debounceTimer) {
-        clearTimeout(window.debounceTimer);
-      }
-      window.debounceTimer = setTimeout(() => {
-        fetchAddressSuggestions(event.target.value);
-      }, 300);
-    }
   }
   
   // Handle change event
@@ -73,6 +38,11 @@
   // Handle blur event
   function handleBlur(event: any) {
     dispatch('blur', event);
+  }
+  
+  // Handle autocomplete click
+  function handleAutocompleteClick(suggestion: any) {
+    value = suggestion.place_name;
   }
   
   // Base input classes with enhanced styling
@@ -114,21 +84,12 @@
     on:blur={handleBlur}
   />
   
-  {#if suggestions.length > 0}
-    <ul class="mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg z-10">
-      {#each suggestions as suggestion}
-        <li 
-          class="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-          on:click={() => {
-            value = suggestion.place_name;
-            suggestions = [];
-          }}
-        >
-          {suggestion.place_name}
-        </li>
-      {/each}
-    </ul>
-  {/if}
+  {#if autocomplete === 'address'}
+  <AddressSuggestions 
+    query={value}
+    handleAutocompleteClick={handleAutocompleteClick}
+  />
+{/if}
   
   {#if error && errorMessage}
     <p class="text-sm text-red-600 flex items-center mt-1">
