@@ -14,26 +14,16 @@
 	});
 </script>
 
-<div class="app">
-	<Header />
+<div>
 
-	<main>
-		{@render children()}
-	</main>
+<Header />
 
-	{#if !$page.url.pathname.startsWith('/dashboard')}
-		<Footer />
-	{/if}
+<main class="mt-30">
+	{@render children()}
+</main>
+
+{#if !$page.url.pathname.startsWith('/dashboard')}
+	<Footer />
+{/if}
+
 </div>
-
-<style>
-	.app {
-		display: flex;
-		flex-direction: column;
-		min-height: 100vh;
-	}
-
-	main {
-		flex: 1;
-	}
-</style>

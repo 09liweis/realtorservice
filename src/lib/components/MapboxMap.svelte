@@ -2,9 +2,10 @@
   import { onMount } from 'svelte';
   import mapboxgl from 'mapbox-gl';
   import 'mapbox-gl/dist/mapbox-gl.css';
+  import type { Listing } from '$lib/types/listing';
 
   export let accessToken: string;
-  export let listings: Array<{ latitude: number; longitude: number }> = [];
+  export let listings: Listing[] = [];
 
   onMount(() => {
     mapboxgl.accessToken = accessToken;
@@ -18,7 +19,8 @@
     // Add markers
     listings.forEach(listing => {
       if (listing.latitude && listing.longitude) {
-        new mapboxgl.Marker()
+        const markerColor = listing.listing_type === 'Assignment Sale' ? '#FF5733' : '#3399FF';
+        new mapboxgl.Marker({ color: markerColor })
           .setLngLat([listing.longitude, listing.latitude])
           .addTo(map);
       }
@@ -39,11 +41,7 @@
   });
 </script>
 
-<div id="map" class="map-container"></div>
+<div id="map" class="aspect-square h-[500px] w-full"></div>
 
 <style>
-  .map-container {
-    height: 400px;
-    width: 100%;
-  }
 </style>
