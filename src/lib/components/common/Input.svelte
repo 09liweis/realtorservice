@@ -19,14 +19,18 @@
   export let errorMessage = '';
   export let disabled = false;
   export let classes = '';
+
+  let isTyping = false;
   
   // Handle input event
   function handleInput(event: any) {
+    isTyping = true;
     dispatch('input', event);
   }
   
   // Handle change event
   function handleChange(event: any) {
+    isTyping = true;
     dispatch('change', event);
   }
   
@@ -42,6 +46,7 @@
   
   // Handle autocomplete click
   function handleAutocompleteClick(suggestion: any) {
+    isTyping = false;
     value = suggestion.place_name;
   }
   
@@ -87,6 +92,7 @@
   {#if autocomplete === 'address'}
   <AddressSuggestions 
     query={value}
+    isTyping={isTyping}
     handleAutocompleteClick={handleAutocompleteClick}
   />
 {/if}

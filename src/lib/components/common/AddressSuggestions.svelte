@@ -3,6 +3,7 @@
 
   export let query: string;
   export let handleAutocompleteClick: (value: any) => void;
+  export let isTyping = false;
 
   // State for address suggestions
   let suggestions: any[] = [];
@@ -11,7 +12,7 @@
 
   // Fetch address suggestions from Mapbox API
   async function fetchAddressSuggestions() {
-    if (!query) {
+    if (!query || !isTyping) {
       suggestions = [];
       showSuggestions = false;
       return;
@@ -35,7 +36,7 @@
   }
 
   // Call fetchAddressSuggestions when query changes
-  $: if (query) {
+  $: if (query && isTyping) {
     fetchAddressSuggestions();
   }
 
