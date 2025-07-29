@@ -19,6 +19,7 @@
   export let errorMessage = '';
   export let disabled = false;
   export let classes = '';
+  export let handleAutocompleteClick = (suggestion:any) => {};
 
   let isTyping = false;
   
@@ -45,9 +46,10 @@
   }
   
   // Handle autocomplete click
-  function handleAutocompleteClick(suggestion: any) {
+  function handleSuggestionClick(suggestion: any) {
     isTyping = false;
     value = suggestion.place_name;
+    handleAutocompleteClick(suggestion);
   }
   
   // Base input classes with enhanced styling
@@ -93,7 +95,7 @@
   <AddressSuggestions 
     query={value}
     isTyping={isTyping}
-    handleAutocompleteClick={handleAutocompleteClick}
+    handleSuggestionClick={handleSuggestionClick}
   />
 {/if}
   

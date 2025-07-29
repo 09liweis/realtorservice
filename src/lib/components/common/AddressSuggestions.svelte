@@ -2,7 +2,7 @@
   import { PUBLIC_MAPBOX_API_KEY } from '$env/static/public';
 
   export let query: string;
-  export let handleAutocompleteClick: (value: any) => void;
+  export let handleSuggestionClick: (value: any) => void;
   export let isTyping = false;
 
   // State for address suggestions
@@ -39,12 +39,6 @@
   $: if (query && isTyping) {
     fetchAddressSuggestions();
   }
-
-  // Handle suggestion click
-  function handleSuggestionClick(suggestion: any) {
-    handleAutocompleteClick(suggestion);
-    showSuggestions = false;
-  }
 </script>
 
 {#if showSuggestions}
@@ -52,7 +46,10 @@
     {#each suggestions as suggestion}
       <li 
         class="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-        on:click={() => handleSuggestionClick(suggestion)}
+        on:click={() => {
+          handleSuggestionClick(suggestion);
+          showSuggestions = false;
+        }}
       >
         {suggestion.place_name}
       </li>
