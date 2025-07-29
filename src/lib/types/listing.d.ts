@@ -4,6 +4,8 @@ export interface Listing {
   project_name: string;
   developer: string;
   address: string;
+  latitude: number;
+  longitude: number;
   location: string;
   ptype: string;
   bedroom: string;
