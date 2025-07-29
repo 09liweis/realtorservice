@@ -50,7 +50,13 @@
   function handleInput(event: any) {
     dispatch('input', event);
     if (autocomplete === 'address') {
-      fetchAddressSuggestions(event.target.value);
+      // Debounce the fetchAddressSuggestions call
+      if (window.debounceTimer) {
+        clearTimeout(window.debounceTimer);
+      }
+      window.debounceTimer = setTimeout(() => {
+        fetchAddressSuggestions(event.target.value);
+      }, 300);
     }
   }
   
