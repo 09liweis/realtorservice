@@ -18,7 +18,7 @@
 
 <Header />
 
-<main class="mt-30">
+<main class="">
 	{@render children()}
 </main>
 
