@@ -2,10 +2,11 @@
   import { page } from "$app/stores";
   import { formatAmount } from "$lib/types/constant";
   import Link from "$lib/components/Link.svelte";
+    import type { Listing } from "$lib/types/listing.js";
 
   export let data;
 
-  const listing = data.listing;
+  const listing:Listing = data.listing;
 
   // Get all images from the pictures string
   function getImages(pictures: string): string[] {
