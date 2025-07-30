@@ -1,6 +1,6 @@
 <script lang="ts">
   import { user } from '$lib/stores/auth';
-  import { fade } from 'svelte/transition';
+  import Link from '../Link.svelte';
 
   export let title: string;
   export let value: number | { count: number, is_user_unread?: boolean, is_admin_unread?: boolean };
@@ -9,6 +9,7 @@
   export let icon: string;
   export let color: string;
   export let loading: boolean;
+  export let link: string;
   
   // Color mappings
   const colorClasses = {
@@ -42,9 +43,9 @@
   };
 </script>
 
-<div 
-  transition:fade
-  class="bg-white relative rounded-xl shadow-sm p-6 border border-gray-200 cursor-pointer {colorClasses.hover[color]} transition-colors duration-200"
+<Link 
+  href={link}
+  className="bg-white relative rounded-xl shadow-sm p-6 border border-gray-200 cursor-pointer {colorClasses.hover[color]} transition-colors duration-200"
 >
   {#if typeof value !== 'number' && (value.is_user_unread || value.is_admin_unread)}
     <div class="flex space-x-2 mt-2 absolute top-0 right-0 z-10">
@@ -73,4 +74,4 @@
       <span class="text-2xl">{icon}</span>
     </div>
   </div>
-</div>
+</Link>

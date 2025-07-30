@@ -192,7 +192,7 @@
       icon="🏠"
       color="blue"
       loading={loading}
-      on:click={() => navigateToSection('/dashboard/listings')}
+      link={'/dashboard/listings'}
     >
       <div class="text-sm text-gray-600 mt-1">
         <span class="font-medium text-green-600">{dashboardStats.listings.sold}</span> sold
@@ -207,7 +207,7 @@
       icon="💰"
       color="green"
       loading={loading}
-      on:click={() => navigateToSection('/dashboard/offers')}
+      link={'/dashboard/offers'}
     >
       <div class="text-sm text-gray-600 mt-1">
         <span class="font-medium">Active</span> negotiations
@@ -222,7 +222,7 @@
       icon="✨"
       color="purple"
       loading={loading}
-      on:click={() => navigateToSection('/dashboard/stagings')}
+      link={'/dashboard/stagings'}
     >
       <div class="text-sm text-gray-600 mt-1">
         <span class="font-medium">Active</span> projects
@@ -237,7 +237,7 @@
       icon="🧹"
       color="orange"
       loading={loading}
-      on:click={() => navigateToSection('/dashboard/cleanings')}
+      link={'/dashboard/cleanings'}
     >
       <div class="text-sm text-gray-600 mt-1">
         <span class="font-medium">Scheduled</span> services
@@ -255,7 +255,7 @@
       icon="🎥"
       color="indigo"
       loading={loading}
-      on:click={() => navigateToSection('/dashboard/video')}
+      link={'/dashboard/video'}
     >
       <div class="text-sm text-gray-600 mt-1">
         <span class="font-medium">Media</span> production
@@ -270,7 +270,7 @@
       icon="📱"
       color="pink"
       loading={loading}
-      on:click={() => navigateToSection('/dashboard/social')}
+      link={'/dashboard/social'}
     >
       <div class="text-sm text-gray-600 mt-1">
         <span class="font-medium">Posts</span> published
@@ -286,7 +286,7 @@
       icon="🪙"
       color="amber"
       loading={loading}
-      on:click={() => navigateToSection('/dashboard/profile')}
+      link={'/dashboard/profile'}
     >
       <div class="text-sm text-gray-600 mt-1">
         <span class="font-medium">Balance</span> available
@@ -303,13 +303,13 @@
         <p class="text-sm text-gray-600 mb-4">Get things done faster</p>
         <div class="space-y-2">
           <button 
-            on:click={() => navigateToSection('/dashboard/listings/new')}
+            link={'/dashboard/listings/new'}
             class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors duration-200"
           >
             Add Listing
           </button>
           <button 
-            on:click={() => navigateToSection('/dashboard/services')}
+            link={'/dashboard/services'}
             class="w-full bg-white text-gray-700 py-2 px-4 rounded-lg text-sm font-medium border border-gray-300 hover:bg-gray-50 transition-colors duration-200"
           >
             Book Service
