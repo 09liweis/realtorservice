@@ -2,10 +2,15 @@
   import { page } from "$app/stores";
   import { formatAmount } from "$lib/types/constant";
   import Link from "$lib/components/Link.svelte";
+  import type { Listing } from "$lib/types/listing.js";
+  import { fade, fly } from 'svelte/transition';
+  import { onMount } from 'svelte';
 
   export let data;
 
-  const listing = data.listing;
+  const listing: Listing = data.listing;
+  let currentImageIndex = 0;
+  let showImageModal = false;
 
   // Get all images from the pictures string
   function getImages(pictures: string): string[] {
@@ -21,183 +26,284 @@
     if (listing.size) features.push(`${listing.size} sqft`);
     return features.join(" • ");
   }
+
+  const images = getImages(listing.pics);
+  const defaultImage = "https://images.pexels.com/photos/280229/pexels-photo-280229.jpeg?auto=compress&cs=tinysrgb&w=1200";
+
+  function nextImage() {
+    currentImageIndex = (currentImageIndex + 1) % Math.max(images.length, 1);
+  }
+
+  function prevImage() {
+    currentImageIndex = currentImageIndex === 0 ? Math.max(images.length - 1, 0) : currentImageIndex - 1;
+  }
+
+  function openImageModal(index: number) {
+    currentImageIndex = index;
+    showImageModal = true;
+  }
+
+  onMount(() => {
+    // Add keyboard navigation for image modal
+    function handleKeydown(event: KeyboardEvent) {
+      if (!showImageModal) return;
+      
+      if (event.key === 'Escape') {
+        showImageModal = false;
+      } else if (event.key === 'ArrowLeft') {
+        prevImage();
+      } else if (event.key === 'ArrowRight') {
+        nextImage();
+      }
+    }
+
+    document.addEventListener('keydown', handleKeydown);
+    return () => document.removeEventListener('keydown', handleKeydown);
+  });
 </script>
 
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-  <!-- Back button -->
-  <div class="mb-6">
-    <Link
-      href="/listings"
-      className="flex items-center text-blue-600 hover:text-blue-800"
-    >
-      <svg
-        class="w-5 h-5 mr-2"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M10 19l-7-7m0 0l7-7m-7 7h18"
-        ></path>
-      </svg>
-      Back to Listings
-    </Link>
-  </div>
+<svelte:head>
+  <title>{listing.project_name} - {listing.address}</title>
+  <meta name="description" content="{listing.description || `${listing.project_name} in ${listing.location}. ${formatFeatures(listing)}.`}" />
+</svelte:head>
 
-  <!-- Property header -->
-  <div class="bg-white rounded-lg shadow-md overflow-hidden mb-8">
-    <div class="p-6 border-b border-gray-200">
-      <h1 class="text-3xl font-bold text-gray-900">{listing.project_name}</h1>
-      <div class="flex items-center mt-2">
-        <svg
-          class="w-5 h-5 text-gray-400 mr-2"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
+<main class="min-h-screen bg-gray-50">
+  <!-- Navigation -->
+  <nav class="bg-white border-b border-gray-100 sticky top-0 z-40" in:fade={{ duration: 300 }}>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <Link
+          href="/listings"
+          className="flex items-center text-gray-600 hover:text-gray-900 transition-colors duration-200"
         >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-          ></path>
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-          ></path>
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Back to Listings
+        </Link>
+        
+        <div class="flex items-center space-x-4">
+          <button class="p-2 text-gray-400 hover:text-gray-600 transition-colors duration-200">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+            </svg>
+          </button>
+          <button class="p-2 text-gray-400 hover:text-gray-600 transition-colors duration-200">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Image Section -->
+  <section class="relative h-96 md:h-[500px] overflow-hidden" in:fade={{ duration: 600, delay: 200 }}>
+    <img
+      src={images[currentImageIndex] || defaultImage}
+      alt={listing.project_name}
+      class="w-full h-full object-cover"
+    />
+    
+    <!-- Image Navigation -->
+    {#if images.length > 1}
+      <button
+        on:click={prevImage}
+        class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-70 transition-all duration-200"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
         </svg>
-        <span class="text-gray-600">
-          {listing.address}{listing.location ? `, ${listing.location}` : ""}
-        </span>
+      </button>
+      
+      <button
+        on:click={nextImage}
+        class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-70 transition-all duration-200"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+        </svg>
+      </button>
+    {/if}
+
+    <!-- Image Counter -->
+    {#if images.length > 1}
+      <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 text-white px-3 py-1 rounded-full text-sm">
+        {currentImageIndex + 1} / {images.length}
       </div>
-    </div>
+    {/if}
 
-    <!-- Price and status -->
-    <div class="p-6 border-b border-gray-200">
-      <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-        <div class="mb-4 md:mb-0">
-          <div class="text-4xl font-bold text-gray-900">
-            {formatAmount(listing.asking_price)}
-          </div>
-          {#if listing.original_price && listing.original_price !== listing.asking_price}
-            <div class="text-lg text-gray-500 line-through">
-              {formatAmount(listing.original_price)}
-            </div>
-          {/if}
-        </div>
-        <div class="flex space-x-6">
-          <div class="text-center">
-            <div class="text-sm text-gray-500">Bedrooms</div>
-            <div class="text-2xl font-semibold">{listing.bedroom || '-'}</div>
-          </div>
-          <div class="text-center">
-            <div class="text-sm text-gray-500">Bathrooms</div>
-            <div class="text-2xl font-semibold">{listing.bathroom || '-'}</div>
-          </div>
-          <div class="text-center">
-            <div class="text-sm text-gray-500">Size</div>
-            <div class="text-2xl font-semibold">
-              {listing.size ? `${listing.size} sqft` : '-'}
-            </div>
-          </div>
-        </div>
+    <!-- Listing Type Badge -->
+    {#if listing.listing_type}
+      <div class="absolute top-6 left-6 bg-primary text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
+        {listing.listing_type}
       </div>
-    </div>
+    {/if}
 
-    <!-- Main content grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-0">
-      <!-- Left column - Images and description -->
-      <div class="lg:col-span-2">
-        <!-- Main image -->
-        <div class="h-96 bg-gray-100 overflow-hidden relative">
-          <img
-            src={getImages(listing.pics)[0] ||
-              "https://images.pexels.com/photos/280229/pexels-photo-280229.jpeg?auto=compress&cs=tinysrgb&w=800"}
-            alt={listing.project_name}
-            class="w-full h-full object-cover"
-          />
-          {#if listing.listing_type}
-            <div class="absolute top-4 left-4 bg-primary text-white px-3 py-1 rounded-full text-sm font-semibold">
-              {listing.listing_type}
+    <!-- Sold Badge -->
+    {#if listing.is_sold}
+      <div class="absolute top-6 right-6 bg-red-600 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">
+        SOLD
+      </div>
+    {/if}
+  </section>
+
+  <!-- Main Content -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      
+      <!-- Left Column - Property Details -->
+      <div class="lg:col-span-2 space-y-8">
+        
+        <!-- Property Header -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8" in:fly={{ y: 30, duration: 600, delay: 400 }}>
+          <div class="mb-6">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+              {listing.project_name}
+            </h1>
+            <div class="flex items-center text-gray-600 mb-4">
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+              </svg>
+              <span class="text-lg">{listing.address}{listing.location ? `, ${listing.location}` : ""}</span>
             </div>
-          {/if}
-        </div>
+            {#if listing.developer}
+              <p class="text-gray-600">by <span class="font-medium">{listing.developer}</span></p>
+            {/if}
+          </div>
 
-        <!-- Image gallery -->
-        {#if getImages(listing.pics).length > 1}
-          <div class="p-6 border-b border-gray-200">
-            <h2 class="text-xl font-bold text-gray-900 mb-4">Photo Gallery</h2>
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {#each getImages(listing.pics) as image, index}
-                {#if index > 0}
-                  <div class="h-48 bg-gray-100 rounded-lg overflow-hidden">
-                    <img
-                      src={image}
-                      alt={`${listing.project_name} - Image ${index + 1}`}
-                      class="w-full h-full object-cover"
-                    />
+          <!-- Price and Key Features -->
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between border-t border-gray-100 pt-6">
+            <div class="mb-4 md:mb-0">
+              <div class="text-4xl font-bold text-gray-900 mb-2">
+                {formatAmount(listing.asking_price)}
+              </div>
+              {#if listing.original_price && listing.original_price !== listing.asking_price}
+                <div class="text-lg text-gray-500 line-through">
+                  {formatAmount(listing.original_price)}
+                </div>
+              {/if}
+            </div>
+            
+            {#if formatFeatures(listing)}
+              <div class="flex items-center space-x-6 text-gray-600">
+                {#if listing.bedroom}
+                  <div class="flex items-center space-x-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 4l2 2 4-4"></path>
+                    </svg>
+                    <span class="text-lg font-medium">{listing.bedroom}</span>
+                    <span class="text-sm">bed</span>
                   </div>
                 {/if}
-              {/each}
-            </div>
+                {#if listing.bathroom}
+                  <div class="flex items-center space-x-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"></path>
+                    </svg>
+                    <span class="text-lg font-medium">{listing.bathroom}</span>
+                    <span class="text-sm">bath</span>
+                  </div>
+                {/if}
+                {#if listing.size}
+                  <div class="flex items-center space-x-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path>
+                    </svg>
+                    <span class="text-lg font-medium">{listing.size}</span>
+                    <span class="text-sm">sqft</span>
+                  </div>
+                {/if}
+              </div>
+            {/if}
           </div>
-        {/if}
+        </div>
 
         <!-- Description -->
         {#if listing.description}
-          <div class="p-6 border-b border-gray-200">
-            <h2 class="text-xl font-bold text-gray-900 mb-4">Description</h2>
-            <div class="prose max-w-none text-gray-600">
+          <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8" in:fly={{ y: 30, duration: 600, delay: 500 }}>
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Description</h2>
+            <div class="prose prose-gray max-w-none text-gray-700 leading-relaxed">
               {listing.description}
             </div>
           </div>
         {/if}
 
-        <!-- Property details -->
-        <div class="p-6">
-          <h2 class="text-xl font-bold text-gray-900 mb-4">Property Details</h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Property Details -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8" in:fly={{ y: 30, duration: 600, delay: 600 }}>
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">Property Details</h2>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Building Information -->
             <div>
-              <h3 class="text-lg font-semibold text-gray-800 mb-3">Building</h3>
+              <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <svg class="w-5 h-5 mr-2 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                </svg>
+                Building
+              </h3>
               <div class="space-y-3">
-                {#if listing.developer}
-                  <div class="flex justify-between">
-                    <span class="text-gray-600">Developer</span>
-                    <span class="font-medium">{listing.developer}</span>
+                {#if listing.ptype}
+                  <div class="flex justify-between py-2 border-b border-gray-100">
+                    <span class="text-gray-600">Property Type</span>
+                    <span class="font-medium text-gray-900">{listing.ptype}</span>
                   </div>
                 {/if}
                 {#if listing.level}
-                  <div class="flex justify-between">
-                    <span class="text-gray-600">Level</span>
-                    <span class="font-medium">{listing.level}</span>
+                  <div class="flex justify-between py-2 border-b border-gray-100">
+                    <span class="text-gray-600">Floor/Level</span>
+                    <span class="font-medium text-gray-900">{listing.level}</span>
                   </div>
                 {/if}
                 {#if listing.exposure}
-                  <div class="flex justify-between">
+                  <div class="flex justify-between py-2 border-b border-gray-100">
                     <span class="text-gray-600">Exposure</span>
-                    <span class="font-medium">{listing.exposure}</span>
+                    <span class="font-medium text-gray-900">{listing.exposure}</span>
+                  </div>
+                {/if}
+                {#if listing.occupancy}
+                  <div class="flex justify-between py-2 border-b border-gray-100">
+                    <span class="text-gray-600">Occupancy</span>
+                    <span class="font-medium text-gray-900">{listing.occupancy}</span>
                   </div>
                 {/if}
               </div>
             </div>
+
+            <!-- Features & Amenities -->
             <div>
-              <h3 class="text-lg font-semibold text-gray-800 mb-3">Features</h3>
+              <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <svg class="w-5 h-5 mr-2 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                Features
+              </h3>
               <div class="space-y-3">
                 {#if listing.parking}
-                  <div class="flex justify-between">
+                  <div class="flex justify-between py-2 border-b border-gray-100">
                     <span class="text-gray-600">Parking</span>
-                    <span class="font-medium">{listing.parking}</span>
+                    <span class="font-medium text-gray-900">{listing.parking}</span>
                   </div>
                 {/if}
-                {#if listing.occupancy}
-                  <div class="flex justify-between">
-                    <span class="text-gray-600">Occupancy</span>
-                    <span class="font-medium">{listing.occupancy}</span>
+                {#if listing.locker}
+                  <div class="flex justify-between py-2 border-b border-gray-100">
+                    <span class="text-gray-600">Locker</span>
+                    <span class="font-medium text-gray-900">{listing.locker}</span>
+                  </div>
+                {/if}
+                {#if listing.basement}
+                  <div class="flex justify-between py-2 border-b border-gray-100">
+                    <span class="text-gray-600">Basement</span>
+                    <span class="font-medium text-gray-900">{listing.basement}</span>
+                  </div>
+                {/if}
+                {#if listing.commission}
+                  <div class="flex justify-between py-2 border-b border-gray-100">
+                    <span class="text-gray-600">Commission</span>
+                    <span class="font-medium text-gray-900">{listing.commission}%</span>
                   </div>
                 {/if}
               </div>
@@ -205,96 +311,185 @@
           </div>
         </div>
 
+        <!-- Photo Gallery -->
+        {#if images.length > 1}
+          <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8" in:fly={{ y: 30, duration: 600, delay: 700 }}>
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Photo Gallery</h2>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {#each images as image, index}
+                <button
+                  on:click={() => openImageModal(index)}
+                  class="relative h-32 bg-gray-100 rounded-xl overflow-hidden group cursor-pointer"
+                >
+                  <img
+                    src={image}
+                    alt={`${listing.project_name} - Image ${index + 1}`}
+                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                  />
+                  <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
+                    <svg class="w-6 h-6 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path>
+                    </svg>
+                  </div>
+                </button>
+              {/each}
+            </div>
+          </div>
+        {/if}
+
         <!-- Remarks -->
         {#if listing.remark}
-          <div class="p-6 border-t border-gray-200">
-            <h2 class="text-xl font-bold text-gray-900 mb-4">Remarks</h2>
-            <div class="prose max-w-none text-gray-600">
+          <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8" in:fly={{ y: 30, duration: 600, delay: 800 }}>
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Additional Information</h2>
+            <div class="prose prose-gray max-w-none text-gray-700 leading-relaxed">
               {listing.remark}
             </div>
           </div>
         {/if}
       </div>
 
-      <!-- Right column - Contact and actions -->
-      <div class="border-t lg:border-t-0 lg:border-l border-gray-200">
-        <!-- Contact Information -->
+      <!-- Right Column - Contact Card -->
+      <div class="lg:col-span-1">
         {#if listing.user_profiles}
-          <div class="p-6">
-            <h2 class="text-xl font-bold text-gray-900 mb-4">Contact Agent</h2>
+          <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 sticky top-24" in:fly={{ x: 30, duration: 600, delay: 600 }}>
+            <h2 class="text-xl font-bold text-gray-900 mb-6">Contact Agent</h2>
+            
+            <!-- Agent Info -->
             <div class="flex items-center space-x-4 mb-6">
-              <div
-                class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center"
-              >
-                <span class="text-lg font-semibold text-blue-600">
-                  {listing.user_profiles.first_name?.charAt(
-                    0,
-                  )}{listing.user_profiles.last_name?.charAt(0)}
+              <div class="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center">
+                <span class="text-xl font-bold text-white">
+                  {listing.user_profiles.first_name?.charAt(0)}{listing.user_profiles.last_name?.charAt(0)}
                 </span>
               </div>
               <div>
-                <div class="text-lg font-medium text-gray-900">
-                  {listing.user_profiles.first_name}
-                  {listing.user_profiles.last_name}
+                <div class="text-lg font-semibold text-gray-900">
+                  {listing.user_profiles.first_name} {listing.user_profiles.last_name}
                 </div>
                 {#if listing.user_profiles.brokerage}
-                  <div class="text-sm text-gray-500">
-                    {listing.user_profiles.brokerage}
-                  </div>
+                  <div class="text-gray-600">{listing.user_profiles.brokerage}</div>
                 {/if}
               </div>
             </div>
 
-            {#if listing.user_profiles.phone}
-              <div class="mb-4">
+            <!-- Contact Actions -->
+            <div class="space-y-3">
+              {#if listing.user_profiles.phone}
                 <a
                   href="tel:{listing.user_profiles.phone}"
-                  class="w-full flex items-center justify-center px-4 py-3 border border-blue-600 text-sm font-medium rounded-md text-blue-600 bg-white hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
+                  class="w-full flex items-center justify-center px-6 py-3 bg-primary text-white rounded-xl font-medium hover:bg-primary-hover transition-colors duration-200 shadow-sm"
                 >
-                  <svg
-                    class="w-4 h-4 mr-2"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-                    ></path>
+                  <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
                   </svg>
-                  Call Agent
+                  Call Now
                 </a>
-              </div>
-            {/if}
+              {/if}
 
-            <div class="bg-gray-50 p-4 rounded-lg">
-              <h3 class="text-sm font-medium text-gray-500 mb-2">
-                Request More Information
-              </h3>
-              <button
-                class="w-full flex items-center justify-center px-4 py-3 border border-transparent text-sm font-medium rounded-md text-white bg-primary focus:outline-none transition-colors duration-200"
-              >
-                <svg
-                  class="w-4 h-4 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+              {#if listing.user_profiles.email}
+                <a
+                  href="mailto:{listing.user_profiles.email}"
+                  class="w-full flex items-center justify-center px-6 py-3 border-2 border-primary text-primary rounded-xl font-medium hover:bg-primary hover:text-white transition-all duration-200"
                 >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                  ></path>
-                </svg>
-                Email Agent
-              </button>
+                  <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                  </svg>
+                  Send Email
+                </a>
+              {/if}
+            </div>
+
+            <!-- Quick Info -->
+            <div class="mt-8 p-4 bg-gray-50 rounded-xl">
+              <h3 class="text-sm font-semibold text-gray-700 mb-3">Quick Information</h3>
+              <div class="space-y-2 text-sm">
+                <div class="flex items-center text-gray-600">
+                  <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                  <span>Response within 24 hours</span>
+                </div>
+                <div class="flex items-center text-gray-600">
+                  <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                  <span>Licensed professional</span>
+                </div>
+                <div class="flex items-center text-gray-600">
+                  <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                  <span>Free consultation</span>
+                </div>
+              </div>
             </div>
           </div>
         {/if}
       </div>
     </div>
   </div>
-</div>
+</main>
+
+<!-- Image Modal -->
+{#if showImageModal && images.length > 0}
+  <div 
+    class="fixed inset-0 z-50 bg-black bg-opacity-90 flex items-center justify-center p-4"
+    on:click={() => showImageModal = false}
+    in:fade={{ duration: 300 }}
+    out:fade={{ duration: 200 }}
+  >
+    <div class="relative max-w-4xl max-h-full">
+      <img
+        src={images[currentImageIndex]}
+        alt={`${listing.project_name} - Image ${currentImageIndex + 1}`}
+        class="max-w-full max-h-full object-contain rounded-lg"
+        on:click|stopPropagation
+      />
+      
+      <!-- Close Button -->
+      <button
+        on:click={() => showImageModal = false}
+        class="absolute top-4 right-4 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition-all duration-200"
+      >
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+
+      <!-- Navigation Arrows -->
+      {#if images.length > 1}
+        <button
+          on:click|stopPropagation={prevImage}
+          class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-70 transition-all duration-200"
+        >
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+        </button>
+        
+        <button
+          on:click|stopPropagation={nextImage}
+          class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-70 transition-all duration-200"
+        >
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </button>
+
+        <!-- Image Counter -->
+        <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 text-white px-4 py-2 rounded-full text-sm">
+          {currentImageIndex + 1} / {images.length}
+        </div>
+      {/if}
+    </div>
+  </div>
+{/if}
+
+<style>
+  .prose {
+    line-height: 1.7;
+  }
+  
+  .prose p {
+    margin-bottom: 1rem;
+  }
+</style>
