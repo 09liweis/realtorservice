@@ -1,4 +1,4 @@
-import { HOST,RESEND_API_KEY } from '$env/static/private';
+import { HOST,RESEND_API_KEY,EMAIL_FROM } from '$env/static/private';
 import { Resend } from 'resend';
 
 // Initialize Resend client with API key from environment variables
@@ -18,7 +18,7 @@ interface EmailOptions {
  */
 export async function sendMail(options: EmailOptions) {
   try {
-    const from = 'Acme <onboarding@resend.dev>'//'info@realtorservice.com';
+    const from = EMAIL_FROM//'info@realtorservice.com';
     const { data, error } = await resend.emails.send({
       from: from,
       to: options.to,
