@@ -101,7 +101,7 @@
       try {
         await sendEmailRequest({
           email: $user?.email,
-          projectName: serviceData.platforms.join(', '),
+          projectName: serviceData.platforms.join(', ') + ' ' + serviceData.posting_frequency,
           projectUrl: `/dashboard/social/${data?.id}`,
           type: 'submission'
         });
