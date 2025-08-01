@@ -1,49 +1,10 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
   import type { VideoService } from '$lib/types/video';
-  import { VIDEO_SERVICE_ADDONS, calculateVideoServicePrice, getServiceTypeInfo } from '$lib/types/video';
-  import Link from '../Link.svelte';
-  import { formatAmount, getStatusStyle } from '$lib/types/constant';
-  import { formatDate } from '$lib/helper';
-  import CardWrapper from "../common/CardWrapper.svelte";
   import VideoServiceCard from './VideoServiceCard.svelte';
 
   export let videoServices: VideoService[] = [];
-  export let loading = false;
-
-  const dispatch = createEventDispatcher();
-
-  function handleEdit(videoService: VideoService) {
-    dispatch('edit', videoService);
-  }
-
-  function handleDelete(videoService: VideoService) {
-    dispatch('delete', videoService);
-  }
-
-  function getAddonInfo(addonType: string) {
-    return VIDEO_SERVICE_ADDONS.find(addon => addon.value === addonType);
-  }
-
-  function getDisplayPrice(videoService: VideoService): string {
-    // If there's a custom price set, use it
-    if (videoService.price && videoService.price > 0) {
-      return formatAmount(videoService.price);
-    }
-
-    // Otherwise calculate from service type and addons
-    const serviceInfo = getServiceTypeInfo(videoService.service_type);
-    if (serviceInfo?.isCustomQuote) {
-      return 'Custom Quote';
-    }
-
-    const pricingInfo = calculateVideoServicePrice(
-      videoService.service_type, 
-      videoService.number_of_videos,
-      videoService.addons || []
-    );
-    return pricingInfo.totalPrice > 0 ? formatAmount(pricingInfo.totalPrice) : 'Quote Pending';
-  }
+  export let loading = false;  
 </script>
 
 <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
