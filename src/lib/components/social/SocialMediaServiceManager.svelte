@@ -184,7 +184,7 @@
 <!-- Delete Confirmation Modal -->
 {#if showDeleteConfirm && serviceToDelete}
   <FormBackdrop handleClose={cancelDelete}>
-    <div class="bg-white rounded-xl shadow-lg max-w-md mx-auto p-6">
+    <div class="bg-white rounded-xl shadow-lg p-6">
       <div class="flex items-center mb-4">
         <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center mr-3">
           <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
