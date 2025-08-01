@@ -7,6 +7,10 @@ export interface VideoService extends Service {
   addons?: string[]; // Array of addon service types
 }
 
+export function getServiceTypeInfo(serviceType: string) {
+  return VIDEO_SERVICE_TYPES.find(type => type.value === serviceType);
+}
+
 export const VIDEO_SERVICE_TYPES = [
   {
     value: 'social_media_short',

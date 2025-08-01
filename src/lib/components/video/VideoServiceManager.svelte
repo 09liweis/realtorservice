@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import type { VideoService } from '$lib/types/video';
-  import { EMPTY_VIDEO_SERVICE } from '$lib/types/video';
+  import { EMPTY_VIDEO_SERVICE, getServiceTypeInfo } from '$lib/types/video';
   import { getUserVideoServices, upsertVideoService, deleteVideoService } from '$lib/supabase';
   import VideoServiceForm from './VideoServiceForm.svelte';
   import VideoServiceList from './VideoServiceList.svelte';
@@ -103,7 +103,7 @@
       try {
         await sendEmailRequest({
           email: $user?.email,
-          projectName: videoServiceData.service_type,
+          projectName: getServiceTypeInfo(videoServiceData.service_type)?.label || videoServiceData.service_type,
           projectUrl: `/dashboard/video/${data?.id}`,
           type: 'submission'
         });

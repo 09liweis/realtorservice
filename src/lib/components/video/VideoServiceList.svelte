@@ -1,7 +1,7 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
   import type { VideoService } from '$lib/types/video';
-  import { VIDEO_SERVICE_TYPES, VIDEO_SERVICE_ADDONS, calculateVideoServicePrice } from '$lib/types/video';
+  import { VIDEO_SERVICE_ADDONS, calculateVideoServicePrice, getServiceTypeInfo } from '$lib/types/video';
   import Link from '../Link.svelte';
   import { formatAmount, getStatusStyle } from '$lib/types/constant';
   import { formatDate } from '$lib/helper';
@@ -18,10 +18,6 @@
 
   function handleDelete(videoService: VideoService) {
     dispatch('delete', videoService);
-  }
-
-  function getServiceTypeInfo(serviceType: string) {
-    return VIDEO_SERVICE_TYPES.find(type => type.value === serviceType);
   }
 
   function getAddonInfo(addonType: string) {
@@ -89,7 +85,7 @@
             <div class="px-4 py-3">
               <div class="flex items-center justify-between">
                 <Link href={`/dashboard/video/${videoService.id}`} className="text-white">
-                  Video Service Request
+                  {getServiceTypeInfo(videoService.service_type)?.label || videoService.service_type}
                 </Link>
                 <div class="text-right">
                   <div class="text-lg font-bold">
@@ -104,15 +100,6 @@
 
             <!-- Service Body -->
             <div class="p-4 space-y-3">
-              <!-- Service Type and Status -->
-              <div class="flex items-center justify-between">
-                <div class="flex-1">
-                  <div class="font-medium text-gray-900 text-sm line-clamp-2">
-                    {getServiceTypeInfo(videoService.service_type)?.label || videoService.service_type}
-                  </div>
-                </div>
-              </div>
-
               <div class="flex items-center justify-between">
                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border capitalize {getStatusStyle(videoService.status)}">
                   {videoService.status}
@@ -149,7 +136,7 @@
                 </div>
                 {#if getServiceTypeInfo(videoService.service_type)}
                   <div class="text-xs text-gray-500 mt-1">
-                    Turnaround: {getServiceTypeInfo(videoService.service_type).turnaround}
+                    Turnaround: {getServiceTypeInfo(videoService.service_type)?.turnaround}
                   </div>
                 {/if}
               </div>
@@ -194,38 +181,6 @@
             </div>
           </CardWrapper>
         {/each}
-      </div>
-    </div>
-
-    <!-- Summary Footer -->
-    <div class="px-6 py-4 bg-gray-50 border-t border-gray-200">
-      <div class="flex items-center justify-between text-sm text-gray-600">
-        <div class="flex items-center space-x-6">
-          <div class="flex items-center space-x-2">
-            <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
-            <span>
-              <span class="font-medium text-gray-900">{videoServices.filter(v => v.status === 'pending').length}</span>
-              Pending
-            </span>
-          </div>
-          <div class="flex items-center space-x-2">
-            <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
-            <span>
-              <span class="font-medium text-gray-900">{videoServices.filter(v => v.status === 'quoted').length}</span>
-              Quoted
-            </span>
-          </div>
-          <div class="flex items-center space-x-2">
-            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
-            <span>
-              <span class="font-medium text-gray-900">{videoServices.filter(v => v.status === 'completed').length}</span>
-              Completed
-            </span>
-          </div>
-        </div>
-        <div>
-          Total: <span class="font-medium text-gray-900">{videoServices.length}</span> requests
-        </div>
       </div>
     </div>
   {/if}
