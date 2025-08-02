@@ -7,9 +7,13 @@
 
 <div class="space-y-3">
 {#each listings as listing (listing.id)}
-  <Link href={`/listings/${listing.id}`} className="flex justify-between items-center p-3 bg-white border border-gray-200 rounded-lg shadow-sm transition-shadow" hoverClass="hover:shadow-md">
-    <span class="font-medium">{listing.address}</span>
-    <span class="text-green-600 font-bold">${listing.asking_price}</span>
+  <Link href={`/listings/${listing.id}`} className="justify-between p-6 bg-white border border-gray-200 rounded-lg shadow hover:shadow-lg transition-shadow">
+    <div class="inline-flex flex-col">
+      <span class="text-blue-500 text-sm font-medium bg-blue-50 px-2 py-1 rounded">{listing.listing_type}</span>
+      <div class="font-medium text-lg mb-2">{listing.address}</div>
+    </div>
+    
+    <span class="text-green-500 font-semibold">${listing.asking_price}</span>
   </Link>
 {/each}
 </div>
