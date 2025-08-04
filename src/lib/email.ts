@@ -139,8 +139,14 @@ export async function sendCustomEmail(
 ) {
   const subject = "Custom Email Notification";
   const html = `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-      <p>${content}</p>
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+      <h2 style="color: #333333; margin-bottom: 20px;">User Notification</h2>
+      <div style="color: #555555; line-height: 1.6;">
+        ${content}
+      </div>
+      <div style="margin-top: 20px; text-align: center; color: #999999; font-size: 0.9em;">
+        This is an automated message. Please do not reply.
+      </div>
     </div>
   `;
 
