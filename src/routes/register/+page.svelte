@@ -193,6 +193,7 @@
           required={true}
           bind:value={reco_number}
         />
+        <p class="text-xs text-gray-500 mt-1">RECO number will be verified.</p>
         </div>
         
         <Input
