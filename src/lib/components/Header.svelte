@@ -11,10 +11,64 @@
 
   // Public navigation items
   const publicNavigation = [
-    { name: "Listings", href: "/listings" },
-    { name: "Services", href: "#services" },
-    { name: "About", href: "/about" },
-    { name: "Mortgage Calculator", href: "/mortgage-calculator" },
+    { name: "About Us", href: "/about" },
+    { 
+      name: "Realtor Services", 
+      href: "/realtor-services",
+      submenu: [
+        { name: "Listing Service", href: "/realtor-services/listing",
+          submenu: [
+            { name: "Painting & Renovating", href: "/realtor-services/listing/painting" },
+            { name: "Cleaning", href: "/realtor-services/listing/cleaning" },
+            { name: "Staging", href: "/realtor-services/listing/staging" },
+            { name: "Photographing & Media Services", href: "/realtor-services/listing/photographing" },
+            { name: "Sign Post Installation", href: "/realtor-services/listing/sign-post" }
+          ]
+        },
+        { name: "Social Media & Branding Service", href: "/realtor-services/social-media",
+          submenu: [
+            { name: "Logo/Business Card/Website Design", href: "/realtor-services/social-media/design" },
+            { name: "Social Media Account Management", href: "/realtor-services/social-media/management" },
+            { name: "Video Editing Service", href: "/realtor-services/social-media/video" }
+          ]
+        }
+      ]
+    },
+    { 
+      name: "Assignment & Coming Soon", 
+      href: "/listings",
+      submenu: [
+        { name: "Assignment Sales Listing", href: "/listings/assignment" },
+        { name: "Coming Soon Listing", href: "/listings/coming-soon" }
+      ]
+    },
+    { 
+      name: "Realtor Tools", 
+      href: "/realtor-tools",
+      submenu: [
+        { name: "Mortgage Calculator", href: "/mortgage-calculator" },
+        { name: "Open House Registration Tool", href: "/realtor-tools/open-house" },
+        { name: "Offer Management Tool", href: "/realtor-tools/offer-management" },
+        { name: "Downloadable Tools", href: "/realtor-tools/downloadable",
+          submenu: [
+            { name: "New Realtor Starter Kit", href: "/realtor-tools/downloadable/starter-kit" },
+            { name: "Buyer Presentation Package", href: "/realtor-tools/downloadable/buyer-package" },
+            { name: "Seller Presentation Package", href: "/realtor-tools/downloadable/seller-package" },
+            { name: "Handbook for Landlord/Buyer/Seller", href: "/realtor-tools/downloadable/handbook" }
+          ]
+        }
+      ]
+    },
+    { 
+      name: "Market Insights", 
+      href: "/market-insights",
+      submenu: [
+        { name: "Bank of Canada Policy Rate", href: "/market-insights/bank-rate" },
+        { name: "Mortgage Rate", href: "/market-insights/mortgage-rate" },
+        { name: "Market Stats Update", href: "/market-insights/market-stats" },
+        { name: "Policy Update", href: "/market-insights/policy-update" }
+      ]
+    }
   ];
 
   // Navigation items for logged-in users
@@ -49,15 +103,53 @@
       <!-- Desktop Navigation -->
       <div class="hidden md:flex items-center space-x-8">
         {#each publicNavigation as item}
-          <Link
-            href={item.href}
-            className="text-gray-600 hover:text-primary px-3 py-2 text-sm font-medium transition-colors duration-200 {$page
-              .url.pathname === item.href
-              ? 'text-primary font-semibold'
-              : ''}"
-          >
-            {item.name}
-          </Link>
+          <div class="relative group">
+            <Link
+              href={item.href}
+              className="text-gray-600 hover:text-primary px-3 py-2 text-sm font-medium transition-colors duration-200 {$page
+                .url.pathname === item.href
+                ? 'text-primary font-semibold'
+                : ''}"
+            >
+              {item.name}
+              {#if item.submenu}
+                <svg class="w-4 h-4 inline-block ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              {/if}
+            </Link>
+            {#if item.submenu}
+              <div class="absolute left-0 mt-2 w-56 bg-white rounded-md shadow-lg py-1 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                {#each item.submenu as subItem}
+                  <div class="relative">
+                    <Link
+                      href={subItem.href}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
+                      {subItem.name}
+                      {#if subItem.submenu}
+                        <svg class="w-4 h-4 float-right" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                      {/if}
+                    </Link>
+                    {#if subItem.submenu}
+                      <div class="absolute left-full top-0 ml-1 w-56 bg-white rounded-md shadow-lg py-1 z-50 opacity-0 invisible hover:opacity-100 hover:visible transition-all duration-200">
+                        {#each subItem.submenu as nestedItem}
+                          <Link
+                            href={nestedItem.href}
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          >
+                            {nestedItem.name}
+                          </Link>
+                        {/each}
+                      </div>
+                    {/if}
+                  </div>
+                {/each}
+              </div>
+            {/if}
+          </div>
         {/each}
       </div>
 
@@ -181,6 +273,45 @@
     {#if mobileMenuOpen}
       <div class="md:hidden">
         <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t">
+          {#each publicNavigation as item}
+            <div class="space-y-1">
+              <Link
+                href={item.href}
+                onclick={() => (mobileMenuOpen = false)}
+                className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50 transition-colors duration-200"
+              >
+                {item.name}
+              </Link>
+              {#if item.submenu}
+                <div class="pl-4 space-y-1">
+                  {#each item.submenu as subItem}
+                    <div class="space-y-1">
+                      <Link
+                        href={subItem.href}
+                        onclick={() => (mobileMenuOpen = false)}
+                        className="block px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 transition-colors duration-200"
+                      >
+                        {subItem.name}
+                      </Link>
+                      {#if subItem.submenu}
+                        <div class="pl-4 space-y-1">
+                          {#each subItem.submenu as nestedItem}
+                            <Link
+                              href={nestedItem.href}
+                              onclick={() => (mobileMenuOpen = false)}
+                              className="block px-3 py-2 rounded-md text-xs font-medium text-gray-500 hover:text-primary hover:bg-gray-50 transition-colors duration-200"
+                            >
+                              {nestedItem.name}
+                            </Link>
+                          {/each}
+                        </div>
+                      {/if}
+                    </div>
+                  {/each}
+                </div>
+              {/if}
+            </div>
+          {/each}
           <!-- Mobile Auth Section -->
           {#if $user}
             <div class="border-t border-gray-200 mt-4 pt-4">
