@@ -4,7 +4,7 @@ import type { PageServerLoad } from './$types';
 export const load: PageServerLoad = async ({ url }) => {
   const page = parseInt(url.searchParams.get('page') || '1');
   const search = url.searchParams.get('search') || '';
-  const type = url.searchParams.get('type') || '';
+  const listing_type = url.searchParams.get('listing_type') || '';
   const location = url.searchParams.get('location') || '';
   const minPrice = url.searchParams.get('minPrice') || '';
   const maxPrice = url.searchParams.get('maxPrice') || '';
@@ -35,9 +35,9 @@ export const load: PageServerLoad = async ({ url }) => {
       );
     }
 
-    if (type) {
+    if (listing_type) {
       filteredListings = filteredListings.filter(listing =>
-        listing.ptype?.toLowerCase() === type.toLowerCase()
+        listing.plisting_type?.toLowerCase() === listing_type.toLowerCase()
       );
     }
 
@@ -96,7 +96,7 @@ export const load: PageServerLoad = async ({ url }) => {
       },
       filters: {
         search,
-        type,
+        listing_type,
         location,
         minPrice,
         maxPrice,

@@ -7,8 +7,10 @@
   export let data;
 
   $: ({ listings, pagination, filters, filterOptions } = data);
+  $: listing_type = $page.url.searchParams.get('listing_type') || '';
 </script>
 
+<h1 class="text-center font-bold text-3xl mt-4">{listing_type || 'All Listings'}</h1>
 <div class="max-w-7xl mx-auto mt-20 grid grid-cols-1 md:grid-cols-2 gap-4">
   <MapboxMap accessToken={PUBLIC_MAPBOX_API_KEY} {listings} />
   <ListingListPublic {listings} />

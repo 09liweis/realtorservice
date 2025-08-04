@@ -38,8 +38,8 @@
       name: "Assignment & Coming Soon", 
       href: "/listings",
       submenu: [
-        { name: "Assignment Sales Listing", href: "/listings/assignment" },
-        { name: "Coming Soon Listing", href: "/listings/coming-soon" }
+        { name: "Assignment Sales Listing", href: "/listings?listing_type=Assignment Sale" },
+        { name: "Coming Soon Listing", href: "/listings?listing_type=Coming Soon" }
       ]
     },
     { 
