@@ -127,3 +127,26 @@ export async function sendProjectSubmitted(
     html: html,
   });
 }
+
+/**
+ * Send custom email with provided content
+ * @param email Recipient email address
+ * @param content Email content (HTML or plain text)
+ */
+export async function sendCustomEmail(
+  email: string,
+  content: string
+) {
+  const subject = "Custom Email Notification";
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+      <p>${content}</p>
+    </div>
+  `;
+
+  return sendMail({
+    to: email,
+    subject: subject,
+    html: html,
+  });
+}
