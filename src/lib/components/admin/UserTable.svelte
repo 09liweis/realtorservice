@@ -5,6 +5,9 @@
 
   let loading = false;
   let updatingUserId: string | null = null;
+  let showModal = false;
+  let currentUser: any = null;
+  let notificationMessage = '';
 
   async function approveRealtor(user: any) {
     try {
@@ -28,6 +31,42 @@
     } finally {
       loading = false;
       updatingUserId = null;
+    }
+  }
+
+  function openNotificationModal(user: any) {
+    currentUser = user;
+    notificationMessage = '';
+    showModal = true;
+  }
+
+  async function sendNotification() {
+    if (!currentUser || !notificationMessage.trim()) return;
+
+    try {
+      loading = true;
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: currentUser.user_id,
+          content: notificationMessage,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send email');
+      }
+
+      alert('Notification sent successfully!');
+      showModal = false;
+    } catch (error) {
+      console.error('Error sending notification:', error);
+      alert('Failed to send notification. Please try again.');
+    } finally {
+      loading = false;
     }
   }
 </script>
@@ -90,7 +129,7 @@
                   <button
                     on:click={() => approveRealtor(user)}
                     disabled={loading && updatingUserId === user.user_id}
-                    class="px-3 py-1 text-xs font-medium rounded-md text-white bg-green-600 hover:bg-green-700 disabled:opacity-50"
+                    class="px-3 py-1 text-xs font-medium rounded-md text-white bg-green-600 hover:bg-green-700 disabled:opacity-50 mr-2"
                   >
                     {#if loading && updatingUserId === user.user_id}
                       Approving...
@@ -99,11 +138,51 @@
                     {/if}
                   </button>
                 {/if}
+                <button
+                  on:click={() => openNotificationModal(user)}
+                  disabled={loading && updatingUserId === user.user_id}
+                  class="px-3 py-1 text-xs font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50"
+                >
+                  Notify
+                </button>
               </td>
             </tr>
           {/each}
         </tbody>
       </table>
+    </div>
+  {/if}
+
+  {#if showModal}
+    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div class="bg-white rounded-lg p-6 w-full max-w-md">
+        <h3 class="text-lg font-medium mb-4">Notify User</h3>
+        <textarea
+          bind:value={notificationMessage}
+          class="w-full p-2 border border-gray-300 rounded mb-4"
+          rows="5"
+          placeholder="Enter your notification message..."
+        ></textarea>
+        <div class="flex justify-end space-x-2">
+          <button
+            on:click={() => showModal = false}
+            class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md"
+          >
+            Cancel
+          </button>
+          <button
+            on:click={sendNotification}
+            disabled={loading}
+            class="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md disabled:opacity-50"
+          >
+            {#if loading}
+              Sending...
+            {:else}
+              Send Notification
+            {/if}
+          </button>
+        </div>
+      </div>
     </div>
   {/if}
 </div>
