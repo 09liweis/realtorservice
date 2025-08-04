@@ -104,7 +104,6 @@
 <nav class="h-full bg-white border-r border-gray-200 flex flex-col w-full md:w-64 overflow-hidden">
   <!-- Logo and Brand -->
   <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-    <Logo />
     <!-- Close button for mobile -->
     <button 
       class="md:hidden text-gray-500 hover:text-gray-700 transition-transform duration-300 ease-in-out hover:rotate-90"
