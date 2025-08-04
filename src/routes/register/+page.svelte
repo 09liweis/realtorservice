@@ -16,6 +16,7 @@
 
   // Form data
   let firstName = '';
+  let middleName = '';
   let lastName = '';
   let email = '';
   let brokerage = '';
@@ -57,6 +58,7 @@
           .insert({
             first_name: firstName,
             last_name: lastName,
+            middle_name: middleName,
             email,
             phone,
             reco_number,
@@ -125,6 +127,16 @@
             placeholder="First Name"
             required={true}
             bind:value={firstName}
+          />
+          
+          <Input
+            id="middle-name"
+            name="middle-name"
+            type="text"
+            label="Middle Name (Optional)"
+            placeholder="Middle Name"
+            required={false}
+            bind:value={middleName}
           />
           
           <Input
