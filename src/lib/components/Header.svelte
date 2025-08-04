@@ -4,7 +4,7 @@
   import { goto } from "$app/navigation";
   import { derived } from "svelte/store";
   import Link from "$lib/components/Link.svelte";
-    import Logo from "./Logo.svelte";
+  import Logo from "./Logo.svelte";
 
   let mobileMenuOpen = $state(false);
   let userMenuOpen = $state(false);
@@ -121,7 +121,7 @@
             {#if item.submenu}
               <div class="absolute left-0 mt-2 w-56 bg-white rounded-md shadow-lg py-1 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
                 {#each item.submenu as subItem}
-                  <div class="relative">
+                  <div class="relative group">
                     <Link
                       href={subItem.href}
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -134,7 +134,7 @@
                       {/if}
                     </Link>
                     {#if subItem.submenu}
-                      <div class="absolute left-full top-0 ml-1 w-56 bg-white rounded-md shadow-lg py-1 z-50 opacity-0 invisible hover:opacity-100 hover:visible transition-all duration-200">
+                      <div class="absolute left-full top-0 ml-1 w-56 bg-white rounded-md shadow-lg py-1 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
                         {#each subItem.submenu as nestedItem}
                           <Link
                             href={nestedItem.href}
@@ -209,147 +209,147 @@
                     class="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50"
                   >
                     <svg
-                      class="w-4 h-4 mr-3"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
+                    class="w-4 h-4 mr-3"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                    />
+                  </svg>
+                  Sign Out
+                </button>
+              </div>
+            </div>
+          {/if}
+        </div>
+      {:else}
+        <!-- Login/Register Buttons -->
+        <div class="flex items-center space-x-3">
+          <Link
+            href="/login"
+            className="text-gray-600 hover:text-primary px-3 py-2 text-sm font-medium transition-colors duration-200"
+          >
+            Login
+          </Link>
+          <Link
+            href="/register"
+            className="border text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+          >
+            Register
+          </Link>
+        </div>
+      {/if}
+    </div>
+
+    <!-- Mobile menu button -->
+    <div class="md:hidden">
+      <button
+        onclick={() => (mobileMenuOpen = !mobileMenuOpen)}
+        class="text-gray-700 hover:text-blue-600 focus:outline-none focus:text-blue-600"
+      >
+        <svg
+          class="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h16"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Navigation -->
+  {#if mobileMenuOpen}
+    <div class="md:hidden">
+      <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t">
+        {#each publicNavigation as item}
+          <div class="space-y-1">
+            <Link
+              href={item.href}
+              onclick={() => (mobileMenuOpen = false)}
+              className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50 transition-colors duration-200"
+            >
+              {item.name}
+            </Link>
+            {#if item.submenu}
+              <div class="pl-4 space-y-1">
+                {#each item.submenu as subItem}
+                  <div class="space-y-1">
+                    <Link
+                      href={subItem.href}
+                      onclick={() => (mobileMenuOpen = false)}
+                      className="block px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 transition-colors duration-200"
                     >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-                      />
-                    </svg>
-                    Sign Out
-                  </button>
-                </div>
+                      {subItem.name}
+                    </Link>
+                    {#if subItem.submenu}
+                      <div class="pl-4 space-y-1">
+                        {#each subItem.submenu as nestedItem}
+                          <Link
+                            href={nestedItem.href}
+                            onclick={() => (mobileMenuOpen = false)}
+                            className="block px-3 py-2 rounded-md text-xs font-medium text-gray-500 hover:text-primary hover:bg-gray-50 transition-colors duration-200"
+                          >
+                            {nestedItem.name}
+                          </Link>
+                        {/each}
+                      </div>
+                    {/if}
+                  </div>
+                {/each}
               </div>
             {/if}
           </div>
+        {/each}
+        <!-- Mobile Auth Section -->
+        {#if $user}
+          <div class="border-t border-gray-200 mt-4 pt-4">
+            <div class="px-3 py-2 text-sm text-gray-500">
+              {$user.email}
+            </div>
+            <button
+              onclick={() => {
+                handleSignOut();
+                mobileMenuOpen = false;
+              }}
+              class="text-red-600 hover:text-red-800 block w-full text-left px-3 py-2 rounded-md text-base font-medium"
+            >
+              Sign Out
+            </button>
+          </div>
         {:else}
-          <!-- Login/Register Buttons -->
-          <div class="flex items-center space-x-3">
+          <div class="border-t border-gray-200 mt-4 pt-4 space-y-2">
             <Link
               href="/login"
-              className="text-gray-600 hover:text-primary px-3 py-2 text-sm font-medium transition-colors duration-200"
+              onclick={() => (mobileMenuOpen = false)}
+              className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50 transition-colors duration-200"
             >
               Login
             </Link>
             <Link
               href="/register"
-              className="border text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+              onclick={() => (mobileMenuOpen = false)}
+              className="block px-3 py-2 rounded-md text-base font-medium bg-primary text-white hover:bg-primary-hover transition-colors duration-200"
             >
               Register
             </Link>
           </div>
         {/if}
       </div>
-
-      <!-- Mobile menu button -->
-      <div class="md:hidden">
-        <button
-          onclick={() => (mobileMenuOpen = !mobileMenuOpen)}
-          class="text-gray-700 hover:text-blue-600 focus:outline-none focus:text-blue-600"
-        >
-          <svg
-            class="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M4 6h16M4 12h16M4 18h16"
-            />
-          </svg>
-        </button>
-      </div>
     </div>
-
-    <!-- Mobile Navigation -->
-    {#if mobileMenuOpen}
-      <div class="md:hidden">
-        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t">
-          {#each publicNavigation as item}
-            <div class="space-y-1">
-              <Link
-                href={item.href}
-                onclick={() => (mobileMenuOpen = false)}
-                className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50 transition-colors duration-200"
-              >
-                {item.name}
-              </Link>
-              {#if item.submenu}
-                <div class="pl-4 space-y-1">
-                  {#each item.submenu as subItem}
-                    <div class="space-y-1">
-                      <Link
-                        href={subItem.href}
-                        onclick={() => (mobileMenuOpen = false)}
-                        className="block px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 transition-colors duration-200"
-                      >
-                        {subItem.name}
-                      </Link>
-                      {#if subItem.submenu}
-                        <div class="pl-4 space-y-1">
-                          {#each subItem.submenu as nestedItem}
-                            <Link
-                              href={nestedItem.href}
-                              onclick={() => (mobileMenuOpen = false)}
-                              className="block px-3 py-2 rounded-md text-xs font-medium text-gray-500 hover:text-primary hover:bg-gray-50 transition-colors duration-200"
-                            >
-                              {nestedItem.name}
-                            </Link>
-                          {/each}
-                        </div>
-                      {/if}
-                    </div>
-                  {/each}
-                </div>
-              {/if}
-            </div>
-          {/each}
-          <!-- Mobile Auth Section -->
-          {#if $user}
-            <div class="border-t border-gray-200 mt-4 pt-4">
-              <div class="px-3 py-2 text-sm text-gray-500">
-                {$user.email}
-              </div>
-              <button
-                onclick={() => {
-                  handleSignOut();
-                  mobileMenuOpen = false;
-                }}
-                class="text-red-600 hover:text-red-800 block w-full text-left px-3 py-2 rounded-md text-base font-medium"
-              >
-                Sign Out
-              </button>
-            </div>
-          {:else}
-            <div class="border-t border-gray-200 mt-4 pt-4 space-y-2">
-              <Link
-                href="/login"
-                onclick={() => (mobileMenuOpen = false)}
-                className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50 transition-colors duration-200"
-              >
-                Login
-              </Link>
-              <Link
-                href="/register"
-                onclick={() => (mobileMenuOpen = false)}
-                className="block px-3 py-2 rounded-md text-base font-medium bg-primary text-white hover:bg-primary-hover transition-colors duration-200"
-              >
-                Register
-              </Link>
-            </div>
-          {/if}
-        </div>
-      </div>
-    {/if}
-  </nav>
+  {/if}
+</nav>
 </header>
 
 <!-- Click outside handler for user menu -->
