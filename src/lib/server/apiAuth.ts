@@ -7,9 +7,15 @@ export async function checkAuth(request:Request) {
   try {
     const {access_token,user} = JSON.parse(authorization);
     if (user?.id) {
-      const {data,error} = await supabase.from('user_profiles').select('*').eq('user_id',user.id).single();
-      if (data) {
-        userProfile = {...data,isAdmin:data.role === 'admin'}
+      const {data:profile,error} = await supabase.from('user_profiles').select('*').eq('user_id',user.id).single();
+      if (profile) {
+        userProfile = {
+          ...profile,
+          isAdmin: profile?.role === 'admin',
+          isApproved: profile?.realtor_approved,
+          name: `${profile.first_name} ${profile.last_name}`,
+          initial: `${profile.first_name[0]}`,
+        }
       }
     }
     return userProfile;

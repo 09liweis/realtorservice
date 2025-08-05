@@ -6,13 +6,13 @@
     StagingForm,
   } from "$lib/components/stagings";
   import Button from "$lib/components/common/Button.svelte";
-  import FormBackdrop from "$lib/components/form/FormBackdrop.svelte";
   import { EMPTY_STAGING, type Staging } from "$lib/types/staging";
   import { getStagings, upsertStaging, deleteStaging, getAllStagings } from "$lib/supabase";
   import { user } from "$lib/stores/auth";
   import Add from "../icons/Add.svelte";
   import { sendEmailRequest } from "$lib/http";
     import { sendRequest } from "$lib/helper";
+    import { onMount } from "svelte";
 
   // Props
   let user_id: string|undefined;
@@ -32,9 +32,12 @@
   let typeFilter = "All";
   let sortBy = "newest";
 
+  onMount(()=> {
+    fetchStagings();
+  })
+
   // 获取数据
   export const fetchStagings = async () => {
-    if (!user_id) return;
     loading = true;
     const {data:{stagings, error},response} = await sendRequest({
       url:'/api/stagings',
@@ -46,12 +49,6 @@
     filteredRequests = stagings;
     loading = false;
   };
-
-  // 组件挂载时获取数据
-  $: {
-    user_id = $user?.id;
-    fetchStagings();
-  }
 
   // 应用过滤器
   function applyFilters() {}
