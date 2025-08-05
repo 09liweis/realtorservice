@@ -1,5 +1,6 @@
 <script lang="ts">
   import { updateUserProfile } from '$lib/supabase';
+import { sendRequest } from '$lib/helper';
 
   export let users: any[];
 
@@ -45,15 +46,13 @@
 
     try {
       loading = true;
-      const response = await fetch('/api/send-email', {
+      const { response } = await sendRequest({
+        url: '/api/send-email',
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+        body: {
           user_id: currentUser.user_id,
           content: notificationMessage,
-        }),
+        },
       });
 
       if (!response.ok) {
