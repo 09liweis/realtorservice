@@ -8,6 +8,8 @@
   import ListingList from '$lib/components/listings/ListingList.svelte';
     import Button from '$lib/components/common/Button.svelte';
     import Add from '$lib/components/icons/Add.svelte';
+    import { onMount } from 'svelte';
+    import { sendRequest } from '$lib/helper';
 
   let showForm = false;
 
@@ -41,13 +43,15 @@
   let isEditing = false;
   let user_id;
 
-  $: {
-    user_id = $user?.id;
+  onMount(()=> {
     loadListings();
-  }
+  })
 
   async function loadListings() {
-    const { data, error } = await getListings({ user_id });
+    const {data:{listings:data,error}} = await sendRequest({
+      url: '/api/listings',
+      method: "GET"
+    })
     if (!error) listings = data;
   }
 
