@@ -9,6 +9,7 @@
   import FormBackdrop from '$lib/components/form/FormBackdrop.svelte';
     import { user } from '$lib/stores/auth';
   import { sendEmailRequest } from '$lib/http';
+    import { sendRequest } from '$lib/helper';
 
   export let userId: string = $user?.id || '';
 
@@ -34,9 +35,12 @@
     try {
       loading = true;
       error = null;
-      const { data, error: fetchError } = await getUserSocialMediaServices({user_id:userId,isAdmin});
+      const { data: {error: fetchError, social_media_services} } = await sendRequest({
+        url: '/api/socials',
+        method: 'GET'
+      });
       if (fetchError) throw fetchError;
-      socialMediaServices = data || [];
+      socialMediaServices = social_media_services || [];
     } catch (err) {
       error = err instanceof Error ? err.message : 'Failed to load social media services';
       console.error('Error loading social media services:', err);
