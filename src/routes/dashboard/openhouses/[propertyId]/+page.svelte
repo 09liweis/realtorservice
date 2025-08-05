@@ -8,6 +8,8 @@
   import { user } from '$lib/stores/auth';
   import { getOpenHouseGuests, upsertOpenHouseGuest } from '$lib/supabase';
     import { getPageTitle } from '$lib/types/constant';
+    import { onMount } from 'svelte';
+    import { sendRequest } from '$lib/helper';
   
   const property_id = $page.params.propertyId;
 
@@ -22,17 +24,17 @@
 
   let user_id;
 
-  $: {
-    user_id = $user?.id;
+  onMount(()=> {
     fetchGuests();
-  }
+  })
 
   const fetchGuests = async ()=> {
-    if (user_id) {
-      const {data, error} = await getOpenHouseGuests({user_id, property_id});
-      if (error) throw error;
-      guests = data;
-    }
+    const {data: {openhouse_guests,error}} = await sendRequest({
+      url: `/api/openhouses/${property_id}`,
+      method: 'GET'
+    });
+    if (error) throw error;
+    guests = openhouse_guests;
   }
 	// 模拟数据 - 在实际应用中，这些数据会从API获取
 	let guests = [];
