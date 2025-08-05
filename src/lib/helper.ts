@@ -1,9 +1,9 @@
 interface sendRequestType {
   url:string
   method:string
-  body:any
+  body?:any
 }
-export const sendRequest = async ({url, body, method = 'POST'}:sendRequestType) => {
+export const sendRequest = async ({url, body = {}, method = 'POST'}:sendRequestType) => {
   const response = await fetch(url, {
     method,
     headers: {
