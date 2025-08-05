@@ -1,6 +1,7 @@
 import { writable } from 'svelte/store';
 import { browser } from '$app/environment';
 import supabase from '$lib/db/client';
+import type { Listing } from '$lib/types/listing';
 
 interface User {
   id: string;
@@ -15,6 +16,8 @@ interface User {
 // 创建用户存储
 export const user = writable<User | null>(null);
 export const isLoading = writable(true);
+
+export const listings = writable<Listing[]>([]);
 
 // 获取用户资料
 async function fetchUserProfile(userId: string) {
