@@ -41,31 +41,31 @@
         { name: "Coming Soon Listing", href: "/listings?listing_type=Coming Soon" }
       ]
     },
-    { 
-      name: "Realtor Tools", 
-      submenu: [
-        { name: "Mortgage Calculator", href: "/mortgage-calculator" },
-        { name: "Open House Registration Tool", href: "/realtor-tools/open-house" },
-        { name: "Offer Management Tool", href: "/realtor-tools/offer-management" },
-        { name: "Downloadable Tools", href: "/realtor-tools/downloadable",
-          submenu: [
-            { name: "New Realtor Starter Kit", href: "/realtor-tools/downloadable/starter-kit" },
-            { name: "Buyer Presentation Package", href: "/realtor-tools/downloadable/buyer-package" },
-            { name: "Seller Presentation Package", href: "/realtor-tools/downloadable/seller-package" },
-            { name: "Handbook for Landlord/Buyer/Seller", href: "/realtor-tools/downloadable/handbook" }
-          ]
-        }
-      ]
-    },
-    { 
-      name: "Market Insights", 
-      submenu: [
-        { name: "Bank of Canada Policy Rate", href: "/market-insights/bank-rate" },
-        { name: "Mortgage Rate", href: "/market-insights/mortgage-rate" },
-        { name: "Market Stats Update", href: "/market-insights/market-stats" },
-        { name: "Policy Update", href: "/market-insights/policy-update" }
-      ]
-    }
+    // { 
+    //   name: "Realtor Tools", 
+    //   submenu: [
+    //     { name: "Mortgage Calculator", href: "/mortgage-calculator" },
+    //     { name: "Open House Registration Tool", href: "/realtor-tools/open-house" },
+    //     { name: "Offer Management Tool", href: "/realtor-tools/offer-management" },
+    //     { name: "Downloadable Tools", href: "/realtor-tools/downloadable",
+    //       submenu: [
+    //         { name: "New Realtor Starter Kit", href: "/realtor-tools/downloadable/starter-kit" },
+    //         { name: "Buyer Presentation Package", href: "/realtor-tools/downloadable/buyer-package" },
+    //         { name: "Seller Presentation Package", href: "/realtor-tools/downloadable/seller-package" },
+    //         { name: "Handbook for Landlord/Buyer/Seller", href: "/realtor-tools/downloadable/handbook" }
+    //       ]
+    //     }
+    //   ]
+    // },
+    // { 
+    //   name: "Market Insights", 
+    //   submenu: [
+    //     { name: "Bank of Canada Policy Rate", href: "/market-insights/bank-rate" },
+    //     { name: "Mortgage Rate", href: "/market-insights/mortgage-rate" },
+    //     { name: "Market Stats Update", href: "/market-insights/market-stats" },
+    //     { name: "Policy Update", href: "/market-insights/policy-update" }
+    //   ]
+    // }
   ];
 
   // Navigation items for logged-in users
