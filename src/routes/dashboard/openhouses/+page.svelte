@@ -9,17 +9,19 @@
   import { getPageTitle } from '$lib/types/constant';
   import type { OpenHouse } from '$lib/types/openhouse';
   import { onMount } from 'svelte';
+    import { sendRequest } from '$lib/helper';
   
   let user_id;
   	
-  $: {
-    user_id = $user?.id;
+  onMount(()=> {
     fetchOHs();
-  }
+  })
 
   async function fetchOHs() {
-    if (!user_id) return;
-    const {data,error} = await getOpenHouses({user_id});
+    const {data:{openhouses:data,error}} = await sendRequest({
+      url: '/api/openhouses',
+      method: 'GET'
+    })
     if (!error) openHouses = data;
   }
 
