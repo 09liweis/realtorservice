@@ -9,6 +9,8 @@
   import { getCleanings, upsertCleaning, deleteCleaning, getAllCleanings } from "$lib/supabase";
   import { user } from "$lib/stores/auth";
   import { sendEmailRequest } from "$lib/http";
+    import { onMount } from "svelte";
+    import { sendRequest } from "$lib/helper";
 
   // Props
   let user_id: string;
@@ -21,25 +23,21 @@
   let isEditMode = false;
   let filteredRequests: Cleaning[] = [];
 
+  onMount(()=> {
+    fetchCleanings();
+  })
+
   // Get data
   export const fetchCleanings = async () => {
-    if (!user_id) return;
     loading = true;
-    if ($user?.isAdmin) {
-      const { data, error: fetchError } = await getAllCleanings();
-      if (!fetchError) filteredRequests = data;
-    } else {
-      const { data, error: fetchError } = await getCleanings({ user_id });
-      if (!fetchError) filteredRequests = data;
-    }
+    const {data:{cleanings,error:fetchError}} = await sendRequest({
+      url: '/api/cleanings',
+      method: 'GET'
+    })
+    if (!fetchError) filteredRequests = cleanings;
     loading = false;
   };
 
-  // Component mount data fetch
-  $: {
-    user_id = $user?.id;
-    fetchCleanings();
-  }
   // Edit request
   function editRequest(request: Cleaning) {
     currentRequest = { ...request };
