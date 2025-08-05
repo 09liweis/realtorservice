@@ -12,7 +12,6 @@ export async function checkAuth(request:Request) {
         userProfile = {...data,isAdmin:data.role === 'admin'}
       }
     }
-    console.log(userProfile);
     return userProfile;
   } catch (err) {
     console.error("Parse error ", err)

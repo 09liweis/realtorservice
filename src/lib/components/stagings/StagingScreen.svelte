@@ -12,6 +12,7 @@
   import { user } from "$lib/stores/auth";
   import Add from "../icons/Add.svelte";
   import { sendEmailRequest } from "$lib/http";
+    import { sendRequest } from "$lib/helper";
 
   // Props
   let user_id: string|undefined;
@@ -35,13 +36,14 @@
   export const fetchStagings = async () => {
     if (!user_id) return;
     loading = true;
-    if ($user?.isAdmin) {
-      const { data, error: fetchError } = await getAllStagings();
-      if (!fetchError) filteredRequests = data;
-    } else {
-      const { data, error: fetchError } = await getStagings({ user_id });
-      if (!fetchError) filteredRequests = data;
+    const {data:{stagings, error},response} = await sendRequest({
+      url:'/api/stagings',
+      method: 'GET'
+    });
+    if (error) {
+      throw error;
     }
+    filteredRequests = stagings;
     loading = false;
   };
 
