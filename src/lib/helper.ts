@@ -3,14 +3,17 @@ interface sendRequestType {
   method:string
   body?:any
 }
-export const sendRequest = async ({url, body = {}, method = 'POST'}:sendRequestType) => {
-  const response = await fetch(url, {
+export const sendRequest = async ({url, body, method = 'POST'}:sendRequestType) => {
+  const options:{[key:string]:any} = {
     method,
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(body),
-  });
+  }
+  if (body) {
+    options.body = JSON.stringify(body)
+  }
+  const response = await fetch(url, options);
   const data = await response.json();
   return {response, data};
 }
