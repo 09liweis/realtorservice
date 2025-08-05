@@ -14,7 +14,7 @@
   import { sendEmailRequest } from "$lib/http";
 
   // Props
-  let user_id: string;
+  let user_id: string|undefined;
 
   // 状态变量
   let loading = false;
