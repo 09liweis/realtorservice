@@ -5,26 +5,23 @@ import { checkAuth } from "$lib/server/apiAuth";
 
 export const GET: RequestHandler = async ({ request }) => {
   try {
-    
-    const authUser = checkAuth(request);
-    const user_id = authUser?.id;
+    const authUser = await checkAuth(request);
+    const user_id = authUser?.user_id || authUser?.id;
+    const isAdmin = authUser.isAdmin;
     if (!user_id) {
       return json({stats: 401, error: 'Unauthorized'});
     }
 
     // Fetch user email from Supabase
-    const { data, error } = await supabase
-      .from('stagings')
-      .select(`
-        *
-      `)
-      .eq('user_id',user_id)
-      .order('updated_at', { ascending: false })
-      ;
+    let query = supabase.from('stagings').select('*').order('updated_at',{ascending:false});
+    if (!isAdmin) {
+      query = query.eq('user_id',user_id)
+    }
+    const { data, error } = await query;
 
     if (error) {
       return json(
-        { error: "Failed to fetch user email from Supabase" },
+        { error: "Failed to fetch user staging from Supabase" },
         { status: 500 }
       );
     }
