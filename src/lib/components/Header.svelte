@@ -14,7 +14,6 @@
     { name: "About Us", href: "/about" },
     { 
       name: "Realtor Services", 
-      href: "/realtor-services",
       submenu: [
         { name: "Listing Service", href: "/realtor-services/listing",
           submenu: [
@@ -44,7 +43,6 @@
     },
     { 
       name: "Realtor Tools", 
-      href: "/realtor-tools",
       submenu: [
         { name: "Mortgage Calculator", href: "/mortgage-calculator" },
         { name: "Open House Registration Tool", href: "/realtor-tools/open-house" },
@@ -61,7 +59,6 @@
     },
     { 
       name: "Market Insights", 
-      href: "/market-insights",
       submenu: [
         { name: "Bank of Canada Policy Rate", href: "/market-insights/bank-rate" },
         { name: "Mortgage Rate", href: "/market-insights/mortgage-rate" },
