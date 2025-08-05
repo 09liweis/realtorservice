@@ -8,6 +8,7 @@ export const sendRequest = async ({url, body, method = 'POST'}:sendRequestType) 
     method,
     headers: {
       'Content-Type': 'application/json',
+      'Authorization': localStorage.getItem('sb-tpnoaousxfcvtbzqdcog-auth-token')
     },
   }
   if (body) {
