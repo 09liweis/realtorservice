@@ -1,6 +1,6 @@
 interface sendRequestType {
   url:string
-  method:string
+  method?:string
   body?:any
 }
 export const sendRequest = async ({url, body, method = 'POST'}:sendRequestType) => {

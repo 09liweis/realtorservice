@@ -52,13 +52,17 @@
       alert('Your account is not yet approved. Please contact admin to get approval.');
       return;
     }
-    await upsertOpenHouse({
-      user_id,
-      ...newOpenHouse
-    });
-    fetchOHs();
-    resetForm();
-    showAddForm = false;
+    const {data:{openhouse, error}} = await sendRequest({
+      url: '/api/openhouses',
+      body: {
+        ...newOpenHouse
+      }
+    })
+    if (!error) {
+      fetchOHs();
+      resetForm();
+      showAddForm = false;
+    }
   }
 
   // 开始编辑开放看房
