@@ -46,7 +46,7 @@
   <div class="px-4 py-3">
     <div class="flex items-center justify-between">
       <div class="text-lg font-bold">
-        <Link href="/dashboard/social/{service.id}">
+        <Link href="/dashboard/social_media_services/{service.id}">
           Social Media Service
         </Link>
       </div>

@@ -25,6 +25,13 @@ export const POST: RequestHandler = async ({ request }) => {
     if (error) {
       return json({error},{status:500});
     }
+
+    const PROJECT_NAMES:{[key:string]:string} = {
+      social_media_services: service.platforms.join(', ') + ' ' + service.posting_frequency,
+      video_services: service?.location || `Project ${service.id?.slice(-8)}`,
+      stagings: '',
+      cleanings: '',
+    }
     
     if (!service) {
       return json({error: 'Service not found'},{status:404});
@@ -33,7 +40,7 @@ export const POST: RequestHandler = async ({ request }) => {
     const {data:user, error:userError} = await supabase.from('user_profiles').select('email').eq('user_id',service.user_id).single();
     const email = user?.email;
     const projectUrl = `/dashboard/${tp}/${service.Id}`;
-    const projectName = service?.location || `Project ${service.id?.slice(-8)}`;
+    const projectName = PROJECT_NAMES[tp];
     const newStatus = service.status;
 
     if (type === "submission") {

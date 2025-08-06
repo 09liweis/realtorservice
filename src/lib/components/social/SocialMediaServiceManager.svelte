@@ -7,7 +7,6 @@
   import Button from '$lib/components/common/Button.svelte';
   import FormBackdrop from '$lib/components/form/FormBackdrop.svelte';
     import { user } from '$lib/stores/auth';
-  import { sendEmailRequest } from '$lib/http';
     import { sendRequest } from '$lib/helper';
 
   export let userId: string = $user?.id || '';
@@ -117,11 +116,14 @@
       if (saveError) throw saveError;
 
       try {
-        await sendEmailRequest({
-          email: $user?.email,
-          projectName: serviceData.platforms.join(', ') + ' ' + serviceData.posting_frequency,
-          projectUrl: `/dashboard/social/${social_media_service?.id}`,
-          type: 'submission'
+        const {response} = await sendRequest({
+          url: '/api/send-status-email',
+          body: {
+            tp: 'social_media_services',
+            id: serviceData.id,
+            projectName: serviceData.platforms.join(', ') + ' ' + serviceData.posting_frequency,
+            type: 'submission'
+          }
         });
       } catch (emailError) {
         console.error('Email notification error:', emailError);

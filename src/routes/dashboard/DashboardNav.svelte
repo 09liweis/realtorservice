@@ -25,7 +25,7 @@
     },
     {
       name: "Social Media",
-      href: "/dashboard/social",
+      href: "/dashboard/social_media_services",
       icon: "🌐",
       description: "Manage Social Links",
     },
