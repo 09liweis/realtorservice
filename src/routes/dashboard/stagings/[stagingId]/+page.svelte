@@ -12,7 +12,7 @@
   import Link from '$lib/components/Link.svelte';
   import StagingCleaningHeader from '$lib/components/common/StagingCleaningHeader.svelte';
     import Timeline from '$lib/components/common/Timeline.svelte';
-    import { formatDate } from '$lib/helper';
+    import { formatDate, sendRequest } from '$lib/helper';
   import { user } from '$lib/stores/auth';
 
   const stagingId = $page.params.stagingId;
@@ -30,7 +30,10 @@
       loading = true;
       error = null;
       
-      const { data, error: fetchError } = await getStaging({ property_id: stagingId });
+      const { data: {error: fetchError, staging:data} } = await sendRequest({
+        url: `/api/stagings/${stagingId}`,
+        method: 'GET'
+      });
       
       if (fetchError) {
         throw fetchError;
@@ -42,16 +45,6 @@
       }
       
       staging = data;
-
-      const updateReadStaging:Staging = {
-        ...staging
-      };
-      if ($user?.isAdmin) {
-        updateReadStaging.is_admin_unread = false;
-      } else {
-        updateReadStaging.is_user_unread = false;
-      }
-      await upsertStaging(updateReadStaging)
 
     } catch (err) {
       console.error('Error loading staging:', err);
