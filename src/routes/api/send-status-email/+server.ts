@@ -28,9 +28,9 @@ export const POST: RequestHandler = async ({ request }) => {
 
     const PROJECT_NAMES:{[key:string]:string} = {
       social_media_services: service?.platforms?.join(', ') + ' ' + service?.posting_frequency,
-      video_services: service?.location || `Project ${service.id?.slice(-8)}`,
-      stagings: '',
-      cleanings: '',
+      video_services: `Project ${service.id?.slice(-8)}`,
+      stagings: service?.location,
+      cleanings: service?.location,
     }
     
     if (!service) {
