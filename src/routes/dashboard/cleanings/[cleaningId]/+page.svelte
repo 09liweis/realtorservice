@@ -13,6 +13,7 @@
     import Timeline from '$lib/components/common/Timeline.svelte';
     import Link from '$lib/components/Link.svelte';
   import { user } from '$lib/stores/auth';
+    import { sendRequest } from '$lib/helper';
 
 
   const cleaningId = $page.params.cleaningId;
@@ -30,7 +31,10 @@
       loading = true;
       error = null;
       
-      const { data, error: fetchError } = await getCleaning({ property_id: cleaningId });
+      const { data: {error: fetchError,cleaning:data} } = await sendRequest({
+        url: `/api/cleanings/${cleaningId}`,
+        method: 'GET'
+      });
       
       if (fetchError) {
         throw fetchError;
@@ -42,15 +46,6 @@
       }
       
       cleaning = data;
-      const updateReadCleaning:Cleaning = {
-        ...cleaning
-      };
-      if ($user?.isAdmin) {
-        updateReadCleaning.is_admin_unread = false;
-      } else {
-        updateReadCleaning.is_user_unread = false;
-      }
-      await upsertCleaning(updateReadCleaning)
     } catch (err) {
       console.error('Error loading cleaning:', err);
       error = err instanceof Error ? err.message : 'Failed to load cleaning details';
