@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { getUserProfiles } from '$lib/supabase';
   import UserTable from '$lib/components/admin/UserTable.svelte';
   import StagingScreen from '$lib/components/stagings/StagingScreen.svelte';
   import CouponManager from '$lib/components/admin/CouponManager.svelte';
   import CleaningScreen from '$lib/components/cleanings/CleaningScreen.svelte';
   import VideoServiceManager from '$lib/components/video/VideoServiceManager.svelte';
   import SocialMediaServiceManager from '$lib/components/social/SocialMediaServiceManager.svelte';
+    import { sendRequest } from '$lib/helper';
 
   // Tab management
   type Tab = 'users' | 'stagings' | 'coupons' | 'cleanings' | 'videos' | 'social';
@@ -56,9 +56,12 @@
   const loadAdminData = async () => {
     try {
       loading = true;
-      const { data, error: supabaseError } = await getUserProfiles();
-      if (supabaseError) throw supabaseError;
-      users = data || [];
+      const {data} = await sendRequest({
+        url: '/api/dashboard/users',
+        method: 'GET'
+      })
+      if (data.error) throw data.error;
+      users = data.users || [];
 
     } catch (err) {
       error = err instanceof Error ? err.message : 'Failed to load admin data';
