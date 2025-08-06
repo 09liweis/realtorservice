@@ -106,11 +106,18 @@
   async function handleDeleteOpenHouse() {
     if (!deleteOpenHouseId) return;
     
-    await deleteOpenhouse(deleteOpenHouseId);
-    fetchOHs();
-    showDeleteConfirm = false;
-    deleteOpenHouseId = '';
-    deleteOpenHouseAddress = '';
+    const {data:{error}} = await sendRequest({
+      url: `/api/openhouses/${deleteOpenHouseId}`,
+      method: 'DELETE'
+    });
+    if (error) {
+      throw error;
+    } else {
+      fetchOHs();
+      showDeleteConfirm = false;
+      deleteOpenHouseId = '';
+      deleteOpenHouseAddress = '';
+    }
   }
 
   // 重置表单

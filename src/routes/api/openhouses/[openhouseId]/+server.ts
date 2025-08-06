@@ -105,7 +105,7 @@ export const DELETE: RequestHandler = async ({ request,params }) => {
     .eq("user_id",user_id)
     .eq("property_id", openhouseId);
 
-    await supabase.from('openhouses').delete().eq("user_id", user_id);
+    await supabase.from('openhouses').delete().eq("user_id", user_id).eq("id",openhouseId);
 
     if (error) {
       return json(
