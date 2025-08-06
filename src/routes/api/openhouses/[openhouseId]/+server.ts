@@ -40,3 +40,85 @@ export const GET: RequestHandler = async ({ request,params }) => {
     );
   }
 };
+
+
+export const PUT: RequestHandler = async ({ request,params }) => {
+  try {
+    const openhouseId = params.openhouseId
+    const authUser = await checkAuth(request);
+    const user_id = authUser?.user_id || authUser?.id;
+    if (!user_id) {
+      return json({stats: 401, error: 'Unauthorized'});
+    }
+
+    if (!openhouseId) {
+      return json({stats: 404, error: 'Openhouse not found'});
+    }
+
+    const {address, date} = await request.json();
+
+    // Fetch user email from Supabase
+    const { data, error } = await supabase
+    .from('openhouses')
+    .update({
+      address, date
+    })
+    .eq('id', openhouseId)
+    .eq("user_id", user_id)
+    
+
+    if (error) {
+      return json(
+        { error: "Failed to update user openhouse from Supabase" },
+        { status: 500 }
+      );
+    }
+    return json({ openhouse: data });
+  } catch (error) {
+    console.error("openhouse Error: ", error);
+    return json(
+      { error: "Server error" },
+      { status: 500 }
+    );
+  }
+};
+
+
+export const DELETE: RequestHandler = async ({ request,params }) => {
+  try {
+    const openhouseId = params.openhouseId
+    const authUser = await checkAuth(request);
+    const user_id = authUser?.user_id || authUser?.id;
+    if (!user_id) {
+      return json({stats: 401, error: 'Unauthorized'});
+    }
+
+    if (!openhouseId) {
+      return json({stats: 404, error: 'Openhouse not found'});
+    }
+
+    // Fetch user email from Supabase
+    
+    const { data, error } = await supabase
+    .from('openhouse_guests')
+    .delete()
+    .eq("user_id",user_id)
+    .eq("property_id", openhouseId);
+
+    await supabase.from('openhouses').delete().eq("user_id", user_id);
+
+    if (error) {
+      return json(
+        { error: "Failed to delete user openhouse from Supabase" },
+        { status: 500 }
+      );
+    }
+    return json({ msg: 'Deleted' });
+  } catch (error) {
+    console.error("openhouses Error: ", error);
+    return json(
+      { error: "Server error" },
+      { status: 500 }
+    );
+  }
+};

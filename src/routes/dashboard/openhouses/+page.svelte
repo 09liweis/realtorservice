@@ -74,10 +74,18 @@
 
   // 更新开放看房
   async function updateOpenHouse() {
-    await upsertOpenHouse(newOpenHouse);
-    fetchOHs();
-    resetForm();
-    showAddForm = false;
+    const {data:{error}} = await sendRequest({
+      url: `/api/openhouses/${newOpenHouse.id}`,
+      method: 'PUT',
+      body: newOpenHouse
+    });
+    if (error) {
+      throw(error);
+    } else {
+      fetchOHs();
+      resetForm();
+      showAddForm = false;
+    }
   }
 
   // 显示删除确认对话框
