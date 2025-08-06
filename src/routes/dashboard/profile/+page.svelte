@@ -76,17 +76,20 @@
       error = '';
       successMessage = '';
       
-      const { error: updateError } = await updateUserProfile($user.id, {
-        first_name: profile.first_name,
-        last_name: profile.last_name,
-        phone: profile.phone,
-        brokerage: profile.brokerage,
-        reco_number: profile.reco_number,
-        updated_at: new Date().toISOString()
+      const { data } = await sendRequest({
+        url: '/api/user',
+        method: 'PUT',
+        body:{
+          first_name: profile.first_name,
+          last_name: profile.last_name,
+          phone: profile.phone,
+          brokerage: profile.brokerage,
+          reco_number: profile.reco_number,
+        }
       });
       
-      if (updateError) {
-        throw updateError;
+      if (data.error) {
+        throw data.error;
       }
       
       successMessage = 'Profile updated successfully!';
