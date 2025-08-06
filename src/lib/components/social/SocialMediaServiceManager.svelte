@@ -69,7 +69,10 @@
 
     try {
       formLoading = true;
-      const { error: deleteError } = await deleteSocialMediaService(serviceToDelete.id);
+      const { data:{error: deleteError} } = await sendRequest({
+        url: `/api/socials/${serviceToDelete.id}`,
+        method: 'DELETE'
+      });
       if (deleteError) throw deleteError;
       
       await loadSocialMediaServices();
@@ -95,14 +98,22 @@
         is_user_unread:false
       };
 
-      if (editingService?.id) {
-        serviceToSave.id = editingService.id;
+      let requestOptions = {
+        url: '/api/socials',
+        method: 'POST',
+        body: serviceToSave
       }
 
-      const { data: {error: saveError, social_media_service} } = await sendRequest({
-        url: '/api/socials',
-        body: serviceToSave
-      });
+      if (editingService?.id) {
+        serviceToSave.id = editingService.id;
+        requestOptions = {
+          url: `/api/socials/${serviceToSave.id}`,
+          method: 'PUT',
+          body: serviceToSave
+        }
+      }
+
+      const { data: {error: saveError, social_media_service} } = await sendRequest(requestOptions);
 
       if (saveError) throw saveError;
 
