@@ -51,7 +51,7 @@ export const POST: RequestHandler = async ({ request }) => {
 
     const cleaningService = await request.json();
 
-    const { data, error } = await supabase.from('cleanings').insert({...cleaningService,user_id});
+    const { data, error } = await supabase.from('cleanings').insert({...cleaningService,user_id}).select('*').single();
 
     if (error) {
       return json(

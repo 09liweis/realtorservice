@@ -120,8 +120,7 @@
           url: '/api/send-status-email',
           body: {
             tp: 'social_media_services',
-            id: serviceData.id,
-            projectName: serviceData.platforms.join(', ') + ' ' + serviceData.posting_frequency,
+            id: social_media_service.id,
             type: 'submission'
           }
         });

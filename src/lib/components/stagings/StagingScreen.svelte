@@ -10,7 +10,6 @@
   import { getStagings, upsertStaging, deleteStaging, getAllStagings } from "$lib/supabase";
   import { user } from "$lib/stores/auth";
   import Add from "../icons/Add.svelte";
-  import { sendEmailRequest } from "$lib/http";
     import { sendRequest } from "$lib/helper";
     import { onMount } from "svelte";
 
@@ -97,16 +96,18 @@
     }
     const formData = event.detail;
     const stagingData = {...formData,is_user_unread:false};
-    if (!$user?.isAdmin) {
-      stagingData.user_id = user_id;
-    }
-    const {data,error} = await upsertStaging(stagingData);
+    const {data:{error,staging}} = await sendRequest({
+      url: '/api/stagings',
+      body: stagingData
+    });
     try {
-      await sendEmailRequest({
-        email: $user?.email,
-        projectName: stagingData.location,
-        projectUrl: `/dashboard/stagings/${data?.id}`,
-        type: 'submission'
+      await sendRequest({
+        url: '/api/send-status-email',
+        body: {
+          tp: 'stagings',
+          id: staging.id,
+          type: 'submission'
+        }
       });
     } catch (emailError) {
       console.error('Email notification error:', emailError);

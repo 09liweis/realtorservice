@@ -51,7 +51,7 @@ export const POST: RequestHandler = async ({ request }) => {
 
     const stagingService = await request.json();
 
-    const { data, error } = await supabase.from('stagings').insert({...stagingService,user_id});
+    const { data, error } = await supabase.from('stagings').insert({...stagingService,user_id}).select('*').single();
 
     if (error) {
       return json(

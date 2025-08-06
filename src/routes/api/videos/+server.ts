@@ -51,7 +51,7 @@ export const POST: RequestHandler = async ({ request }) => {
 
     const videoService = await request.json();
 
-    const { data, error } = await supabase.from('video_services').insert({...videoService,user_id});
+    const { data, error } = await supabase.from('video_services').insert({...videoService,user_id}).select('*').single();
 
     if (error) {
       return json(

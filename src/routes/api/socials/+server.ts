@@ -52,7 +52,7 @@ export const POST: RequestHandler = async ({ request }) => {
 
     const socialMediaService = await request.json();
 
-    const { data, error } = await supabase.from('social_media_services').insert({...socialMediaService,user_id});
+    const { data, error } = await supabase.from('social_media_services').insert({...socialMediaService,user_id}).select('*').single();
 
     if (error) {
       return json(

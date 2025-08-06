@@ -17,7 +17,7 @@ export const POST: RequestHandler = async ({ request }) => {
     const { tp, oldStatus, id, type } =
       await request.json();
 
-    if (!tp || !id || !oldStatus) {
+    if (!tp || !id) {
       return json({ error: "Missing required fields" }, { status: 400 });
     }
 
@@ -27,7 +27,7 @@ export const POST: RequestHandler = async ({ request }) => {
     }
 
     const PROJECT_NAMES:{[key:string]:string} = {
-      social_media_services: service.platforms.join(', ') + ' ' + service.posting_frequency,
+      social_media_services: service?.platforms?.join(', ') + ' ' + service?.posting_frequency,
       video_services: service?.location || `Project ${service.id?.slice(-8)}`,
       stagings: '',
       cleanings: '',
