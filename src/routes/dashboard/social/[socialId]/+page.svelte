@@ -1,6 +1,5 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import { goto } from '$app/navigation';
   import { user } from '$lib/stores/auth';
   import { getPageTitle } from '$lib/types/constant';
   import type { SocialMediaService } from '$lib/types/social';
@@ -13,9 +12,11 @@
   import SocialMediaServiceInfo from '$lib/components/social/detail/SocialMediaServiceInfo.svelte';
   import SocialMediaServicePricing from '$lib/components/social/detail/SocialMediaServicePricing.svelte';
   import DetailActions from '$lib/components/common/DetailActions.svelte';
-  import { getSocialMediaService, upsertSocialMediaService } from '$lib/supabase';
+  import { getSocialMediaService } from '$lib/supabase';
     import Link from '$lib/components/Link.svelte';
     import Timeline from '$lib/components/common/Timeline.svelte';
+    import { sendRequest } from '$lib/helper';
+    import { onMount } from 'svelte';
 
   const socialServiceId = $page.params.socialId;
   
@@ -27,25 +28,19 @@
   // Redirect if user is not logged in
   $: {
     user_id = $user?.id;
-    fetchSocialMediaService();
   }
 
-  const fetchSocialMediaService = async ()=> {
-    if (user_id) {
-      const {data, error} = await getSocialMediaService(socialServiceId);
-      if (error) throw error;
-      socialMediaService = data;
+  onMount(()=>{
+    fetchSocialMediaService();
+  });
 
-      const updatedSocialMediaService:SocialMediaService = {
-        ...socialMediaService
-      };
-      if ($user?.isAdmin) {
-        updatedSocialMediaService.is_admin_unread = false;
-      } else {
-        updatedSocialMediaService.is_user_unread = false;
-      }
-      await upsertSocialMediaService(updatedSocialMediaService)
-    }
+  const fetchSocialMediaService = async ()=> {
+    const {data: {error,social_media_service}} = await sendRequest({
+      url: `/api/socials/${socialServiceId}`,
+      method: 'GET'
+    });
+    if (error) throw error;
+    socialMediaService = social_media_service;
   }
 
   // Get platform information

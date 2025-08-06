@@ -8,22 +8,33 @@ export const GET: RequestHandler = async ({ request,params }) => {
     const socialId = params.socialId
     const authUser = await checkAuth(request);
     const user_id = authUser?.user_id || authUser?.id;
+    const isAdmin = authUser.isAdmin;
     if (!user_id) {
       return json({stats: 401, error: 'Unauthorized'});
     }
 
     if (!socialId) {
-      return json({stats: 404, error: 'Openhouse not found'});
+      return json({stats: 404, error: 'Empty Social service Id'});
+    }
+
+    const {data:foundSocial,error:foundError} = await supabase.from('social_media_services').select('*').eq("id",socialId).single();
+    if (!foundSocial) {
+      return json({stats: 404, error: 'social service not found'});
+    }
+
+    const updateUnread = {is_admin_unread:true, is_user_unread: true}
+    if (isAdmin) {
+      updateUnread.is_admin_unread = false;
+    } else {
+      updateUnread.is_user_unread = false;
     }
 
     // Fetch user email from Supabase
     const { data, error } = await supabase
     .from('social_media_services')
-    .select('*')
-    .eq("user_id",user_id)
-    .eq("id", socialId)
-    .single();
-    
+    .update(updateUnread)
+    .eq("user_id",foundSocial.user_id)
+    .eq("id", socialId);
 
     if (error) {
       return json(
@@ -31,7 +42,7 @@ export const GET: RequestHandler = async ({ request,params }) => {
         { status: 500 }
       );
     }
-    return json({ social_media_service: data });
+    return json({ social_media_service: foundSocial });
   } catch (error) {
     console.error("social_media_service Error: ", error);
     return json(
