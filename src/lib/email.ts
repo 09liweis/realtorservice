@@ -20,7 +20,7 @@ export async function sendMail(options: EmailOptions) {
   try {
     const from = EMAIL_FROM//'info@realtorservice.com';
     const { data, error } = await resend.emails.send({
-      from: from,
+      from,
       to: options.to,
       subject: options.subject,
       html: options.html,
