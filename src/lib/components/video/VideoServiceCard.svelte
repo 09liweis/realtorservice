@@ -48,7 +48,7 @@
   <!-- Service Header -->
   <div class="px-4 py-3">
     <div class="flex items-center justify-between">
-      <Link href={`/dashboard/video/${videoService.id}`} className="text-white">
+      <Link href={`/dashboard/video_services/${videoService.id}`} className="text-white">
         {getServiceTypeInfo(videoService.service_type)?.label || videoService.service_type}
       </Link>
       <div class="text-right">

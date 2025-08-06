@@ -31,7 +31,7 @@
     },
     {
       name: "Video Services",
-      href: "/dashboard/video",
+      href: "/dashboard/video_services",
       icon: "🎬",
       description: "Video Editing Services",
     },
