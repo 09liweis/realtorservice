@@ -1,6 +1,5 @@
 <script lang="ts">
   import { user } from '$lib/stores/auth';
-  import { getUserProfile, updateUserProfile, getUserCredits, getCreditRecords } from '$lib/supabase';
   import { getPageTitle } from '$lib/types/constant';
   import Button from '$lib/components/common/Button.svelte';
   import Input from '$lib/components/common/Input.svelte';
