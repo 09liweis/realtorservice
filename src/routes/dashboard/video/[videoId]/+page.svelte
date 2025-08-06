@@ -13,6 +13,7 @@
   import { onMount } from 'svelte';
     import Link from '$lib/components/Link.svelte';
     import Timeline from '$lib/components/common/Timeline.svelte';
+    import { sendRequest } from '$lib/helper';
 
   const videoServiceId = $page.params.videoId;
   
@@ -24,25 +25,19 @@
 
   $: {
     user_id = $user?.id;
-    fetchSocialMediaService();
   }
 
-  const fetchSocialMediaService = async ()=> {
-    if (user_id) {
-      const {data, error} = await getVideoService(videoServiceId);
-      if (error) throw error;
-      videoService = data;
+  onMount(()=>{
+    fetchSocialMediaService();
+  })
 
-      const updateReadVideo:VideoService = {
-        ...videoService
-      };
-      if ($user?.isAdmin) {
-        updateReadVideo.is_admin_unread = false;
-      } else {
-        updateReadVideo.is_user_unread = false;
-      }
-      await upsertVideoService(updateReadVideo)
-    }
+  const fetchSocialMediaService = async ()=> {
+    const {data: {error,video_service}} = await sendRequest({
+      url: `/api/videos/${videoServiceId}`,
+      method: 'GET'
+    });
+    if (error) throw error;
+    videoService = video_service;
   }
 
   // Get service type information

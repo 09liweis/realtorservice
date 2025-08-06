@@ -8,6 +8,7 @@ export const GET: RequestHandler = async ({ request,params }) => {
     const videoId = params.videoId
     const authUser = await checkAuth(request);
     const user_id = authUser?.user_id || authUser?.id;
+    const isAdmin = authUser.isAdmin;
     if (!user_id) {
       return json({stats: 401, error: 'Unauthorized'});
     }
@@ -16,13 +17,24 @@ export const GET: RequestHandler = async ({ request,params }) => {
       return json({stats: 404, error: 'Vidoe Service not found'});
     }
 
+    const {data:foundVideo,error:foundError} = await supabase.from('video_services').select('*').eq("id",videoId).single();
+    if (!foundVideo) {
+      return json({stats: 404, error: 'social service not found'});
+    }
+
+    const updateUnread = {is_admin_unread:true, is_user_unread: true}
+    if (isAdmin) {
+      updateUnread.is_admin_unread = false;
+    } else {
+      updateUnread.is_user_unread = false;
+    }
+
     // Fetch user email from Supabase
     const { data, error } = await supabase
     .from('video_services')
-    .select('*')
-    .eq("user_id",user_id)
-    .eq("id", videoId)
-    .single();
+    .update(updateUnread)
+    .eq("user_id",foundVideo.user_id)
+    .eq("id", videoId);
     
 
     if (error) {
@@ -31,7 +43,7 @@ export const GET: RequestHandler = async ({ request,params }) => {
         { status: 500 }
       );
     }
-    return json({ video_service: data });
+    return json({ video_service: foundVideo });
   } catch (error) {
     console.error("video_service Error: ", error);
     return json(
