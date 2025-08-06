@@ -28,3 +28,32 @@ export const GET: RequestHandler = async ({ request }) => {
     );
   }
 };
+
+
+export const PUT: RequestHandler = async ({ request }) => {
+  try {
+    const authUser = await checkAuth(request);
+    const isAdmin = authUser.isAdmin;
+
+    if (!isAdmin) {
+      return json({stats: 401, error: 'Unauthorized not admin'});
+    }
+
+    const {user_id, realtor_approved} = await request.json();
+
+    const {data, error} = await supabase.from('user_profiles').update({realtor_approved}).eq('user_id',user_id);
+    if (error) {
+      return json({error},{status:500});
+    }
+    
+    //TODO: notify user
+
+    return json({ msg: 'Updated' });
+  } catch (error) {
+    console.error("Cleaning Error: ", error);
+    return json(
+      { error: "Server error" },
+      { status: 500 }
+    );
+  }
+};

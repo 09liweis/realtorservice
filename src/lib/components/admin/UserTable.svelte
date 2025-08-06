@@ -15,8 +15,13 @@ import { sendRequest } from '$lib/helper';
       updatingUserId = user.user_id;
       loading = true;
 
-      const { error } = await updateUserProfile(user.user_id, {
-        realtor_approved: true
+      const { data:{error} } = await sendRequest({
+        url: '/api/dashboard/users',
+        method: 'PUT',
+        body: {
+          realtor_approved: true,
+          user_id:updatingUserId,
+        }
       });
 
       if (error) throw error;
