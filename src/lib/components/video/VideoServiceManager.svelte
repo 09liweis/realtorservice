@@ -92,15 +92,25 @@
 
       const serviceToSave = {
         ...videoServiceData,
-        user_id: userId,
         is_user_unread:false
       };
 
-      if (editingVideoService?.id) {
-        serviceToSave.id = editingVideoService.id;
+      let requestOptions = {
+        url: '/api/videos',
+        body: serviceToSave,
+        method: 'POST'
       }
 
-      const { data, error: saveError } = await upsertVideoService(serviceToSave);
+      if (editingVideoService?.id) {
+        serviceToSave.id = editingVideoService.id;
+        requestOptions = {
+          url: `/api/videos/${serviceToSave.id}`,
+          body: serviceToSave,
+          method: 'PUT'
+        }
+      }
+
+      const { data: {error: saveError,video_service} } = await sendRequest(requestOptions);
       if (saveError) throw saveError;
 
       // Send email notification
@@ -108,7 +118,7 @@
         await sendEmailRequest({
           email: $user?.email,
           projectName: getServiceTypeInfo(videoServiceData.service_type)?.label || videoServiceData.service_type,
-          projectUrl: `/dashboard/video/${data?.id}`,
+          projectUrl: `/dashboard/video/${video_service?.id}`,
           type: 'submission'
         });
       } catch (emailError) {
