@@ -128,12 +128,12 @@
       </div>
 
       <div class="flex items-center space-x-2">
-        <button
+        <!-- <button
           on:click={handleEdit}
           class="text-xs font-medium text-purple-600 hover:text-white hover:bg-purple-600 px-3 py-1.5 rounded-md transition-all duration-200 border border-purple-200 hover:border-purple-600"
         >
           Edit
-        </button>
+        </button> -->
         <button
           on:click={handleDelete}
           class="text-xs font-medium text-red-600 hover:text-white hover:bg-red-600 px-3 py-1.5 rounded-md transition-all duration-200 border border-red-200 hover:border-red-600"

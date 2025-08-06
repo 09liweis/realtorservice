@@ -2,7 +2,6 @@
   import { onMount } from 'svelte';
   import type { VideoService } from '$lib/types/video';
   import { EMPTY_VIDEO_SERVICE, getServiceTypeInfo } from '$lib/types/video';
-  import { getUserVideoServices, upsertVideoService, deleteVideoService } from '$lib/supabase';
   import VideoServiceForm from './VideoServiceForm.svelte';
   import VideoServiceList from './VideoServiceList.svelte';
   import Button from '$lib/components/common/Button.svelte';
@@ -69,7 +68,10 @@
 
     try {
       formLoading = true;
-      const { error: deleteError } = await deleteVideoService(videoServiceToDelete.id);
+      const { data: {error: deleteError} } = await sendRequest({
+        url: `/api/videos/${videoServiceToDelete.id}`,
+        method: 'DELETE'
+      });
       if (deleteError) throw deleteError;
       
       await loadVideoServices();
