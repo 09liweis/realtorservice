@@ -9,7 +9,7 @@
   import type { UserProfile } from '$lib/types/user';
   import CreditTopup from '$lib/components/credit/CreditTopup.svelte';
   import CreditHistory from '$lib/components/CreditHistory.svelte';
-    import { formatDate } from '$lib/helper';
+    import { formatDate, sendRequest } from '$lib/helper';
     import type { CreditRecord } from '$lib/types/credit';
 
   // Profile data
@@ -32,85 +32,38 @@
   let error = '';
   let successMessage = '';
   let showTopup = false;
-  let userCredits = 0;
   let loadingCredits = false;
 
   // Load user profile on mount
   onMount(() => {
-    if ($user) {
-      loadUserProfile();
-      loadUserCredits();
-      loadCreditHistory();
-    }
-  });
-
-  // Watch for user changes
-  $: if ($user && !profile.email) {
     loadUserProfile();
-    loadUserCredits();
-    loadCreditHistory();
-  }
+  });
 
   let loadingCreditRecords = false;
   let creditRecords: CreditRecord[] = [];
-  async function loadCreditHistory() {
-    if (!$user?.id) return;
-    
-    try {
-      loadingCreditRecords = true;
-      const { data, error: recordsError } = await getCreditRecords($user?.id);
-      
-      if (recordsError) {
-        throw recordsError;
-      }
-      
-      creditRecords = data || [];
-    } catch (err) {
-      console.error('Error loading credit history:', err);
-    } finally {
-      loadingCreditRecords = false;
-    }
-  }
 
-  async function loadUserProfile() {
-    if (!$user) return;
-    
+  async function loadUserProfile() {    
     try {
       loading = true;
+      loadingCredits = true;
       error = '';
       
-      const { data, error: profileError } = await getUserProfile($user.id);
+      const { data } = await sendRequest({
+        url:'/api/user',
+        method: 'GET'
+      })
       
-      if (profileError) {
-        throw profileError;
+      if (data.error) {
+        throw data.error;
       }
       
-      if (data) {
-        profile = { ...data };
-      }
+      profile = data.userProfile;
+      creditRecords = data.creditRecords;
     } catch (err) {
       console.error('Error loading profile:', err);
       error = 'Failed to load profile data';
     } finally {
       loading = false;
-    }
-  }
-
-  async function loadUserCredits() {
-    if (!$user) return;
-    
-    try {
-      loadingCredits = true;
-      const { data, error: creditsError } = await getUserCredits($user.id);
-      
-      if (creditsError) {
-        throw creditsError;
-      }
-      
-      userCredits = data || 0;
-    } catch (err) {
-      console.error('Error loading credits:', err);
-    } finally {
       loadingCredits = false;
     }
   }
@@ -164,8 +117,7 @@
     const { amount } = event.detail;
     showTopup = false;
     successMessage = `Successfully added $${amount} to your account!`;
-    loadUserCredits(); // Reload credits
-    loadCreditHistory();
+    loadUserProfile();
     
     // Clear success message after 5 seconds
     setTimeout(() => {
@@ -389,7 +341,7 @@
               {#if loadingCredits}
                 <div class="animate-pulse bg-gray-200 h-12 w-24 mx-auto rounded"></div>
               {:else}
-                {userCredits}
+                {profile.credits}
               {/if}
             </div>
             <p class="text-gray-600">Available Credits</p>

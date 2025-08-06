@@ -1,6 +1,7 @@
 import { json } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
 import { checkAuth } from "$lib/server/apiAuth";
+import supabase from "$lib/db/client";
 
 export const GET: RequestHandler = async ({ request }) => {
   try {
@@ -10,7 +11,9 @@ export const GET: RequestHandler = async ({ request }) => {
       return json({stats: 401, error: 'Unauthorized'});
     }
 
-    return json({ user: authUser });
+    const {data:creditRecords,error} = await supabase.from('credit_records').select('*').eq('user_id',user_id).order('updated_at',{ascending:false});
+
+    return json({ userProfile: authUser, creditRecords });
   } catch (error) {
     console.error("User Error: ", error);
     return json(
