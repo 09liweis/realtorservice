@@ -92,7 +92,6 @@
 
       const serviceToSave = {
         ...serviceData,
-        user_id: userId,
         is_user_unread:false
       };
 
@@ -100,20 +99,23 @@
         serviceToSave.id = editingService.id;
       }
 
-      const { data, error: saveError } = await upsertSocialMediaService(serviceToSave);
+      const { data: {error: saveError, social_media_service} } = await sendRequest({
+        url: '/api/socials',
+        body: serviceToSave
+      });
+
+      if (saveError) throw saveError;
 
       try {
         await sendEmailRequest({
           email: $user?.email,
           projectName: serviceData.platforms.join(', ') + ' ' + serviceData.posting_frequency,
-          projectUrl: `/dashboard/social/${data?.id}`,
+          projectUrl: `/dashboard/social/${social_media_service?.id}`,
           type: 'submission'
         });
       } catch (emailError) {
         console.error('Email notification error:', emailError);
       }
-
-      if (saveError) throw saveError;
 
       await loadSocialMediaServices();
       showForm = false;
