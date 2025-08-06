@@ -2,25 +2,11 @@
   import { user } from '$lib/stores/auth';
   import { goto } from '$app/navigation';
   import { onMount } from 'svelte';
-  import { 
-    getListings, 
-    getOfferProperties, 
-    getOpenHouses, 
-    getUserVideoServices,
-    getUserSocialMediaServices,
-    getAllCleanings,
-    getAllStagings,
-
-    getStagings,
-
-    getCleanings
-
-
-  } from '$lib/supabase';
   import { getPageTitle } from '$lib/types/constant';
   import DashboardHeader from './DashboardHeader.svelte';
   import WelcomeBonusNotification from '$lib/components/dashboard/WelcomeBonusNotification.svelte';
   import ServiceStatsCard from '$lib/components/dashboard/ServiceStatsCard.svelte';
+  import { sendRequest } from '$lib/helper';
 
   // Redirect if user is not logged in
   onMount(() => {
@@ -93,80 +79,18 @@
     
     try {
       loading = true;
-      
-      // Fetch all data in parallel
-      const [
-        listingsResult, 
-        offersResult, 
-        openHousesResult, 
-        stagingsResult,
-        cleaningsResult,
-        videoResult,
-        socialResult
-      ] = await Promise.all([
-        getListings({ user_id: $user.id }),
-        getOfferProperties({ user_id: $user.id }),
-        getOpenHouses({ user_id: $user.id }),
-        $user?.isAdmin ? getAllStagings() : getStagings({ user_id: $user.id }),
-        $user?.isAdmin ? getAllCleanings() : getCleanings({ user_id: $user.id }),
-        $user?.isAdmin ? getUserVideoServices({ isAdmin:true }) : getUserVideoServices({ isAdmin:false, user_id: $user.id }),
-        $user?.isAdmin ? getUserSocialMediaServices({ isAdmin: true }) : getUserSocialMediaServices({ isAdmin: false, user_id: $user.id })
-      ]);
 
-      // Process listings data
-      const listings = listingsResult.data || [];
-      dashboardStats.listings = {
-        total: listings.length,
-        active: listings.filter(l => !l.is_sold).length,
-        sold: listings.filter(l => l.is_sold).length
-      };
+      const {data:{error, dashboardStats:data}} = await sendRequest({
+        url: '/api/dashboard',
+        method: 'GET'
+      });
 
-      // Process services data
-      dashboardStats.services = {
-        stagings: {
-          count: stagingsResult.data?.length || 0,
-          is_user_unread: stagingsResult.data?.filter(item => item.is_user_unread).length,
-          is_admin_unread: stagingsResult.data?.filter(item => item.is_admin_unread).length
-        },
-        cleanings: {
-          count: cleaningsResult.data?.length || 0,
-          is_user_unread: cleaningsResult.data?.filter(item => item.is_user_unread).length,
-          is_admin_unread: cleaningsResult.data?.filter(item => item.is_admin_unread).length
-        },
-        videos: {
-          count: videoResult.data?.length || 0,
-          is_user_unread: videoResult.data?.filter(item => item.is_user_unread).length,
-          is_admin_unread: videoResult.data?.filter(item => item.is_admin_unread).length
-        },
-        social: {
-          count: socialResult.data?.length || 0,
-          is_user_unread: socialResult.data?.filter(item => item.is_user_unread).length,
-          is_admin_unread: socialResult.data?.filter(item => item.is_admin_unread).length
-        }
-      };
-
-      // Process activities data
-      dashboardStats.activities = {
-        offers: offersResult.data?.length || 0,
-        openHouses: openHousesResult.data?.length || 0
-      };
-
-      // Mock credit data (would come from API in real app)
-      dashboardStats.credits = {
-        available: 1250,
-        used: 750
-      };
-
+      dashboardStats = data;
     } catch (error) {
       console.error('Error loading dashboard data:', error);
     } finally {
       loading = false;
     }
-  }
-
-  // Navigation handlers
-  function navigateToSection(path: string) {
-    goto(path);
   }
 
   function handleCloseWelcomeBonus() {
@@ -292,31 +216,6 @@
         <span class="font-medium">Balance</span> available
       </div>
     </ServiceStatsCard>
-
-    <!-- Quick Actions -->
-    <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-6 border border-gray-200">
-      <div class="text-center">
-        <div class="w-12 h-12 bg-gray-200 rounded-xl flex items-center justify-center mx-auto mb-4">
-          <span class="text-2xl">⚡</span>
-        </div>
-        <h3 class="text-lg font-semibold text-gray-900 mb-2">Quick Actions</h3>
-        <p class="text-sm text-gray-600 mb-4">Get things done faster</p>
-        <div class="space-y-2">
-          <button 
-            link={'/dashboard/listings/new'}
-            class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors duration-200"
-          >
-            Add Listing
-          </button>
-          <button 
-            link={'/dashboard/services'}
-            class="w-full bg-white text-gray-700 py-2 px-4 rounded-lg text-sm font-medium border border-gray-300 hover:bg-gray-50 transition-colors duration-200"
-          >
-            Book Service
-          </button>
-        </div>
-      </div>
-    </div>
   </div>
 
   <!-- Recommendations -->
