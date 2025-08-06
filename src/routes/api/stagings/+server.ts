@@ -34,3 +34,37 @@ export const GET: RequestHandler = async ({ request }) => {
     );
   }
 };
+
+
+export const POST: RequestHandler = async ({ request }) => {
+  try {
+    const authUser = await checkAuth(request);
+    const user_id = authUser?.user_id || authUser?.id;
+    const isAdmin = authUser.isAdmin;
+    if (!user_id) {
+      return json({stats: 401, error: 'Unauthorized'});
+    }
+
+    if (isAdmin) {
+      return json({stats: 401, error: 'Admin can not do this operation'});
+    }
+
+    const stagingService = await request.json();
+
+    const { data, error } = await supabase.from('stagings').insert({...stagingService,user_id});
+
+    if (error) {
+      return json(
+        { error: "Failed to add user staging services from Supabase" },
+        { status: 500 }
+      );
+    }
+    return json({ staging: data });
+  } catch (error) {
+    console.error("staging service insert Error: ", error);
+    return json(
+      { error: "Server error" },
+      { status: 500 }
+    );
+  }
+};
