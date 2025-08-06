@@ -67,15 +67,7 @@
       loading = true;
       error = '';
       
-      const { data: updatedSocialMediaService, error: fetchError } = await getSocialMediaService(socialMediaService?.id!);
-      
-      if (fetchError) {
-        throw fetchError;
-      }
-
-      if (updatedSocialMediaService) {
-        socialMediaService = updatedSocialMediaService;
-      }
+      fetchSocialMediaService();
     } catch (err) {
       console.error('Error refreshing social media service:', err);
       error = 'Failed to refresh data';

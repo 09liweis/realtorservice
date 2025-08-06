@@ -1,15 +1,40 @@
 import { json } from "@sveltejs/kit";
 import { sendProjectStatusChange, sendProjectSubmitted } from "$lib/email";
 import type { RequestHandler } from "./$types";
+import { checkAuth } from "$lib/server/apiAuth";
+import supabase from "$lib/db/client";
 
 export const POST: RequestHandler = async ({ request }) => {
   try {
-    const { email, projectName, oldStatus, newStatus, projectUrl, type } =
+
+    const authUser = await checkAuth(request);
+    const user_id = authUser?.user_id || authUser?.id;
+    const isAdmin = authUser.isAdmin;
+    if (!user_id) {
+      return json({stats: 401, error: 'Unauthorized'});
+    }
+
+    const { tp, oldStatus, id, type } =
       await request.json();
 
-    if (!email || !projectName || !projectUrl) {
+    if (!tp || !id || !oldStatus) {
       return json({ error: "Missing required fields" }, { status: 400 });
     }
+
+    const {data:service, error} = await supabase.from(tp).select('*').eq('id',id).single();
+    if (error) {
+      return json({error},{status:500});
+    }
+    
+    if (!service) {
+      return json({error: 'Service not found'},{status:404});
+    }
+
+    const {data:user, error:userError} = await supabase.from('user_profiles').select('email').eq('user_id',service.user_id).single();
+    const email = user?.email;
+    const projectUrl = `/dashboard/${tp}/${service.Id}`;
+    const projectName = service?.location || `Project ${service.id?.slice(-8)}`;
+    const newStatus = service.status;
 
     if (type === "submission") {
       await sendProjectSubmitted(email, projectName, projectUrl);

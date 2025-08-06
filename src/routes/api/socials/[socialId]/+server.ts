@@ -58,6 +58,7 @@ export const PUT: RequestHandler = async ({ request,params }) => {
     const socialId = params.socialId
     const authUser = await checkAuth(request);
     const user_id = authUser?.user_id || authUser?.id;
+    const isAdmin = authUser.isAdmin;
     if (!user_id) {
       return json({stats: 401, error: 'Unauthorized'});
     }
@@ -69,11 +70,16 @@ export const PUT: RequestHandler = async ({ request,params }) => {
     const socialMediaService = await request.json();
 
     // Fetch user email from Supabase
-    const { data, error } = await supabase
+    let query = supabase
     .from('social_media_services')
     .update(socialMediaService)
     .eq('id', socialId)
-    .eq("user_id", user_id)
+
+    if (!isAdmin) {
+      query = query.eq('user_id',user_id);
+    }
+
+    const { data, error } = await query;
     
 
     if (error) {
@@ -82,7 +88,7 @@ export const PUT: RequestHandler = async ({ request,params }) => {
         { status: 500 }
       );
     }
-    return json({ social_media_service: data });
+    return json({ msg:'Updated' });
   } catch (error) {
     console.error("social media service Error: ", error);
     return json(

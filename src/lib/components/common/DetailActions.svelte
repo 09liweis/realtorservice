@@ -11,6 +11,7 @@
     import ConfirmPayModal from './ConfirmPayModal.svelte';
     import type { VideoService } from '$lib/types/video';
     import type { SocialMediaService } from '$lib/types/social';
+    import { sendRequest } from '$lib/helper';
 
 
   export let request: Staging|Cleaning|VideoService|SocialMediaService;
@@ -67,11 +68,11 @@
     }
   }
 
-  const UPSERT_TP_FUNCTIONS:{[key:string]:Function} = {
-    staging: upsertStaging,
-    cleaning: upsertCleaning,
-    social: upsertSocialMediaService,
-    video: upsertVideoService
+  const UPDATE_TP_API:{[key:string]:string} = {
+    staging: '/api/stagings',
+    cleaning: '/api/cleanings',
+    social: '/api/socials',
+    video: '/api/videos',
   }
 
   const handleStatusUpdate = () => {
@@ -79,29 +80,26 @@
   }
 
   async function updateStatus(status:ProjectStatus) {
-    const email = request?.user_profiles?.email;
     const oldStatus = request.status;
     request.status = status as ProjectStatus;
     request.history?.push({status, note, date: new Date()});
-    const upsertFunction = UPSERT_TP_FUNCTIONS[tp];
-    const { error: updateError } = await upsertFunction(request);
+    const {data:{error:updateError}} = await sendRequest({
+      url: `${UPDATE_TP_API[tp]}/${request.id}`,
+      body: request,
+      method: 'PUT'
+    })
     
     if (updateError) throw new Error(updateError.message);
 
     // Send status change email
     try {
-      const response = await fetch('/api/send-status-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
-          projectName: request?.location || `Project ${request.id?.slice(-8)}`,
+      const {response} = await sendRequest({
+        url: '/api/send-status-email',
+        body: {
+          tp: 'social_media_services',
+          id: request.id,
           oldStatus,
-          newStatus: status,
-          projectUrl: window.location.pathname
-        })
+        }
       });
 
       if (!response.ok) {

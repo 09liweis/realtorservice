@@ -2,7 +2,6 @@
   import { onMount } from 'svelte';
   import type { SocialMediaService } from '$lib/types/social';
   import { EMPTY_SOCIAL_MEDIA_SERVICE } from '$lib/types/social';
-  import { getUserSocialMediaServices, upsertSocialMediaService, deleteSocialMediaService } from '$lib/supabase';
   import SocialMediaServiceForm from './SocialMediaServiceForm.svelte';
   import SocialMediaServiceList from './SocialMediaServiceList.svelte';
   import Button from '$lib/components/common/Button.svelte';
