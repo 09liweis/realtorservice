@@ -61,14 +61,18 @@ let showThankYou = false;
       alert('Your account is not yet approved. Please contact admin to get approval.');
       return;
     }
-    if (!user_id) return;
-    await upsertOpenHouseGuest({
-      user_id,
-      ...newGuest
-    });
-    showThankYou = true;
-    showDetailsModal = false;
-    newGuest = EMPTY_GUEST;
+    const {data:{openhouse_guest, error}} = await sendRequest({
+      url: `/api/openhouses/${property_id}/guests`,
+      body: newGuest
+    })
+    if (error) {
+      throw error;
+    } else {
+      showThankYou = true;
+      showDetailsModal = false;
+      newGuest = EMPTY_GUEST;
+      fetchGuests();
+    }    
   }
 	
 </script>
