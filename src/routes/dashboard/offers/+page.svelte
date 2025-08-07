@@ -3,9 +3,7 @@
   import FormBackdrop from '$lib/components/form/FormBackdrop.svelte';
     import Add from '$lib/components/icons/Add.svelte';
     import Input from '$lib/components/common/Input.svelte';
-  import OfferList from '$lib/components/offers/OfferList.svelte';
-    import { user } from '$lib/stores/auth';
-    import { getOfferProperties, upsertOfferProperty } from '$lib/supabase';
+  import OfferPropertyList from '$lib/components/offers/OfferPropertyList.svelte';
     import { getPageTitle } from '$lib/types/constant';
     import type { OfferProperty } from '$lib/types/offer';
     import { onMount } from 'svelte';
@@ -76,7 +74,7 @@
     </Button>
 	</div>
 
-	<OfferList offers={offerProperties} handleClick={viewDetails} />
+	<OfferPropertyList {offerProperties} handleClick={viewDetails} />
 </div>
 
 <!-- Details Modal -->

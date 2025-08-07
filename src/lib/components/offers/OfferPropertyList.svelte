@@ -3,16 +3,15 @@
     import Link from "../Link.svelte";
     import { fade, fly, slide } from "svelte/transition";
     import { flip } from 'svelte/animate';
-    import { quintOut } from "svelte/easing";
 
-  export let offers;
+  export let offerProperties;
   export let handleClick;
 
 </script>
 
-<!-- Offers Grid -->
+<!-- offerProperties Grid -->
 <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-  {#each offers as offer (offer.id)}
+  {#each offerProperties as offerProperty (offerProperty.id)}
     <div 
       class="bg-white overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-200"
       animate:flip={{ duration: 300 }}
@@ -22,31 +21,31 @@
       <div class="p-6">
         <div class="flex justify-between items-start mb-4">
           <div class="flex-1">
-            <h3 class="text-lg font-medium text-gray-900 truncate">{offer.address}</h3>
+            <h3 class="text-lg font-medium text-gray-900 truncate">{offerProperty.address}</h3>
           </div>
           <span
             class={`ml-2 px-2 py-1 text-xs font-medium rounded-full ${getStatusStyle(
-              offer.status
+              offerProperty.status
             )}`}
           >
-            {offer.status}
+            {offerProperty.status}
           </span>
         </div>
         
         <div class="mt-4 space-y-3">
           <div class="flex justify-between">
             <span class="text-sm text-gray-500">Amount</span>
-            <span class="text-sm font-medium text-gray-900">{formatAmount(offer.asking_price)}</span>
+            <span class="text-sm font-medium text-gray-900">{formatAmount(offerProperty.asking_price)}</span>
           </div>
           <div class="flex justify-between">
             <span class="text-sm text-gray-500">Submitted</span>
-            <span class="text-sm text-gray-900">{new Date(offer.date).toLocaleDateString()}</span>
+            <span class="text-sm text-gray-900">{offerProperty.date}</span>
           </div>
         </div>
 
         <div class="mt-6 text-right">
           <Link
-            href={`/dashboard/offers/${offer.id}`}
+            href={`/dashboard/offers/${offerProperty.id}`}
           >
             View Details
           </Link>
