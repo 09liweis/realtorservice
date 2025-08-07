@@ -9,6 +9,7 @@
     import { getPageTitle } from '$lib/types/constant';
     import type { OfferProperty } from '$lib/types/offer';
     import { onMount } from 'svelte';
+    import { sendRequest } from '$lib/helper';
 
   const EMPTY_OFFER_PROPERTY:OfferProperty = {
     address:'',
@@ -19,20 +20,20 @@
 
   let user_id:string|undefined;
 
-  $: {
-    user_id = $user?.id;
+  onMount(()=>{
     fetchOfferProperties();
-  }
+  })
 
   const fetchOfferProperties = async ()=> {
-    if (user_id) {
-      const {data, error} = await getOfferProperties({user_id});
-      if (error) throw error;
-      offers = data;
-    }
+    const {data:{error,offer_properties}} = await sendRequest({
+      url: '/api/offerproperties',
+      method: 'GET'
+    })
+    if (error) throw error;
+    offerProperties = offer_properties;
   }
 	// 模拟数据 - 在实际应用中，这些数据会从API获取
-	let offers:OfferProperty[] = [];
+	let offerProperties:OfferProperty[] = [];
   let newOfferProperty:OfferProperty = EMPTY_OFFER_PROPERTY;
 
 	// 状态变量
@@ -51,10 +52,9 @@
   }
 
   const handleUpsertOfferProperty = async()=> {
-    if (!user_id) return;
-    const {error} = await upsertOfferProperty({
-      ...newOfferProperty,
-      user_id
+    const {data:{error}} = await sendRequest({
+      url: '/api/offerproperties',
+      body: newOfferProperty
     });
     if (error) throw error;
     showDetailsModal = false;
@@ -76,7 +76,7 @@
     </Button>
 	</div>
 
-	<OfferList offers={offers} handleClick={viewDetails} />
+	<OfferList offers={offerProperties} handleClick={viewDetails} />
 </div>
 
 <!-- Details Modal -->
