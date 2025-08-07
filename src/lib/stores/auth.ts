@@ -2,6 +2,7 @@ import { writable } from 'svelte/store';
 import { browser } from '$app/environment';
 import supabase from '$lib/db/client';
 import type { Listing } from '$lib/types/listing';
+import { sendRequest } from '$lib/helper';
 
 interface User {
   id: string;
@@ -11,6 +12,7 @@ interface User {
   profile: any;
   name: string;
   initial: string;
+  credits: number;
 }
 
 // 创建用户存储
@@ -19,36 +21,16 @@ export const isLoading = writable(true);
 
 export const listings = writable<Listing[]>([]);
 
-// 获取用户资料
-async function fetchUserProfile(userId: string) {
-  const { data, error } = await supabase
-    .from('user_profiles')
-    .select('*')
-    .eq('user_id', userId)
-    .single();
-    
-  if (error) {
-    console.error('获取用户资料错误:', error);
-    return null;
-  }
+async function setUserProfile() {
+  const {data:{userProfile}} = await sendRequest({
+    url:'/api/user',
+    method: 'GET'
+  })
   
-  return data;
-}
-
-async function setUserProfile(userData: any) {
-  const profile = await fetchUserProfile(userData.id);
-  
-  if (!profile) return;
+  if (!userProfile) return;
   
   // 设置用户数据，包括资料
-  user.set({
-    ...userData,
-    isAdmin: profile?.role === 'admin',
-    isApproved: profile?.realtor_approved,
-    name: `${profile.first_name} ${profile.last_name}`,
-    initial: `${profile.first_name[0]}`,
-    profile
-  });
+  user.set(userProfile);
 }
 
 // 初始化函数，检查当前会话状态
@@ -60,7 +42,7 @@ export async function initializeAuth() {
   
   if (data?.session?.user) {
     const userData = data.session.user;
-    await setUserProfile(userData);
+    await setUserProfile();
   } else {
     user.set(null);
   }
@@ -71,7 +53,7 @@ export async function initializeAuth() {
   supabase.auth.onAuthStateChange(async (event, session) => {
     if (event === 'SIGNED_IN' && session) {
       const userData = session.user;
-      await setUserProfile(userData);
+      await setUserProfile();
     } else if (event === 'SIGNED_OUT') {
       user.set(null);
     }
@@ -83,7 +65,7 @@ if (browser) {
   document.addEventListener('visibilitychange', async () => {
     if (document.visibilityState === 'visible') {
       //TODO: need to fix later
-      location.reload();
+      // location.reload();
     }
   });
 }

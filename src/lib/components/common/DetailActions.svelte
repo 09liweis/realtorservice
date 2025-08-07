@@ -2,8 +2,6 @@
   import { createEventDispatcher } from 'svelte';
   import type { Staging } from '$lib/types/staging';
   import { user } from '$lib/stores/auth';
-  import { upsertCreditRecord, calcUserCredits } from '$lib/supabase';
-  import type { CreditRecord } from '$lib/types/credit';
   import Button from '$lib/components/common/Button.svelte';
     import type { Cleaning } from '$lib/types/cleaning';
     import Input from '$lib/components/common/Input.svelte';
@@ -39,23 +37,20 @@
     paymentSuccess = false;
     
     try {
-      // Create credit record
-      const creditRecord: CreditRecord = {
-        amount: -amount, // Negative amount for payment
-        tp,
-        tp_id: request?.id,
-        user_id: $user.id,
-        status: 'done',
-        //coupon_id: coupon?.id // Add coupon ID if a coupon was used
-      };
-      
-      const { error: creditRecordError } = await upsertCreditRecord(creditRecord);
-      if (creditRecordError) throw new Error(creditRecordError.message);
-      
-      // Update user credits
-      const { error: updateCreditsError } = await calcUserCredits($user.id, -amount);
-      if (updateCreditsError) throw new Error(updateCreditsError.message);
+      const {data:{error, credits}} = await sendRequest({
+        url: '/api/credit-record',
+        body: {
+          amount,
+          tp,
+          tp_id: request?.id
+        }
+      });
 
+      if (error) {
+        throw error
+      }
+
+      showConfirmPayModal = false;
       // Update staging status
       await updateStatus('paid');
       
@@ -80,11 +75,12 @@
   }
 
   async function updateStatus(status:ProjectStatus) {
-    const oldStatus = request.status;
+    if (!request) return;
+    const oldStatus = request?.status;
     request.status = status as ProjectStatus;
-    request.history?.push({status, note, date: new Date()});
+    request?.history?.push({status, note, date: new Date()});
     const {data:{error:updateError}} = await sendRequest({
-      url: `${UPDATE_TP_API[tp]}/${request.id}`,
+      url: `${UPDATE_TP_API[tp]}/${request?.id}`,
       body: request,
       method: 'PUT'
     })

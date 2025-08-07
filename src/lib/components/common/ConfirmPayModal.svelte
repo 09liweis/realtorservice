@@ -1,7 +1,7 @@
 <script lang="ts">
   import { createEventDispatcher, onMount } from 'svelte';
   import { user } from '$lib/stores/auth';
-  import { getUserCredits, redeemCoupon, getUserCoupons } from '$lib/supabase';
+  import { redeemCoupon, getUserCoupons } from '$lib/supabase';
   import Button from '$lib/components/common/Button.svelte';
   import FormBackdrop from '$lib/components/form/FormBackdrop.svelte';
   import { fade, fly, scale } from 'svelte/transition';
@@ -15,7 +15,7 @@
   const dispatch = createEventDispatcher();
 
   // Component state
-  let userCredits = 0;
+  let userCredits = $user?.credits || 0;
   let availableCoupons: Coupon[] = [];
   let selectedCoupon: Coupon ;
   let loading = false;
@@ -26,6 +26,7 @@
   let couponSuccess = '';
 
   // Calculated values
+  $: userCredits = $user?.credits || 0;
   $: finalAmount = selectedCoupon ? Math.max(0, amount - selectedCoupon.credits) : amount;
   $: canAfford = userCredits >= finalAmount;
   $: savings = selectedCoupon ? Math.min(amount, selectedCoupon.credits) : 0;
@@ -41,22 +42,7 @@
   }
 
   async function loadUserData() {
-    await Promise.all([loadUserCredits(), loadAvailableCoupons()]);
-  }
-
-  async function loadUserCredits() {
-    if (!$user) return;
-    
-    try {
-      loadingCredits = true;
-      const { data, error } = await getUserCredits($user.id);
-      if (error) throw error;
-      userCredits = data || 0;
-    } catch (err) {
-      console.error('Error loading credits:', err);
-    } finally {
-      loadingCredits = false;
-    }
+    await Promise.all([loadAvailableCoupons()]);
   }
 
   async function loadAvailableCoupons() {
@@ -92,7 +78,6 @@
         selectedCoupon = data.coupon;
         couponSuccess = `Coupon applied! You saved ${data.credits} credits.`;
         couponCode = '';
-        await loadUserCredits(); // Refresh credits
       }
     } catch (err: any) {
       couponError = err.message || 'Failed to redeem coupon';
