@@ -61,20 +61,33 @@ export const POST: RequestHandler = async ({ request, params }) => {
     }
 
     const propertyOffer = await request.json();
+    
+    let query = supabase
+      .from('offers')
+      .insert({
+        ...propertyOffer, user_id, property_id: propertyId
+      }).select('*').single();
+    
+    if (propertyOffer?.id) {
+      query = supabase
+        .from('offers')
+        .update(propertyOffer)
+        .eq('user_id', user_id)
+        .eq('property_id',propertyId)
+        .eq('id',propertyOffer.id)
+        .select('*')
+        .single();
+    }
 
-    const { data:addedOffer, error:addOfferError } = await supabase
-    .from('offers')
-    .insert({
-      ...propertyOffer, user_id, property_id: propertyId
-    }).select('*').single();
+    const { data:upsertOffer, error:upsertOfferError } = await query;
 
-    if (addOfferError) {
+    if (upsertOfferError) {
       return json(
         { error: "Failed to fetch user offers from Supabase" },
         { status: 500 }
       );
     }
-    return json({ property_offer: addedOffer });
+    return json({ property_offer: upsertOffer });
   } catch (error) {
     console.error("offers Error: ", error);
     return json(
