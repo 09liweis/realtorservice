@@ -9,8 +9,6 @@
     import { user } from '$lib/stores/auth';
     import { sendRequest } from '$lib/helper';
 
-  export let userId: string = $user?.id || '';
-
   let socialMediaServices: SocialMediaService[] = [];
   let loading = false;
   let error: string | null = null;

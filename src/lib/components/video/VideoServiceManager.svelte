@@ -1,15 +1,13 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import type { VideoService } from '$lib/types/video';
-  import { EMPTY_VIDEO_SERVICE, getServiceTypeInfo } from '$lib/types/video';
+  import { EMPTY_VIDEO_SERVICE } from '$lib/types/video';
   import VideoServiceForm from './VideoServiceForm.svelte';
   import VideoServiceList from './VideoServiceList.svelte';
   import Button from '$lib/components/common/Button.svelte';
   import FormBackdrop from '$lib/components/form/FormBackdrop.svelte';
     import { user } from '$lib/stores/auth';
     import { sendRequest } from '$lib/helper';
-
-  export let userId: string = $user?.id || '';
 
   let videoServices: VideoService[] = [];
   let loading = false;
