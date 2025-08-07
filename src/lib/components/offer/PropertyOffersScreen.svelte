@@ -12,7 +12,7 @@
   
   // 接收属性和属性ID作为props
   export let property;
-  export let property_id;
+  export let property_id: string;
 
   const EMPTY_OFFER:Offer = {
     property_id,
@@ -82,13 +82,18 @@
 
   // 执行删除
   async function handleDelete() {
-    if (!user_id || !offerToDelete) return;
+    if (!offerToDelete) return;
     
     isLoading = true;
     errorMessage = '';
     
     try {
-      await deleteOffer({ user_id, id: offerToDelete.id });
+      const {data:{error}} = await sendRequest({
+        url: `/api/offerproperties/${property_id}/offers/${offerToDelete.id}`,
+        method: 'DELETE'
+      });
+      
+      if (error) throw error;
       await fetchOffers();
       showDeleteConfirm = false;
       offerToDelete = null;
