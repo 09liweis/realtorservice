@@ -5,7 +5,7 @@
   import type { SocialMediaService } from '$lib/types/social';
   import { getStatusStyle } from '$lib/types/constant';
 
-  export let request: Staging | Cleaning | VideoService | SocialMediaService;
+  export let request: Staging | Cleaning | VideoService | SocialMediaService | null;
   export let tp: string = "staging"; // "staging", "cleaning", "video" or "social"
 
   // Timeline events based on request data and type

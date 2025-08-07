@@ -2,7 +2,7 @@
   import { createEventDispatcher } from 'svelte';
   import type { Staging } from '$lib/types/staging';
   import { user } from '$lib/stores/auth';
-  import { upsertCreditRecord, calcUserCredits, upsertStaging, upsertCleaning, upsertSocialMediaService, upsertVideoService } from '$lib/supabase';
+  import { upsertCreditRecord, calcUserCredits } from '$lib/supabase';
   import type { CreditRecord } from '$lib/types/credit';
   import Button from '$lib/components/common/Button.svelte';
     import type { Cleaning } from '$lib/types/cleaning';
@@ -14,10 +14,10 @@
     import { sendRequest } from '$lib/helper';
 
 
-  export let request: Staging|Cleaning|VideoService|SocialMediaService;
+  export let request: Staging|Cleaning|VideoService|SocialMediaService|null;
   export let tp:string = "staging";
   let note = '';
-  const quotation_price = request?.quotation_price;
+  $: quotation_price = request?.quotation_price;
 
   const dispatch = createEventDispatcher();
 

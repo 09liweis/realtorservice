@@ -12,7 +12,6 @@
   import SocialMediaServiceInfo from '$lib/components/social/detail/SocialMediaServiceInfo.svelte';
   import SocialMediaServicePricing from '$lib/components/social/detail/SocialMediaServicePricing.svelte';
   import DetailActions from '$lib/components/common/DetailActions.svelte';
-  import { getSocialMediaService } from '$lib/supabase';
     import Link from '$lib/components/Link.svelte';
     import Timeline from '$lib/components/common/Timeline.svelte';
     import { sendRequest } from '$lib/helper';
@@ -85,7 +84,7 @@
   <!-- Back Navigation -->
   <div class="flex items-center space-x-4">
     <Link
-      href={'/dashboard/social'}
+      href={'/dashboard/social_media_services'}
     >
       <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
