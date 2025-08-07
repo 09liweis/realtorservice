@@ -48,24 +48,33 @@ export const POST: RequestHandler = async ({ request, params }) => {
 
     const propertyId = params.propertyId
     if (!propertyId) {
-      return json({stats: 404, error: 'Openhouse not found'});
+      return json({stats: 404, error: 'offer property not found'});
     }
 
-    const {name, phone, buy_lease, has_agent, email} = await request.json();
+    const {data:foundProperty, error: foundError} = await supabase.from('offer_properties').select('*').eq('user_id',user_id).eq('id',propertyId).single();
+    if (foundError) {
+      return json({error: foundError},{status: 500});
+    }
 
-    const { data, error } = await supabase
+    if (!foundProperty) {
+      return json({error: `Offer property ${propertyId} not found`}, {status: 404});
+    }
+
+    const propertyOffer = await request.json();
+
+    const { data:addedOffer, error:addOfferError } = await supabase
     .from('offers')
     .insert({
-      name, phone, buy_lease, has_agent, email, user_id, property_id: propertyId
-    });
+      ...propertyOffer, user_id, property_id: propertyId
+    }).select('*').single();
 
-    if (error) {
+    if (addOfferError) {
       return json(
         { error: "Failed to fetch user offers from Supabase" },
         { status: 500 }
       );
     }
-    return json({ openhouse_guest: data });
+    return json({ property_offer: addedOffer });
   } catch (error) {
     console.error("offers Error: ", error);
     return json(

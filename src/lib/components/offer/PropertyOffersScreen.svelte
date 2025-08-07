@@ -100,18 +100,18 @@
     }
   }
 
-  const handleUpsertOffer = async (event) => {
+  const handleUpsertOffer = async (event:any) => {
     event.preventDefault();
-    if (!user_id) return;
     
     isLoading = true;
     errorMessage = '';
     
     try {
-      await upsertOffer({
-        user_id,
-        ...newOffer
+      const {data:{error}} = await sendRequest({
+        url: `/api/offerproperties/${property_id}/offers`,
+        body: newOffer
       });
+      if (error) throw error;
       await fetchOffers();
       showDetailsModal = false;
     } catch (error) {
