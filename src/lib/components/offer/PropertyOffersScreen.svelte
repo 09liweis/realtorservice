@@ -8,6 +8,7 @@
   import OfferList from './OfferList.svelte';
     import type { Offer } from '$lib/types/offer';
     import Link from '../Link.svelte';
+    import { sendRequest } from '$lib/helper';
   
   // 接收属性和属性ID作为props
   export let property;
@@ -29,10 +30,9 @@
 
   let user_id:string|undefined;
 
-  $: {
-    user_id = $user?.id;
+  onMount(()=>{
     fetchOffers();
-  }
+  })
 
   // 状态变量
   let offers:Offer[] = [];
@@ -44,16 +44,17 @@
   let isLoading = false;
   let errorMessage = '';
 
-  const fetchOffers = async () => {
-    if (!user_id) return;
-    
+  const fetchOffers = async () => {    
     isLoading = true;
     errorMessage = '';
     
     try {
-      const {data, error} = await getOffers({user_id, property_id});
+      const {data:{error,offers:propertyOffers}} = await sendRequest({
+        url: `/api/offerproperties/${property_id}/offers`,
+        method:'GET'
+      })
       if (error) throw error;
-      offers = data;
+      offers = propertyOffers;
     } catch (error) {
       console.error('Error fetching offers:', error);
       errorMessage = 'Failed to load offers. Please try again.';
