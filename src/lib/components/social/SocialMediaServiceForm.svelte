@@ -422,6 +422,7 @@
     </div>
 
     <!-- Form Actions -->
+     {#if $user}
     <div class="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200 mt-8">
       <Button
         type="button"
@@ -444,5 +445,6 @@
         {/if}
       </Button>
     </div>
+    {/if}
   </form>
 </div>
