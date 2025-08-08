@@ -40,7 +40,7 @@
 					</a>
 					<a
 						href="/listings"
-						class="inline-flex items-center justify-center px-8 py-4 border-2 border-white text-lg font-semibold rounded-xl text-white hover:bg-white hover:text-primary transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+						class="inline-flex items-center justify-center px-8 py-4 border-2 border-white text-lg font-semibold rounded-xl text-white transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
 					>
 						Browse Listings
 					</a>
