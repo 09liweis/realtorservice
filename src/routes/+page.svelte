@@ -2,7 +2,7 @@
 	import Banner from '$lib/components/home/Banner.svelte';
 	import ServiceModules from '$lib/components/home/ServiceModules.svelte';
 	import ForumHighlights from '$lib/components/home/ForumHighlights.svelte';
-	// import MarketInsights from '$lib/components/home/MarketInsights.svelte';
+	import MarketInsights from '$lib/components/home/MarketInsights.svelte';
 	import TestimonialsStats from '$lib/components/home/TestimonialsStats.svelte';
 </script>
 
@@ -14,5 +14,5 @@
 <Banner />
 <ServiceModules />
 <ForumHighlights />
-<!-- <MarketInsights /> -->
+<MarketInsights />
 <TestimonialsStats />
