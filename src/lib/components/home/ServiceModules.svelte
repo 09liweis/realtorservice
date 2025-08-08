@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { fade, fly, scale } from 'svelte/transition';
 	import { elasticOut } from 'svelte/easing';
+    import { user } from '$lib/stores/auth';
 
 	let services = [];
 	let observer;
@@ -38,7 +39,8 @@
 			features: ['Furniture & decor selection', 'Room layout optimization', 'Complete setup & removal'],
 			color: 'from-purple-500 to-pink-500',
 			bgColor: 'from-purple-50 to-pink-50',
-			icon: '✨'
+			icon: '✨',
+      link: $user ? '/dashboard/stagings' : '/realtor-services/listing/staging'
 		},
 		{
 			title: 'Professional Cleaning',
@@ -48,7 +50,8 @@
 			features: ['Deep cleaning service', 'Pre-listing preparation', 'Move-in/out cleaning'],
 			color: 'from-green-500 to-emerald-500',
 			bgColor: 'from-green-50 to-emerald-50',
-			icon: '🧽'
+			icon: '🧽',
+      link: $user ? '/dashboard/cleanings' : '/realtor-services/listing/cleaning'
 		},
 		{
 			title: 'Renovating Services',
@@ -58,7 +61,8 @@
 			features: ['Painting & touch-ups', 'Minor renovations', 'Value-add improvements'],
 			color: 'from-orange-500 to-red-500',
 			bgColor: 'from-orange-50 to-red-50',
-			icon: '🔨'
+			icon: '🔨',
+      link: $user ? '/dashboard/stagings' : '/realtor-services/listing/staging'
 		},
 		{
 			title: 'Social Media Branding',
@@ -68,7 +72,8 @@
 			features: ['Content creation & scheduling', 'Professional branding', 'Analytics & reporting'],
 			color: 'from-blue-500 to-indigo-500',
 			bgColor: 'from-blue-50 to-indigo-50',
-			icon: '📱'
+			icon: '📱',
+      link: $user ? '/dashboard/social_media_services' : '/realtor-services/social-media/management'
 		}
 	];
 </script>
@@ -137,16 +142,10 @@
 								<!-- Action Buttons -->
 								<div class="flex flex-col sm:flex-row gap-3">
 									<a
-										href="/register"
+										href={service.link}
 										class="flex-1 inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-gradient-to-r {service.color} hover:shadow-lg transition-all duration-300 transform hover:scale-105"
 									>
 										Get Quote
-									</a>
-									<a
-										href="/dashboard"
-										class="flex-1 inline-flex items-center justify-center px-6 py-3 border-2 border-gray-300 text-base font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 hover:border-gray-400 transition-all duration-300"
-									>
-										Learn More
 									</a>
 								</div>
 							</div>
