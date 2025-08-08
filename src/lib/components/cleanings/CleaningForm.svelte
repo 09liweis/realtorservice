@@ -307,6 +307,7 @@
     </div>
 
     <!-- Form Actions -->
+    {#if $user}
     <div class="flex justify-end space-x-3 pt-6 border-t border-gray-200">
       <Button variant="secondary" onclick={handleCancel}>Cancel</Button>
       <Button type="submit">
@@ -318,5 +319,6 @@
         {/if}
       </Button>
     </div>
+    {/if}
   </form>
 </div>
