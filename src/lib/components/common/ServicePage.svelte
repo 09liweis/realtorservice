@@ -6,7 +6,7 @@
 
 <h1 class="text-3xl font-bold text-gray-900 mb-6">{pageTitle}</h1>
 
-<div class="prose max-w-none">
+<div class="prose max-w-none mb-10">
   <p>
     {pageContent}
   </p>
