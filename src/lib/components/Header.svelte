@@ -99,7 +99,7 @@
 
       <!-- Desktop Navigation -->
       <div class="hidden md:flex items-center space-x-8">
-        {#each publicNavigation as item}
+        {#each publicNavigation as item, itemIndex}
           <div class="relative group">
             <Link
               href={item.href}
@@ -117,8 +117,8 @@
             </Link>
             {#if item.submenu}
               <div class="absolute left-0 mt-2 w-56 bg-white rounded-md shadow-lg py-1 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                {#each item.submenu as subItem}
-                  <div class="relative group">
+                {#each item.submenu as subItem, subIndex}
+                  <div class="relative submenu-item-{itemIndex}-{subIndex}">
                     <Link
                       href={subItem.href}
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -131,7 +131,7 @@
                       {/if}
                     </Link>
                     {#if subItem.submenu}
-                      <div class="absolute left-full top-0 ml-1 w-56 bg-white rounded-md shadow-lg py-1 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                      <div class="sub-submenu absolute left-full top-0 ml-1 w-56 bg-white rounded-md shadow-lg py-1 z-50 opacity-0 invisible transition-all duration-200">
                         {#each subItem.submenu as nestedItem}
                           <Link
                             href={nestedItem.href}
@@ -353,3 +353,20 @@
 {#if userMenuOpen}
   <div class="fixed inset-0 z-40" onclick={() => (userMenuOpen = false)}></div>
 {/if}
+
+<style>
+  /* Individual hover targeting for each submenu item */
+  .submenu-item-0-0:hover .sub-submenu,
+  .submenu-item-0-1:hover .sub-submenu,
+  .submenu-item-1-0:hover .sub-submenu,
+  .submenu-item-1-1:hover .sub-submenu {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  /* Alternative approach - more scalable */
+  [class*="submenu-item-"]:hover > .sub-submenu {
+    opacity: 1;
+    visibility: visible;
+  }
+</style>
