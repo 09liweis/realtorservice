@@ -1,8 +1,9 @@
 <script>
-	import Hero from '$lib/components/home/Hero.svelte';
-	import Services from '$lib/components/home/Services.svelte';
-	import About from '$lib/components/home/About.svelte';
-	import Testimonials from '$lib/components/home/Testimonials.svelte';
+	// import Banner from '$lib/components/home/Banner.svelte';
+	import ServiceModules from '$lib/components/home/ServiceModules.svelte';
+	import ForumHighlights from '$lib/components/home/ForumHighlights.svelte';
+	// import MarketInsights from '$lib/components/home/MarketInsights.svelte';
+	import TestimonialsStats from '$lib/components/home/TestimonialsStats.svelte';
 </script>
 
 <svelte:head>
@@ -10,7 +11,8 @@
 	<meta name="description" content="Professional real estate services including open houses, staging, assignment listings, social media management, and offer management." />
 </svelte:head>
 
-<Hero />
-<Services />
-<About />
-<Testimonials />
+<!-- <Banner /> -->
+<ServiceModules />
+<ForumHighlights />
+<!-- <MarketInsights /> -->
+<TestimonialsStats />
