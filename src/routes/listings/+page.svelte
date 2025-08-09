@@ -1,17 +1,527 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
   import { page } from '$app/stores';
-  import ListingListPublic from '$lib/components/listings/ListingListPublic.svelte';
-  import MapboxMap from '$lib/components/MapboxMap.svelte';
-  import { PUBLIC_MAPBOX_API_KEY } from '$env/static/public';
+  import type { Listing } from '$lib/types/listing';
+  import { getPageTitle } from '$lib/types/constant';
+  import ListingCard from '$lib/components/listings/ListingCard.svelte';
+  import { fade, fly } from 'svelte/transition';
+  import { flip } from 'svelte/animate';
 
   export let data;
 
-  $: ({ listings, pagination, filters, filterOptions } = data);
-  $: listing_type = $page.url.searchParams.get('listing_type') || '';
+  let listings: Listing[] = data.listings || [];
+  let filteredListings: Listing[] = [];
+  let loading = false;
+  let error = '';
+
+  // Filter and search state
+  let searchQuery = '';
+  let selectedListingType = '';
+  let selectedPropertyType = '';
+  let selectedLocation = '';
+  let minPrice = '';
+  let maxPrice = '';
+  let bedrooms = '';
+  let bathrooms = '';
+  let sortBy = 'newest';
+  let showFilters = false;
+
+  // Pagination
+  let currentPage = 1;
+  let itemsPerPage = 12;
+  let totalPages = 1;
+
+  // Get unique values for filters
+  $: listingTypes = [...new Set(listings.map(l => l.listing_type).filter(Boolean))];
+  $: propertyTypes = [...new Set(listings.map(l => l.ptype).filter(Boolean))];
+  $: locations = [...new Set(listings.map(l => l.location).filter(Boolean))];
+
+  onMount(() => {
+    // Get initial filter from URL params
+    const urlParams = new URLSearchParams($page.url.search);
+    selectedListingType = urlParams.get('listing_type') || '';
+    applyFilters();
+  });
+
+  // Apply filters and search
+  function applyFilters() {
+    let filtered = [...listings];
+
+    // Search query
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(listing => 
+        listing.project_name?.toLowerCase().includes(query) ||
+        listing.address?.toLowerCase().includes(query) ||
+        listing.location?.toLowerCase().includes(query) ||
+        listing.developer?.toLowerCase().includes(query)
+      );
+    }
+
+    // Listing type filter
+    if (selectedListingType) {
+      filtered = filtered.filter(listing => listing.listing_type === selectedListingType);
+    }
+
+    // Property type filter
+    if (selectedPropertyType) {
+      filtered = filtered.filter(listing => listing.ptype === selectedPropertyType);
+    }
+
+    // Location filter
+    if (selectedLocation) {
+      filtered = filtered.filter(listing => listing.location === selectedLocation);
+    }
+
+    // Price range filter
+    if (minPrice) {
+      filtered = filtered.filter(listing => {
+        const price = parseFloat(listing.asking_price) || 0;
+        return price >= parseFloat(minPrice);
+      });
+    }
+    if (maxPrice) {
+      filtered = filtered.filter(listing => {
+        const price = parseFloat(listing.asking_price) || 0;
+        return price <= parseFloat(maxPrice);
+      });
+    }
+
+    // Bedrooms filter
+    if (bedrooms) {
+      filtered = filtered.filter(listing => listing.bedroom === bedrooms);
+    }
+
+    // Bathrooms filter
+    if (bathrooms) {
+      filtered = filtered.filter(listing => listing.bathroom === bathrooms);
+    }
+
+    // Sort listings
+    filtered.sort((a, b) => {
+      switch (sortBy) {
+        case 'price-low':
+          return (parseFloat(a.asking_price) || 0) - (parseFloat(b.asking_price) || 0);
+        case 'price-high':
+          return (parseFloat(b.asking_price) || 0) - (parseFloat(a.asking_price) || 0);
+        case 'oldest':
+          return new Date(a.created_at || 0).getTime() - new Date(b.created_at || 0).getTime();
+        case 'newest':
+        default:
+          return new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime();
+      }
+    });
+
+    filteredListings = filtered;
+    totalPages = Math.ceil(filteredListings.length / itemsPerPage);
+    currentPage = 1;
+  }
+
+  // Get paginated listings
+  $: paginatedListings = filteredListings.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  // Clear all filters
+  function clearFilters() {
+    searchQuery = '';
+    selectedListingType = '';
+    selectedPropertyType = '';
+    selectedLocation = '';
+    minPrice = '';
+    maxPrice = '';
+    bedrooms = '';
+    bathrooms = '';
+    sortBy = 'newest';
+    applyFilters();
+  }
+
+  // Handle page change
+  function goToPage(page: number) {
+    currentPage = page;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Watch for filter changes
+  $: {
+    if (searchQuery !== undefined) applyFilters();
+  }
+  $: {
+    if (selectedListingType !== undefined) applyFilters();
+  }
+  $: {
+    if (selectedPropertyType !== undefined) applyFilters();
+  }
+  $: {
+    if (selectedLocation !== undefined) applyFilters();
+  }
+  $: {
+    if (minPrice !== undefined) applyFilters();
+  }
+  $: {
+    if (maxPrice !== undefined) applyFilters();
+  }
+  $: {
+    if (bedrooms !== undefined) applyFilters();
+  }
+  $: {
+    if (bathrooms !== undefined) applyFilters();
+  }
+  $: {
+    if (sortBy !== undefined) applyFilters();
+  }
+
+  function editListing(listing: Listing) {
+    // This function is required by ListingCard but not used in public view
+  }
 </script>
 
-<h1 class="text-center font-bold text-3xl mt-4">{listing_type || 'All Listings'}</h1>
-<div class="max-w-7xl mx-auto mt-20 grid grid-cols-1 md:grid-cols-2 gap-4">
-  <MapboxMap accessToken={PUBLIC_MAPBOX_API_KEY} {listings} />
-  <ListingListPublic {listings} />
-</div>
+<svelte:head>
+  <title>{getPageTitle('Property Listings')}</title>
+  <meta name="description" content="Browse assignment sales and coming soon property listings. Find your next investment opportunity with detailed property information and professional real estate services." />
+</svelte:head>
+
+<!-- Hero Section -->
+<section class="bg-primary text-white py-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center" in:fade={{ duration: 600, delay: 200 }}>
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">
+        Property Listings
+      </h1>
+      <p class="text-xl text-blue-100 max-w-3xl mx-auto mb-8">
+        Discover assignment sales and coming soon properties with professional real estate services
+      </p>
+      
+      <!-- Quick Stats -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-2xl mx-auto">
+        <div class="bg-primary rounded-lg p-4">
+          <div class="text-2xl font-bold">{listings.length}</div>
+          <div class="text-blue-100 text-sm">Total Listings</div>
+        </div>
+        <div class="bg-primary rounded-lg p-4">
+          <div class="text-2xl font-bold">{listings.filter(l => l.listing_type === 'Assignment Sale').length}</div>
+          <div class="text-blue-100 text-sm">Assignment Sales</div>
+        </div>
+        <div class="bg-primary rounded-lg p-4">
+          <div class="text-2xl font-bold">{listings.filter(l => l.listing_type === 'Coming Soon').length}</div>
+          <div class="text-blue-100 text-sm">Coming Soon</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Main Content -->
+<section class="py-12 bg-gray-50 min-h-screen">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Search and Filter Bar -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8" in:fly={{ y: 20, duration: 600, delay: 400 }}>
+      <!-- Main Search -->
+      <div class="flex flex-col lg:flex-row gap-4 mb-6">
+        <div class="flex-1">
+          <div class="relative">
+            <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+            <input
+              type="text"
+              bind:value={searchQuery}
+              placeholder="Search by project name, address, location, or developer..."
+              class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors duration-200"
+            />
+          </div>
+        </div>
+        
+        <!-- Quick Filters -->
+        <div class="flex gap-3">
+          <select
+            bind:value={selectedListingType}
+            class="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-white"
+          >
+            <option value="">All Types</option>
+            {#each listingTypes as type}
+              <option value={type}>{type}</option>
+            {/each}
+          </select>
+          
+          <select
+            bind:value={sortBy}
+            class="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-white"
+          >
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="price-low">Price: Low to High</option>
+            <option value="price-high">Price: High to Low</option>
+          </select>
+          
+          <button
+            on:click={() => showFilters = !showFilters}
+            class="px-4 py-3 bg-primary text-white rounded-lg hover:bg-primary-hover transition-colors duration-200 flex items-center space-x-2"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+            </svg>
+            <span>Filters</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Advanced Filters (Collapsible) -->
+      {#if showFilters}
+        <div class="border-t border-gray-200 pt-6" in:fly={{ y: -20, duration: 300 }}>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Property Type</label>
+              <select
+                bind:value={selectedPropertyType}
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+              >
+                <option value="">All Types</option>
+                {#each propertyTypes as type}
+                  <option value={type}>{type}</option>
+                {/each}
+              </select>
+            </div>
+            
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Location</label>
+              <select
+                bind:value={selectedLocation}
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+              >
+                <option value="">All Locations</option>
+                {#each locations as location}
+                  <option value={location}>{location}</option>
+                {/each}
+              </select>
+            </div>
+            
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Bedrooms</label>
+              <select
+                bind:value={bedrooms}
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+              >
+                <option value="">Any</option>
+                <option value="1">1+</option>
+                <option value="2">2+</option>
+                <option value="3">3+</option>
+                <option value="4">4+</option>
+                <option value="5">5+</option>
+              </select>
+            </div>
+            
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Bathrooms</label>
+              <select
+                bind:value={bathrooms}
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+              >
+                <option value="">Any</option>
+                <option value="1">1+</option>
+                <option value="2">2+</option>
+                <option value="3">3+</option>
+                <option value="4">4+</option>
+              </select>
+            </div>
+          </div>
+          
+          <!-- Price Range -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Min Price</label>
+              <input
+                type="number"
+                bind:value={minPrice}
+                placeholder="No minimum"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Max Price</label>
+              <input
+                type="number"
+                bind:value={maxPrice}
+                placeholder="No maximum"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+              />
+            </div>
+          </div>
+          
+          <!-- Filter Actions -->
+          <div class="flex justify-between items-center">
+            <button
+              on:click={clearFilters}
+              class="text-sm text-gray-600 hover:text-gray-800 underline"
+            >
+              Clear all filters
+            </button>
+            <div class="text-sm text-gray-600">
+              Showing {filteredListings.length} of {listings.length} properties
+            </div>
+          </div>
+        </div>
+      {/if}
+    </div>
+
+    <!-- Results Header -->
+    <div class="flex items-center justify-between mb-8" in:fly={{ y: 20, duration: 600, delay: 600 }}>
+      <div>
+        <h2 class="text-2xl font-bold text-gray-900">
+          {filteredListings.length} Properties Found
+        </h2>
+        <p class="text-gray-600 mt-1">
+          {#if selectedListingType}
+            Showing {selectedListingType} listings
+          {:else}
+            Showing all available listings
+          {/if}
+        </p>
+      </div>
+      
+      <!-- View Toggle -->
+      <div class="flex items-center space-x-2">
+        <span class="text-sm text-gray-600">View:</span>
+        <div class="flex bg-gray-100 rounded-lg p-1">
+          <button class="px-3 py-1 bg-white text-gray-900 rounded-md shadow-sm text-sm font-medium">
+            Grid
+          </button>
+          <button class="px-3 py-1 text-gray-600 text-sm font-medium hover:text-gray-900">
+            List
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    {#if loading}
+      <div class="flex justify-center py-12">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      </div>
+    {:else if error}
+      <!-- Error State -->
+      <div class="bg-red-50 border border-red-200 text-red-700 px-6 py-4 rounded-lg mb-8">
+        <div class="flex items-center">
+          <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+          </svg>
+          {error}
+        </div>
+      </div>
+    {:else if filteredListings.length === 0}
+      <!-- Empty State -->
+      <div class="text-center py-16 bg-white rounded-xl shadow-sm border border-gray-200" in:fade={{ duration: 600, delay: 400 }}>
+        <div class="mx-auto h-16 w-16 bg-gray-100 rounded-full flex items-center justify-center mb-6">
+          <svg class="h-8 w-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-900 mb-2">No properties found</h3>
+        <p class="text-gray-600 mb-6">
+          Try adjusting your search criteria or clearing filters to see more results.
+        </p>
+        <button
+          on:click={clearFilters}
+          class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-primary hover:bg-primary-hover transition-colors duration-200"
+        >
+          Clear Filters
+        </button>
+      </div>
+    {:else}
+      <!-- Listings Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
+        {#each paginatedListings as listing, index (listing.id)}
+          <div
+            in:fly={{ y: 30, duration: 400, delay: index * 50 }}
+            animate:flip={{ duration: 300 }}
+          >
+            <ListingCard {listing} {editListing} />
+          </div>
+        {/each}
+      </div>
+
+      <!-- Pagination -->
+      {#if totalPages > 1}
+        <div class="flex items-center justify-center space-x-2" in:fade={{ duration: 400, delay: 800 }}>
+          <!-- Previous Button -->
+          <button
+            on:click={() => goToPage(currentPage - 1)}
+            disabled={currentPage === 1}
+            class="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+          </button>
+
+          <!-- Page Numbers -->
+          {#each Array(Math.min(totalPages, 7)) as _, i}
+            {@const pageNum = i + 1}
+            <button
+              on:click={() => goToPage(pageNum)}
+              class="px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 {
+                currentPage === pageNum
+                  ? 'bg-primary text-white'
+                  : 'text-gray-700 bg-white border border-gray-300 hover:bg-gray-50'
+              }"
+            >
+              {pageNum}
+            </button>
+          {/each}
+
+          <!-- Next Button -->
+          <button
+            on:click={() => goToPage(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            class="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Pagination Info -->
+        <div class="text-center mt-4 text-sm text-gray-600">
+          Showing {((currentPage - 1) * itemsPerPage) + 1} to {Math.min(currentPage * itemsPerPage, filteredListings.length)} of {filteredListings.length} properties
+        </div>
+      {/if}
+    {/if}
+  </div>
+</section>
+
+<!-- Call to Action -->
+<section class="py-16 bg-primary">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <div in:fade={{ duration: 600, delay: 200 }}>
+      <h2 class="text-3xl font-bold text-white mb-4">
+        Ready to List Your Property?
+      </h2>
+      <p class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+        Join our platform and showcase your properties to qualified buyers with our professional services.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a
+          href="/register"
+          class="inline-flex items-center justify-center px-8 py-4 border border-transparent text-lg font-semibold rounded-xl text-primary bg-white hover:bg-gray-50 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+        >
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+          </svg>
+          Get Started Today
+        </a>
+        <a
+          href="/dashboard"
+          class="inline-flex items-center justify-center px-8 py-4 border-2 border-white text-lg font-semibold rounded-xl text-white hover:bg-white hover:text-primary transition-all duration-300 transform hover:scale-105"
+        >
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 00-2-2z"></path>
+          </svg>
+          Access Dashboard
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

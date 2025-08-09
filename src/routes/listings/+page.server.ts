@@ -2,7 +2,6 @@ import { getListings } from '$lib/supabase';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ url }) => {
-  const page = parseInt(url.searchParams.get('page') || '1');
   const search = url.searchParams.get('search') || '';
   const listing_type = url.searchParams.get('listing_type') || '';
   const location = url.searchParams.get('location') || '';
@@ -10,6 +9,7 @@ export const load: PageServerLoad = async ({ url }) => {
   const maxPrice = url.searchParams.get('maxPrice') || '';
   const bedrooms = url.searchParams.get('bedrooms') || '';
   const bathrooms = url.searchParams.get('bathrooms') || '';
+  const page = parseInt(url.searchParams.get('page')||'1');
 
   const limit = 12; // Items per page
   const offset = (page - 1) * limit;
