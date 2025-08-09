@@ -41,22 +41,22 @@
         { name: "Coming Soon Listing", href: "/listings?listing_type=Coming Soon" }
       ]
     },
-    // { 
-    //   name: "Realtor Tools", 
-    //   submenu: [
-    //     { name: "Mortgage Calculator", href: "/mortgage-calculator" },
-    //     { name: "Open House Registration Tool", href: "/realtor-tools/open-house" },
-    //     { name: "Offer Management Tool", href: "/realtor-tools/offer-management" },
-    //     { name: "Downloadable Tools", href: "/realtor-tools/downloadable",
-    //       submenu: [
-    //         { name: "New Realtor Starter Kit", href: "/realtor-tools/downloadable/starter-kit" },
-    //         { name: "Buyer Presentation Package", href: "/realtor-tools/downloadable/buyer-package" },
-    //         { name: "Seller Presentation Package", href: "/realtor-tools/downloadable/seller-package" },
-    //         { name: "Handbook for Landlord/Buyer/Seller", href: "/realtor-tools/downloadable/handbook" }
-    //       ]
-    //     }
-    //   ]
-    // },
+    { 
+      name: "Realtor Tools", 
+      submenu: [
+        { name: "Mortgage Calculator", href: "/mortgage-calculator" },
+        { name: "Open House Registration Tool", href: "/realtor-tools/open-house" },
+        { name: "Offer Management Tool", href: "/realtor-tools/offer-management" },
+        { name: "Downloadable Tools", href: "/realtor-tools/downloadable",
+          // submenu: [
+          //   { name: "New Realtor Starter Kit", href: "/realtor-tools/downloadable/starter-kit" },
+          //   { name: "Buyer Presentation Package", href: "/realtor-tools/downloadable/buyer-package" },
+          //   { name: "Seller Presentation Package", href: "/realtor-tools/downloadable/seller-package" },
+          //   { name: "Handbook for Landlord/Buyer/Seller", href: "/realtor-tools/downloadable/handbook" }
+          // ]
+        }
+      ]
+    },
     { 
       name: "Market Insights", 
       submenu: [
