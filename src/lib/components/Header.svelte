@@ -57,15 +57,15 @@
     //     }
     //   ]
     // },
-    // { 
-    //   name: "Market Insights", 
-    //   submenu: [
-    //     { name: "Bank of Canada Policy Rate", href: "/market-insights/bank-rate" },
-    //     { name: "Mortgage Rate", href: "/market-insights/mortgage-rate" },
-    //     { name: "Market Stats Update", href: "/market-insights/market-stats" },
-    //     { name: "Policy Update", href: "/market-insights/policy-update" }
-    //   ]
-    // }
+    { 
+      name: "Market Insights", 
+      submenu: [
+        { name: "Bank of Canada Policy Rate", href: "/market-insights/bank-rate" },
+        { name: "Mortgage Rate", href: "/market-insights/mortgage-rate" },
+        { name: "Market Stats Update", href: "/market-insights/market-stats" },
+        { name: "Policy Update", href: "/market-insights/policy-update" }
+      ]
+    }
   ];
 
   // Navigation items for logged-in users
