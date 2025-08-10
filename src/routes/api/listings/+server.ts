@@ -7,6 +7,7 @@ export const GET: RequestHandler = async ({ request, url }) => {
   try {
 
     const isPublic = url.searchParams.get('isPublic');
+    const listing_type = url.searchParams.get('listing_type');
     let user_id = '';
     let isAdmin = false;
 
@@ -23,6 +24,9 @@ export const GET: RequestHandler = async ({ request, url }) => {
     let query = supabase.from('listings').select('*').order('updated_at',{ascending:false});
     if (!isPublic && !isAdmin) {
       query = query.eq('user_id',user_id)
+    }
+    if (listing_type) {
+      query = query.eq('listing_type',listing_type);
     }
     const { data, error } = await query;
 

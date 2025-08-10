@@ -39,8 +39,10 @@
   $: locations = [...new Set(listings.map(l => l.location).filter(Boolean))];
 
   const fetchListings = async() => {
+    let baseAPI = '/api/listings?isPublic=1';
+    if (filters.selectedListingType) baseAPI += `&listing_type=${filters.selectedListingType}`;
     const {data: {listings:listingsData, error}} = await sendRequest({
-      url: '/api/listings?isPublic=1',
+      url: baseAPI,
       method: 'GET'
     });
     if (error) throw error;
@@ -98,7 +100,8 @@
 
     const newUrl = `${$page.url.pathname}?${urlParams.toString()}`;
     if (typeof window !== 'undefined') {
-      goto(newUrl);
+      window.history.replaceState({}, '', newUrl);
+      fetchListings();
     }
 
     totalPages = Math.ceil(listings.length / itemsPerPage);
