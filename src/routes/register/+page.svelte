@@ -14,6 +14,9 @@
     }
   }
 
+  const urlParams = new URLSearchParams(window.location.search);
+  const redirectUrl = urlParams.get('redirect');
+
   // Form data
   let firstName = '';
   let middleName = '';
@@ -82,6 +85,10 @@
         } catch (couponError) {
           console.error('Error applying welcome coupons:', couponError);
           // Don't fail registration if coupon application fails
+        }
+
+        if (redirectUrl) {
+          localStorage.setItem('redirect', redirectUrl);
         }
         if (successMessage) {
           setTimeout(()=> {
