@@ -198,9 +198,10 @@
             placeholder="Password"
             autocomplete="new-password"
             required={true}
-            minlength="6"
+            minlength={8}
             bind:value={password}
           />
+          <p class="text-xs text-gray-500 mt-1">Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character</p>
 
         </div>
 
