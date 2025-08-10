@@ -7,6 +7,7 @@
 
 <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
   <ServicePage
+    serviceImage='https://images.pexels.com/photos/257904/pexels-photo-257904.jpeg?auto=compress&cs=tinysrgb&w=800'
     callText="Action!"
     pageTitle="Video Editing Service"
     pageContent="Turn raw footage into powerful content. As part of our Social Media & Branding services, our Video Editing service helps Realtors create polished, engaging videos that capture attention and build trust. Whether it's listing tours, agent promos, or social media clips, we handle the editing, transitions, graphics, and sound—so your videos look sharp, on-brand, and ready to impress."
