@@ -31,6 +31,7 @@
   let error = '';
   let loading = false;
   let successMessage = '';
+  let showForm = true;
 
   // Handle form submission
   async function handleRegister() {
@@ -76,6 +77,10 @@
         if (redirectUrl) {
           localStorage.setItem('redirect', redirectUrl);
         }
+
+        // Hide form and show success message
+        showForm = false;
+        successMessage = 'Registration successful! Please check your email to verify your account.';
       }
     } catch (err:any) {
       console.error('Registration error:', err);
@@ -104,99 +109,101 @@
       </p>
     </div>
     
-    <form class="mt-8 space-y-5" on:submit|preventDefault={handleRegister}>
-      <div class="space-y-4">
-        <div class="grid gap-4 grid-cols-2">
-          <Input
-            id="first-name"
-            name="first-name"
-            type="text"
-            label="First Name"
-            placeholder="First Name"
-            required={true}
-            bind:value={firstName}
-          />
+    {#if showForm}
+      <form class="mt-8 space-y-5" on:submit|preventDefault={handleRegister}>
+        <div class="space-y-4">
+          <div class="grid gap-4 grid-cols-2">
+            <Input
+              id="first-name"
+              name="first-name"
+              type="text"
+              label="First Name"
+              placeholder="First Name"
+              required={true}
+              bind:value={firstName}
+            />
+            
+            <Input
+              id="middle-name"
+              name="middle-name"
+              type="text"
+              label="Middle Name (Optional)"
+              placeholder="Middle Name"
+              required={false}
+              bind:value={middleName}
+            />
+            
+            <Input
+              id="last-name"
+              name="last-name"
+              type="text"
+              label="Last Name"
+              placeholder="Last Name"
+              required={true}
+              bind:value={lastName}
+            />
+          </div>
           
           <Input
-            id="middle-name"
-            name="middle-name"
-            type="text"
-            label="Middle Name (Optional)"
-            placeholder="Middle Name"
-            required={false}
-            bind:value={middleName}
+            id="email-address"
+            name="email"
+            type="email"
+            label="Email Address"
+            placeholder="Email Address"
+            autocomplete="email"
+            required={true}
+            bind:value={email}
           />
+
+          <Input
+            id="phone"
+            name="phone"
+            type="phone"
+            label="Phone Number"
+            placeholder="Phone Number"
+            autocomplete="phone"
+            required={true}
+            bind:value={phone}
+          />
+
+          <div class="grid gap-4 grid-cols-2">
+          <Input
+            id="brokerage"
+            name="brokerage"
+            type="brokerage"
+            label="Brokerage"
+            placeholder="Brokerage"
+            required={true}
+            bind:value={brokerage}
+          />
+
+          <Input
+            id="reco_number"
+            name="reco_number"
+            type="reco_number"
+            label="Reco Number"
+            placeholder="Reco Number"
+            autocomplete="reco_number"
+            required={true}
+            bind:value={reco_number}
+          />
+          <p class="text-xs text-gray-500 mt-1">RECO number will be verified.</p>
+          </div>
           
           <Input
-            id="last-name"
-            name="last-name"
-            type="text"
-            label="Last Name"
-            placeholder="Last Name"
+            id="password"
+            name="password"
+            type="password"
+            label="Password"
+            placeholder="Password"
+            autocomplete="new-password"
             required={true}
-            bind:value={lastName}
+            minlength="6"
+            bind:value={password}
           />
+
         </div>
-        
-        <Input
-          id="email-address"
-          name="email"
-          type="email"
-          label="Email Address"
-          placeholder="Email Address"
-          autocomplete="email"
-          required={true}
-          bind:value={email}
-        />
-
-        <Input
-          id="phone"
-          name="phone"
-          type="phone"
-          label="Phone Number"
-          placeholder="Phone Number"
-          autocomplete="phone"
-          required={true}
-          bind:value={phone}
-        />
-
-        <div class="grid gap-4 grid-cols-2">
-        <Input
-          id="brokerage"
-          name="brokerage"
-          type="brokerage"
-          label="Brokerage"
-          placeholder="Brokerage"
-          required={true}
-          bind:value={brokerage}
-        />
-
-        <Input
-          id="reco_number"
-          name="reco_number"
-          type="reco_number"
-          label="Reco Number"
-          placeholder="Reco Number"
-          autocomplete="reco_number"
-          required={true}
-          bind:value={reco_number}
-        />
-        <p class="text-xs text-gray-500 mt-1">RECO number will be verified.</p>
-        </div>
-        
-        <Input
-          id="password"
-          name="password"
-          type="password"
-          label="Password"
-          placeholder="Password"
-          autocomplete="new-password"
-          required={true}
-          minlength="6"
-          bind:value={password}
-        />
-
-      </div>
+      {/if}
 
       {#if successMessage}
         <div class="text-green-600 text-sm text-center p-3 bg-green-50 rounded-lg border border-green-200 transition-all duration-300">
@@ -206,7 +213,6 @@
             </svg>
             {successMessage}
           </div>
-          <p class="text-xs mt-1 text-green-500">Redirecting to login...</p>
         </div>
       {/if}
 
