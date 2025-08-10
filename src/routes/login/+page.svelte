@@ -37,9 +37,11 @@
 
       if (signInError) throw signInError;
 
-      // Login successful, redirect to dashboard
+      // Login successful, redirect to dashboard or specified redirect URL
       if (data) {
-        goto('/dashboard');
+        const urlParams = new URLSearchParams(window.location.search);
+        const redirectUrl = urlParams.get('redirect');
+        goto(redirectUrl || '/dashboard');
       }
     } catch (err) {
       console.error('Login error:', err);
