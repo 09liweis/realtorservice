@@ -14,6 +14,9 @@
     }
   }
 
+  const urlParams = new URLSearchParams(window.location.search);
+  const redirectUrl = urlParams.get('redirect');
+
   // Form data
   let email = '';
   let password = '';
@@ -39,8 +42,6 @@
 
       // Login successful, redirect to dashboard or specified redirect URL
       if (data) {
-        const urlParams = new URLSearchParams(window.location.search);
-        const redirectUrl = urlParams.get('redirect');
         goto(redirectUrl || '/dashboard');
       }
     } catch (err) {
@@ -64,7 +65,7 @@
       </h2>
       <p class="mt-3 text-center text-sm text-gray-600">
         or
-        <Link href="/register">
+        <Link href="/register?redirect={redirectUrl}">
           Create new account
         </Link>
       </p>
