@@ -1,4 +1,7 @@
 <script>
+    import Link from "$lib/components/Link.svelte";
+    import { user } from "$lib/stores/auth";
+
   // 开放日服务功能列表
   const features = [
     {
@@ -30,5 +33,7 @@
         <p class="text-gray-600 mt-2">{feature.description}</p>
       </div>
     {/each}
+
+    <Link href={$user ? '/dashboard/openhouses' : '/login?redirect=/dashboard/openhouses'} linkType="btn" >Create Open House</Link>
   </div>
 </main>
