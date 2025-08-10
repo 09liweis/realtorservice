@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { autoApplyWelcomeCoupons } from '$lib/supabase';
   import { goto } from '$app/navigation';
   import { user } from '$lib/stores/auth';
   import { onMount } from 'svelte';
@@ -73,20 +72,6 @@
         })
         
         if (UserProfileError) throw UserProfileError;
-
-        // Auto-apply welcome coupons
-        try {
-          const { data: couponData, error: couponError } = await autoApplyWelcomeCoupons(data.user.id);
-          
-          if (couponError) {
-            console.error('Error applying welcome coupons:', couponError);
-          } else if (couponData?.appliedCoupons?.length > 0) {
-            successMessage = `Welcome! You've received ${couponData.totalCreditsAdded} credits from ${couponData.appliedCoupons.length} welcome coupon${couponData.appliedCoupons.length > 1 ? 's' : ''}! Please confirm your email`;
-          }
-        } catch (couponError) {
-          console.error('Error applying welcome coupons:', couponError);
-          // Don't fail registration if coupon application fails
-        }
 
         if (redirectUrl) {
           localStorage.setItem('redirect', redirectUrl);
