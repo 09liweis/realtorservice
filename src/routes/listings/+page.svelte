@@ -6,24 +6,26 @@
   import ListingCard from '$lib/components/listings/ListingCard.svelte';
   import { fade, fly } from 'svelte/transition';
   import { flip } from 'svelte/animate';
+    import { goto } from '$app/navigation';
+    import { sendRequest } from '$lib/helper';
 
-  export let data;
-
-  let listings: Listing[] = data.listings || [];
+  let listings:Listing[] = [];
   let filteredListings: Listing[] = [];
   let loading = false;
   let error = '';
 
   // Filter and search state
-  let searchQuery = '';
-  let selectedListingType = '';
-  let selectedPropertyType = '';
-  let selectedLocation = '';
-  let minPrice = '';
-  let maxPrice = '';
-  let bedrooms = '';
-  let bathrooms = '';
-  let sortBy = 'newest';
+  let filters = {
+    searchQuery: '',
+    selectedListingType: '',
+    selectedPropertyType: '',
+    selectedLocation: '',
+    minPrice: '',
+    maxPrice: '',
+    bedrooms: '',
+    bathrooms: '',
+    sortBy: 'newest'
+  };
   let showFilters = false;
 
   // Pagination
@@ -32,74 +34,44 @@
   let totalPages = 1;
 
   // Get unique values for filters
-  $: listingTypes = [...new Set(listings.map(l => l.listing_type).filter(Boolean))];
+  const listingTypes = ['Assignment Sale','Coming Soon'];
   $: propertyTypes = [...new Set(listings.map(l => l.ptype).filter(Boolean))];
   $: locations = [...new Set(listings.map(l => l.location).filter(Boolean))];
 
+  const fetchListings = async() => {
+    const {data: {listings:listingsData, error}} = await sendRequest({
+      url: '/api/listings?isPublic=1',
+      method: 'GET'
+    });
+    if (error) throw error;
+    listings = listingsData || [];
+  }
+
   onMount(() => {
-    // Get initial filter from URL params
+    // Get initial filters from URL params
     const urlParams = new URLSearchParams($page.url.search);
-    selectedListingType = urlParams.get('listing_type') || '';
-    applyFilters();
+    filters = {
+      searchQuery: urlParams.get('search') || '',
+      selectedListingType: urlParams.get('listing_type') || '',
+      selectedPropertyType: urlParams.get('property_type') || '',
+      selectedLocation: urlParams.get('location') || '',
+      minPrice: urlParams.get('min_price') || '',
+      maxPrice: urlParams.get('max_price') || '',
+      bedrooms: urlParams.get('bedrooms') || '',
+      bathrooms: urlParams.get('bathrooms') || '',
+      sortBy: urlParams.get('sort_by') || 'newest'
+    };
+
+    fetchListings();
+
+    
   });
 
   // Apply filters and search
   function applyFilters() {
-    let filtered = [...listings];
-
-    // Search query
-    if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(listing => 
-        listing.project_name?.toLowerCase().includes(query) ||
-        listing.address?.toLowerCase().includes(query) ||
-        listing.location?.toLowerCase().includes(query) ||
-        listing.developer?.toLowerCase().includes(query)
-      );
-    }
-
-    // Listing type filter
-    if (selectedListingType) {
-      filtered = filtered.filter(listing => listing.listing_type === selectedListingType);
-    }
-
-    // Property type filter
-    if (selectedPropertyType) {
-      filtered = filtered.filter(listing => listing.ptype === selectedPropertyType);
-    }
-
-    // Location filter
-    if (selectedLocation) {
-      filtered = filtered.filter(listing => listing.location === selectedLocation);
-    }
-
-    // Price range filter
-    if (minPrice) {
-      filtered = filtered.filter(listing => {
-        const price = parseFloat(listing.asking_price) || 0;
-        return price >= parseFloat(minPrice);
-      });
-    }
-    if (maxPrice) {
-      filtered = filtered.filter(listing => {
-        const price = parseFloat(listing.asking_price) || 0;
-        return price <= parseFloat(maxPrice);
-      });
-    }
-
-    // Bedrooms filter
-    if (bedrooms) {
-      filtered = filtered.filter(listing => listing.bedroom === bedrooms);
-    }
-
-    // Bathrooms filter
-    if (bathrooms) {
-      filtered = filtered.filter(listing => listing.bathroom === bathrooms);
-    }
-
     // Sort listings
-    filtered.sort((a, b) => {
-      switch (sortBy) {
+    listings.sort((a, b) => {
+      switch (filters.sortBy) {
         case 'price-low':
           return (parseFloat(a.asking_price) || 0) - (parseFloat(b.asking_price) || 0);
         case 'price-high':
@@ -112,28 +84,40 @@
       }
     });
 
-    filteredListings = filtered;
-    totalPages = Math.ceil(filteredListings.length / itemsPerPage);
+    // Update URL with filter parameters
+    const urlParams = new URLSearchParams();
+    if (filters.searchQuery) urlParams.set('search', filters.searchQuery);
+    if (filters.selectedListingType) urlParams.set('listing_type', filters.selectedListingType);
+    if (filters.selectedPropertyType) urlParams.set('property_type', filters.selectedPropertyType);
+    if (filters.selectedLocation) urlParams.set('location', filters.selectedLocation);
+    if (filters.minPrice) urlParams.set('min_price', filters.minPrice);
+    if (filters.maxPrice) urlParams.set('max_price', filters.maxPrice);
+    if (filters.bedrooms) urlParams.set('bedrooms', filters.bedrooms);
+    if (filters.bathrooms) urlParams.set('bathrooms', filters.bathrooms);
+    if (filters.sortBy) urlParams.set('sort_by', filters.sortBy);
+
+    const newUrl = `${$page.url.pathname}?${urlParams.toString()}`;
+    if (typeof window !== 'undefined') {
+      goto(newUrl);
+    }
+
+    totalPages = Math.ceil(listings.length / itemsPerPage);
     currentPage = 1;
   }
 
-  // Get paginated listings
-  $: paginatedListings = filteredListings.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-
   // Clear all filters
   function clearFilters() {
-    searchQuery = '';
-    selectedListingType = '';
-    selectedPropertyType = '';
-    selectedLocation = '';
-    minPrice = '';
-    maxPrice = '';
-    bedrooms = '';
-    bathrooms = '';
-    sortBy = 'newest';
+    filters = {
+      searchQuery: '',
+      selectedListingType: '',
+      selectedPropertyType: '',
+      selectedLocation: '',
+      minPrice: '',
+      maxPrice: '',
+      bedrooms: '',
+      bathrooms: '',
+      sortBy: 'newest'
+    };
     applyFilters();
   }
 
@@ -145,31 +129,7 @@
 
   // Watch for filter changes
   $: {
-    if (searchQuery !== undefined) applyFilters();
-  }
-  $: {
-    if (selectedListingType !== undefined) applyFilters();
-  }
-  $: {
-    if (selectedPropertyType !== undefined) applyFilters();
-  }
-  $: {
-    if (selectedLocation !== undefined) applyFilters();
-  }
-  $: {
-    if (minPrice !== undefined) applyFilters();
-  }
-  $: {
-    if (maxPrice !== undefined) applyFilters();
-  }
-  $: {
-    if (bedrooms !== undefined) applyFilters();
-  }
-  $: {
-    if (bathrooms !== undefined) applyFilters();
-  }
-  $: {
-    if (sortBy !== undefined) applyFilters();
+    if (filters !== undefined) applyFilters();
   }
 
   function editListing(listing: Listing) {
@@ -183,13 +143,13 @@
 </svelte:head>
 
 <!-- Hero Section -->
-<section class="bg-primary text-white py-16">
+<section class="bg-primary text-white py-8">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center" in:fade={{ duration: 600, delay: 200 }}>
       <h1 class="text-4xl md:text-5xl font-bold mb-4">
         Property Listings
       </h1>
-      <p class="text-xl text-blue-100 max-w-3xl mx-auto mb-8">
+      <p class="text-xl text-blue-100 max-w-3xl mx-auto mb-4">
         Discover assignment sales and coming soon properties with professional real estate services
       </p>
       
@@ -227,7 +187,7 @@
             </svg>
             <input
               type="text"
-              bind:value={searchQuery}
+              bind:value={filters.searchQuery}
               placeholder="Search by project name, address, location, or developer..."
               class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors duration-200"
             />
@@ -237,7 +197,7 @@
         <!-- Quick Filters -->
         <div class="flex gap-3">
           <select
-            bind:value={selectedListingType}
+            bind:value={filters.selectedListingType}
             class="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-white"
           >
             <option value="">All Types</option>
@@ -247,7 +207,7 @@
           </select>
           
           <select
-            bind:value={sortBy}
+            bind:value={filters.sortBy}
             class="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-white"
           >
             <option value="newest">Newest First</option>
@@ -275,7 +235,7 @@
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Property Type</label>
               <select
-                bind:value={selectedPropertyType}
+                bind:value={filters.selectedPropertyType}
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
               >
                 <option value="">All Types</option>
@@ -288,7 +248,7 @@
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Location</label>
               <select
-                bind:value={selectedLocation}
+                bind:value={filters.selectedLocation}
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
               >
                 <option value="">All Locations</option>
@@ -301,7 +261,7 @@
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Bedrooms</label>
               <select
-                bind:value={bedrooms}
+                bind:value={filters.bedrooms}
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
               >
                 <option value="">Any</option>
@@ -316,7 +276,7 @@
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Bathrooms</label>
               <select
-                bind:value={bathrooms}
+                bind:value={filters.bathrooms}
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
               >
                 <option value="">Any</option>
@@ -334,7 +294,7 @@
               <label class="block text-sm font-medium text-gray-700 mb-1">Min Price</label>
               <input
                 type="number"
-                bind:value={minPrice}
+                bind:value={filters.minPrice}
                 placeholder="No minimum"
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
               />
@@ -343,7 +303,7 @@
               <label class="block text-sm font-medium text-gray-700 mb-1">Max Price</label>
               <input
                 type="number"
-                bind:value={maxPrice}
+                bind:value={filters.maxPrice}
                 placeholder="No maximum"
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
               />
@@ -370,11 +330,11 @@
     <div class="flex items-center justify-between mb-8" in:fly={{ y: 20, duration: 600, delay: 600 }}>
       <div>
         <h2 class="text-2xl font-bold text-gray-900">
-          {filteredListings.length} Properties Found
+          {listings.length} Properties Found
         </h2>
         <p class="text-gray-600 mt-1">
-          {#if selectedListingType}
-            Showing {selectedListingType} listings
+          {#if filters.selectedListingType}
+            Showing {filters.selectedListingType} listings
           {:else}
             Showing all available listings
           {/if}
@@ -410,7 +370,7 @@
           {error}
         </div>
       </div>
-    {:else if filteredListings.length === 0}
+    {:else if listings.length === 0}
       <!-- Empty State -->
       <div class="text-center py-16 bg-white rounded-xl shadow-sm border border-gray-200" in:fade={{ duration: 600, delay: 400 }}>
         <div class="mx-auto h-16 w-16 bg-gray-100 rounded-full flex items-center justify-center mb-6">
@@ -432,7 +392,7 @@
     {:else}
       <!-- Listings Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
-        {#each paginatedListings as listing, index (listing.id)}
+        {#each listings as listing, index (listing.id)}
           <div
             in:fly={{ y: 30, duration: 400, delay: index * 50 }}
             animate:flip={{ duration: 300 }}
