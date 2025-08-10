@@ -1,4 +1,7 @@
 <script>
+    import Link from "$lib/components/Link.svelte";
+    import { user } from "$lib/stores/auth";
+
   // 报价管理服务功能列表
   const features = [
     {
@@ -30,5 +33,7 @@
         <p class="text-gray-600 mt-2">{feature.description}</p>
       </div>
     {/each}
+
+    <Link href={$user ? '/dashboard/offers' : '/login?redirect=/dashboard/offers'} linkType="btn" >Create Property</Link>
   </div>
 </main>

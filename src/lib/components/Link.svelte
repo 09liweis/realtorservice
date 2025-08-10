@@ -11,6 +11,7 @@
   export let className = "";
   export let hoverClass = "hover:scale-105";
   export let onclick = () => {};
+  export let linkType = '';
 
   // Automatically add noopener noreferrer for external links
 </script>
@@ -18,7 +19,7 @@
 <a 
   {href}
   onclick={onclick} 
-  class="font-medium text-primary {hoverClass} transition-transform duration-300 flex items-center  {className}" 
+  class="{linkType === 'btn' ? 'p-4 rounded-md bg-primary text-white' : 'font-medium text-primary transition-transform duration-300 flex items-center'} {className} {hoverClass} "
 >
   <slot />
 </a>
