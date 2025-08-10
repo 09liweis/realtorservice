@@ -1,6 +1,7 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
   import { user } from '$lib/stores/auth';
+  import { page } from '$app/stores';
   import { onMount } from 'svelte';
   import Button from '$lib/components/common/Button.svelte';
   import Input from '$lib/components/common/Input.svelte';
@@ -14,8 +15,7 @@
     }
   }
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const redirectUrl = urlParams.get('redirect');
+  const redirectUrl = $page.url.searchParams.get('redirect');
 
   // Form data
   let firstName = '';
@@ -203,22 +203,6 @@
           />
 
         </div>
-      {/if}
-
-      {#if successMessage}
-        <div class="text-green-600 text-sm text-center p-3 bg-green-50 rounded-lg border border-green-200 transition-all duration-300">
-          <div class="flex items-center justify-center">
-            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-            </svg>
-            {successMessage}
-          </div>
-        </div>
-      {/if}
-
-      {#if error}
-        <div class="text-red-500 text-sm text-center p-2 bg-red-50 rounded-lg border border-red-100 transition-all duration-300">{error}</div>
-      {/if}
 
       <div class="mt-6">
         <Button
@@ -243,6 +227,23 @@
           </div>
         </div>
       </div>
+
     </form>
+    {/if}
+
+      {#if successMessage}
+        <div class="text-green-600 text-sm text-center p-3 bg-green-50 rounded-lg border border-green-200 transition-all duration-300">
+          <div class="flex items-center justify-center">
+            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            {successMessage}
+          </div>
+        </div>
+      {/if}
+
+      {#if error}
+        <div class="text-red-500 text-sm text-center p-2 bg-red-50 rounded-lg border border-red-100 transition-all duration-300">{error}</div>
+      {/if}
   </div>
 </div>
