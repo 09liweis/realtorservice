@@ -23,6 +23,32 @@ export const GET: RequestHandler = async ({ request }) => {
   }
 };
 
+export const POST: RequestHandler = async ({ request,params }) => {
+  try {
+    const userProfile = await request.json();
+
+    // Fetch user email from Supabase
+    const { data, error } = await supabase
+    .from('user_profiles')
+    .insert({...userProfile, credits: 0, role: 'realtor',});
+    
+
+    if (error) {
+      return json(
+        { error: "Failed to add user profile from Supabase" },
+        { status: 500 }
+      );
+    }
+    return json({ msg:'Added' });
+  } catch (error) {
+    console.error("userProfile Error: ", error);
+    return json(
+      { error: "Server error" },
+      { status: 500 }
+    );
+  }
+};
+
 
 export const PUT: RequestHandler = async ({ request,params }) => {
   try {

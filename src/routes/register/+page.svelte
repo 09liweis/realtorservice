@@ -7,6 +7,7 @@
   import Input from '$lib/components/common/Input.svelte';
     import { getPageTitle } from '$lib/types/constant';
     import supabase from '$lib/db/client';
+    import { sendRequest } from '$lib/helper';
 
   $: {
     if ($user) {
@@ -57,8 +58,9 @@
       // Registration successful
       if (data?.user) {
         // Create user profile
-        const {error: UserProfileError} = await supabase.from('user_profiles')
-          .insert({
+        const {data:{error: UserProfileError}} = await sendRequest({
+          url: '/api/user',
+          body: {
             first_name: firstName,
             last_name: lastName,
             middle_name: middleName,
@@ -66,10 +68,9 @@
             phone,
             reco_number,
             brokerage,
-            role: 'realtor',
             user_id: data.user.id,
-            credits: 0 // Initialize with 0 credits
-          });
+          }
+        })
         
         if (UserProfileError) throw UserProfileError;
 
@@ -89,11 +90,6 @@
 
         if (redirectUrl) {
           localStorage.setItem('redirect', redirectUrl);
-        }
-        if (successMessage) {
-          setTimeout(()=> {
-            goto('/login');
-          },5000);
         }
       }
     } catch (err:any) {
