@@ -2,7 +2,6 @@
   import { page } from '$app/stores';
   import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
-  import { getCleaning, upsertCleaning } from '$lib/supabase';
   import { getPageTitle } from '$lib/types/constant';
   import type { Cleaning } from '$lib/types/cleaning';
   import CleaningPropertyInfo from '$lib/components/cleanings/detail/CleaningPropertyInfo.svelte';

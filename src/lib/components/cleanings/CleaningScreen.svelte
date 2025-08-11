@@ -4,7 +4,6 @@
   import CleaningForm from "./CleaningForm.svelte";
   import CleaningList from "./CleaningList.svelte";
   import Button from "$lib/components/common/Button.svelte";
-  import FormBackdrop from "$lib/components/form/FormBackdrop.svelte";
   import { EMPTY_CLEANING, type Cleaning } from "$lib/types/cleaning";
   import { getCleanings, upsertCleaning, deleteCleaning, getAllCleanings } from "$lib/supabase";
   import { user } from "$lib/stores/auth";

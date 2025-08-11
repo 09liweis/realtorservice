@@ -5,7 +5,6 @@
   import Input from '$lib/components/common/Input.svelte';
   import OpenHouseList from '$lib/components/openhouses/OpenHouseList.svelte';
   import { user } from '$lib/stores/auth';  
-  import { deleteOpenhouse, getOpenHouses, upsertOpenHouse } from '$lib/supabase';
   import { getPageTitle } from '$lib/types/constant';
   import type { OpenHouse } from '$lib/types/openhouse';
   import { onMount } from 'svelte';

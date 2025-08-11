@@ -2,8 +2,6 @@
   import { formatAmount, getStatusStyle } from "$lib/types/constant";
   import type { Cleaning } from "$lib/types/cleaning";
   import { CLEANING_TYPES, CLEANING_FREQUENCIES } from "$lib/types/cleaning";
-  import { upsertCreditRecord, calcUserCredits, upsertCleaning } from "$lib/supabase";
-  import type { CreditRecord } from "$lib/types/credit";
 
   export let request: Cleaning;
   export let onEdit;

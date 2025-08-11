@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { updateUserProfile } from '$lib/supabase';
 import { sendRequest } from '$lib/helper';
 
   export let users: any[];

@@ -6,7 +6,6 @@
     import OpenHouseGuestList from '$lib/components/openhouses/OpenHouseGuestList.svelte';
     import Select from '$lib/components/common/Select.svelte';
   import { user } from '$lib/stores/auth';
-  import { getOpenHouseGuests, upsertOpenHouseGuest } from '$lib/supabase';
     import { getPageTitle } from '$lib/types/constant';
     import { onMount } from 'svelte';
     import { sendRequest } from '$lib/helper';

@@ -2,7 +2,6 @@
   import { page } from '$app/stores';
   import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
-  import { getStaging, upsertStaging } from '$lib/supabase';
   import { getPageTitle } from '$lib/types/constant';
   import type { Staging } from '$lib/types/staging';
   import StagingPropertyInfo from '$lib/components/stagings/detail/StagingPropertyInfo.svelte';

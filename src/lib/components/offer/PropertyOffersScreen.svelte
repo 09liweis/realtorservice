@@ -2,8 +2,6 @@
   import Button from '$lib/components/common/Button.svelte';
   import FormBackdrop from '$lib/components/form/FormBackdrop.svelte';
   import Input from '$lib/components/common/Input.svelte';
-  import { user } from '$lib/stores/auth';
-  import { getOffers, upsertOffer, deleteOffer } from '$lib/supabase';
   import { onMount } from 'svelte';
   import OfferList from './OfferList.svelte';
     import type { Offer } from '$lib/types/offer';
