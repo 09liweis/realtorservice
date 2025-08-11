@@ -7,7 +7,6 @@
   } from "$lib/components/stagings";
   import Button from "$lib/components/common/Button.svelte";
   import { EMPTY_STAGING, type Staging } from "$lib/types/staging";
-  import { getStagings, upsertStaging, deleteStaging, getAllStagings } from "$lib/supabase";
   import { user } from "$lib/stores/auth";
   import Add from "../icons/Add.svelte";
     import { sendRequest } from "$lib/helper";
@@ -83,7 +82,11 @@
   // 删除请求
   async function deleteRequest(id: string) {
     if (confirm("Are you sure you want to delete this staging request?")) {
-      await deleteStaging(id);
+      const {data:{error}} = await sendRequest({
+        url: `/api/stagings/${id}`,
+        method: 'DELETE'
+      });
+      if (error) throw error;
       await fetchStagings();
     }
   }
@@ -95,11 +98,23 @@
       return;
     }
     const formData = event.detail;
-    const stagingData = {...formData,is_user_unread:false};
+    let url = '/api/stagings';
+    let method = 'POST';
+    if (formData?.id) {
+      url = `/api/stagings/${formData.id}`;
+      method = 'PUT';
+    }
+    
     const {data:{error,staging}} = await sendRequest({
-      url: '/api/stagings',
-      body: stagingData
+      url,
+      method,
+      body: formData
     });
+    
+    if (error) {
+      throw error;
+    }
+    
     try {
       await sendRequest({
         url: '/api/send-status-email',

@@ -59,6 +59,7 @@ export const PUT: RequestHandler = async ({ request,params }) => {
     const stagingId = params.stagingId
     const authUser = await checkAuth(request);
     const user_id = authUser?.user_id || authUser?.id;
+    const isAdmin = authUser.isAdmin;
     if (!user_id) {
       return json({stats: 401, error: 'Unauthorized'});
     }
@@ -67,14 +68,25 @@ export const PUT: RequestHandler = async ({ request,params }) => {
       return json({stats: 404, error: 'staging service not found'});
     }
 
+    const {data:foundStaging,error:foundError} = await supabase.from('stagings').select('*').eq("id",stagingId).single();
+    if (!foundStaging) {
+      return json({stats: 404, error: 'staging service not found'});
+    }
+
     const stagingService = await request.json();
+
+    if (isAdmin) {
+      stagingService.is_admin_unread = false;
+    } else {
+      stagingService.is_user_unread = false;
+    }
 
     // Fetch user email from Supabase
     const { data, error } = await supabase
     .from('stagings')
     .update(stagingService)
     .eq('id', stagingId)
-    .eq("user_id", user_id)
+    .eq("user_id", foundStaging.user_id).select('*').single();
     
 
     if (error) {

@@ -111,21 +111,22 @@
 			>
 				View
 			</Link>
-			<!-- <button
-				on:click={() => onEdit(request)}
-				class="text-sm text-blue-600 hover:text-blue-900"
-			>
-				Edit
-			</button> -->
+			
+			{#if ($user?.user_id === request.user_id && request.status === 'submitted')}
+				<button
+					on:click={() => onEdit(request)}
+					class="text-sm text-blue-600 hover:text-blue-900"
+				>
+					Edit
+				</button>
 
-			<!-- {#if !$user?.isAdmin}
 				<button
 					on:click={() => onDelete(request.id)}
 					class="text-sm text-red-600 hover:text-red-900"
 				>
 					Delete
 				</button>
-			{/if} -->
+			{/if}
 
 		</div>
 	</div>
