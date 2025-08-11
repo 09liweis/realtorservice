@@ -59,6 +59,7 @@ export const PUT: RequestHandler = async ({ request,params }) => {
     const videoId = params.videoId
     const authUser = await checkAuth(request);
     const user_id = authUser?.user_id || authUser?.id;
+    const isAdmin = authUser.isAdmin;
     if (!user_id) {
       return json({stats: 401, error: 'Unauthorized'});
     }
@@ -67,14 +68,27 @@ export const PUT: RequestHandler = async ({ request,params }) => {
       return json({stats: 404, error: 'video service not found'});
     }
 
+    const {data:foundVideo,error:foundError} = await supabase.from('video_services').select('*').eq("id",videoId).single();
+    if (!foundVideo) {
+      return json({stats: 404, error: 'social service not found'});
+    }
+
     const videoService = await request.json();
+
+    if (isAdmin) {
+      videoService.is_admin_unread = false;
+      videoService.is_user_unread = true;
+    } else {
+      videoService.is_admin_unread = true;
+      videoService.is_user_unread = false;
+    }
 
     // Fetch user email from Supabase
     const { data, error } = await supabase
     .from('video_services')
     .update(videoService)
     .eq('id', videoId)
-    .eq("user_id", user_id)
+    .eq("user_id", foundVideo.user_id)
     
 
     if (error) {

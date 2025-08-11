@@ -6,6 +6,7 @@
   import { formatAmount, getStatusStyle } from '$lib/types/constant';
   import { formatDate } from '$lib/helper';
   import CardWrapper from "../common/CardWrapper.svelte";
+  import { user } from '$lib/stores/auth';
 
   export let videoService: VideoService;
 
@@ -128,18 +129,21 @@
       </div>
 
       <div class="flex items-center space-x-2">
-        <!-- <button
+
+        {#if ($user?.user_id === videoService.user_id && videoService.status === 'submitted')}
+        <button
           on:click={handleEdit}
           class="text-xs font-medium text-purple-600 hover:text-white hover:bg-purple-600 px-3 py-1.5 rounded-md transition-all duration-200 border border-purple-200 hover:border-purple-600"
         >
           Edit
-        </button> -->
+        </button>
         <button
           on:click={handleDelete}
           class="text-xs font-medium text-red-600 hover:text-white hover:bg-red-600 px-3 py-1.5 rounded-md transition-all duration-200 border border-red-200 hover:border-red-600"
         >
           Delete
         </button>
+        {/if}
       </div>
     </div>
   </div>
