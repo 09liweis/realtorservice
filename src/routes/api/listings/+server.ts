@@ -38,6 +38,11 @@ export const GET: RequestHandler = async ({ request, url }) => {
     if (!isPublic && !isAdmin) {
       query = query.eq('user_id',user_id)
     }
+
+    if (isPublic) {
+      query = query.eq('is_sold', false);
+    }
+
     if (listing_type) {
       query = query.eq('listing_type',listing_type);
     }
@@ -71,7 +76,7 @@ export const POST: RequestHandler = async ({ request, url }) => {
 
     const newListing = await request.json();
     delete newListing.user_profiles;
-    
+
     newListing.user_id = user_id;
     const { data, error } = await supabase.from('listings').insert(newListing).select('*').single();
 
