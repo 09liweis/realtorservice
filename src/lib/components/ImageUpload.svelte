@@ -1,6 +1,6 @@
 <script lang="ts">
-    import supabase from "$lib/db/client";
-  import { user } from "$lib/stores/auth";
+    import { sendRequest } from "$lib/helper";
+    import { user } from "$lib/stores/auth";
   import { createEventDispatcher } from "svelte";
 
   export let images: string[] = [];
@@ -45,7 +45,7 @@
     }
   }
 
-  // Upload files to Supabase storage
+  // Upload files via API endpoint
   async function uploadFiles(files: File[]) {
     if (!$user || uploading) return;
 
@@ -59,48 +59,36 @@
     uploading = true;
 
     try {
-      const uploadPromises = filesToUpload.map(async (file) => {
-        // Validate file size (max 5MB)
-        if (file.size > 5 * 1024 * 1024) {
-          throw new Error(
-            `File ${file.name} is too large. Maximum size is 5MB.`,
-          );
-        }
-
-        // Validate file type
-        if (!file.type.startsWith("image/")) {
-          throw new Error(`File ${file.name} is not an image.`);
-        }
-
-        // Generate unique filename
-        const fileExt = file.name.split(".").pop();
-        const fileName = `${$user.id}/${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
-
-        // Upload to Supabase storage
-        const { data, error } = await supabase.storage
-          .from("listing-images")
-          .upload(fileName, file, {
-            cacheControl: "3600",
-            upsert: false,
+      const filesData = await Promise.all(
+        filesToUpload.map(async (file) => {
+          const base64 = await new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.readAsDataURL(file);
           });
+          return {
+            name: file.name,
+            type: file.type,
+            size: file.size,
+            data: base64,
+          };
+        })
+      );
 
-        if (error) throw error;
-
-        // Get public URL
-        const { data: urlData } = supabase.storage
-          .from("listing-images")
-          .getPublicUrl(fileName);
-
-        return urlData.publicUrl;
+      const {response, data: {error, uploadedUrls}} = await sendRequest({
+        url: "/api/update-listing-images",
+        body: { files: filesData },
       });
 
-      const uploadedUrls = await Promise.all(uploadPromises);
+      if (!response.ok) {
+        throw new Error("Failed to upload images");
+      }
       const newImages = [...images, ...uploadedUrls];
 
       dispatch("update", newImages);
-    } catch (error) {
+    } catch (error:any) {
       console.error("Upload error:", error);
-      alert(`Upload failed: ${error.message}`);
+      alert(`Upload failed: ${error?.message}`);
     } finally {
       uploading = false;
       if (fileInput) {
