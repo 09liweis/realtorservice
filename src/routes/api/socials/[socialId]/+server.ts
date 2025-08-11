@@ -67,17 +67,27 @@ export const PUT: RequestHandler = async ({ request,params }) => {
       return json({stats: 404, error: 'social media service not found'});
     }
 
+    const {data:foundSocial,error:foundError} = await supabase.from('social_media_services').select('*').eq("id",socialId).single();
+    if (!foundSocial) {
+      return json({stats: 404, error: 'social service not found'});
+    }
+
     const socialMediaService = await request.json();
+
+    if (isAdmin) {
+      socialMediaService.is_admin_unread = false;
+      socialMediaService.is_user_unread = true;
+    } else {
+      socialMediaService.is_admin_unread = true;
+      socialMediaService.is_user_unread = false;
+    }
 
     // Fetch user email from Supabase
     let query = supabase
     .from('social_media_services')
     .update(socialMediaService)
     .eq('id', socialId)
-
-    if (!isAdmin) {
-      query = query.eq('user_id',user_id);
-    }
+    .eq('user_id', foundSocial.user_id).select('*').single();
 
     const { data, error } = await query;
     

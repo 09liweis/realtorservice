@@ -1,9 +1,6 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
   import type { SocialMediaService } from '$lib/types/social';
-  import { 
-    calculateSocialMediaPrice
-  } from '$lib/types/social';
   import SocialMediaServiceCard from './SocialMediaServiceCard.svelte';
 
   export let socialMediaServices: SocialMediaService[] = [];
