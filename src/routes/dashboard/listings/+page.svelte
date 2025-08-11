@@ -78,18 +78,19 @@
       alert('Your account is not yet approved. Please contact admin to get approval.');
       return;
     }
-    if (!user_id) return;
-    const listing = {
-      ...newListing,
-      user_id,
-    };
 
-    const { error } = await upsertListing(listing);
+    const { data:{error} } = await sendRequest({
+      body: listings,
+      url: '/api/listings',
+      method: "POST"
+    });
     if (!error) {
       isEditing = false;
       resetForm();
       showForm = false;
       loadListings();
+    } else {
+      throw error;
     }
   }
 </script>
