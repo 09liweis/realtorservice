@@ -7,6 +7,7 @@
   import CouponList from './CouponList.svelte';
   import Button from '$lib/components/common/Button.svelte';
   import FormBackdrop from '$lib/components/form/FormBackdrop.svelte';
+    import { sendRequest } from '$lib/helper';
 
   let coupons: Coupon[] = [];
   let loading = false;
@@ -25,9 +26,12 @@
     try {
       loading = true;
       error = null;
-      const { data, error: fetchError } = await getCoupons();
+      const { data: {error: fetchError, coupons: couponsResults } } = await sendRequest({
+        url: '/api/coupons',
+        method: 'GET'
+      });
       if (fetchError) throw fetchError;
-      coupons = data || [];
+      coupons = couponsResults || [];
     } catch (err) {
       error = err instanceof Error ? err.message : 'Failed to load coupons';
       console.error('Error loading coupons:', err);
@@ -92,7 +96,10 @@
       formLoading = true;
       error = null;
 
-      const { error: saveError } = await upsertCoupon(couponData);
+      const { data:{error: saveError} } = await sendRequest({
+        url: '/api/coupons',
+        body: couponData
+      });
       if (saveError) throw saveError;
 
       await loadCoupons();

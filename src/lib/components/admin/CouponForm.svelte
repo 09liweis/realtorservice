@@ -31,9 +31,9 @@
       errors.tp = 'Coupon type is required';
     }
 
-    if (coupon.usage_limit && coupon.usage_limit <= 0) {
-      errors.usage_limit = 'Usage limit must be greater than 0';
-    }
+    // if (coupon.usage_limit && coupon.usage_limit <= 0) {
+    //   errors.usage_limit = 'Usage limit must be greater than 0';
+    // }
 
     if (coupon.expires_at) {
       const expiryDate = new Date(coupon.expires_at);
@@ -196,8 +196,6 @@
           label="Usage Limit"
           type="number"
           bind:value={coupon.usage_limit}
-          min={1}
-          step="1"
           placeholder="Leave empty for unlimited"
           disabled={loading}
         />
