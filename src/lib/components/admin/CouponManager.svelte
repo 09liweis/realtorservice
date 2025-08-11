@@ -2,7 +2,6 @@
   import { onMount } from 'svelte';
   import type { Coupon } from '$lib/types/coupon';
   import { EMPTY_COUPON } from '$lib/types/coupon';
-  import { getCoupons, upsertCoupon, deleteCoupon, toggleCouponStatus } from '$lib/supabase';
   import CouponForm from './CouponForm.svelte';
   import CouponList from './CouponList.svelte';
   import Button from '$lib/components/common/Button.svelte';
@@ -81,8 +80,14 @@
     const coupon = event.detail;
     if (!coupon.id) return;
 
+    coupon.active = !coupon.active;
+
     try {
-      const { error: toggleError } = await toggleCouponStatus(coupon.id, !coupon.active);
+      const { data:{error: toggleError} } = await sendRequest({
+        url: `/api/coupons/${coupon.id}`,
+        method: 'PUT',
+        body: coupon
+      });
       if (toggleError) throw toggleError;
       
       await loadCoupons();
