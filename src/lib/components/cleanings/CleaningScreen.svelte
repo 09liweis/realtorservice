@@ -85,19 +85,6 @@
     });
 
     if (error) throw error;
-    
-    try {
-      await sendRequest({
-        url: '/api/send-status-email',
-        body: {
-          tp: 'cleanings',
-          id: cleaning?.id,
-          type: 'submission'
-        }
-      });
-    } catch (emailError) {
-      console.error('Email notification error:', emailError);
-    }
 
     showForm = false;
     fetchCleanings();

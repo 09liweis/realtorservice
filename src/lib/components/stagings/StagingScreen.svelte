@@ -115,19 +115,6 @@
       throw error;
     }
     
-    try {
-      await sendRequest({
-        url: '/api/send-status-email',
-        body: {
-          tp: 'stagings',
-          id: staging.id,
-          type: 'submission'
-        }
-      });
-    } catch (emailError) {
-      console.error('Email notification error:', emailError);
-    }
-    
     showForm = false;
     fetchStagings();
   }
