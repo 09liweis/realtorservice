@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { getListings, upsertListing, deleteListing } from '$lib/supabase';
   import { page } from '$app/stores';
   import { user } from '$lib/stores/auth';
   import type { Listing } from '$lib/types/listing';
@@ -65,7 +64,10 @@
   }
 
   async function handleDelete(id: string) {
-    const { error } = await deleteListing(id);
+    const { data:{error} } = await sendRequest({
+      url: `/api/listings/${id}`,
+      method: "DELETE"
+    });
     if (!error) loadListings();
   }
 

@@ -8,7 +8,7 @@
 
   export let listing: Listing;
   export let editListing: (listing: Listing) => void;
-  export let deleteListing: (id: string) => ValidityState;
+  export let deleteListing: (id: string) => void;
 
   // Get the first image from the pictures string
   function getFirstImage(pictures: string): string {
