@@ -77,7 +77,9 @@ export const PUT: RequestHandler = async ({ request,params }) => {
 
     if (isAdmin) {
       stagingService.is_admin_unread = false;
+      stagingService.is_user_unread = true;
     } else {
+      stagingService.is_admin_unread = true;
       stagingService.is_user_unread = false;
     }
 
