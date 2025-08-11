@@ -60,7 +60,10 @@
 
     try {
       formLoading = true;
-      const { error: deleteError } = await deleteCoupon(couponToDelete.id);
+      const { data:{error: deleteError} } = await sendRequest({
+        url: `/api/coupons/${couponToDelete.id}`,
+        method: 'DELETE',
+      });
       if (deleteError) throw deleteError;
       
       await loadCoupons();
@@ -96,9 +99,17 @@
       formLoading = true;
       error = null;
 
+      let method = 'POST';
+      let url = '/api/coupons';
+      if (couponData.id) {
+        method = 'PUT';
+        url = `/api/coupons/${couponData.id}`;
+      }
+
       const { data:{error: saveError} } = await sendRequest({
-        url: '/api/coupons',
-        body: couponData
+        url,
+        body: couponData,
+        method
       });
       if (saveError) throw saveError;
 
