@@ -6,7 +6,6 @@
   import ListingCard from '$lib/components/listings/ListingCard.svelte';
   import { fade, fly } from 'svelte/transition';
   import { flip } from 'svelte/animate';
-    import { goto } from '$app/navigation';
     import { sendRequest } from '$lib/helper';
 
   let listings:Listing[] = [];
@@ -16,10 +15,10 @@
 
   // Filter and search state
   let filters = {
-    searchQuery: '',
-    selectedListingType: '',
-    selectedPropertyType: '',
-    selectedLocation: '',
+    search: '',
+    listing_type: '',
+    property_type: '',
+    location: '',
     minPrice: '',
     maxPrice: '',
     bedrooms: '',
@@ -38,9 +37,28 @@
   $: propertyTypes = [...new Set(listings.map(l => l.ptype).filter(Boolean))];
   $: locations = [...new Set(listings.map(l => l.location).filter(Boolean))];
 
-  const fetchListings = async() => {
-    let baseAPI = '/api/listings?isPublic=1';
-    if (filters.selectedListingType) baseAPI += `&listing_type=${filters.selectedListingType}`;
+  const getQuerySearch = () => {
+    let querySearchObject = parseQueryString($page.url.search);
+
+    console.log(querySearchObject);
+    console.log(filters);
+
+    let querySearchArray = [];
+    for (const [key, value] of Object.entries(filters)) {
+      const filterValue = querySearchObject[key] || value;
+      if (filterValue) {
+        querySearchArray.push(`${key}=${filterValue}`);
+      }
+    }
+
+    console.log(querySearchArray);
+    const querySearch = querySearchArray.join('&');
+    return querySearch;
+  }
+
+  const fetchListings = async(querySearch:string) => {
+    let baseAPI = '/api/listings?isPublic=1&' + querySearch;
+    console.log(querySearch, baseAPI);
     const {data: {listings:listingsData, error}} = await sendRequest({
       url: baseAPI,
       method: 'GET'
@@ -49,28 +67,28 @@
     listings = listingsData || [];
   }
 
-  onMount(() => {
-    // Get initial filters from URL params
-    const urlParams = new URLSearchParams($page.url.search);
-    filters = {
-      searchQuery: urlParams.get('search') || '',
-      selectedListingType: urlParams.get('listing_type') || '',
-      selectedPropertyType: urlParams.get('property_type') || '',
-      selectedLocation: urlParams.get('location') || '',
-      minPrice: urlParams.get('min_price') || '',
-      maxPrice: urlParams.get('max_price') || '',
-      bedrooms: urlParams.get('bedrooms') || '',
-      bathrooms: urlParams.get('bathrooms') || '',
-      sortBy: urlParams.get('sort_by') || 'newest'
-    };
+  function parseQueryString(queryString:string) {
+    const querySearchObject:any = {};
+    if (!queryString) return querySearchObject;
 
-    fetchListings();
+    // Remove the leading '?' if present
+    const query = queryString.startsWith('?') ? queryString.substring(1) : queryString;
 
-    
-  });
+    // Split into key-value pairs
+    const pairs = query.split('&');
+    pairs.forEach(pair => {
+      const [key, value] = pair.split('=');
+      if (key) {
+        // Decode URI components and assign to object
+        querySearchObject[decodeURIComponent(key)] = decodeURIComponent(value || '');
+      }
+    });
+
+    return querySearchObject;
+  }
 
   // Apply filters and search
-  function applyFilters() {
+  function applyFilters(filterParams:any) {
     // Sort listings
     listings.sort((a, b) => {
       switch (filters.sortBy) {
@@ -86,22 +104,12 @@
       }
     });
 
-    // Update URL with filter parameters
-    const urlParams = new URLSearchParams();
-    if (filters.searchQuery) urlParams.set('search', filters.searchQuery);
-    if (filters.selectedListingType) urlParams.set('listing_type', filters.selectedListingType);
-    if (filters.selectedPropertyType) urlParams.set('property_type', filters.selectedPropertyType);
-    if (filters.selectedLocation) urlParams.set('location', filters.selectedLocation);
-    if (filters.minPrice) urlParams.set('min_price', filters.minPrice);
-    if (filters.maxPrice) urlParams.set('max_price', filters.maxPrice);
-    if (filters.bedrooms) urlParams.set('bedrooms', filters.bedrooms);
-    if (filters.bathrooms) urlParams.set('bathrooms', filters.bathrooms);
-    if (filters.sortBy) urlParams.set('sort_by', filters.sortBy);
+    const querySearch = getQuerySearch();
+    const newUrl = `${$page.url.pathname}?${querySearch}`;
 
-    const newUrl = `${$page.url.pathname}?${urlParams.toString()}`;
     if (typeof window !== 'undefined') {
       window.history.replaceState({}, '', newUrl);
-      fetchListings();
+      fetchListings(querySearch);
     }
 
     totalPages = Math.ceil(listings.length / itemsPerPage);
@@ -111,17 +119,17 @@
   // Clear all filters
   function clearFilters() {
     filters = {
-      searchQuery: '',
-      selectedListingType: '',
-      selectedPropertyType: '',
-      selectedLocation: '',
+      search: '',
+      listing_type: '',
+      property_type: '',
+      location: '',
       minPrice: '',
       maxPrice: '',
       bedrooms: '',
       bathrooms: '',
       sortBy: 'newest'
     };
-    applyFilters();
+    applyFilters(filters);
   }
 
   // Handle page change
@@ -130,13 +138,15 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // Watch for filter changes
+  // Watch for URL or filter changes
   $: {
-    if (filters !== undefined) applyFilters();
-  }
-
-  function editListing(listing: Listing) {
-    // This function is required by ListingCard but not used in public view
+    const urlSearch = $page.url.search;
+    const currentFilters = filters;
+    
+    // Only apply filters if either URL or filters have changed
+    if (urlSearch !== undefined || currentFilters !== undefined) {
+      applyFilters(urlSearch || currentFilters);
+    }
   }
 </script>
 
@@ -190,7 +200,7 @@
             </svg>
             <input
               type="text"
-              bind:value={filters.searchQuery}
+              bind:value={filters.search}
               placeholder="Search by project name, address, location, or developer..."
               class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors duration-200"
             />
@@ -200,7 +210,7 @@
         <!-- Quick Filters -->
         <div class="flex gap-3">
           <select
-            bind:value={filters.selectedListingType}
+            bind:value={filters.listing_type}
             class="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-white"
           >
             <option value="">All Types</option>
@@ -238,7 +248,7 @@
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Property Type</label>
               <select
-                bind:value={filters.selectedPropertyType}
+                bind:value={filters.property_type}
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
               >
                 <option value="">All Types</option>
@@ -251,7 +261,7 @@
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Location</label>
               <select
-                bind:value={filters.selectedLocation}
+                bind:value={filters.location}
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
               >
                 <option value="">All Locations</option>
@@ -336,8 +346,8 @@
           {listings.length} Properties Found
         </h2>
         <p class="text-gray-600 mt-1">
-          {#if filters.selectedListingType}
-            Showing {filters.selectedListingType} listings
+          {#if filters.listing_type}
+            Showing {filters.listing_type} listings
           {:else}
             Showing all available listings
           {/if}
@@ -400,7 +410,7 @@
             in:fly={{ y: 30, duration: 400, delay: index * 50 }}
             animate:flip={{ duration: 300 }}
           >
-            <ListingCard {listing} {editListing} />
+            <ListingCard {listing} />
           </div>
         {/each}
       </div>
