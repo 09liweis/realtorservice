@@ -1,6 +1,5 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import { goto } from '$app/navigation';
   import { user } from '$lib/stores/auth';
   import { getPageTitle } from '$lib/types/constant';
   import type { VideoService } from '$lib/types/video';
@@ -9,7 +8,6 @@
   import VideoServiceInfo from '$lib/components/video/detail/VideoServiceInfo.svelte';
   import VideoServicePricing from '$lib/components/video/detail/VideoServicePricing.svelte';
   import DetailActions from '$lib/components/common/DetailActions.svelte';
-  import { getVideoService, upsertVideoService } from '$lib/supabase';
   import { onMount } from 'svelte';
     import Link from '$lib/components/Link.svelte';
     import Timeline from '$lib/components/common/Timeline.svelte';
@@ -62,15 +60,7 @@
       loading = true;
       error = '';
       
-      const { data: updatedVideoService, error: fetchError } = await getVideoService(videoService?.id!);
-      
-      if (fetchError) {
-        throw fetchError;
-      }
-
-      if (updatedVideoService) {
-        videoService = updatedVideoService;
-      }
+      fetchSocialMediaService();
     } catch (err) {
       console.error('Error refreshing video service:', err);
       error = 'Failed to refresh data';
