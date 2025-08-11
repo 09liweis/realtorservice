@@ -8,6 +8,7 @@
 
   export let listing: Listing;
   export let editListing: (listing: Listing) => void;
+  export let deleteListing: (id: string) => ValidityState;
 
   // Get the first image from the pictures string
   function getFirstImage(pictures: string): string {
@@ -174,7 +175,7 @@
     </div>
 
     <!-- Edit Button -->
-    {#if $user?.id === listing.user_id}
+    {#if $user?.user_id === listing.user_id}
       <div class="border-t border-gray-100 pt-4 mt-4 flex justify-end" in:fly={{ y: 15, duration: 400, delay: 500 }}>
         <button 
           on:click={() => editListing(listing)}

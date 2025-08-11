@@ -21,7 +21,20 @@ export const GET: RequestHandler = async ({ request, url }) => {
     }
 
     // Fetch user email from Supabase
-    let query = supabase.from('listings').select('*').order('updated_at',{ascending:false});
+    let query = supabase
+    .from('listings')
+    .select(`
+      *,
+      user_profiles!inner(
+        first_name,
+        last_name,
+        brokerage,
+        phone,
+        email
+      )
+    `)
+    .order('updated_at',{ascending:false});
+    
     if (!isPublic && !isAdmin) {
       query = query.eq('user_id',user_id)
     }
@@ -57,6 +70,8 @@ export const POST: RequestHandler = async ({ request, url }) => {
     }
 
     const newListing = await request.json();
+    delete newListing.user_profiles;
+    
     newListing.user_id = user_id;
     const { data, error } = await supabase.from('listings').insert(newListing).select('*').single();
 

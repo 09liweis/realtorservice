@@ -79,10 +79,18 @@
       return;
     }
 
+    let url = '/api/listings';
+    let method = "POST";
+
+    if (newListing?.id) {
+      url = `/api/listings/${newListing?.id}`;
+      method = "PUT";
+    }
+
     const { data:{error} } = await sendRequest({
-      body: listings,
-      url: '/api/listings',
-      method: "POST"
+      body: newListing,
+      url,
+      method
     });
     if (!error) {
       isEditing = false;
@@ -128,5 +136,5 @@
   </FormBackdrop>
   {/if}
 
-  <ListingList listings={listings} editListing={editListing} />
+  <ListingList listings={listings} editListing={editListing} deleteListing={handleDelete} />
 </div>
