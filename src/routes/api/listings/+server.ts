@@ -45,3 +45,33 @@ export const GET: RequestHandler = async ({ request, url }) => {
     );
   }
 };
+
+
+export const POST: RequestHandler = async ({ request, url }) => {
+  try {
+
+    const authUser = await checkAuth(request);
+    let user_id = authUser?.user_id || authUser?.id;
+    if (!user_id) {
+      return json({stats: 401, error: 'Unauthorized'});
+    }
+
+    const newListing = await request.json();
+    newListing.user_id = user_id;
+    const { data, error } = await supabase.from('listings').insert(newListing).select('*').single();
+
+    if (error) {
+      return json(
+        { error: "Failed to add user listings from Supabase" },
+        { status: 500 }
+      );
+    }
+    return json({ listing: data });
+  } catch (error) {
+    console.error("listing add Error: ", error);
+    return json(
+      { error: "Server error" },
+      { status: 500 }
+    );
+  }
+};
