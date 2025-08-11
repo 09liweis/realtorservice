@@ -1,14 +1,20 @@
+import { PUBLIC_SUPABASE_URL } from "$env/static/public"
+
+
 interface sendRequestType {
   url:string
   method?:string
   body?:any
 }
 export const sendRequest = async ({url, body, method = 'POST'}:sendRequestType) => {
+
+  const authorizationKey = PUBLIC_SUPABASE_URL.split('https://')[1].split('.')[0];
+
   const options:{[key:string]:any} = {
     method,
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': localStorage.getItem('sb-tpnoaousxfcvtbzqdcog-auth-token')
+      'Authorization': localStorage.getItem(`sb-${authorizationKey}-auth-token`)
     },
   }
   if (body) {
