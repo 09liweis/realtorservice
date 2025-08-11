@@ -9,6 +9,7 @@
 
     import Link from "../Link.svelte";
   import CardWrapper from "../common/CardWrapper.svelte";
+  import { user } from "$lib/stores/auth";
 
   function getCleaningTypeLabel(type: string): string {
     return CLEANING_TYPES.find(t => t.value === type)?.label || type;
@@ -109,20 +110,22 @@
 			>
 				View
 			</Link>
-			<!-- <button
+
+			{#if ($user?.user_id === request.user_id && request.status === 'submitted')}
+			<button
 				on:click={() => onEdit(request)}
 				class="text-sm text-green-600 hover:text-green-900"
 			>
 				Edit
-			</button> -->
-			<!-- {#if !$user?.isAdmin}
-				<button
-					on:click={() => onDelete(request.id)}
-					class="text-sm text-red-600 hover:text-red-900"
-				>
-					Delete
-				</button>
-			{/if} -->
+			</button>
+
+			<button
+				on:click={() => onDelete(request.id)}
+				class="text-sm text-red-600 hover:text-red-900"
+			>
+				Delete
+			</button>
+			{/if}
 		</div>
 	</div>
 </CardWrapper>

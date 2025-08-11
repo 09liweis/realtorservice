@@ -5,7 +5,6 @@
   import CleaningList from "./CleaningList.svelte";
   import Button from "$lib/components/common/Button.svelte";
   import { EMPTY_CLEANING, type Cleaning } from "$lib/types/cleaning";
-  import { getCleanings, upsertCleaning, deleteCleaning, getAllCleanings } from "$lib/supabase";
   import { user } from "$lib/stores/auth";
     import { onMount } from "svelte";
     import { sendRequest } from "$lib/helper";
@@ -57,7 +56,11 @@
   // Delete request
   async function deleteRequest(id: string) {
     if (confirm("Are you sure you want to delete this cleaning request?")) {
-      await deleteCleaning(id);
+      const {data:{error}} = await sendRequest({
+        url: `/api/cleanings/${id}`,
+        method: 'DELETE'
+      });
+      if (error) throw error;
       await fetchCleanings();
     }
   }
@@ -69,11 +72,19 @@
       return;
     }
     const formData = event.detail;
-    const cleaningData = {...formData,is_user_unread:false};
+    let url = '/api/cleanings';
+    let method = 'POST';
+    if (formData?.id) {
+      url = `/api/cleanings/${formData.id}`;
+      method = 'PUT';
+    }
     const {data:{cleaning, error}} = await sendRequest({
-      url: '/api/cleanings',
-      body: cleaningData
+      url,
+      body: formData,
+      method
     });
+
+    if (error) throw error;
     
     try {
       await sendRequest({

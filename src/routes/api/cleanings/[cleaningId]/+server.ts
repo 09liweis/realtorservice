@@ -75,6 +75,8 @@ export const PUT: RequestHandler = async ({ request,params }) => {
     .update(cleaningservice)
     .eq('id', cleaningId)
     .eq("user_id", user_id)
+    .select('*')
+    .single();
     
 
     if (error) {
