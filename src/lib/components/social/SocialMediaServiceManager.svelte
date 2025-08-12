@@ -8,6 +8,7 @@
   import FormBackdrop from '$lib/components/form/FormBackdrop.svelte';
     import { user } from '$lib/stores/auth';
     import { sendRequest } from '$lib/helper';
+  import { deleteDraftService } from '../../../types/service.types';
 
   let socialMediaServices: SocialMediaService[] = [];
   let loading = false;
@@ -125,6 +126,8 @@
       } catch (emailError) {
         console.error('Email notification error:', emailError);
       }
+
+      deleteDraftService('social_media');
 
       await loadSocialMediaServices();
       showForm = false;
