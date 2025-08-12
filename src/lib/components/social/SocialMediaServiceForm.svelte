@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
+  import { createEventDispatcher, onMount } from 'svelte';
   import type { SocialMediaService } from '$lib/types/social';
   import { 
     SOCIAL_MEDIA_PLATFORMS, 
@@ -15,6 +15,8 @@
   import CheckBox from '$lib/components/common/CheckBox.svelte';
   import { user } from '$lib/stores/auth';
     import { formatAmount } from '$lib/types/constant';
+  import { getDraftService, saveDraftService } from '../../../types/service.types';
+  import { goto } from '$app/navigation';
 
   export let socialMediaService: SocialMediaService = { ...EMPTY_SOCIAL_MEDIA_SERVICE };
   export let isEdit = false;
@@ -33,6 +35,12 @@
     socialMediaService.addons = [];
   }
 
+  onMount(()=>{
+    if (!socialMediaService?.id) {
+      socialMediaService = getDraftService('social_media');
+    }
+  })
+
   // Calculate pricing
   $: pricingInfo = calculateSocialMediaPrice(
     socialMediaService.posting_frequency,
@@ -43,9 +51,9 @@
 
   // Update estimate_price when calculation changes
   $: {
-    if (!pricingInfo.isCustomPrice) {
-      socialMediaService.estimate_price = pricingInfo.totalPrice;
-    }
+    setTimeout(()=>{
+      saveDraftService('social_media', socialMediaService);
+    },1)
   }
 
   function validateForm(): boolean {
@@ -70,13 +78,23 @@
     return Object.keys(errors).length === 0;
   }
 
-  function handleSubmit() {
+  function handleSubmit(event: Event) {
+    event.preventDefault();
+    if (!$user) {
+      goto('/login?redirect=/dashboard/social_media_services');
+      return;
+    }
+    
     if (validateForm()) {
+
+      socialMediaService = {...EMPTY_SOCIAL_MEDIA_SERVICE, ...socialMediaService};
       // Set the calculated price if not custom
       if (!pricingInfo.isCustomPrice && pricingInfo.totalPrice > 0) {
         socialMediaService.estimate_price = pricingInfo.totalPrice;
       }
-      socialMediaService.history?.push({status:'submitted',date:new Date()})
+      if (!socialMediaService.id) {
+        socialMediaService.history?.push({status:'submitted',date:new Date()})
+      }
       dispatch('submit', socialMediaService);
     }
   }
@@ -445,6 +463,10 @@
         {/if}
       </Button>
     </div>
+    {:else}
+    <Button type="submit">
+      Login to Request Service
+    </Button>
     {/if}
   </form>
 </div>
