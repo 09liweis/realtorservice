@@ -82,7 +82,9 @@
       if (!pricingInfo.isCustomPrice && pricingInfo.totalPrice > 0) {
         videoService.estimate_price = pricingInfo.totalPrice;
       }
-      videoService.history?.push({status:videoService.status,date: new Date()});
+      if (!videoService.id) {
+        videoService.history?.push({status:'submitted',date: new Date()});
+      }
       dispatch('submit', videoService);
     }
   }
