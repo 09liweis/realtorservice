@@ -73,10 +73,12 @@
 
     // Add status change to history
     if (!request.history) request.history = [];
-    request.history.push({
-      status: request.status,
-      date: new Date()
-    });
+    if (!request.id) {
+      request.history.push({
+        status: 'submitted',
+        date: new Date()
+      });
+    }
 
     // Submit form with calculated end_date
     dispatch("submit", { 
