@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
+  import { createEventDispatcher, onMount } from 'svelte';
   import type { VideoService } from '$lib/types/video';
   import { VIDEO_SERVICE_TYPES, VIDEO_SERVICE_ADDONS, EMPTY_VIDEO_SERVICE, calculateVideoServicePrice } from '$lib/types/video';
   import Button from '$lib/components/common/Button.svelte';
@@ -8,6 +8,8 @@
   import CheckBox from '$lib/components/common/CheckBox.svelte';
   import { user } from '$lib/stores/auth';
     import { formatAmount } from '$lib/types/constant';
+    import { goto } from '$app/navigation';
+    import { getDraftService, saveDraftService } from '../../../types/service.types';
 
   export let videoService: VideoService = { ...EMPTY_VIDEO_SERVICE };
   export let isEdit = false;
@@ -30,6 +32,16 @@
     videoService.addons || [],
     videoService.estimate_price
   );
+
+  onMount(()=>{
+    videoService = getDraftService('video_service');
+  });
+
+  $: {
+    setTimeout(() => {
+      saveDraftService('video_service', videoService);
+    }, 0);
+  }
 
   // Service type options for select
   const serviceTypeOptions = VIDEO_SERVICE_TYPES.map(type => ({
@@ -55,7 +67,16 @@
     return Object.keys(errors).length === 0;
   }
 
-  function handleSubmit() {
+  function handleSubmit(event: Event) {
+    event.preventDefault();
+
+    if (!$user) {
+      goto('/login?redirect=/dashboard/video_services');
+      return;
+    }
+
+    videoService = {...EMPTY_VIDEO_SERVICE, ...videoService};
+    
     if (validateForm()) {
       // Set the calculated price if not custom
       if (!pricingInfo.isCustomPrice && pricingInfo.totalPrice > 0) {
@@ -369,6 +390,11 @@
         {/if}
       </Button>
     </div>
+
+    {:else}
+    <Button type="submit">
+      Login to Submit Request
+    </Button>
     {/if}
   </form>
 </div>
