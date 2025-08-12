@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { createEventDispatcher } from "svelte";
+  import { createEventDispatcher, onMount } from "svelte";
   import Button from "../common/Button.svelte";
   import Input from '$lib/components/common/Input.svelte';
   import Textarea from '$lib/components/common/Textarea.svelte';
@@ -17,9 +17,15 @@
   } from "$lib/types/staging";
   import Select from '$lib/components/common/Select.svelte';
   import { user } from "$lib/stores/auth";
+    import { getDraftService, saveDraftService } from "../../../types/service.types";
+    import { goto } from "$app/navigation";
 
   export let isEdit = false;
   export let request: Staging = { ...EMPTY_STAGING };
+
+  onMount(()=>{
+    request = getDraftService('staging');
+  });
 
   const dispatch = createEventDispatcher();
 
@@ -42,16 +48,24 @@
 
   // Update estimate_price when calculation changes
   $: {
-    request.estimate_price = stagingCalculation.totalCost;
-    request.end_date = getStagingEndDate(request);
+    setTimeout(() => {
+      request.estimate_price = stagingCalculation.totalCost;
+      request.end_date = getStagingEndDate(request);
+      saveDraftService('staging', request);
+    }, 0);
   }
 
   // Handle form submission
-  function handleSubmit() {
+  function handleSubmit(event: Event) {
+    event.preventDefault();
     // Validate form
     if (!request.location) {
       alert("Property location is required");
       return;
+    }
+
+    if (!$user) {
+      goto('/login?redirect=/dashboard/stagings');
     }
 
     // Ensure estimate_price is set
@@ -402,6 +416,10 @@
         {/if}
       </Button>
     </div>
+    {:else}
+    <Button type="submit">
+      Login to Submit Request
+    </Button>
     {/if}
   </form>
 </div>

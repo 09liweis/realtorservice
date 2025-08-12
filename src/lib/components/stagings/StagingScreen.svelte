@@ -11,6 +11,8 @@
   import Add from "../icons/Add.svelte";
     import { sendRequest } from "$lib/helper";
     import { onMount } from "svelte";
+    import { deleteDraftService } from "../../../types/service.types";
+    import { goto } from "$app/navigation";
 
   // Props
   let user_id: string|undefined;
@@ -114,6 +116,8 @@
     if (error) {
       throw error;
     }
+
+    deleteDraftService('staging');
     
     showForm = false;
     fetchStagings();

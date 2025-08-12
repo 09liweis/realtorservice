@@ -1,5 +1,24 @@
 import type { ProjectStatus } from "$lib/types/constant";
 
+export function getDraftService(serviceType:string) {
+  if (typeof localStorage !== 'undefined') {
+    return JSON.parse(localStorage.getItem(serviceType) || '{}');
+  }
+  return {};
+}
+
+export function saveDraftService(serviceType:string, service:Service) {
+  if (typeof localStorage !== 'undefined') {
+    localStorage.setItem(serviceType, JSON.stringify(service));
+  }
+}
+
+export function deleteDraftService(serviceType:string) {
+  if (typeof localStorage !== 'undefined') {
+    localStorage.removeItem(serviceType);
+  }
+}
+
 export type Service = {
   id?: string;
   user_id?: string;

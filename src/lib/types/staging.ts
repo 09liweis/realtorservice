@@ -11,11 +11,6 @@ export interface Staging extends Service {
   timeline: string;
   end_date: string;
   length: string;
-  user_profiles?: {
-    first_name: string;
-    last_name: string;
-    brokerage: string;
-  };
 }
 
 export const EMPTY_STAGING = {
@@ -23,7 +18,7 @@ export const EMPTY_STAGING = {
   location: '',
   size: '',
   occupation_status: 'vacant',
-  property_type: 'House',
+  property_type: 'house',
   rooms: '',
   selling_price: 0,
   timeline: '',
