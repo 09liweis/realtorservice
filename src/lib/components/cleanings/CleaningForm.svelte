@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { createEventDispatcher } from "svelte";
+  import { createEventDispatcher, onMount } from "svelte";
   import Button from "../common/Button.svelte";
   import Input from '$lib/components/common/Input.svelte';
   import { formatAmount, PROPERTY_TYPES } from "$lib/types/constant";
@@ -7,11 +7,17 @@
   import Select from '$lib/components/common/Select.svelte';
   import Textarea from '$lib/components/common/Textarea.svelte';
   import { user } from "$lib/stores/auth";
+    import { getDraftService, saveDraftService } from "../../../types/service.types";
+    import { goto } from "$app/navigation";
 
   export let isEdit = false;
   export let request: Cleaning = { ...EMPTY_CLEANING };
 
   const dispatch = createEventDispatcher();
+
+  onMount(()=>{
+    request = getDraftService('cleaning');
+  });
 
   // Property type options
   const propertyTypeOptions = PROPERTY_TYPES.map(type => ({ value: type.toLowerCase(), label: type }));
@@ -34,15 +40,23 @@
 
   // Update estimate_price when calculation changes
   $: {
-    request.estimate_price = cleaningCalculation.totalPrice;
+    setTimeout(() => {
+      request.estimate_price = cleaningCalculation.totalPrice;
+      saveDraftService('cleaning', request);
+    }, 0);
   }
 
   // Handle form submission
-  function handleSubmit() {
+  function handleSubmit(event: Event) {
+    event.preventDefault();
     // Validate form
     if (!request.location) {
       alert("Property location is required");
       return;
+    }
+
+    if (!$user) {
+      goto('/login?redirect=/dashboard/cleanings');
     }
 
     // Ensure estimate_price is set
@@ -319,6 +333,10 @@
         {/if}
       </Button>
     </div>
+    {:else}
+    <Button type="submit">
+      Login to Submit Request
+    </Button>
     {/if}
   </form>
 </div>

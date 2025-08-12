@@ -8,6 +8,7 @@
   import { user } from "$lib/stores/auth";
     import { onMount } from "svelte";
     import { sendRequest } from "$lib/helper";
+    import { deleteDraftService } from "../../../types/service.types";
 
   // Props
   let user_id: string;
@@ -85,6 +86,8 @@
     });
 
     if (error) throw error;
+
+    deleteDraftService('cleaning');
 
     showForm = false;
     fetchCleanings();
