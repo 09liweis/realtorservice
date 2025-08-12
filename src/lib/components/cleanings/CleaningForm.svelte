@@ -41,7 +41,7 @@
   // Update estimate_price when calculation changes
   $: {
     setTimeout(() => {
-      request.estimate_price = cleaningCalculation.totalPrice;
+      // request.estimate_price = cleaningCalculation.totalPrice;
       saveDraftService('cleaning', request);
     }, 0);
   }
@@ -57,7 +57,10 @@
 
     if (!$user) {
       goto('/login?redirect=/dashboard/cleanings');
+      return;
     }
+
+    request = {...EMPTY_CLEANING, ...request};
 
     // Ensure estimate_price is set
     request.estimate_price = cleaningCalculation.totalPrice;
