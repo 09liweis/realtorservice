@@ -54,15 +54,15 @@
       link: $user ? '/dashboard/cleanings' : '/realtor-services/listing/cleaning'
 		},
 		{
-			title: 'Renovating Services',
-			description: 'Professional renovation and improvement services to maximize your property value and market appeal.',
-			image: 'https://images.pexels.com/photos/1249611/pexels-photo-1249611.jpeg?auto=compress&cs=tinysrgb&w=800',
-			price: 'Custom Quote',
-			features: ['Painting & touch-ups', 'Minor renovations', 'Value-add improvements'],
-			color: 'from-orange-500 to-red-500',
-			bgColor: 'from-orange-50 to-red-50',
-			icon: '🔨',
-      link: $user ? '/dashboard/stagings' : '/realtor-services/listing/staging'
+			title: 'Video Editing Services',
+			description: 'Professional video editing services to enhance your property marketing with high-quality visuals.',
+			image: 'https://images.pexels.com/photos/5698855/pexels-photo-5698855.jpeg?auto=compress&cs=tinysrgb&w=800',
+			price: 'Starting at $300',
+			features: ['Video editing & enhancement', 'Property walkthrough videos', 'Social media video content'],
+			color: 'from-teal-500 to-cyan-500',
+			bgColor: 'from-teal-50 to-cyan-50',
+			icon: '🎬',
+      link: $user ? '/dashboard/videos' : '/realtor-services/social-media/video'
 		},
 		{
 			title: 'Social Media Branding',
