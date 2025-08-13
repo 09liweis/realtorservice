@@ -34,7 +34,9 @@
   );
 
   onMount(()=>{
-    videoService = getDraftService('video_service');
+    if (!videoService.id) {
+      videoService = getDraftService('video_service');
+    }
   });
 
   $: {
@@ -159,9 +161,9 @@
             label="Number of Videos *"
             type="number"
             bind:value={videoService.number_of_videos}
-            min="1"
-            step="1"
-            placeholder="1"
+            min={1}
+            step={1}
+            placeholder="Enter video number"
             disabled={loading}
             required
           />

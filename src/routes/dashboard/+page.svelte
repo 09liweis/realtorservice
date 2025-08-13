@@ -179,7 +179,7 @@
       icon="🎥"
       color="indigo"
       loading={loading}
-      link={'/dashboard/video'}
+      link={'/dashboard/video_services'}
     >
       <div class="text-sm text-gray-600 mt-1">
         <span class="font-medium">Media</span> production
@@ -194,7 +194,7 @@
       icon="📱"
       color="pink"
       loading={loading}
-      link={'/dashboard/social'}
+      link={'/dashboard/social_media_services'}
     >
       <div class="text-sm text-gray-600 mt-1">
         <span class="font-medium">Posts</span> published
