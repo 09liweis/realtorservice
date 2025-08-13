@@ -138,10 +138,9 @@
               label="Size (sq ft)*"
               type="number"
               bind:value={request.size}
-              min="0"
-              step="1"
+              min={0}
+              step={1}
               placeholder="Property square footage"
-              helpText="Required for accurate pricing calculation"
               disabled={$user?.isAdmin}
             />
           </div>
@@ -169,9 +168,8 @@
               type="number"
               bind:value={request.rooms}
               min="1"
-              step="1"
+              step={1}
               placeholder="e.g., 5"
-              helpText="Required for accurate pricing calculation"
               disabled={$user?.isAdmin}
             />
           </div>
@@ -185,8 +183,8 @@
               label="Approximate Selling Price ($)"
               type="number"
               bind:value={request.selling_price}
-              min="0"
-              step="1000"
+              min={0}
+              step={1000}
               placeholder="e.g., 750000"
               disabled={$user?.isAdmin}
             />
@@ -214,7 +212,6 @@
               min={1}
               step={0.1}
               placeholder="e.g., 3"
-              helpText="Longer terms receive discounts"
               disabled={$user?.isAdmin}
             />
           </div>
@@ -256,7 +253,6 @@
                 type="number"
                 bind:value={request.quotation_price}
                 placeholder="e.g., 5000"
-                helpText="Final price quoted to client"
               />
             </div>
           </div>
