@@ -45,13 +45,25 @@ export const POST: RequestHandler = async ({ request }) => {
       return json({stats: 401, error: 'Unauthorized'});
     }
 
-    const {tp, tp_id,amount} = await request.json();
+    const {tp, tp_id,amount, coupon_id} = await request.json();
+
+    let totalAmount = amount;
+
+    let coupon = null;
+    if (coupon_id) {
+      const {data, error} = await supabase.from('coupons').select('*').eq('id',coupon_id).single();
+      coupon = data;
+    }
+
+    if (coupon) {
+      totalAmount -= coupon.credits
+    }
 
     // Fetch user email from Supabase
     const {error:creditRecordError} = await supabase
       .from('credit_records')
       .insert({
-        tp,tp_id,amount: -amount, user_id, status: 'done'
+        tp,tp_id,amount: -totalAmount, user_id, status: 'done', coupon_id
       });
 
     if (creditRecordError) {
@@ -61,7 +73,18 @@ export const POST: RequestHandler = async ({ request }) => {
       );
     }
 
-    const newCredits = authUser.credits - amount;
+    const {error: couponUsageError} = await supabase.from('coupon_usage').update({
+      redeemed_at: new Date()
+    }).eq('user_id',user_id).eq('coupon_id',coupon_id);
+
+    if (couponUsageError) {
+      return json(
+        { error: "Failed to update coupon usage from Supabase" },
+        { status: 500 }
+      );
+    }
+
+    const newCredits = authUser.credits - totalAmount;
     const {error:userProfileError} = await supabase
       .from('user_profiles')
       .update({

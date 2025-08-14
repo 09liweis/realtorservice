@@ -18,7 +18,7 @@
   // Component state
   let userCredits = $user?.credits || 0;
   let availableCoupons: Coupon[] = [];
-  let selectedCoupon: Coupon ;
+  let selectedCoupon: Coupon | null ;
   let loading = false;
   let loadingCredits = false;
   let loadingCoupons = false;
@@ -89,7 +89,7 @@
     }
   }
 
-  function selectCoupon(coupon: any) {
+  function selectCoupon(coupon: Coupon) {
     selectedCoupon = coupon;
     couponCode = '';
     couponError = '';
@@ -103,7 +103,7 @@
 
   function handleConfirm() {
     dispatch('confirm', {
-      amount: finalAmount,
+      amount,
       coupon: selectedCoupon,
       savings
     });

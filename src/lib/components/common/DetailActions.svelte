@@ -42,7 +42,8 @@
         body: {
           amount,
           tp,
-          tp_id: request?.id
+          tp_id: request?.id,
+          coupon_id: coupon?.id
         }
       });
 
