@@ -12,6 +12,12 @@ export const GET: RequestHandler = async ({ request }) => {
       return json({stats: 401, error: 'Unauthorized'});
     }
 
+    let userUsedCredits = 0;
+    let {data:userCreditRecords} = await supabase.from('credit_records').select('*').eq('user_id',user_id).lt('amount',0);
+    if (userCreditRecords) {
+      userUsedCredits = userCreditRecords.reduce((acc,item)=>acc+Number(item.amount),0);
+    }
+
     // Fetch user email from Supabase
     let cleaningsQuery = supabase.from('cleanings').select('*').order('updated_at',{ascending:false});
     let stagingsQuery = supabase.from('stagings').select('*').order('updated_at',{ascending:false});
@@ -73,7 +79,7 @@ export const GET: RequestHandler = async ({ request }) => {
       },
       credits: {
         available: authUser.credits,
-        used: 0
+        used: Math.abs(userUsedCredits)
       }
     };
 
