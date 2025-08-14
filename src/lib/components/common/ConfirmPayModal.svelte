@@ -7,6 +7,7 @@
   import { fade, fly, scale } from 'svelte/transition';
   import { elasticOut } from 'svelte/easing';
     import { formatCredits, type Coupon } from '$lib/types/coupon';
+    import { sendRequest } from '$lib/helper';
 
   export let show = false;
   export let amount = 0;
@@ -46,12 +47,14 @@
   }
 
   async function loadAvailableCoupons() {
-    if (!$user?.id) return;
     try {
       loadingCoupons = true;
-      const { data, error } = await getUserCoupons($user?.id);
+      const { data: {error, coupons} } = await sendRequest({
+        url: '/api/user/coupons',
+        method: 'GET',
+      });
       if (error) throw error;
-      availableCoupons = data || [];
+      availableCoupons = coupons;
     } catch (err) {
       console.error('Error loading coupons:', err);
     } finally {
