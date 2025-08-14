@@ -142,6 +142,7 @@
 
   function handleFormCancel() {
     showForm = false;
+    deleteDraftService('social_media');
     editingService = null;
   }
 
