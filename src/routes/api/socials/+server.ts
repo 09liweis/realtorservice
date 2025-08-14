@@ -2,6 +2,7 @@ import { json } from "@sveltejs/kit";
 import supabase from "$lib/db/client";
 import type { RequestHandler } from "./$types";
 import { checkAuth } from "$lib/server/apiAuth";
+import { sendProjectSubmitted } from "$lib/email";
 
 export const GET: RequestHandler = async ({ request }) => {
   try {
@@ -60,6 +61,12 @@ export const POST: RequestHandler = async ({ request }) => {
         { status: 500 }
       );
     }
+
+    const projectName = `${socialMediaService.platforms.join(', ')} ${socialMediaService.posting_frequency}`;
+    const projectUrl = `dashboard/social_media_services/${data.id}`;
+
+    sendProjectSubmitted(authUser.email, projectName, projectUrl);
+
     return json({ social_media_service: data });
   } catch (error) {
     console.error("social media service insert Error: ", error);

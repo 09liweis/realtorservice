@@ -2,7 +2,7 @@ import supabase from "$lib/db/client";
 
 export async function checkAuth(request:Request) {
   const authorization = request.headers.get('authorization');
-  let userProfile = {id:'',user_id:'',isAdmin:false,credits:0};
+  let userProfile = {id:'',user_id:'',isAdmin:false,credits:0,email:''};
   if (!authorization) return userProfile;
   try {
     const {access_token,user} = JSON.parse(authorization);
