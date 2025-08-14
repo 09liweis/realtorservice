@@ -114,17 +114,19 @@
 
       if (saveError) throw saveError;
 
-      try {
-        const {response} = await sendRequest({
-          url: '/api/send-status-email',
-          body: {
-            tp: 'social_media_services',
-            id: social_media_service.id,
-            type: 'submission'
-          }
-        });
-      } catch (emailError) {
-        console.error('Email notification error:', emailError);
+      if (requestOptions.method === 'POST') {
+        try {
+          const {response} = await sendRequest({
+            url: '/api/send-status-email',
+            body: {
+              tp: 'social_media_services',
+              id: social_media_service.id,
+              type: 'submission'
+            }
+          });
+        } catch (emailError) {
+          console.error('Email notification error:', emailError);
+        }
       }
 
       deleteDraftService('social_media');

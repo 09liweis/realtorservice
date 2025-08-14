@@ -39,7 +39,7 @@ export const POST: RequestHandler = async ({ request }) => {
 
     const {data:user, error:userError} = await supabase.from('user_profiles').select('email').eq('user_id',service.user_id).single();
     const email = user?.email;
-    const projectUrl = `/dashboard/${tp}/${service.id}`;
+    const projectUrl = `dashboard/${tp}/${service.id}`;
     const projectName = PROJECT_NAMES[tp];
     const newStatus = service.status;
 
