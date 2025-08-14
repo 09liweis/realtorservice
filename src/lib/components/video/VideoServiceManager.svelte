@@ -113,20 +113,6 @@
       const { data: {error: saveError,video_service} } = await sendRequest(requestOptions);
       if (saveError) throw saveError;
 
-      // Send email notification
-      try {
-        await sendRequest({
-          url: '/api/send-status-email',
-          body: {
-            type: 'submission',
-            tp: 'video_services',
-            id: video_service.id
-          }
-        });
-      } catch (emailError) {
-        console.error('Email notification error:', emailError);
-      }
-
       deleteDraftService('video_service');
 
       await loadVideoServices();

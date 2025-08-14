@@ -2,6 +2,8 @@ import { json } from "@sveltejs/kit";
 import supabase from "$lib/db/client";
 import type { RequestHandler } from "./$types";
 import { checkAuth } from "$lib/server/apiAuth";
+import { getServiceTypeInfo } from "$lib/types/video";
+import { sendProjectSubmitted } from "$lib/email";
 
 export const GET: RequestHandler = async ({ request }) => {
   try {
@@ -59,6 +61,14 @@ export const POST: RequestHandler = async ({ request }) => {
         { status: 500 }
       );
     }
+
+    const serviceType = getServiceTypeInfo(videoService?.service_type);
+
+    const projectName = `Project ${serviceType?.label}`;
+    const projectUrl = `dashboard/video_services/${data.id}`;
+
+    sendProjectSubmitted(authUser.email, projectName, projectUrl);
+
     return json({ video_service: data });
   } catch (error) {
     console.error("video service insert Error: ", error);
