@@ -3,7 +3,7 @@
 	import ServiceModules from '$lib/components/home/ServiceModules.svelte';
 	import MarketInsights from '$lib/components/home/MarketInsights.svelte';
 	import TestimonialsStats from '$lib/components/home/TestimonialsStats.svelte';
-	import ListingsGrid from '$lib/components/ListingsGrid.svelte';
+	import ListingsGrid from '$lib/components/home/ListingsGrid.svelte';
 
 	export let data;
 </script>
