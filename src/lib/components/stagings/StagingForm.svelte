@@ -24,7 +24,9 @@
   export let request: Staging = { ...EMPTY_STAGING };
 
   onMount(()=>{
-    request = getDraftService('staging');
+    if (!request.id) {
+      request = getDraftService('staging');
+    }
   });
 
   const dispatch = createEventDispatcher();
