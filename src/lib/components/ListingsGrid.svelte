@@ -1,20 +1,193 @@
 <script lang="ts">
-  export let listings: any[];
+  import type { Listing } from "$lib/types/listing";
+  import { formatAmount } from "$lib/types/constant";
+  import { fade, fly } from 'svelte/transition';
+  import { flip } from 'svelte/animate';
+
+  export let listings: Listing[];
+
+  // Get the first image from the pictures string
+  function getFirstImage(pictures: string): string {
+    if (!pictures) return 'https://images.pexels.com/photos/280229/pexels-photo-280229.jpeg?auto=compress&cs=tinysrgb&w=800';
+    const imageUrls = pictures.split(',').filter(url => url.trim());
+    return imageUrls.length > 0 ? imageUrls[0].trim() : 'https://images.pexels.com/photos/280229/pexels-photo-280229.jpeg?auto=compress&cs=tinysrgb&w=800';
+  }
+
+  // Get image count
+  function getImageCount(pictures: string): number {
+    if (!pictures) return 0;
+    return pictures.split(',').filter(url => url.trim()).length;
+  }
+
+  // Format property features
+  function formatFeatures(listing: Listing): string {
+    const features = [];
+    if (listing.bedroom) features.push(`${listing.bedroom} bed`);
+    if (listing.bathroom) features.push(`${listing.bathroom} bath`);
+    if (listing.size) features.push(`${listing.size} sqft`);
+    return features.join(' • ');
+  }
 </script>
 
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-  {#each listings as listing}
-    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-      <img 
-        src={listing.image_url || 'https://via.placeholder.com/300'}
-        alt={listing.title}
-        class="w-full h-48 object-cover"
-      />
-      <div class="p-4">
-        <h3 class="text-lg font-semibold">{listing.title}</h3>
-        <p class="text-gray-600">{listing.address}</p>
-        <p class="text-gray-800 font-bold mt-2">${listing.price}</p>
-      </div>
+<section class="py-16 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Section Header -->
+    <div class="text-center mb-12">
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+        Featured Listings
+      </h2>
+      <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+        Discover exceptional real estate opportunities with our curated selection of premium properties.
+      </p>
     </div>
-  {/each}
-</div>
+
+    {#if listings.length === 0}
+      <!-- Empty State -->
+      <div class="text-center py-16">
+        <div class="mx-auto h-24 w-24 bg-gray-100 rounded-full flex items-center justify-center mb-6">
+          <svg class="h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-900 mb-2">No Properties Available</h3>
+        <p class="text-gray-500">Check back soon for new listings and opportunities.</p>
+      </div>
+    {:else}
+      <!-- Listings Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        {#each listings as listing, index (listing.id)}
+          <div
+            class="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden border border-gray-100 hover:border-gray-200 transform hover:-translate-y-2"
+            in:fly={{ y: 30, duration: 600, delay: index * 100 }}
+            out:fade={{ duration: 300 }}
+            animate:flip={{ duration: 400 }}
+          >
+            <!-- Property Image -->
+            <div class="relative h-56 bg-gray-200 overflow-hidden">
+              <img 
+                src={getFirstImage(listing.pics)} 
+                alt={listing.project_name || listing.address}
+                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                loading="lazy"
+              />
+              
+              <!-- Gradient Overlay -->
+              <div class="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              
+              <!-- Listing Type Badge -->
+              {#if listing.listing_type}
+                <div class="absolute top-4 left-4 bg-primary text-white px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide shadow-lg backdrop-blur-sm">
+                  {listing.listing_type}
+                </div>
+              {/if}
+              
+              <!-- Image Count -->
+              {#if getImageCount(listing.pics) > 1}
+                <div class="absolute bottom-4 right-4 bg-black bg-opacity-80 text-white px-3 py-1.5 rounded-lg text-xs flex items-center space-x-1 backdrop-blur-sm">
+                  <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"></path>
+                  </svg>
+                  <span>{getImageCount(listing.pics)}</span>
+                </div>
+              {/if}
+
+              <!-- Quick View Button -->
+              <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <a
+                  href="/listings/{listing.id}"
+                  class="bg-white text-gray-900 px-6 py-3 rounded-xl font-semibold shadow-lg hover:bg-gray-50 transform hover:scale-105 transition-all duration-200"
+                >
+                  View Details
+                </a>
+              </div>
+            </div>
+
+            <!-- Property Content -->
+            <div class="p-6">
+              <!-- Price and Type -->
+              <div class="flex justify-between items-start mb-4">
+                <div>
+                  <div class="text-2xl font-bold text-gray-900 mb-1 group-hover:text-primary transition-colors duration-300">
+                    {formatAmount(listing.asking_price)}
+                  </div>
+                  {#if listing.original_price && listing.original_price !== listing.asking_price}
+                    <div class="text-sm text-gray-400 line-through">
+                      {formatAmount(listing.original_price)}
+                    </div>
+                  {/if}
+                </div>
+                {#if listing.ptype}
+                  <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700 border border-gray-200">
+                    {listing.ptype}
+                  </span>
+                {/if}
+              </div>
+
+              <!-- Project Name and Developer -->
+              <div class="mb-4">
+                <h3 class="text-lg font-semibold text-gray-900 mb-1 line-clamp-1 group-hover:text-primary transition-colors duration-300">
+                  {listing.project_name || listing.address}
+                </h3>
+                {#if listing.developer}
+                  <p class="text-sm text-gray-500 font-medium">by {listing.developer}</p>
+                {/if}
+              </div>
+
+              <!-- Address -->
+              <div class="flex items-start space-x-2 mb-4">
+                <svg class="w-4 h-4 text-gray-400 mt-1 flex-shrink-0 transition-all duration-300 group-hover:scale-110 group-hover:text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+                <div class="text-sm text-gray-600 line-clamp-2 leading-relaxed">
+                  {listing.address}{listing.location ? `, ${listing.location}` : ''}
+                </div>
+              </div>
+            </div>
+          </div>
+        {/each}
+      </div>
+
+      <!-- View All Button -->
+      <div class="text-center mt-12">
+        <a
+          href="/listings"
+          class="inline-flex items-center justify-center px-8 py-4 border border-transparent text-lg font-semibold rounded-xl text-white bg-primary hover:bg-primary-hover transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+        >
+          View All Properties
+          <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+          </svg>
+        </a>
+      </div>
+    {/if}
+  </div>
+</section>
+
+<style>
+  .line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Enhanced hover effects */
+  .group:hover {
+    transform: translateY(-8px);
+  }
+
+  /* Smooth transitions for all interactive elements */
+  * {
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
+  }
+</style>

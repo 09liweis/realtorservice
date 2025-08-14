@@ -6,6 +6,7 @@ export const load: PageServerLoad = async () => {
     .from("listings")
     .select("*")
     .order("created_at", { ascending: false })
+    .eq('is_sold', false)
     .limit(4);
 
   if (error) {
