@@ -1,7 +1,6 @@
 <script lang="ts">
   import { createEventDispatcher, onMount } from 'svelte';
   import { user } from '$lib/stores/auth';
-  import { redeemCoupon, getUserCoupons } from '$lib/supabase';
   import Button from '$lib/components/common/Button.svelte';
   import FormBackdrop from '$lib/components/form/FormBackdrop.svelte';
   import { fade, fly, scale } from 'svelte/transition';
@@ -63,30 +62,7 @@
   }
 
   async function handleRedeemCoupon() {
-    if (!couponCode.trim() || !$user) return;
-
-    try {
-      loading = true;
-      couponError = '';
-      couponSuccess = '';
-
-      const { data, error } = await redeemCoupon(couponCode.trim(), $user.id);
-      
-      if (error) {
-        couponError = error.message;
-        return;
-      }
-
-      if (data?.coupon) {
-        selectedCoupon = data.coupon;
-        couponSuccess = `Coupon applied! You saved ${data.credits} credits.`;
-        couponCode = '';
-      }
-    } catch (err: any) {
-      couponError = err.message || 'Failed to redeem coupon';
-    } finally {
-      loading = false;
-    }
+    
   }
 
   function selectCoupon(coupon: Coupon) {
