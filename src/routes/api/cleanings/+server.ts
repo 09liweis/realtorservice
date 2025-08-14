@@ -2,6 +2,7 @@ import { json } from "@sveltejs/kit";
 import supabase from "$lib/db/client";
 import type { RequestHandler } from "./$types";
 import { checkAuth } from "$lib/server/apiAuth";
+import { sendProjectSubmitted } from "$lib/email";
 
 export const GET: RequestHandler = async ({ request }) => {
   try {
@@ -59,6 +60,12 @@ export const POST: RequestHandler = async ({ request }) => {
         { status: 500 }
       );
     }
+
+    const projectName = cleaningService.location || data?.id;
+    const projectUrl = `/dashboard/cleanings/${data?.id}`;
+
+    sendProjectSubmitted(authUser.email, projectName, projectUrl);
+
     return json({ cleaning: data });
   } catch (error) {
     console.error("cleaning service insert Error: ", error);
