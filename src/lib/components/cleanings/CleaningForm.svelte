@@ -16,7 +16,9 @@
   const dispatch = createEventDispatcher();
 
   onMount(()=>{
-    request = getDraftService('cleaning');
+    if (!request.id) {
+      request = getDraftService('cleaning');
+    }
   });
 
   // Property type options
