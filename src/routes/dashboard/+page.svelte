@@ -10,12 +10,8 @@
 
   // Redirect if user is not logged in
   onMount(() => {
-    if (!$user) {
-      goto('/login');
-    } else {
-      loadDashboardData();
-      checkForWelcomeBonus();
-    }
+    loadDashboardData();
+    checkForWelcomeBonus();
   });
 
   // Dashboard data

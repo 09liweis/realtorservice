@@ -5,6 +5,8 @@
   import { writable } from "svelte/store";
   import { fade, fly } from 'svelte/transition';
   import { quartOut } from 'svelte/easing';
+    import { getAuthToken } from "$lib/helper";
+    import { goto } from "$app/navigation";
 
   // Store to control mobile navigation visibility
   const showMobileNav = writable(false);
@@ -15,6 +17,9 @@
   }
 
   onMount(() => {
+    if (!getAuthToken()) {
+      goto('/login?redirect='+location.pathname);
+    }
     initializeAuth();
   });
 </script>

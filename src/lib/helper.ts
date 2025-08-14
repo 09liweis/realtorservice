@@ -1,5 +1,10 @@
 import { PUBLIC_SUPABASE_URL } from "$env/static/public"
 
+export function getAuthToken() {
+  const authorizationKey = PUBLIC_SUPABASE_URL.split('https://')[1].split('.')[0];
+  if (typeof localStorage === 'undefined') return null;
+  return localStorage.getItem(`sb-${authorizationKey}-auth-token`);
+}
 
 interface sendRequestType {
   url:string
@@ -7,14 +12,11 @@ interface sendRequestType {
   body?:any
 }
 export const sendRequest = async ({url, body, method = 'POST'}:sendRequestType) => {
-
-  const authorizationKey = PUBLIC_SUPABASE_URL.split('https://')[1].split('.')[0];
-
   const options:{[key:string]:any} = {
     method,
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': localStorage.getItem(`sb-${authorizationKey}-auth-token`)
+      'Authorization': getAuthToken()
     },
   }
   if (body) {
