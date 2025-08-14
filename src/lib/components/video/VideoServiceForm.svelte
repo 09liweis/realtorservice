@@ -30,7 +30,7 @@
     videoService.service_type, 
     videoService.number_of_videos,
     videoService.addons || [],
-    videoService.estimate_price
+    // videoService.estimate_price
   );
 
   onMount(()=>{

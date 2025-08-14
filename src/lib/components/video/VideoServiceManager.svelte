@@ -143,6 +143,7 @@
   function handleFormCancel() {
     showForm = false;
     editingVideoService = null;
+    deleteDraftService('video_service');
   }
 
   function cancelDelete() {
