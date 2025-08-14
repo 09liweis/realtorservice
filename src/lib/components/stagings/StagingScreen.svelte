@@ -125,6 +125,7 @@
 
   // 取消表单
   function cancelForm() {
+    deleteDraftService('staging');
     showForm = false;
   }
 </script>
