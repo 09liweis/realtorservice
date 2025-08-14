@@ -118,7 +118,7 @@
         {isEdit ? 'Edit Video Service Request' : 'New Video Service Request'}
       </h2>
       <button
-        on:click={handleCancel}
+        onclick={handleCancel}
         class="text-white hover:text-gray-200 transition-colors duration-200 cursor-pointer"
         disabled={loading}
       >
@@ -133,7 +133,7 @@
   </div>
 
   <!-- Form -->
-  <form on:submit|preventDefault={handleSubmit} class="p-6">
+  <form onsubmit={handleSubmit} class="p-6">
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
       <!-- Left Column - Form Fields -->
       <div class="lg:col-span-2 space-y-6">
@@ -207,8 +207,8 @@
               label="Custom Price (CAD)"
               type="number"
               bind:value={videoService.estimate_price}
-              min="0"
-              step="0.01"
+              min={0}
+              step={0.01}
               placeholder="Leave empty for standard pricing"
               disabled={loading}
             />
