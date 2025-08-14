@@ -95,6 +95,7 @@
 
   // Cancel form
   function cancelForm() {
+    deleteDraftService('cleaning');
     showForm = false;
   }
 </script>
