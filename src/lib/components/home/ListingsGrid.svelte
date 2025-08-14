@@ -5,6 +5,7 @@
   import { flip } from 'svelte/animate';
 
   export let listings: Listing[];
+  export let showTitle: boolean = true;
 
   // Get the first image from the pictures string
   function getFirstImage(pictures: string): string {
@@ -32,6 +33,7 @@
 <section class="py-16 bg-gray-50">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <!-- Section Header -->
+    {#if showTitle}
     <div class="text-center mb-12">
       <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
         Featured Listings
@@ -40,6 +42,7 @@
         Discover exceptional real estate opportunities with our curated selection of premium properties.
       </p>
     </div>
+    {/if}
 
     {#if listings.length === 0}
       <!-- Empty State -->
