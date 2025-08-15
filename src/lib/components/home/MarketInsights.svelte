@@ -236,38 +236,6 @@
 			</div>
 		{/if}
 
-		<!-- Market Analysis Call-to-Action -->
-		{#if insightsVisible}
-			<div class="mt-16 text-center" in:fade={{ duration: 800, delay: 1600 }}>
-				<div class="bg-gradient-to-r from-primary to-blue-600 rounded-2xl p-8 md:p-12 text-white">
-					<h3 class="text-3xl font-bold mb-4">Get Detailed Market Analysis</h3>
-					<p class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-						Access comprehensive market reports, trend analysis, and personalized insights to make informed decisions for your clients.
-					</p>
-					<div class="flex flex-col sm:flex-row gap-4 justify-center">
-						<a
-							href="/register"
-							class="inline-flex items-center justify-center px-8 py-4 border border-transparent text-lg font-semibold rounded-xl text-primary bg-white hover:bg-gray-50 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-						>
-							<svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 00-2-2z"></path>
-							</svg>
-							Access Full Reports
-						</a>
-						<a
-							href="/dashboard"
-							class="inline-flex items-center justify-center px-8 py-4 border-2 border-white text-lg font-semibold rounded-xl text-white hover:bg-white hover:text-primary transition-all duration-300 transform hover:scale-105"
-						>
-							<svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-							</svg>
-							Quick Analysis
-						</a>
-					</div>
-				</div>
-			</div>
-		{/if}
-
 		<!-- Market Trends Mini Chart -->
 		{#if insightsVisible}
 			<div class="mt-12 bg-white rounded-2xl shadow-sm border border-gray-200 p-8" in:fly={{ y: 30, duration: 600, delay: 1800 }}>

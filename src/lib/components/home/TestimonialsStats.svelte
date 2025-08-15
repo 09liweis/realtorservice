@@ -199,7 +199,7 @@
 		<!-- Call to Action -->
 		{#if statsVisible}
 			<div class="mt-16 text-center" in:fade={{ duration: 800, delay: 1200 }}>
-				<div class="bg-white bg-opacity-10 rounded-2xl p-8 backdrop-blur-sm border border-white border-opacity-20">
+				<div class="bg-primary bg-opacity-10 rounded-2xl p-8 backdrop-blur-sm border border-white border-opacity-20">
 					<h3 class="text-2xl font-bold text-white mb-4">
 						Ready to Join Our Success Stories?
 					</h3>
@@ -218,7 +218,7 @@
 						</a>
 						<a
 							href="/about"
-							class="inline-flex items-center justify-center px-8 py-4 border-2 border-white text-lg font-semibold rounded-xl text-white hover:bg-white hover:text-primary transition-all duration-300 transform hover:scale-105"
+							class="inline-flex items-center justify-center px-8 py-4 border-2 border-white text-lg font-semibold rounded-xl text-white transition-all duration-300 transform hover:scale-105"
 						>
 							Learn More About Us
 						</a>
