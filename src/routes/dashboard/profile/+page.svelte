@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { CONTACT_EMAIL } from '$lib/types/constant';
   import { user } from '$lib/stores/auth';
   import { getPageTitle } from '$lib/types/constant';
   import Button from '$lib/components/common/Button.svelte';
@@ -472,7 +473,7 @@
             Contact our support team for assistance with your account or platform features.
           </p>
           <a 
-            href="mailto:support@realtorservice.ca" 
+            href="mailto:{CONTACT_EMAIL}" 
             class="inline-flex items-center px-4 py-2 border border-blue-600 text-sm font-medium rounded-lg text-blue-600 bg-white hover:bg-blue-50 transition-colors duration-200"
           >
             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

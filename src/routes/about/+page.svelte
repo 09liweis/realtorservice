@@ -1,7 +1,7 @@
 <script>
   import Button from '$lib/components/common/Button.svelte';
   import Link from '$lib/components/Link.svelte';
-    import { PHONE_NUMBER } from '$lib/types/constant';
+    import { PHONE_NUMBER, CONTACT_EMAIL } from '$lib/types/constant';
 
   // Services data
   const preListingServices = [
@@ -436,8 +436,8 @@
             </div>
             <h3 class="text-xl font-semibold text-gray-900 mb-2">Email Us</h3>
             <p class="text-gray-600 mb-2">Send us your questions</p>
-            <Link href="mailto:support@realtorservice.ca" className="text-blue-600 hover:text-blue-700 font-semibold">
-              support@realtorservice.ca
+            <Link href="mailto:{CONTACT_EMAIL}" className="text-blue-600 hover:text-blue-700 font-semibold">
+              {CONTACT_EMAIL}
             </Link>
           </div>
           
