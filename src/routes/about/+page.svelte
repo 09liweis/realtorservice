@@ -1,6 +1,7 @@
 <script>
   import Button from '$lib/components/common/Button.svelte';
   import Link from '$lib/components/Link.svelte';
+    import { PHONE_NUMBER } from '$lib/types/constant';
 
   // Services data
   const preListingServices = [
@@ -127,8 +128,8 @@
           Your one-stop partner dedicated to empowering real estate professionals with everything you need to succeed.
         </p>
         <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-          <Button onclick={() => window.location.href = 'tel:416-900-0788'} class_name="px-8 py-4 text-lg">
-            📞 Call 416-900-0788
+          <Button onclick={() => window.location.href = 'tel:{PHONE_NUMBER}'} class_name="px-8 py-4 text-lg">
+            📞 Call {PHONE_NUMBER}
           </Button>
           <Button variant="secondary" onclick={() => document.getElementById('services').scrollIntoView({ behavior: 'smooth' })} class_name="px-8 py-4 text-lg">
             Explore Services
@@ -395,8 +396,8 @@
           See a service you need? Don't wait – let's discuss how we can help you succeed.
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button onclick={() => window.location.href = 'tel:416-900-0788'} class_name="bg-white text-blue-600 hover:bg-blue-50 px-8 py-3 text-lg font-semibold">
-            📞 Call 416-900-0788
+          <Button onclick={() => window.location.href = 'tel:{PHONE_NUMBER}'} class_name="bg-white text-blue-600 hover:bg-blue-50 px-8 py-3 text-lg font-semibold">
+            📞 Call {PHONE_NUMBER}
           </Button>
           <Button variant="secondary" onclick={() => window.location.href = '/register'} class_name="border-white px-8 py-3 text-lg font-semibold">
             Get Started Today
@@ -422,8 +423,8 @@
             </div>
             <h3 class="text-xl font-semibold text-gray-900 mb-2">Call Us</h3>
             <p class="text-gray-600 mb-2">Ready to get started?</p>
-            <Link href="tel:416-900-0788" className="text-blue-600 hover:text-blue-700 font-semibold text-lg">
-              416-900-0788
+            <Link href="tel:{PHONE_NUMBER}" className="text-blue-600 hover:text-blue-700 font-semibold text-lg">
+              {PHONE_NUMBER}
             </Link>
           </div>
           

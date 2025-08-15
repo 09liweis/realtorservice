@@ -1,4 +1,5 @@
 export const WEBSITE_NAME = 'Realtor Service';
+export const PHONE_NUMBER = '416-800-0688';
 
 export const getPageTitle = (title:string) => {
   return `${title} - ${WEBSITE_NAME}`;

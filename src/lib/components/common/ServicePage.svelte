@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { PHONE_NUMBER } from "$lib/types/constant";
+
   export let pageTitle;
   export let pageContent;
   export let callText;
@@ -17,8 +19,8 @@
 
   <p class="mt-6 font-medium">
     {callText} Just call us at <a
-      href="tel:416-800-0688"
-      class="text-primary hover:underline">416-800-0688</a
+      href="tel:{PHONE_NUMBER}"
+      class="text-primary hover:underline">{PHONE_NUMBER}</a
     >
   </p>
 </div>
