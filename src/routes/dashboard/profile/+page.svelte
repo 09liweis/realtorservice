@@ -178,7 +178,7 @@
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
     
     <!-- Main Profile Information -->
-    <div class="lg:col-span-2">
+    <div class="lg:col-span-2 space-y-4">
       <div class="bg-white rounded-xl shadow-sm border border-gray-200">
         <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
           <h2 class="text-xl font-semibold text-gray-900">Profile Information</h2>
@@ -328,46 +328,6 @@
           {/if}
         </div>
       </div>
-    </div>
-
-    <!-- Sidebar Information -->
-    <div class="space-y-6">
-      
-      <!-- Credits Section -->
-      <div class="bg-white rounded-xl shadow-sm border border-gray-200">
-        <div class="px-6 py-4 border-b border-gray-200">
-          <h3 class="text-lg font-semibold text-gray-900">Account Credits</h3>
-        </div>
-        <div class="p-6">
-          <div class="text-center mb-6">
-            <div class="text-4xl font-bold text-blue-600 mb-2">
-              {#if loadingCredits}
-                <div class="animate-pulse bg-gray-200 h-12 w-24 mx-auto rounded"></div>
-              {:else}
-                {profile.credits}
-              {/if}
-            </div>
-            <p class="text-gray-600">Available Credits</p>
-          </div>
-          
-          <Button 
-            onclick={() => showTopup = true}
-            class_name="w-full"
-          >
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-            </svg>
-            Add Credits
-          </Button>
-          
-          <div class="mt-4 text-center text-sm text-gray-500">
-            <p>Use credits for premium features and services</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Credit History Section -->
-      <CreditHistory {loadingCreditRecords} {creditRecords} />
 
       <!-- Account Status -->
       <div class="bg-white rounded-xl shadow-sm border border-gray-200">
@@ -483,6 +443,46 @@
           </a>
         </div>
       </div>
+    </div>
+
+    <!-- Sidebar Information -->
+    <div class="space-y-6">
+      
+      <!-- Credits Section -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+        <div class="px-6 py-4 border-b border-gray-200">
+          <h3 class="text-lg font-semibold text-gray-900">Account Credits</h3>
+        </div>
+        <div class="p-6">
+          <div class="text-center mb-6">
+            <div class="text-4xl font-bold text-blue-600 mb-2">
+              {#if loadingCredits}
+                <div class="animate-pulse bg-gray-200 h-12 w-24 mx-auto rounded"></div>
+              {:else}
+                {profile.credits}
+              {/if}
+            </div>
+            <p class="text-gray-600">Available Credits</p>
+          </div>
+          
+          <Button 
+            onclick={() => showTopup = true}
+            class_name="w-full"
+          >
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+            </svg>
+            Add Credits
+          </Button>
+          
+          <div class="mt-4 text-center text-sm text-gray-500">
+            <p>Use credits for premium features and services</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Credit History Section -->
+      <CreditHistory {loadingCreditRecords} {creditRecords} />
     </div>
   </div>
 </div>
