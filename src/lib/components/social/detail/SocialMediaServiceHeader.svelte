@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { formatDate } from '$lib/helper';
   import { getStatusStyle } from '$lib/types/constant';
   import type { SocialMediaService } from '$lib/types/social';
 
@@ -41,7 +42,7 @@
 
   <!-- Quick Stats -->
   <div class="px-8 py-6 bg-gray-50 border-b border-gray-200">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       <div class="text-center">
         <div class="text-2xl font-bold text-gray-900">
           {socialMediaService?.platforms?.length || 0}
@@ -60,10 +61,18 @@
       
       <div class="text-center">
         <div class="text-2xl font-bold text-pink-600">
-          {socialMediaService?.created_at ? new Date(socialMediaService?.created_at).toLocaleDateString() : 'N/A'}
+          {formatDate(socialMediaService?.created_at)}
         </div>
         <div class="text-sm text-gray-600">Request Date</div>
       </div>
+
+      <div class="text-center">
+        <div class="text-2xl font-bold text-pink-600">
+          {formatDate(socialMediaService?.end_date)}
+        </div>
+        <div class="text-sm text-gray-600">End Date</div>
+      </div>
+
     </div>
   </div>
 </div>
