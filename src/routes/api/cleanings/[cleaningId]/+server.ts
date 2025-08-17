@@ -94,14 +94,15 @@ export const PUT: RequestHandler = async ({ request,params }) => {
     
 
     if (error) {
+      console.error("update cleaning service Error: ", error);
       return json(
-        { error: "Failed to update user video service from Supabase" },
+        { error: "Failed to update cleaning service from Supabase" },
         { status: 500 }
       );
     }
     return json({ cleaning: data });
   } catch (error) {
-    console.error("video service Error: ", error);
+    console.error("update cleaning service Error: ", error);
     return json(
       { error: "Server error" },
       { status: 500 }

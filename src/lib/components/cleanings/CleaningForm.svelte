@@ -11,7 +11,7 @@
     import { goto } from "$app/navigation";
 
   export let isEdit = false;
-  export let request: Cleaning = { ...EMPTY_CLEANING };
+  export let request: Cleaning = { ...EMPTY_CLEANING, duration: 1 };
 
   const dispatch = createEventDispatcher();
 
@@ -39,6 +39,16 @@
     request.frequency || 'one_time',
     parseFloat(request.size) || 0
   );
+
+  const durationMap = {
+  'weekly': 4,      // 1 month = 4 weeks
+  'bi_weekly': 2,   // 1 month = 2 bi-weeks
+  'monthly': 1     // 1 month = 1 service
+};
+
+$: totalPrice = request.frequency !== 'one_time' 
+  ? cleaningCalculation.totalPrice * (parseInt(request.duration) || 1) * durationMap[request.frequency]
+  : cleaningCalculation.totalPrice;
 
   // Update estimate_price when calculation changes
   $: {
@@ -181,6 +191,22 @@
           </div>
         </div>
 
+        <!-- Duration Input (only shown if frequency is not one-time) -->
+        {#if request.frequency !== 'one_time'}
+          <div>
+            <Input
+              id="duration"
+              label="Duration (Months)*"
+              type="number"
+              bind:value={request.duration}
+              min={1}
+              placeholder="e.g., 3"
+              helpText="Number of months for recurring service"
+              disabled={$user?.isAdmin}
+            />
+          </div>
+        {/if}
+
         <!-- Scheduled Date -->
         <div>
           <Input
@@ -251,7 +277,7 @@
                 <div class="text-center">
                   <div class="text-sm text-gray-600 mb-1">Estimated Total Cost</div>
                   <div class="text-3xl font-bold text-green-600">
-                    {formatAmount(cleaningCalculation.totalPrice)}
+                    {formatAmount(totalPrice)}
                   </div>
                   <div class="text-xs text-gray-500 mt-1">
                     {CLEANING_TYPES.find(t => t.value === request.cleaning_type)?.label || 'Regular Cleaning'}
@@ -276,7 +302,7 @@
                 <div class="border-t border-green-200 pt-2">
                   <div class="flex justify-between text-base font-semibold">
                     <span>Total Cost:</span>
-                    <span class="text-green-600">{formatAmount(cleaningCalculation.totalPrice)}</span>
+                    <span class="text-green-600">{formatAmount(totalPrice)}</span>
                   </div>
                 </div>
               </div>
@@ -335,7 +361,7 @@
         {isEdit ? "Update Request" : "Submit Request"}
         {#if request.rooms && request.bathrooms}
           <span class="ml-2 text-sm opacity-75">
-            ({formatAmount(cleaningCalculation.totalPrice)})
+            ({formatAmount(totalPrice)})
           </span>
         {/if}
       </Button>
