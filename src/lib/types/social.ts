@@ -87,6 +87,16 @@ export const EMPTY_SOCIAL_MEDIA_SERVICE: SocialMediaService = {
   addons: []
 };
 
+// Calculate service end date based on subscription type and start date
+export function getServiceEndDate(subscriptionType: string, startDate: Date): string | null {
+  if (!subscriptionType) return null;
+  const subscription = SUBSCRIPTION_TYPES.find(type => type.value === subscriptionType);
+  if (!subscription || !subscription.duration) return null;
+  const endDate = new Date(startDate);
+  endDate.setDate(startDate.getDate() + subscription.duration);
+  return endDate.toLocaleDateString();
+}
+
 // Calculate pricing for social media service
 export function calculateSocialMediaPrice(
   postingFrequency: string,

@@ -7,7 +7,9 @@
     POSTING_FREQUENCIES, 
     SOCIAL_MEDIA_ADDONS,
     EMPTY_SOCIAL_MEDIA_SERVICE,
-    calculateSocialMediaPrice
+    calculateSocialMediaPrice,
+    getServiceEndDate
+
   } from '$lib/types/social';
   import Button from '$lib/components/common/Button.svelte';
   import Input from '$lib/components/common/Input.svelte';
@@ -57,15 +59,7 @@
   }
 
   // Calculate service end date based on subscription type
-  $: serviceEndDate = (() => {
-    if (!socialMediaService.subscription_type) return null;
-    const today = new Date();
-    const subscriptionType = SUBSCRIPTION_TYPES.find(type => type.value === socialMediaService.subscription_type);
-    if (!subscriptionType || !subscriptionType.duration) return null;
-    const endDate = new Date(today);
-    endDate.setDate(today.getDate() + subscriptionType.duration);
-    return endDate.toLocaleDateString();
-  })();
+  $: serviceEndDate = getServiceEndDate(socialMediaService.subscription_type, new Date());
 
   function validateForm(): boolean {
     errors = {};
@@ -146,7 +140,7 @@
   function getDiscountPercentage(frequency: string, subscription: string): number {
     if (subscription === 'Monthly') return 0;
     
-    const pricing = {
+    const pricing:{[key:string]:any} = {
       Weekly: { Monthly: 480, 'Semi-Annual': 2580, Annual: 4800 },
       'Bi-Weekly': { Monthly: 280, 'Semi-Annual': 1500, Annual: 2800 },
       Monthly: { Monthly: 160, 'Semi-Annual': 870, Annual: 1600 }
@@ -279,8 +273,8 @@
               label="Custom Quote Price (CAD)"
               type="number"
               bind:value={socialMediaService.quotation_price}
-              min="0"
-              step="0.01"
+              min={0}
+              step={0.01}
               placeholder="Leave empty for standard pricing"
               disabled={loading}
             />
