@@ -75,7 +75,7 @@ $: totalPrice = request.frequency !== 'one_time'
     request = {...EMPTY_CLEANING, ...request};
 
     // Ensure estimate_price is set
-    request.estimate_price = cleaningCalculation.totalPrice;
+    request.estimate_price = totalPrice;
     if (!request.id) {
       request.history?.push({status:'submitted', date: new Date()});
     }
