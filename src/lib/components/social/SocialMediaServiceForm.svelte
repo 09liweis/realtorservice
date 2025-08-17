@@ -93,6 +93,7 @@
     if (validateForm()) {
 
       socialMediaService = {...EMPTY_SOCIAL_MEDIA_SERVICE, ...socialMediaService};
+      socialMediaService.end_date = serviceEndDate;
       // Set the calculated price if not custom
       if (!pricingInfo.isCustomPrice && pricingInfo.totalPrice > 0) {
         socialMediaService.estimate_price = pricingInfo.totalPrice;

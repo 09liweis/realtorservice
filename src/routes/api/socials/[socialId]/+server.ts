@@ -93,6 +93,7 @@ export const PUT: RequestHandler = async ({ request,params }) => {
     
 
     if (error) {
+      console.error('Update SOcial media service Error: ', error);
       return json(
         { error: "Failed to update user social media service from Supabase" },
         { status: 500 }

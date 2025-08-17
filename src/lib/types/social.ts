@@ -2,6 +2,7 @@ import type { Service } from '../../types/service.types';
 import { EMPTY_SERVICE } from '../../types/service.types';
 
 export interface SocialMediaService extends Service {
+  end_date: string;
   platforms: string[]; // Array of social media platforms
   subscription_type: 'Monthly' | 'Semi-Annual' | 'Annual';
   posting_frequency: 'Weekly' | 'Bi-Weekly' | 'Monthly';
@@ -81,6 +82,7 @@ export const SOCIAL_MEDIA_PRICING = {
 
 export const EMPTY_SOCIAL_MEDIA_SERVICE: SocialMediaService = {
   ...EMPTY_SERVICE,
+  end_date: '',
   platforms: [],
   subscription_type: 'Monthly',
   posting_frequency: 'Weekly',
@@ -88,10 +90,10 @@ export const EMPTY_SOCIAL_MEDIA_SERVICE: SocialMediaService = {
 };
 
 // Calculate service end date based on subscription type and start date
-export function getServiceEndDate(subscriptionType: string, startDate: Date): string | null {
-  if (!subscriptionType) return null;
+export function getServiceEndDate(subscriptionType: string, startDate: Date): string {
+  if (!subscriptionType) return '';
   const subscription = SUBSCRIPTION_TYPES.find(type => type.value === subscriptionType);
-  if (!subscription || !subscription.duration) return null;
+  if (!subscription || !subscription.duration) return '';
   const endDate = new Date(startDate);
   endDate.setDate(startDate.getDate() + subscription.duration);
   return endDate.toISOString().split('T')[0];
