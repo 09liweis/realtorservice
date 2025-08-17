@@ -18,9 +18,9 @@ export const SOCIAL_MEDIA_PLATFORMS = [
 ];
 
 export const SUBSCRIPTION_TYPES = [
-  { value: 'Monthly', label: 'Monthly Plan' },
-  { value: 'Semi-Annual', label: '6-Month Plan' },
-  { value: 'Annual', label: 'Annual Plan' }
+  { value: 'Monthly', label: 'Monthly Plan', duration: 30 },
+  { value: 'Semi-Annual', label: '6-Month Plan', duration: 180 },
+  { value: 'Annual', label: 'Annual Plan', duration: 365 }
 ];
 
 export const POSTING_FREQUENCIES = [
