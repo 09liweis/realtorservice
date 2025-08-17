@@ -1,9 +1,11 @@
 <script>
 	import Banner from '$lib/components/home/Banner.svelte';
 	import ServiceModules from '$lib/components/home/ServiceModules.svelte';
-	import ForumHighlights from '$lib/components/home/ForumHighlights.svelte';
 	import MarketInsights from '$lib/components/home/MarketInsights.svelte';
 	import TestimonialsStats from '$lib/components/home/TestimonialsStats.svelte';
+	import ListingsGrid from '$lib/components/home/ListingsGrid.svelte';
+
+	export let data;
 </script>
 
 <svelte:head>
@@ -13,6 +15,6 @@
 
 <Banner />
 <ServiceModules />
-<ForumHighlights />
+<ListingsGrid listings={data.listings} />
 <MarketInsights />
 <TestimonialsStats />

@@ -144,6 +144,13 @@
         Created: {formatDate(service.created_at)}
       </div>
     {/if}
+
+    <!-- End Date -->
+    {#if service.subscription_type}
+      <div class="text-xs text-gray-400">
+        End Date: {formatDate(service.end_date)}
+      </div>
+    {/if}
   </div>
 
   <!-- Actions -->

@@ -7,6 +7,7 @@
   import { fade, fly } from 'svelte/transition';
   import { flip } from 'svelte/animate';
     import { sendRequest } from '$lib/helper';
+    import ListingsGrid from '$lib/components/home/ListingsGrid.svelte';
 
   let listings:Listing[] = [];
   let filteredListings: Listing[] = [];
@@ -404,16 +405,7 @@
       </div>
     {:else}
       <!-- Listings Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
-        {#each listings as listing, index (listing.id)}
-          <div
-            in:fly={{ y: 30, duration: 400, delay: index * 50 }}
-            animate:flip={{ duration: 300 }}
-          >
-            <ListingCard {listing} />
-          </div>
-        {/each}
-      </div>
+      <ListingsGrid {listings} showTitle={false} />
 
       <!-- Pagination -->
       {#if totalPages > 1}

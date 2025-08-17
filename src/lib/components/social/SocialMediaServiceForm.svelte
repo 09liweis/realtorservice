@@ -7,7 +7,9 @@
     POSTING_FREQUENCIES, 
     SOCIAL_MEDIA_ADDONS,
     EMPTY_SOCIAL_MEDIA_SERVICE,
-    calculateSocialMediaPrice
+    calculateSocialMediaPrice,
+    getServiceEndDate
+
   } from '$lib/types/social';
   import Button from '$lib/components/common/Button.svelte';
   import Input from '$lib/components/common/Input.svelte';
@@ -56,6 +58,9 @@
     },1)
   }
 
+  // Calculate service end date based on subscription type
+  $: serviceEndDate = getServiceEndDate(socialMediaService.subscription_type, new Date());
+
   function validateForm(): boolean {
     errors = {};
 
@@ -88,6 +93,7 @@
     if (validateForm()) {
 
       socialMediaService = {...EMPTY_SOCIAL_MEDIA_SERVICE, ...socialMediaService};
+      socialMediaService.end_date = serviceEndDate;
       // Set the calculated price if not custom
       if (!pricingInfo.isCustomPrice && pricingInfo.totalPrice > 0) {
         socialMediaService.estimate_price = pricingInfo.totalPrice;
@@ -135,7 +141,7 @@
   function getDiscountPercentage(frequency: string, subscription: string): number {
     if (subscription === 'Monthly') return 0;
     
-    const pricing = {
+    const pricing:{[key:string]:any} = {
       Weekly: { Monthly: 480, 'Semi-Annual': 2580, Annual: 4800 },
       'Bi-Weekly': { Monthly: 280, 'Semi-Annual': 1500, Annual: 2800 },
       Monthly: { Monthly: 160, 'Semi-Annual': 870, Annual: 1600 }
@@ -268,8 +274,8 @@
               label="Custom Quote Price (CAD)"
               type="number"
               bind:value={socialMediaService.quotation_price}
-              min="0"
-              step="0.01"
+              min={0}
+              step={0.01}
               placeholder="Leave empty for standard pricing"
               disabled={loading}
             />
@@ -327,6 +333,9 @@
                     <div class="text-xs text-green-600 font-medium">
                       Save {getDiscountPercentage(socialMediaService.posting_frequency, socialMediaService.subscription_type)}%
                     </div>
+                  {/if}
+                  {#if serviceEndDate}
+                    <div class="text-xs text-gray-500 mt-1">Service End Date: {serviceEndDate}</div>
                   {/if}
                 </div>
               </div>

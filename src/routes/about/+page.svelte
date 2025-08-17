@@ -1,6 +1,7 @@
 <script>
   import Button from '$lib/components/common/Button.svelte';
   import Link from '$lib/components/Link.svelte';
+    import { PHONE_NUMBER, CONTACT_EMAIL } from '$lib/types/constant';
 
   // Services data
   const preListingServices = [
@@ -127,8 +128,8 @@
           Your one-stop partner dedicated to empowering real estate professionals with everything you need to succeed.
         </p>
         <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-          <Button onclick={() => window.location.href = 'tel:416-800-0688'} class_name="px-8 py-4 text-lg">
-            📞 Call 416-800-0688
+          <Button onclick={() => window.location.href = 'tel:{PHONE_NUMBER}'} class_name="px-8 py-4 text-lg">
+            📞 Call {PHONE_NUMBER}
           </Button>
           <Button variant="secondary" onclick={() => document.getElementById('services').scrollIntoView({ behavior: 'smooth' })} class_name="px-8 py-4 text-lg">
             Explore Services
@@ -145,7 +146,7 @@
         <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-8">
           Our Mission
         </h2>
-        <div class="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 md:p-12 text-white">
+        <div class="bg-primary rounded-2xl p-8 md:p-12 text-white">
           <p class="text-xl md:text-2xl leading-relaxed">
             We specialize in providing comprehensive listing and branding services, designed to 
             <span class="font-bold">elevate your listings</span> and 
@@ -184,7 +185,7 @@
           Our Comprehensive Services
         </h2>
         <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-          From pre-listing preparations to ongoing brand management, we provide everything you need to succeed in real estate.
+          From professional staging to digital marketing, we offer comprehensive solutions to maximize your property's potential.
         </p>
       </div>
 
@@ -270,7 +271,7 @@
               </div>
               <div>
                 <h3 class="text-xl font-semibold text-gray-900 mb-2">Complete Service Package</h3>
-                <p class="text-gray-600">From staging to social media, we handle every aspect of your real estate marketing needs under one roof.</p>
+                <p class="text-gray-600">From professional staging to digital marketing, we handle every aspect of your real estate needs with excellence.</p>
               </div>
             </div>
             
@@ -379,7 +380,7 @@
   </section>
 
   <!-- Our Commitment -->
-  <section class="py-20 bg-gradient-to-r from-blue-600 to-purple-600">
+  <section class="py-20 bg-primary">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
       <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
         It's All About Serving the Realtors
@@ -395,10 +396,10 @@
           See a service you need? Don't wait – let's discuss how we can help you succeed.
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button onclick={() => window.location.href = 'tel:416-800-0688'} class_name="bg-white text-blue-600 hover:bg-blue-50 px-8 py-3 text-lg font-semibold">
-            📞 Call 416-800-0688
+          <Button onclick={() => window.location.href = 'tel:{PHONE_NUMBER}'} class_name="bg-white text-blue-600 hover:bg-blue-50 px-8 py-3 text-lg font-semibold">
+            📞 Call {PHONE_NUMBER}
           </Button>
-          <Button variant="secondary" onclick={() => window.location.href = '#contact'} class_name="border-white text-white hover:bg-white hover:text-blue-600 px-8 py-3 text-lg font-semibold">
+          <Button variant="secondary" onclick={() => window.location.href = '/register'} class_name="border-white px-8 py-3 text-lg font-semibold">
             Get Started Today
           </Button>
         </div>
@@ -422,8 +423,8 @@
             </div>
             <h3 class="text-xl font-semibold text-gray-900 mb-2">Call Us</h3>
             <p class="text-gray-600 mb-2">Ready to get started?</p>
-            <Link href="tel:416-800-0688" className="text-blue-600 hover:text-blue-700 font-semibold text-lg">
-              416-800-0688
+            <Link href="tel:{PHONE_NUMBER}" className="text-blue-600 hover:text-blue-700 font-semibold text-lg">
+              {PHONE_NUMBER}
             </Link>
           </div>
           
@@ -435,8 +436,8 @@
             </div>
             <h3 class="text-xl font-semibold text-gray-900 mb-2">Email Us</h3>
             <p class="text-gray-600 mb-2">Send us your questions</p>
-            <Link href="mailto:info@realtorservice.ca" className="text-blue-600 hover:text-blue-700 font-semibold">
-              info@realtorservice.ca
+            <Link href="mailto:{CONTACT_EMAIL}" className="text-blue-600 hover:text-blue-700 font-semibold">
+              {CONTACT_EMAIL}
             </Link>
           </div>
           

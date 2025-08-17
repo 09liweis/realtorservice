@@ -71,8 +71,6 @@
 
   // Load dashboard data
   async function loadDashboardData() {
-    if (!$user) return;
-    
     try {
       loading = true;
 

@@ -48,7 +48,7 @@
   className="bg-white relative rounded-xl shadow-sm p-6 border border-gray-200 cursor-pointer {colorClasses.hover[color]} transition-colors duration-200"
 >
   {#if typeof value !== 'number' && (value.is_user_unread || value.is_admin_unread)}
-    <div class="flex space-x-2 mt-2 absolute top-0 right-0 z-10">
+    <div class="flex space-x-2 mt-2 absolute top-0 right-2 z-10">
       {#if $user?.isAdmin}
         <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded-full">{value.is_admin_unread}</span>
       {:else}
@@ -56,11 +56,13 @@
       {/if}
     </div>
   {/if}
-  <div class="flex items-center justify-between">
+  <div class="">
+    <div class="w-12 h-12 {colorClasses.bg[color]} rounded-xl flex items-center justify-center">
+      <span class="text-2xl">{icon}</span>
+    </div>
     <div>
-      <p class="text-sm font-medium text-gray-600">{title}</p>
       <p class="text-3xl font-bold text-gray-900 mt-2">
-        {loading ? '...' : typeof value === 'number' ? value.toLocaleString() : value.count.toLocaleString()}
+        {loading ? '...' : typeof value === 'number' ? value.toLocaleString() : value.count.toLocaleString()} <span class="text-sm font-medium text-gray-600">{title}</span>
       </p>
       
       {#if changeLabel}
@@ -69,9 +71,6 @@
         </p>
       {/if}
       <slot />
-    </div>
-    <div class="w-12 h-12 {colorClasses.bg[color]} rounded-xl flex items-center justify-center">
-      <span class="text-2xl">{icon}</span>
     </div>
   </div>
 </Link>
