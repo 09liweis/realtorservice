@@ -94,7 +94,7 @@ export function getServiceEndDate(subscriptionType: string, startDate: Date): st
   if (!subscription || !subscription.duration) return null;
   const endDate = new Date(startDate);
   endDate.setDate(startDate.getDate() + subscription.duration);
-  return endDate.toLocaleDateString();
+  return endDate.toISOString().split('T')[0];
 }
 
 // Calculate pricing for social media service
