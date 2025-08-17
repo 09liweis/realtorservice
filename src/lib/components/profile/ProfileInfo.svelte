@@ -6,11 +6,11 @@
   import { sendRequest } from '$lib/helper';
 
   export let profile: UserProfile;
-  export let isEditing: boolean;
-  export let loading: boolean;
-  export let saving: boolean;
-  export let error: string;
-  export let successMessage: string;
+  let isEditing: boolean = false;
+  let loading: boolean = false;
+  let saving: boolean = false;
+  let error: string;
+  let successMessage: string;
 
   async function handleSave() {
     if (!$user) return;
