@@ -56,6 +56,17 @@
     },1)
   }
 
+  // Calculate service end date based on subscription type
+  $: serviceEndDate = (() => {
+    if (!socialMediaService.subscription_type) return null;
+    const today = new Date();
+    const subscriptionType = SUBSCRIPTION_TYPES.find(type => type.value === socialMediaService.subscription_type);
+    if (!subscriptionType || !subscriptionType.duration) return null;
+    const endDate = new Date(today);
+    endDate.setDate(today.getDate() + subscriptionType.duration);
+    return endDate.toLocaleDateString();
+  })();
+
   function validateForm(): boolean {
     errors = {};
 
@@ -327,6 +338,9 @@
                     <div class="text-xs text-green-600 font-medium">
                       Save {getDiscountPercentage(socialMediaService.posting_frequency, socialMediaService.subscription_type)}%
                     </div>
+                  {/if}
+                  {#if serviceEndDate}
+                    <div class="text-xs text-gray-500 mt-1">Service End Date: {serviceEndDate}</div>
                   {/if}
                 </div>
               </div>
