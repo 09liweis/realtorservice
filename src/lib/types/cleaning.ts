@@ -94,6 +94,16 @@ export const CLEANING_RATES:Record<string, any> = {
   SUPPLY_FEE: 25  // cleaning supplies
 };
 
+export const DURATION_MAP:{[key:string]:number} = {
+  'weekly': 4,      // 1 month = 4 weeks
+  'bi_weekly': 2,   // 1 month = 2 bi-weeks
+  'monthly': 1     // 1 month = 1 service
+};
+
+export function calculateServiceCount(cleaning:Cleaning): number {
+  return cleaning.duration && cleaning.frequency ? cleaning.duration * DURATION_MAP[cleaning.frequency] || 1 : 1;
+}
+
 export function calculateCleaningPrice(
   rooms: number,
   bathrooms: number,
@@ -163,8 +173,8 @@ export function calculateCleaningPrice(
   
   // Create breakdown
   const breakdown = [
-    `Base cleaning: $${basePrice.toFixed(2)}`,
-    `${CLEANING_TYPES.find(t => t.value === cleaningType)?.label || cleaningType} (${(typeMultiplier * 100).toFixed(0)}%): $${typeAdjustedPrice.toFixed(2)}`,
+    // `Base cleaning: $${basePrice.toFixed(2)}`,
+    // `${CLEANING_TYPES.find(t => t.value === cleaningType)?.label || cleaningType} (${(typeMultiplier * 100).toFixed(0)}%): $${typeAdjustedPrice.toFixed(2)}`,
     `Property type adjustment: $${propertyAdjustedPrice.toFixed(2)}`,
   ];
   

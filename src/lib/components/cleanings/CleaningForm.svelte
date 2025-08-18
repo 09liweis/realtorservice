@@ -3,7 +3,7 @@
   import Button from "../common/Button.svelte";
   import Input from '$lib/components/common/Input.svelte';
   import { formatAmount, PROPERTY_TYPES } from "$lib/types/constant";
-  import { EMPTY_CLEANING, type Cleaning, calculateCleaningPrice, CLEANING_TYPES, CLEANING_FREQUENCIES } from "$lib/types/cleaning";
+  import { EMPTY_CLEANING, type Cleaning, calculateCleaningPrice, CLEANING_TYPES, CLEANING_FREQUENCIES, calculateServiceCount } from "$lib/types/cleaning";
   import Select from '$lib/components/common/Select.svelte';
   import Textarea from '$lib/components/common/Textarea.svelte';
   import { user } from "$lib/stores/auth";
@@ -50,14 +50,8 @@
     }
   }
 
-  const durationMap = {
-  'weekly': 4,      // 1 month = 4 weeks
-  'bi_weekly': 2,   // 1 month = 2 bi-weeks
-  'monthly': 1     // 1 month = 1 service
-};
-
-$: totalPrice = request.frequency !== 'one_time' 
-  ? cleaningCalculation.totalPrice * (parseInt(request.duration) || 1) * durationMap[request.frequency]
+  $: totalPrice = request.frequency !== 'one_time' 
+  ? cleaningCalculation.totalPrice * calculateServiceCount(request)
   : cleaningCalculation.totalPrice;
 
   // Update estimate_price when calculation changes
@@ -320,7 +314,7 @@ $: totalPrice = request.frequency !== 'one_time'
                 {#if request.frequency !== 'one_time'}
                   <div class="flex justify-between text-sm">
                     <span class="text-gray-600">Number of Services:</span>
-                    <span class="font-medium">{parseInt(request?.duration) * durationMap[request.frequency]}</span>
+                    <span class="font-medium">{calculateServiceCount(request)}</span>
                   </div>
                 {/if}
                 

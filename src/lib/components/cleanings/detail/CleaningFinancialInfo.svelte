@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Cleaning } from '$lib/types/cleaning';
   import { formatAmount } from '$lib/types/constant';
-  import { calculateCleaningPrice, CLEANING_TYPES, CLEANING_FREQUENCIES } from '$lib/types/cleaning';
+  import { calculateCleaningPrice, CLEANING_TYPES, CLEANING_FREQUENCIES, calculateServiceCount } from '$lib/types/cleaning';
 
   export let cleaning: Cleaning;
 
@@ -84,6 +84,15 @@
             </div>
           {/each}
           
+          {#if cleaning.frequency !== 'one_time'}
+            <div class="flex justify-between items-center py-2 border-b border-gray-200">
+              <span class="text-gray-700">Number of Services</span>
+              <span class="font-medium text-gray-900">
+                {calculateServiceCount(cleaning)}
+              </span>
+            </div>
+          {/if}
+          
           {#if cleaningCalculation.frequencyDiscount > 0}
             <div class="flex justify-between items-center py-2 text-green-600 bg-green-50 px-3 rounded-lg">
               <span class="font-medium">Frequency Discount</span>
@@ -93,7 +102,7 @@
           
           <div class="flex justify-between items-center py-3 border-t-2 border-gray-300 text-lg font-bold">
             <span class="text-gray-900">Total Cost</span>
-            <span class="text-green-600">{formatAmount(cleaningCalculation.totalPrice)}</span>
+            <span class="text-green-600">{cleaning.estimate_price ? formatAmount(cleaning.estimate_price) : 'Calculating...'}</span>
           </div>
         </div>
       </div>
