@@ -2,6 +2,7 @@
   import type { Cleaning } from '$lib/types/cleaning';
   import { formatAmount } from '$lib/types/constant';
   import { calculateCleaningPrice, CLEANING_TYPES, CLEANING_FREQUENCIES, calculateServiceCount } from '$lib/types/cleaning';
+    import { formatDate } from '$lib/helper';
 
   export let cleaning: Cleaning;
 
@@ -131,16 +132,29 @@
           <div>
             <div class="text-sm font-medium text-purple-800">Scheduled Date</div>
             <div class="text-lg font-bold text-purple-900">
-              {new Date(cleaning.scheduled_date).toLocaleDateString('en-US', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-              })}
+              {formatDate(cleaning.scheduled_date)}
             </div>
           </div>
         </div>
       </div>
     {/if}
+
+    {#if cleaning.end_date}
+      <div class="mt-6 p-4 bg-purple-50 rounded-lg border border-purple-200">
+        <div class="flex items-center space-x-3">
+          <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+            <span class="text-lg">📅</span>
+          </div>
+          <div>
+            <div class="text-sm font-medium text-purple-800">End Date</div>
+            <div class="text-lg font-bold text-purple-900">
+              {formatDate(cleaning.end_date)}
+            </div>
+          </div>
+        </div>
+      </div>
+    {/if}
+
+
   </div>
 </div>
