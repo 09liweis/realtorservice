@@ -10,6 +10,7 @@
     import Link from "../Link.svelte";
   import CardWrapper from "../common/CardWrapper.svelte";
   import { user } from "$lib/stores/auth";
+    import { formatDate } from "$lib/helper";
 
   function getCleaningTypeLabel(type: string): string {
     return CLEANING_TYPES.find(t => t.value === type)?.label || type;
@@ -83,9 +84,18 @@
 			{#if request.scheduled_date}
 				<div class="flex justify-between">
 					<span class="text-sm text-gray-500">Scheduled Date</span>
-					<span class="text-sm text-gray-900">{new Date(request.scheduled_date).toLocaleDateString()}</span>
+					<span class="text-sm text-gray-900">{formatDate(request.scheduled_date)}</span>
 				</div>
 			{/if}
+
+			{#if request.end_date}
+				<div class="flex justify-between">
+					<span class="text-sm text-gray-500">Scheduled Date</span>
+					<span class="text-sm text-gray-900">{formatDate(request.end_date)}</span>
+				</div>
+			{/if}
+
+
 			<div class="flex justify-between">
 				<span class="text-sm text-gray-500">Estimate Price</span>
 				<span class="text-sm font-medium text-gray-900">
