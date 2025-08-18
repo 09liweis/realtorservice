@@ -11,6 +11,8 @@ export interface Cleaning extends Service {
   frequency: string;
   special_requests?: string;
   scheduled_date?: string;
+  duration?: number;
+  end_date?: string;
 }
 
 export const EMPTY_CLEANING: Cleaning = {
@@ -23,7 +25,8 @@ export const EMPTY_CLEANING: Cleaning = {
   cleaning_type: 'deep_cleaning',
   frequency: 'one_time',
   special_requests: '',
-  scheduled_date: ''
+  scheduled_date: '',
+  end_date: '',
 };
 
 export const CLEANING_TYPES = [

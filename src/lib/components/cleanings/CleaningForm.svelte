@@ -40,6 +40,16 @@
     parseFloat(request.size) || 0
   );
 
+  // Calculate end_date based on schedule_date and month_duration
+  $: {
+    if (request.scheduled_date && request.duration) {
+      const startDate = new Date(request.scheduled_date);
+      const endDate = new Date(startDate);
+      endDate.setMonth(endDate.getMonth() + parseInt(request.duration));
+      request.end_date = endDate.toISOString().split('T')[0];
+    }
+  }
+
   const durationMap = {
   'weekly': 4,      // 1 month = 4 weeks
   'bi_weekly': 2,   // 1 month = 2 bi-weeks
@@ -218,6 +228,14 @@ $: totalPrice = request.frequency !== 'one_time'
           />
         </div>
 
+        <!-- End Date (calculated) -->
+        <div class="mt-2">
+          <label class="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+          <div class="px-3 py-2 bg-gray-50 rounded-md border border-gray-300 text-gray-700">
+            {request.end_date || 'Not calculated yet'}
+          </div>
+        </div>
+
         <!-- Special Requests -->
         <Textarea
           id="notes"
@@ -298,6 +316,13 @@ $: totalPrice = request.frequency !== 'one_time'
                     <span class="font-medium">{item.split(':')[1]}</span>
                   </div>
                 {/each}
+
+                {#if request.frequency !== 'one_time'}
+                  <div class="flex justify-between text-sm">
+                    <span class="text-gray-600">Number of Services:</span>
+                    <span class="font-medium">{parseInt(request?.duration) * durationMap[request.frequency]}</span>
+                  </div>
+                {/if}
                 
                 <div class="border-t border-green-200 pt-2">
                   <div class="flex justify-between text-base font-semibold">
