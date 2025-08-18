@@ -88,8 +88,9 @@
       return staging.length ? `${staging.length} month${staging.length !== '1' ? 's' : ''}` : 'To be determined';
     } else if (type === 'cleaning'){
       const cleaning = request as Cleaning;
-      return cleaning.frequency ? cleaning.frequency.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase()) : 'One-time service';
+      return cleaning.duration ? `${cleaning.duration} month${cleaning.duration !== 1 ? 's' : ''}` : 'To be determined';
     }
+    return 'To be determined';
   }
 </script>
 
