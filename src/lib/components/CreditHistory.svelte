@@ -14,7 +14,7 @@
       <h3 class="text-lg font-semibold text-gray-900">Credit History</h3>
     </div>
   {/if}
-  <div class="p-6">
+  <div class="p-6 max-h-[600px] overflow-y-auto">
     {#if loadingCreditRecords}
       <div class="flex justify-center py-4">
         <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
