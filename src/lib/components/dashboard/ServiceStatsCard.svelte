@@ -12,7 +12,7 @@
   export let link: string;
   
   // Color mappings
-  const colorClasses = {
+  const colorClasses:{[key:string]:any} = {
     bg: {
       blue: 'bg-blue-100',
       green: 'bg-green-100',
@@ -52,7 +52,7 @@
       {#if $user?.isAdmin}
         <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded-full">{value.is_admin_unread}</span>
       {:else}
-        <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">{value.is_user_unread}</span>
+        <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded-full">{value.is_user_unread}</span>
       {/if}
     </div>
   {/if}
