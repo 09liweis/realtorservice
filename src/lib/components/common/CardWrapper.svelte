@@ -7,13 +7,16 @@
 
   export let request:Staging|Cleaning|VideoService|SocialMediaService;
 
-	let unreadStyle = 'border-t-4 ';
-	if ($user?.isAdmin) {
-		unreadStyle += (request.is_admin_unread ? 'border-red-500' : '');
-	} else {
-		unreadStyle += (request.is_user_unread ? 'border-red-500' : '');
-	}
+  let showUnreadDot = false;
+  if ($user?.isAdmin) {
+    showUnreadDot = request.is_admin_unread;
+  } else {
+    showUnreadDot = request.is_user_unread;
+  }
 </script>
-<div class={`bg-white overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-200 ${unreadStyle}`}>
+<div class="relative bg-white overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-200">
+  {#if showUnreadDot}
+    <div class="absolute top-2 left-2 w-3 h-3 bg-red-500 rounded-full"></div>
+  {/if}
   <slot/>
 </div>
