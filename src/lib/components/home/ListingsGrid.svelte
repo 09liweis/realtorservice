@@ -131,9 +131,17 @@
                   {listing.address}
                 </div>
               </div>
-
               <ListingQuickInfo {listing} />
 
+              <!-- Realtor Information -->
+              {#if listing.user_profiles}
+                <div class="flex items-center space-x-2 mt-4">
+                  <div>
+                    <div class="text-sm font-medium text-gray-900">{listing.user_profiles.first_name} {listing.user_profiles.last_name}</div>
+                    <div class="text-xs text-gray-500">{listing.user_profiles.brokerage}</div>
+                  </div>
+                </div>
+              {/if}
               
             </div>
           </div>
