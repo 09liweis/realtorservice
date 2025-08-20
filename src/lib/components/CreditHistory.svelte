@@ -5,7 +5,7 @@
   export let showTitle: boolean = true;
 
   export let creditRecords:CreditRecord[] = [];
-  export let loadingCreditRecords = false;
+  export let loadingCredits = false;
 </script>
 
 <div class="bg-white rounded-xl shadow-sm border border-gray-200">
@@ -15,7 +15,7 @@
     </div>
   {/if}
   <div class="p-6 max-h-[600px] overflow-y-auto">
-    {#if loadingCreditRecords}
+    {#if loadingCredits}
       <div class="flex justify-center py-4">
         <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
       </div>
