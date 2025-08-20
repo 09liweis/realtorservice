@@ -53,7 +53,7 @@
         {/each}
       </select>
       
-      <select
+      <!-- <select
         bind:value={filters.sortBy}
         class="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-white"
       >
@@ -61,7 +61,7 @@
         <option value="oldest">Oldest First</option>
         <option value="price-low">Price: Low to High</option>
         <option value="price-high">Price: High to Low</option>
-      </select>
+      </select> -->
       
       <button
         onclick={() => showFilters = !showFilters}
@@ -149,12 +149,18 @@
       <!-- Filter Actions -->
       <div class="flex justify-between items-center">
         <button
-          onclick={clearFilters}
+          onclick={()=>{
+            showFilters = false;
+            clearFilters();
+          }}
           class="text-sm text-gray-600 hover:text-gray-800 underline"
         >
           Clear all filters
         </button>
-        <Button onclick={()=>handleSearch(filters)}>
+        <Button onclick={()=>{
+          showFilters = false;
+          handleSearch(filters);
+        }}>
           Search
         </Button>
       </div>

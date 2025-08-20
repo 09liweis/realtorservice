@@ -114,7 +114,7 @@
   // Clear all filters
   function clearFilters() {
     filters = {...EMPTY_FILTERS};
-    applyFilters();
+    goto('/listings');
   }
 
   // Handle page change
