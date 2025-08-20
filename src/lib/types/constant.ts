@@ -18,7 +18,9 @@ export function formatAmount(amount:number|string|undefined) {
   }).format(amount);
 }
 
-export const PROPERTY_TYPES = ['House', 'Condo', 'Townhouse', 'Apartment', 'Other'];
+export const LISTING_TYPES = ['Assignment Sale','Coming Soon']
+
+export const PROPERTY_TYPES = ['House', 'Condo', 'Townhouse', 'Apartment', 'Commercial', 'Other'];
 
 export const OCCUPATION_STATUS_OPTIONS = ["Vacant", "Occupied"];
 
