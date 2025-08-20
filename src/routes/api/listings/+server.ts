@@ -10,8 +10,9 @@ export const GET: RequestHandler = async ({ request, url }) => {
     const listing_type = url.searchParams.get('listing_type');
     const property_type = url.searchParams.get('property_type');
     const bedroom = url.searchParams.get('bedroom');
-    console.log(url.searchParams);
     const bathroom = url.searchParams.get('bathroom');
+    const minPrice = url.searchParams.get('minPrice');
+    const maxPrice = url.searchParams.get('maxPrice');
 
     let user_id = '';
     let isAdmin = false;
@@ -83,6 +84,16 @@ export const GET: RequestHandler = async ({ request, url }) => {
       } else {
         query = query.eq('bathroom',bathroomValue);
       }
+    }
+
+    if (minPrice) {
+      const minPriceValue = parseInt(minPrice);
+      query = query.gte('asking_price',minPriceValue);
+    }
+
+    if (maxPrice) {
+      const maxPriceValue = parseInt(maxPrice);
+      query = query.lte('asking_price',maxPriceValue);
     }
 
 
