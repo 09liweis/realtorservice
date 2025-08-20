@@ -23,8 +23,8 @@
     location: '',
     minPrice: '',
     maxPrice: '',
-    bedrooms: '',
-    bathrooms: '',
+    bedroom: '',
+    bathroom: '',
     sortBy: 'newest'
   };
 
@@ -42,7 +42,7 @@
     for (const [key, value] of Object.entries(filters)) {
       const filterValue = value;
       if (filterValue) {
-        querySearchArray.push(`${key}=${filterValue}`);
+        querySearchArray.push(`${key}=${encodeURIComponent(filterValue)}`);
       }
     }
     const querySearch = querySearchArray.join('&');

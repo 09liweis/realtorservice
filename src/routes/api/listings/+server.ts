@@ -9,6 +9,10 @@ export const GET: RequestHandler = async ({ request, url }) => {
     const isPublic = url.searchParams.get('isPublic');
     const listing_type = url.searchParams.get('listing_type');
     const property_type = url.searchParams.get('property_type');
+    const bedroom = url.searchParams.get('bedroom');
+    console.log(url.searchParams);
+    const bathroom = url.searchParams.get('bathroom');
+
     let user_id = '';
     let isAdmin = false;
 
@@ -50,6 +54,38 @@ export const GET: RequestHandler = async ({ request, url }) => {
     if (property_type) {
       query = query.eq('ptype',decodeURIComponent(property_type));
     }
+
+    if (bedroom) {
+      let value = bedroom;
+      let hasPlus = false;
+      if (bedroom.includes('+')) {
+        hasPlus = true;
+        value = bedroom.replace('+','');
+      }
+      const bedroomValue = parseInt(value);
+      if (hasPlus) {
+        query = query.gte('bedroom',bedroomValue);
+      } else {
+        query = query.eq('bedroom',bedroomValue);
+      }
+    }
+
+    if (bathroom) {
+      let value = bathroom;
+      let hasPlus = false;
+      if (bathroom.includes('+')) {
+        hasPlus = true;
+        value = bathroom.replace('+','');
+      }
+      const bathroomValue = parseInt(value);
+      if (hasPlus) {
+        query = query.gte('bathroom',bathroomValue);
+      } else {
+        query = query.eq('bathroom',bathroomValue);
+      }
+    }
+
+
     const { data, error } = await query;
 
     if (error) {

@@ -98,7 +98,7 @@
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Bedrooms</label>
           <select
-            bind:value={filters.bedrooms}
+            bind:value={filters.bedroom}
             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
           >
             <option value="">Any</option>
@@ -111,7 +111,7 @@
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Bathrooms</label>
           <select
-            bind:value={filters.bathrooms}
+            bind:value={filters.bathroom}
             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
           >
             <option value="">Any</option>
