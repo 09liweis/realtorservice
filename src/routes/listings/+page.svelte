@@ -9,14 +9,14 @@
     import { sendRequest } from '$lib/helper';
     import ListingsGrid from '$lib/components/home/ListingsGrid.svelte';
     import SearchFilterBar from '$lib/components/SearchFilterBar.svelte';
+    import { goto } from '$app/navigation';
 
   let listings:Listing[] = [];
   let filteredListings: Listing[] = [];
   let loading = true;
   let error = '';
 
-  // Filter and search state
-  let filters = {
+  const EMPTY_FILTERS = {
     search: '',
     listing_type: '',
     property_type: '',
@@ -27,6 +27,9 @@
     bathrooms: '',
     sortBy: 'newest'
   };
+
+  // Filter and search state
+  let filters = {...EMPTY_FILTERS};
   let showFilters = false;
 
   // Pagination
@@ -34,33 +37,21 @@
   let itemsPerPage = 12;
   let totalPages = 1;
 
-  // Get unique values for filters
-  const listingTypes = ['Assignment Sale','Coming Soon'];
-  $: propertyTypes = [...new Set(listings.map(l => l.ptype).filter(Boolean))];
-  $: locations = [...new Set(listings.map(l => l.location).filter(Boolean))];
-
-  const getQuerySearch = () => {
-    let querySearchObject = parseQueryString($page.url.search);
-
-    console.log(querySearchObject);
-    console.log(filters);
-
+  const getQuerySearchFromFilter = () => {
     let querySearchArray = [];
     for (const [key, value] of Object.entries(filters)) {
-      const filterValue = querySearchObject[key] || value;
+      const filterValue = value;
       if (filterValue) {
         querySearchArray.push(`${key}=${filterValue}`);
       }
     }
-
-    console.log(querySearchArray);
     const querySearch = querySearchArray.join('&');
     return querySearch;
   }
 
-  const fetchListings = async(querySearch:string) => {
+  const fetchListings = async() => {
     loading = true;
-    let baseAPI = '/api/listings?isPublic=1&' + querySearch;
+    let baseAPI = '/api/listings?isPublic=1&' + $page.url.search.replace('?','');
     const {data: {listings:listingsData, error}} = await sendRequest({
       url: baseAPI,
       method: 'GET'
@@ -70,9 +61,9 @@
     listings = listingsData || [];
   }
 
-  function parseQueryString(queryString:string) {
+  function getFiltersFromQueryString(queryString:string) {
     const querySearchObject:any = {};
-    if (!queryString) return querySearchObject;
+    if (!queryString) return filters;
 
     // Remove the leading '?' if present
     const query = queryString.startsWith('?') ? queryString.substring(1) : queryString;
@@ -83,7 +74,7 @@
       const [key, value] = pair.split('=');
       if (key) {
         // Decode URI components and assign to object
-        querySearchObject[decodeURIComponent(key)] = decodeURIComponent(value || '');
+        querySearchObject[decodeURIComponent(key)] = decodeURIComponent(value || filters[key]);
       }
     });
 
@@ -91,8 +82,11 @@
   }
 
   // Apply filters and search
-  function applyFilters(filterParams:any) {
+  function applyFilters() {
     // Sort listings
+    fetchListings();
+
+    
     listings.sort((a, b) => {
       switch (filters.sortBy) {
         case 'price-low':
@@ -106,33 +100,21 @@
           return new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime();
       }
     });
-
-    const querySearch = getQuerySearch();
-    const newUrl = `${$page.url.pathname}?${querySearch}`;
-
-    if (typeof window !== 'undefined') {
-      window.history.replaceState({}, '', newUrl);
-      fetchListings(querySearch);
-    }
-
     totalPages = Math.ceil(listings.length / itemsPerPage);
     currentPage = 1;
   }
 
+  const handleSearch = async (filters) => {
+    console.log(filters);
+    const querySearch = getQuerySearchFromFilter();
+    const newUrl = `${$page.url.pathname}?${querySearch}`;
+    goto(newUrl);
+  }
+
   // Clear all filters
   function clearFilters() {
-    filters = {
-      search: '',
-      listing_type: '',
-      property_type: '',
-      location: '',
-      minPrice: '',
-      maxPrice: '',
-      bedrooms: '',
-      bathrooms: '',
-      sortBy: 'newest'
-    };
-    applyFilters(filters);
+    filters = {...EMPTY_FILTERS};
+    applyFilters();
   }
 
   // Handle page change
@@ -143,12 +125,10 @@
 
   // Watch for URL or filter changes
   $: {
-    const urlSearch = $page.url.search;
-    const currentFilters = filters;
-    
     // Only apply filters if either URL or filters have changed
-    if (urlSearch !== undefined || currentFilters !== undefined) {
-      applyFilters(urlSearch || currentFilters);
+    if (typeof window !== 'undefined') {
+      filters = getFiltersFromQueryString($page.url.search);
+      applyFilters();
     }
   }
 </script>
@@ -193,14 +173,12 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     
     <!-- Search and Filter Bar -->
-    <!-- <SearchFilterBar
+    <SearchFilterBar
       bind:filters
       bind:showFilters
-      {listingTypes}
-      {propertyTypes}
-      {locations}
       {clearFilters}
-    /> -->
+      {handleSearch}
+    />
 
     <!-- Results Header -->
     <div class="flex items-center justify-between mb-8" in:fly={{ y: 20, duration: 600, delay: 600 }}>

@@ -44,7 +44,7 @@ export const GET: RequestHandler = async ({ request, url }) => {
     }
 
     if (listing_type) {
-      query = query.eq('listing_type',listing_type);
+      query = query.eq('listing_type',decodeURIComponent(listing_type));
     }
     const { data, error } = await query;
 

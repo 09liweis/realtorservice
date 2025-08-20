@@ -4,7 +4,8 @@
   import ImageUpload from '$lib/components/ImageUpload.svelte';
   import Select from '$lib/components/common/Select.svelte';
   import Textarea from '$lib/components/common/Textarea.svelte';
-  import type { Listing } from '$lib/types/listing';
+  import { type Listing } from '$lib/types/listing';
+    import { PROPERTY_TYPES, LISTING_TYPES } from '$lib/types/constant';
 
   export let listing: Listing;
   export let onCancel: () => void;
@@ -22,7 +23,7 @@
 
   // Form sections for better organization
   const basicInfoFields = [
-    { name: 'listing_type', type: 'select', label: 'Listing Type', required: true, options: ['Assignment Sale','Coming Soon'] },
+    { name: 'listing_type', type: 'select', label: 'Listing Type', required: true, options: LISTING_TYPES },
     { name: 'project_name', type: 'text', label: 'Project Name', required: true },
     { name: 'developer', type: 'text', label: 'Developer' },
     { name: 'address', type: 'text', label: 'Address', required: true, autocomplete: 'address', handleAutocompleteClick: (address: any) => {
@@ -33,7 +34,7 @@
   ];
 
   const propertyDetailsFields = [
-    { name: 'ptype', type: 'select', label: 'Property Type', options: ['Condo', 'House', 'Townhouse', 'Apartment', 'Commercial'] },
+    { name: 'ptype', type: 'select', label: 'Property Type', options: PROPERTY_TYPES },
     { name: 'bedroom', type: 'number', label: 'Bedrooms', min: '0' },
     { name: 'bathroom', type: 'number', label: 'Bathrooms', min: '0', step: '0.5' },
     { name: 'level', type: 'text', label: 'Floor/Level' },

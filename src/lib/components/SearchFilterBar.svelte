@@ -1,5 +1,7 @@
 <script lang="ts">
   import { fade, fly } from 'svelte/transition';
+    import Button from './common/Button.svelte';
+    import { LISTING_TYPES, PROPERTY_TYPES } from '$lib/types/constant';
 
   export let filters: {
     search: string;
@@ -14,11 +16,11 @@
   };
 
   export let showFilters: boolean;
-  export let listingTypes: string[];
-  export let propertyTypes: string[];
-  export let locations: string[];
+  const listingTypes = LISTING_TYPES;
+  const propertyTypes = PROPERTY_TYPES;
 
-  export function clearFilters(): void;
+  export let clearFilters: void;
+  export let handleSearch: void;
 </script>
 
 <!-- Search and Filter Bar -->
@@ -85,20 +87,7 @@
           >
             <option value="">All Types</option>
             {#each propertyTypes as type}
-              <option value={type}>{type}</option>
-            {/each}
-          </select>
-        </div>
-        
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Location</label>
-          <select
-            bind:value={filters.location}
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
-          >
-            <option value="">All Locations</option>
-            {#each locations as location}
-              <option value={location}>{location}</option>
+              <option value={type.toLocaleLowerCase()}>{type}</option>
             {/each}
           </select>
         </div>
@@ -163,9 +152,9 @@
         >
           Clear all filters
         </button>
-        <div class="text-sm text-gray-600">
-          Showing {filteredListings.length} of {listings.length} properties
-        </div>
+        <Button onclick={()=>handleSearch(filters)}>
+          Search
+        </Button>
       </div>
     </div>
   {/if}
