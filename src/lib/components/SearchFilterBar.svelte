@@ -64,7 +64,7 @@
       </select>
       
       <button
-        on:click={() => showFilters = !showFilters}
+        onclick={() => showFilters = !showFilters}
         class="px-4 py-3 bg-primary text-white rounded-lg hover:bg-primary-hover transition-colors duration-200 flex items-center space-x-2"
       >
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -77,7 +77,9 @@
 
   <!-- Advanced Filters (Collapsible) -->
   {#if showFilters}
-    <div class="border-t border-gray-200 pt-6" in:fly={{ y: -20, duration: 300 }}>
+    <div class="fixed top-0 left-0 w-full h-full bg-black/50 z-50 flex items-center justify-center" in:fly={{ y: -20, duration: 300 }} out:fade={{ duration: 300 }} >
+    <div class="border-t border-gray-200 pt-6 max-w-5xl w-full bg-white p-4 rounded relative">
+      <button onclick={showFilters = false} class="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-500 cursor-pointer">X</button>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Property Type</label>
@@ -147,7 +149,7 @@
       <!-- Filter Actions -->
       <div class="flex justify-between items-center">
         <button
-          on:click={clearFilters}
+          onclick={clearFilters}
           class="text-sm text-gray-600 hover:text-gray-800 underline"
         >
           Clear all filters
@@ -156,6 +158,7 @@
           Search
         </Button>
       </div>
+    </div>
     </div>
   {/if}
 </div>
