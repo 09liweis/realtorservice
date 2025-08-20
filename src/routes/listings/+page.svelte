@@ -104,8 +104,7 @@
     currentPage = 1;
   }
 
-  const handleSearch = async (filters) => {
-    console.log(filters);
+  const handleSearch = () => {
     const querySearch = getQuerySearchFromFilter();
     const newUrl = `${$page.url.pathname}?${querySearch}`;
     goto(newUrl);
