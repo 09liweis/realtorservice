@@ -41,6 +41,10 @@
             <span class="text-sm text-gray-500">Submitted</span>
             <span class="text-sm text-gray-900">{offerProperty.date}</span>
           </div>
+          <div class="flex justify-between">
+            <span class="text-sm text-gray-500">Number of offers</span>
+            <span class="text-sm text-gray-900">{offerProperty.offers.length}</span>
+          </div>
         </div>
 
         <div class="mt-6 text-right">
