@@ -62,7 +62,12 @@
     </div>
     <div>
       <p class="text-3xl font-bold text-gray-900 mt-2">
-        {loading ? '...' : typeof value === 'number' ? value.toLocaleString() : value.count.toLocaleString()} <span class="text-sm font-medium text-gray-600">{title}</span>
+        {#if loading}
+          <span class="inline-block animate-ping rounded-full bg-primary opacity-75 h-3 w-3 mr-3"></span>
+        {:else}
+          {typeof value === 'number' ? value : value.count}
+        {/if}
+        <span class="text-sm font-medium text-gray-600">{title}</span>
       </p>
       
       {#if changeLabel}
