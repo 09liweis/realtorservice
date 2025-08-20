@@ -28,23 +28,20 @@
   };
 
   // Form state
-  let loading = false;
   let error = '';
   let successMessage = '';
   let showTopup = false;
-  let loadingCredits = false;
+  let loadingCredits = true;
 
   // Load user profile on mount
   onMount(() => {
     loadUserProfile();
   });
 
-  let loadingCreditRecords = false;
   let creditRecords: CreditRecord[] = [];
 
-  async function loadUserProfile() {    
+  async function loadUserProfile() {   
     try {
-      loading = true;
       loadingCredits = true;
       error = '';
       
@@ -63,7 +60,6 @@
       console.error('Error loading profile:', err);
       error = 'Failed to load profile data';
     } finally {
-      loading = false;
       loadingCredits = false;
     }
   }
@@ -141,7 +137,7 @@
       </div>
 
       <!-- Credit History Section -->
-      <CreditHistory {loadingCreditRecords} {creditRecords} />
+      <CreditHistory {loadingCredits} {creditRecords} />
     </div>
   </div>
 </div>
