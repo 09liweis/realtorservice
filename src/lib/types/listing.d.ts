@@ -32,3 +32,5 @@ export interface ListingSearch {
   user_id?: string;
   property_id?: string;
 }
+
+export const PROPERTY_TYPES = ['Condo', 'House', 'Townhouse', 'Apartment', 'Commercial'];
