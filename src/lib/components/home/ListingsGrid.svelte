@@ -20,14 +20,6 @@
     return pictures.split(',').filter(url => url.trim()).length;
   }
 
-  // Format property features
-  function formatFeatures(listing: Listing): string {
-    const features = [];
-    if (listing.bedroom) features.push(`${listing.bedroom} bed`);
-    if (listing.bathroom) features.push(`${listing.bathroom} bath`);
-    if (listing.size) features.push(`${listing.size} sqft`);
-    return features.join(' • ');
-  }
 </script>
 
 <section class="py-16 bg-gray-50">
@@ -67,12 +59,14 @@
           >
             <!-- Property Image -->
             <div class="relative h-56 bg-gray-200 overflow-hidden">
+              {#if listing.pics}
               <img 
                 src={getFirstImage(listing.pics)} 
                 alt={listing.project_name || listing.address}
                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 loading="lazy"
               />
+              {/if}
               
               <!-- Gradient Overlay -->
               <div class="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -85,7 +79,7 @@
               {/if}
               
               <!-- Image Count -->
-              {#if getImageCount(listing.pics) > 1}
+              {#if listing.pics && getImageCount(listing.pics) > 1}
                 <div class="absolute bottom-4 right-4 bg-black bg-opacity-80 text-white px-3 py-1.5 rounded-lg text-xs flex items-center space-x-1 backdrop-blur-sm">
                   <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"></path>
@@ -126,16 +120,6 @@
                 {/if}
               </div>
 
-              <!-- Project Name and Developer -->
-              <div class="mb-4">
-                <h3 class="text-lg font-semibold text-gray-900 mb-1 line-clamp-1 group-hover:text-primary transition-colors duration-300">
-                  {listing.project_name || listing.address}
-                </h3>
-                {#if listing.developer}
-                  <p class="text-sm text-gray-500 font-medium">by {listing.developer}</p>
-                {/if}
-              </div>
-
               <!-- Address -->
               <div class="flex items-start space-x-2 mb-4">
                 <svg class="w-4 h-4 text-gray-400 mt-1 flex-shrink-0 transition-all duration-300 group-hover:scale-110 group-hover:text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -143,9 +127,25 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                 </svg>
                 <div class="text-sm text-gray-600 line-clamp-2 leading-relaxed">
-                  {listing.address}{listing.location ? `, ${listing.location}` : ''}
+                  {listing.address}
                 </div>
               </div>
+
+              <!-- Features -->
+              <div class="flex items-center space-x-4 mb-4">
+                {#if listing.bedroom}
+                  <div class="text-sm text-gray-600">
+                    {listing.bedroom} bed
+                  </div>
+                {/if}
+                {#if listing.bathroom}
+                  <div class="text-sm text-gray-600">
+                    {listing.bathroom} bath
+                  </div>
+                {/if}
+              </div>
+
+              
             </div>
           </div>
         {/each}
