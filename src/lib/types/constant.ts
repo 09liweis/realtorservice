@@ -22,6 +22,8 @@ export const LISTING_TYPES = ['Assignment Sale','Coming Soon']
 
 export const PROPERTY_TYPES = ['House', 'Condo', 'Townhouse', 'Apartment', 'Commercial', 'Other'];
 
+export const ROOM_NUMS = ['1', '1+', '2', '2+', '3', '3+', '4', '4+', '5', '5+'];
+
 export const OCCUPATION_STATUS_OPTIONS = ["Vacant", "Occupied"];
 
 export const STAGING_STATUS_OPTIONS = ["draft", "submitted", "confirmed", "paid", "scheduled","completed"];
