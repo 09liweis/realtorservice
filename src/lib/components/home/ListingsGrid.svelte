@@ -3,6 +3,7 @@
   import { formatAmount } from "$lib/types/constant";
   import { fade, fly } from 'svelte/transition';
   import { flip } from 'svelte/animate';
+    import ListingQuickInfo from "../../../routes/listings/components/ListingQuickInfo.svelte";
 
   export let listings: Listing[];
   export let showTitle: boolean = true;
@@ -100,18 +101,18 @@
             </div>
 
             <!-- Property Content -->
-            <div class="p-6">
+            <div class="p-3">
               <!-- Price and Type -->
               <div class="flex justify-between items-start mb-4">
                 <div>
-                  <div class="text-2xl font-bold text-gray-900 mb-1 group-hover:text-primary transition-colors duration-300">
-                    {formatAmount(listing.asking_price)}
+                  <div class="text-2xl text-primary font-bold text-gray-900 mb-1 group-hover:text-primary transition-colors duration-300">
+                    {formatAmount(listing.asking_price || listing.original_price)}
                   </div>
-                  {#if listing.original_price && listing.original_price !== listing.asking_price}
+                  <!-- {#if listing.original_price && listing.original_price !== listing.asking_price}
                     <div class="text-sm text-gray-400 line-through">
                       {formatAmount(listing.original_price)}
                     </div>
-                  {/if}
+                  {/if} -->
                 </div>
                 {#if listing.ptype}
                   <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700 border border-gray-200">
@@ -131,19 +132,7 @@
                 </div>
               </div>
 
-              <!-- Features -->
-              <div class="flex items-center space-x-4 mb-4">
-                {#if listing.bedroom}
-                  <div class="text-sm text-gray-600">
-                    {listing.bedroom} bed
-                  </div>
-                {/if}
-                {#if listing.bathroom}
-                  <div class="text-sm text-gray-600">
-                    {listing.bathroom} bath
-                  </div>
-                {/if}
-              </div>
+              <ListingQuickInfo {listing} />
 
               
             </div>
