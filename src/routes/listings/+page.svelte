@@ -12,7 +12,7 @@
 
   let listings:Listing[] = [];
   let filteredListings: Listing[] = [];
-  let loading = false;
+  let loading = true;
   let error = '';
 
   // Filter and search state
@@ -59,12 +59,13 @@
   }
 
   const fetchListings = async(querySearch:string) => {
+    loading = true;
     let baseAPI = '/api/listings?isPublic=1&' + querySearch;
-    console.log(querySearch, baseAPI);
     const {data: {listings:listingsData, error}} = await sendRequest({
       url: baseAPI,
       method: 'GET'
     });
+    loading = false;
     if (error) throw error;
     listings = listingsData || [];
   }
