@@ -1,9 +1,7 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
   import { page } from '$app/stores';
   import type { Listing } from '$lib/types/listing';
   import { getPageTitle } from '$lib/types/constant';
-  import ListingCard from '$lib/components/listings/ListingCard.svelte';
   import { fade, fly } from 'svelte/transition';
   import { flip } from 'svelte/animate';
     import { sendRequest } from '$lib/helper';
@@ -61,7 +59,7 @@
     listings = listingsData || [];
   }
 
-  function getFiltersFromQueryString(queryString:string) {
+  function setFiltersFromQueryString(queryString:string) {
     const querySearchObject:any = {};
     if (!queryString) return filters;
 
@@ -74,11 +72,12 @@
       const [key, value] = pair.split('=');
       if (key) {
         // Decode URI components and assign to object
-        querySearchObject[decodeURIComponent(key)] = decodeURIComponent(value || filters[key]);
+        querySearchObject[decodeURIComponent(key)] = decodeURIComponent(value);
       }
     });
 
-    return querySearchObject;
+    filters = {...querySearchObject,...filters};
+
   }
 
   // Apply filters and search
@@ -126,7 +125,7 @@
   $: {
     // Only apply filters if either URL or filters have changed
     if (typeof window !== 'undefined') {
-      filters = getFiltersFromQueryString($page.url.search);
+      setFiltersFromQueryString($page.url.search);
       applyFilters();
     }
   }
