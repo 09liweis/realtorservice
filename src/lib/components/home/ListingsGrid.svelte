@@ -4,6 +4,7 @@
   import { fade, fly } from 'svelte/transition';
   import { flip } from 'svelte/animate';
     import ListingQuickInfo from "../../../routes/listings/components/ListingQuickInfo.svelte";
+    import Link from "../Link.svelte";
 
   export let listings: Listing[];
   export let showTitle: boolean = true;
@@ -105,9 +106,9 @@
               <!-- Price and Type -->
               <div class="flex justify-between items-start mb-4">
                 <div>
-                  <div class="text-2xl text-primary font-bold text-gray-900 mb-1 group-hover:text-primary transition-colors duration-300">
+                  <Link href={`/listings/${listing.id}`} className="text-2xl text-primary font-bold text-gray-900 mb-1 group-hover:text-primary transition-colors duration-300">
                     {formatAmount(listing.asking_price || listing.original_price)}
-                  </div>
+                  </Link>
                   <!-- {#if listing.original_price && listing.original_price !== listing.asking_price}
                     <div class="text-sm text-gray-400 line-through">
                       {formatAmount(listing.original_price)}
@@ -135,10 +136,19 @@
 
               <!-- Realtor Information -->
               {#if listing.user_profiles}
-                <div class="flex items-center space-x-2 mt-4">
-                  <div>
-                    <div class="text-sm font-medium text-gray-900">{listing.user_profiles.first_name} {listing.user_profiles.last_name}</div>
-                    <div class="text-xs text-gray-500">{listing.user_profiles.brokerage}</div>
+                <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg mt-4 transition-all duration-300 hover:bg-gray-100">
+                  <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center border-2 border-white shadow-sm">
+                    <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                  </div>
+                  <div class="ml-2">
+                    <div class="text-sm font-semibold text-gray-800 group-hover:text-primary transition-colors duration-300">
+                      {listing.user_profiles.first_name} {listing.user_profiles.last_name}
+                    </div>
+                    <div class="text-xs text-gray-500 mt-1">
+                      {listing.user_profiles.brokerage}
+                    </div>
                   </div>
                 </div>
               {/if}
