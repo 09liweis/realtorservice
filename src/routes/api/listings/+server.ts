@@ -8,6 +8,7 @@ export const GET: RequestHandler = async ({ request, url }) => {
 
     const isPublic = url.searchParams.get('isPublic');
     const listing_type = url.searchParams.get('listing_type');
+    const property_type = url.searchParams.get('property_type');
     let user_id = '';
     let isAdmin = false;
 
@@ -45,6 +46,9 @@ export const GET: RequestHandler = async ({ request, url }) => {
 
     if (listing_type) {
       query = query.eq('listing_type',decodeURIComponent(listing_type));
+    }
+    if (property_type) {
+      query = query.eq('ptype',decodeURIComponent(property_type));
     }
     const { data, error } = await query;
 

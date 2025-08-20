@@ -87,7 +87,7 @@
           >
             <option value="">All Types</option>
             {#each propertyTypes as type}
-              <option value={type.toLocaleLowerCase()}>{type}</option>
+              <option value={type}>{type}</option>
             {/each}
           </select>
         </div>
