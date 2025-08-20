@@ -12,7 +12,12 @@ export const GET: RequestHandler = async ({ request }) => {
     }
 
     // Fetch user email from Supabase
-    let query = supabase.from('openhouses').select('*').eq('user_id',user_id).order('updated_at',{ascending:false});
+    let query = supabase.from('openhouses').select(`
+      *,
+      openhouse_guests (
+        id
+      )
+    `).eq('user_id',user_id).order('updated_at',{ascending:false});
     const { data, error } = await query;
 
     if (error) {
