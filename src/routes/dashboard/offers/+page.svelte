@@ -94,6 +94,10 @@
           bind:value={newOfferProperty.address}
           placeholder="Address"
           label="Address"
+          autocomplete="address"
+          handleAutocompleteClick={(address)=>{
+            newOfferProperty.address = address.place_name;
+          }}
           type="text"
         />
 
