@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { formatAmount, getStatusStyle } from "$lib/types/constant";
+    import { formatAmount } from "$lib/types/constant";
     import Link from "../Link.svelte";
     import { fade, fly, slide } from "svelte/transition";
     import { flip } from 'svelte/animate';
@@ -15,35 +15,26 @@
 <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
   {#each offerProperties as offerProperty (offerProperty.id)}
     <div 
-      class="bg-white overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-200"
+      class="bg-white overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-200 hover:scale-[1.02] transform transition-transform duration-200 ease-in-out"
       animate:flip={{ duration: 300 }}
       in:fly={{ y: 20, duration: 300, delay: 100 }}
       out:fade={{ duration: 200 }}
     >
       <div class="p-6">
-        <div class="flex justify-between items-start mb-4">
-          <div class="flex-1">
-            <h3 class="text-lg font-medium text-gray-900 truncate">{offerProperty.address}</h3>
-          </div>
-          <span
-            class={`ml-2 px-2 py-1 text-xs font-medium rounded-full ${getStatusStyle(
-              offerProperty.status
-            )}`}
-          >
-            {offerProperty.status}
-          </span>
+        <div class="mb-4">
+          <h3 class="text-lg font-medium text-gray-900 truncate hover:text-blue-600 transition-colors duration-200">{offerProperty.address}</h3>
         </div>
         
         <div class="mt-4 space-y-3">
-          <div class="flex justify-between">
+          <div class="flex justify-between hover:bg-gray-50 p-2 rounded transition-colors duration-200">
             <span class="text-sm text-gray-500">Amount</span>
             <span class="text-sm font-medium text-gray-900">{formatAmount(offerProperty.asking_price)}</span>
           </div>
-          <div class="flex justify-between">
+          <div class="flex justify-between hover:bg-gray-50 p-2 rounded transition-colors duration-200">
             <span class="text-sm text-gray-500">Submitted</span>
             <span class="text-sm text-gray-900">{offerProperty.date}</span>
           </div>
-          <div class="flex justify-between">
+          <div class="flex justify-between hover:bg-gray-50 p-2 rounded transition-colors duration-200">
             <span class="text-sm text-gray-500">Number of offers</span>
             <span class="text-sm text-gray-900">{offerProperty.offers.length}</span>
           </div>
