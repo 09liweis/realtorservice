@@ -23,12 +23,17 @@
   })
 
   const fetchOfferProperties = async ()=> {
-    const {data:{error,offer_properties}} = await sendRequest({
-      url: '/api/offerproperties',
-      method: 'GET'
-    })
-    if (error) throw error;
-    offerProperties = offer_properties;
+    isFetching = true;
+    try {
+      const {data:{error,offer_properties}} = await sendRequest({
+        url: '/api/offerproperties',
+        method: 'GET'
+      });
+      if (error) throw error;
+      offerProperties = offer_properties;
+    } finally {
+      isFetching = false;
+    }
   }
 	// 模拟数据 - 在实际应用中，这些数据会从API获取
 	let offerProperties:OfferProperty[] = [];
@@ -39,6 +44,9 @@
 	let showDetailsModal = false;
 	let showDeleteModal = false;
 	let propertyToDelete = null;
+	let isFetching = false;
+	let isSubmitting = false;
+	let isDeleting = false;
 
 	// 查看报价详情
 	function viewDetails(offer:OfferProperty) {
@@ -52,16 +60,21 @@
   }
 
   const handleUpsertOfferProperty = async()=> {
-    const url = newOfferProperty.id ? `/api/offerproperties/${newOfferProperty.id}` : '/api/offerproperties';
-    const method = newOfferProperty.id ? 'PUT' : 'POST';
-    const {data:{error}} = await sendRequest({
-      url,
-      method,
-      body: newOfferProperty
-    });
-    if (error) throw error;
-    showDetailsModal = false;
-    fetchOfferProperties();
+    isSubmitting = true;
+    try {
+      const url = newOfferProperty.id ? `/api/offerproperties/${newOfferProperty.id}` : '/api/offerproperties';
+      const method = newOfferProperty.id ? 'PUT' : 'POST';
+      const {data:{error}} = await sendRequest({
+        url,
+        method,
+        body: newOfferProperty
+      });
+      if (error) throw error;
+      showDetailsModal = false;
+      fetchOfferProperties();
+    } finally {
+      isSubmitting = false;
+    }
   }
 
   const editOfferProperty = async (property: OfferProperty) => {
@@ -75,13 +88,18 @@
   };
 
   const deleteProperty = async () => {
-    const { data: { error } } = await sendRequest({
-      url: `/api/offerproperties/${propertyToDelete}`,
-      method: 'DELETE'
-    });
-    if (error) throw error;
-    showDeleteModal = false;
-    fetchOfferProperties();
+    isDeleting = true;
+    try {
+      const { data: { error } } = await sendRequest({
+        url: `/api/offerproperties/${propertyToDelete}`,
+        method: 'DELETE'
+      });
+      if (error) throw error;
+      showDeleteModal = false;
+      fetchOfferProperties();
+    } finally {
+      isDeleting = false;
+    }
   };
 	
 </script>
@@ -93,9 +111,13 @@
 <div class="space-y-6">
 	<div class="flex items-center justify-between">
 		<h1 class="text-2xl font-semibold text-gray-900">Offers Management</h1>
-    <Button onclick={AddNewProperty}>
+    <Button onclick={AddNewProperty} disabled={isFetching}>
       <Add />
-      Add New Offer Property
+      {#if isFetching}
+        Loading...
+      {:else}
+        Add New Offer Property
+      {/if}
     </Button>
 	</div>
 
@@ -153,8 +175,13 @@
           </button>
           <Button
             type="submit"
+            disabled={isSubmitting}
           >
-            {newOfferProperty?.id ? 'Update' : 'Save'}
+            {#if isSubmitting}
+              Loading...
+            {:else}
+              {newOfferProperty?.id ? 'Update' : 'Save'}
+            {/if}
         </Button>
         </div>
       </form>
@@ -178,8 +205,13 @@
         </button>
         <Button
           onclick={deleteProperty}
+          disabled={isDeleting}
         >
-          Delete
+          {#if isDeleting}
+            Deleting...
+          {:else}
+            Delete
+          {/if}
         </Button>
       </div>
     </div>
