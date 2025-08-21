@@ -6,6 +6,8 @@
 
   export let offerProperties;
   export let handleClick;
+  export let handleEdit;
+  export let handleDelete;
 
 </script>
 
@@ -47,7 +49,21 @@
           </div>
         </div>
 
-        <div class="mt-6 text-right">
+        <div class="mt-6 flex justify-between">
+          <div class="space-x-2">
+            <button
+              on:click={() => handleEdit(offerProperty)}
+              class="px-3 py-1 text-sm font-medium text-blue-600 hover:text-blue-800"
+            >
+              Edit
+            </button>
+            <button
+              on:click={() => handleDelete(offerProperty.id)}
+              class="px-3 py-1 text-sm font-medium text-red-600 hover:text-red-800"
+            >
+              Delete
+            </button>
+          </div>
           <Link
             href={`/dashboard/offers/${offerProperty.id}`}
           >

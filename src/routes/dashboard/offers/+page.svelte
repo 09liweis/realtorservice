@@ -50,14 +50,31 @@
   }
 
   const handleUpsertOfferProperty = async()=> {
+    const url = newOfferProperty.id ? `/api/offerproperties/${newOfferProperty.id}` : '/api/offerproperties';
+    const method = newOfferProperty.id ? 'PUT' : 'POST';
     const {data:{error}} = await sendRequest({
-      url: '/api/offerproperties',
+      url,
+      method,
       body: newOfferProperty
     });
     if (error) throw error;
     showDetailsModal = false;
     fetchOfferProperties();
   }
+
+  const editOfferProperty = async (property: OfferProperty) => {
+    newOfferProperty = { ...property };
+    showDetailsModal = true;
+  };
+
+  const deleteProperty = async (propertyId: string) => {
+    const { data: { error } } = await sendRequest({
+      url: `/api/offerproperties/${propertyId}`,
+      method: 'DELETE'
+    });
+    if (error) throw error;
+    fetchOfferProperties();
+  };
 	
 </script>
 
@@ -74,7 +91,7 @@
     </Button>
 	</div>
 
-	<OfferPropertyList {offerProperties} handleClick={viewDetails} />
+	<OfferPropertyList {offerProperties} handleClick={viewDetails} handleEdit={editOfferProperty} handleDelete={deleteProperty} />
 </div>
 
 <!-- Details Modal -->

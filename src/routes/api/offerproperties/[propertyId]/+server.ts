@@ -56,6 +56,7 @@ export const PUT: RequestHandler = async ({ request,params }) => {
     }
 
     const offerProperty = await request.json();
+    delete offerProperty.offers;
 
     // Fetch user email from Supabase
     const { data, error } = await supabase
@@ -66,14 +67,15 @@ export const PUT: RequestHandler = async ({ request,params }) => {
     
 
     if (error) {
+      console.error('Update offer property: ', error);
       return json(
-        { error: "Failed to update user openhouse from Supabase" },
+        { error: "Failed to update user offer property from Supabase" },
         { status: 500 }
       );
     }
-    return json({ openhouse: data });
+    return json({ offer_property: data });
   } catch (error) {
-    console.error("openhouse Error: ", error);
+    console.error("update offer propety Error: ", error);
     return json(
       { error: "Server error" },
       { status: 500 }
