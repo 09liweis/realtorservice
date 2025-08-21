@@ -72,11 +72,11 @@
       const [key, value] = pair.split('=');
       if (key) {
         // Decode URI components and assign to object
-        querySearchObject[decodeURIComponent(key)] = decodeURIComponent(value);
+        querySearchObject[key] = decodeURIComponent(value);
       }
     });
 
-    filters = {...querySearchObject,...filters};
+    filters = {...filters,...querySearchObject};
 
   }
 

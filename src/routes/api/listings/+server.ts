@@ -13,6 +13,7 @@ export const GET: RequestHandler = async ({ request, url }) => {
     const bathroom = url.searchParams.get('bathroom');
     const minPrice = url.searchParams.get('minPrice');
     const maxPrice = url.searchParams.get('maxPrice');
+    const search = url.searchParams.get('search');
 
     let user_id = '';
     let isAdmin = false;
@@ -94,6 +95,10 @@ export const GET: RequestHandler = async ({ request, url }) => {
     if (maxPrice) {
       const maxPriceValue = parseInt(maxPrice);
       query = query.lte('asking_price',maxPriceValue);
+    }
+
+    if (search) {
+      query = query.or(`address.ilike.%${search}%,developer.ilike.%${search}%,project_name.ilike.%${search}%`);
     }
 
 

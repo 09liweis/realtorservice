@@ -21,6 +21,15 @@
 
   export let clearFilters: void;
   export let handleSearch: void;
+
+  let debounceTimer:any;
+
+  const handleAddressSearch = () => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+      handleSearch();
+    }, 300);
+  }
 </script>
 
 <!-- Search and Filter Bar -->
@@ -35,6 +44,7 @@
         <input
           type="text"
           bind:value={filters.search}
+          oninput={handleAddressSearch}
           placeholder="Search by project name, address, location, or developer..."
           class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors duration-200"
         />
