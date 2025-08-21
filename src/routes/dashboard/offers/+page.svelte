@@ -37,6 +37,8 @@
 	// 状态变量
 	let selectedOffer = null;
 	let showDetailsModal = false;
+	let showDeleteModal = false;
+	let propertyToDelete = null;
 
 	// 查看报价详情
 	function viewDetails(offer:OfferProperty) {
@@ -67,12 +69,18 @@
     showDetailsModal = true;
   };
 
-  const deleteProperty = async (propertyId: string) => {
+  const confirmDelete = (propertyId: string) => {
+    propertyToDelete = propertyId;
+    showDeleteModal = true;
+  };
+
+  const deleteProperty = async () => {
     const { data: { error } } = await sendRequest({
-      url: `/api/offerproperties/${propertyId}`,
+      url: `/api/offerproperties/${propertyToDelete}`,
       method: 'DELETE'
     });
     if (error) throw error;
+    showDeleteModal = false;
     fetchOfferProperties();
   };
 	
@@ -91,7 +99,7 @@
     </Button>
 	</div>
 
-	<OfferPropertyList {offerProperties} handleClick={viewDetails} handleEdit={editOfferProperty} handleDelete={deleteProperty} />
+	<OfferPropertyList {offerProperties} handleClick={viewDetails} handleEdit={editOfferProperty} handleDelete={confirmDelete} />
 </div>
 
 <!-- Details Modal -->
@@ -153,4 +161,27 @@
     </div>
   </FormBackdrop>
     
+{/if}
+
+<!-- Delete Confirmation Modal -->
+{#if showDeleteModal }
+  <FormBackdrop handleClose={() => (showDeleteModal = false)}>
+    <div class="w-full mt-3 p-6">
+      <h2 class="mb-4 text-lg font-medium text-gray-900">Confirm Delete</h2>
+      <p class="mb-6 text-gray-600">Are you sure you want to delete this offer property? This action cannot be undone.</p>
+      <div class="flex justify-end space-x-3">
+        <button
+          onclick={()=>{showDeleteModal=false}}
+          class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        >
+          Cancel
+        </button>
+        <Button
+          onclick={deleteProperty}
+        >
+          Delete
+        </Button>
+      </div>
+    </div>
+  </FormBackdrop>
 {/if}
