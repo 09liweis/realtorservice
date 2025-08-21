@@ -17,11 +17,16 @@
   })
 
   async function fetchOHs() {
-    const {data:{openhouses:data,error}} = await sendRequest({
-      url: '/api/openhouses',
-      method: 'GET'
-    })
-    if (!error) openHouses = data;
+    isFetching = true;
+    try {
+      const {data:{openhouses:data,error}} = await sendRequest({
+        url: '/api/openhouses',
+        method: 'GET'
+      });
+      if (!error) openHouses = data;
+    } finally {
+      isFetching = false;
+    }
   }
 
   const EMPTY_OH:OpenHouse = {
@@ -36,6 +41,9 @@
   let searchQuery = '';
   let statusFilter = 'All';
   let editingId:string = '';
+  let isFetching = false;
+  let isSubmitting = false;
+  let isDeleting = false;
   
   // 确认删除对话框状态
   let showDeleteConfirm = false;
@@ -51,16 +59,23 @@
       alert('Your account is not yet approved. Please contact admin to get approval.');
       return;
     }
-    const {data:{openhouse, error}} = await sendRequest({
-      url: '/api/openhouses',
-      body: {
-        ...newOpenHouse
+    isSubmitting = true;
+    try {
+      const {data:{openhouse, error}} = await sendRequest({
+        url: '/api/openhouses',
+        body: {
+          ...newOpenHouse
+        }
+      });
+      if (!error) {
+        fetchOHs();
+        resetForm();
+        showAddForm = false;
       }
-    })
-    if (!error) {
-      fetchOHs();
-      resetForm();
-      showAddForm = false;
+    } catch(error) {
+      throw error;
+    } finally {
+      isSubmitting = false;
     }
   }
 
@@ -104,14 +119,20 @@
   // 删除开放看房
   async function handleDeleteOpenHouse() {
     if (!deleteOpenHouseId) return;
-    
-    const {data:{error}} = await sendRequest({
-      url: `/api/openhouses/${deleteOpenHouseId}`,
-      method: 'DELETE'
+    isDeleting = true;
+    try {
+      const {data:{error}} = await sendRequest({
+        url: `/api/openhouses/${deleteOpenHouseId}`,
+        method: 'DELETE'
     });
     if (error) {
       throw error;
     } else {
+      openHouses = openHouses.filter(oh => oh.id !== deleteOpenHouseId);
+      showDeleteConfirm = false;
+    }
+    } finally {
+      isDeleting = false;
       fetchOHs();
       showDeleteConfirm = false;
       deleteOpenHouseId = '';
@@ -172,6 +193,10 @@
           bind:value={newOpenHouse.address}
           placeholder="Address"
           label="Address"
+          autocomplete="address"
+          handleAutocompleteClick={(address) => {
+            newOpenHouse.address = address.place_name;
+          }}
           type="text"
         />
 
@@ -194,8 +219,9 @@
           </Button>
           <Button
             type="submit"
+            disabled={isSubmitting}
           >
-            {editingId ? 'Update' : 'Save'}
+            {isSubmitting ? 'Saving...' : (editingId ? 'Update' : 'Save')}
           </Button>
         </div>
       </form>
