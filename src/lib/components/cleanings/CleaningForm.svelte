@@ -111,6 +111,10 @@
             label="Property Location*"
             type="text"
             bind:value={request.location}
+            autocomplete='address'
+            handleAutocompleteClick={(address) => {
+              request.location = address.place_name;
+            }}
             required={true}
             placeholder="Address, City, Postal Code"
             disabled={$user?.isAdmin}
