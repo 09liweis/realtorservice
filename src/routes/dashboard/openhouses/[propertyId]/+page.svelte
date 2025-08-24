@@ -34,9 +34,11 @@
     });
     if (error) throw error;
     guests = openhouse_guests;
+    isFetching = false;
   }
 	// 模拟数据 - 在实际应用中，这些数据会从API获取
 	let guests = [];
+	let isFetching = true;
   let newGuest = EMPTY_GUEST;
 
 	// 状态变量
@@ -109,7 +111,15 @@ let showThankYou = false;
     </Button>
   </div>
 {:else}
-  <OpenHouseGuestList guests={guests} />
+  	{#if isFetching}
+      <div class="flex justify-center items-center h-64">
+        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    {:else}
+      <OpenHouseGuestList 
+        guests={guests} 
+      />
+    {/if}
 {/if}
 
 </div>
