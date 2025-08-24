@@ -44,23 +44,24 @@
 	// 状态变量
 	let selectedOffer = null;
 	let showDetailsModal = false;
-let showThankYou = false;
-
-	// 查看报价详情
-	function viewDetails(offer) {
-		newGuest = { ...offer };
-		showDetailsModal = true;
-	}
+	let showThankYou = false;
+	let showDeleteConfirm = false;
+	let guestToDelete = { id: null, name: '' };
 
 	// 删除嘉宾
 	const deleteGuest = async (id, name) => {
+		guestToDelete = { id, name };
+		showDeleteConfirm = true;
+	};
+
+	const confirmDelete = async () => {
 		const { data:{error} } = await sendRequest({
-			url: `/api/openhouses/${property_id}/guests/${id}`,
+			url: `/api/openhouses/${property_id}/guests/${guestToDelete.id}`,
 			method: 'DELETE'
 		});
 		if (error) throw error;
 		fetchGuests(); // 刷新嘉宾列表
-		alert(`${name} 已删除`);
+		showDeleteConfirm = false;
 	};
 
   function addNewGuest() {
@@ -135,6 +136,36 @@ let showThankYou = false;
 {/if}
 
 </div>
+
+<!-- Delete Confirmation Modal -->
+{#if showDeleteConfirm }
+  <FormBackdrop handleClose={() => (showDeleteConfirm = false)}>
+    <div class="w-full mt-3 p-6">
+      <h2 class="mb-4 text-lg font-medium text-gray-900">
+        Confirm Delete
+      </h2>
+      <p class="mb-4 text-gray-600">
+        Are you sure you want to delete {guestToDelete.name}?
+      </p>
+      <div class="flex justify-end space-x-3">
+        <button
+          type="button"
+          onclick={() => (showDeleteConfirm = false)}
+          class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          onclick={confirmDelete}
+          class="px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+  </FormBackdrop>
+{/if}
 
 <!-- Details Modal -->
 {#if showDetailsModal }
