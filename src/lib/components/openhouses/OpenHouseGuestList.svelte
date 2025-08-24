@@ -4,6 +4,7 @@
   import { flip } from 'svelte/animate';
 
   export let guests: any[] = [];
+  export let handleDelete: (id: string, name: string) => void;
 
   // Format phone number for display
   function formatPhone(phone: string): string {
@@ -13,17 +14,6 @@
       return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3, 6)}-${cleaned.slice(6)}`;
     }
     return phone;
-  }
-
-  // Get initials for avatar
-  function getInitials(name: string): string {
-    if (!name) return '?';
-    return name
-      .split(' ')
-      .map(word => word.charAt(0))
-      .join('')
-      .toUpperCase()
-      .slice(0, 2);
   }
 
   // Get status badge color
@@ -111,6 +101,7 @@
             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Agent</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
           </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
@@ -151,6 +142,15 @@
                     {guest.has_agent}
                   </span>
                 {/if}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <button
+                  type="button"
+                  on:click={() => handleDelete(guest.id, guest.name)}
+                  class="text-red-600 hover:text-red-900 text-sm font-medium"
+                >
+                  Delete
+                </button>
               </td>
             </tr>
           {/each}

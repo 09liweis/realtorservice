@@ -52,6 +52,17 @@ let showThankYou = false;
 		showDetailsModal = true;
 	}
 
+	// 删除嘉宾
+	const deleteGuest = async (id, name) => {
+		const { data:{error} } = await sendRequest({
+			url: `/api/openhouses/${property_id}/guests/${id}`,
+			method: 'DELETE'
+		});
+		if (error) throw error;
+		fetchGuests(); // 刷新嘉宾列表
+		alert(`${name} 已删除`);
+	};
+
   function addNewGuest() {
     showDetailsModal = true;
     newGuest = EMPTY_GUEST;
@@ -118,6 +129,7 @@ let showThankYou = false;
     {:else}
       <OpenHouseGuestList 
         guests={guests} 
+        handleDelete={(id, name) => deleteGuest(id, name)}
       />
     {/if}
 {/if}
