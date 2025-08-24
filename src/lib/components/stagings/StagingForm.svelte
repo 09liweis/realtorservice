@@ -114,6 +114,10 @@
             type="text"
             bind:value={request.location}
             required={true}
+            autocomplete='address'
+            handleAutocompleteClick={(address) => {
+              request.location = address.place_name;
+            }}
             placeholder="Address, City, Postal Code"
             disabled={$user?.isAdmin}
           />
@@ -169,7 +173,7 @@
               label="Number of Rooms to Stage*"
               type="number"
               bind:value={request.rooms}
-              min="1"
+              min={1}
               step={1}
               placeholder="e.g., 5"
               disabled={$user?.isAdmin}
