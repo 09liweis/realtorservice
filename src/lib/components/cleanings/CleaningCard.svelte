@@ -43,17 +43,15 @@
 			</div>
 		</div>
 	{/if}
-	<div class="px-6 py-5 border-b border-gray-200">
-		<div class="flex justify-between items-center">
-			<Link href={`/dashboard/cleanings/${request.id}`} className="text-lg font-medium text-gray-900 truncate">{request.location}</Link>
-			<span
-				class={`px-2 py-1 text-xs font-medium rounded-full capitalize ${getStatusStyle(
-					request.status
-				)}`}
-			>
-				{request.status}
-			</span>
-		</div>
+	<div class="px-6 py-5 border-b border-gray-200 relative">
+		<span
+			class={`px-2 py-1 text-xs font-medium rounded absolute top-0 right-0 capitalize ${getStatusStyle(
+				request.status
+			)}`}
+		>
+			{request.status}
+		</span>
+		<Link href={`/dashboard/cleanings/${request.id}`} className="text-lg font-medium text-gray-900">{request.location}</Link>
 	</div>
 	<div class="px-6 py-4">
 		<div class="space-y-3">
