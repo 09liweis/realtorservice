@@ -17,7 +17,6 @@
   })
 
   async function fetchOHs() {
-    isFetching = true;
     try {
       const {data:{openhouses:data,error}} = await sendRequest({
         url: '/api/openhouses',
@@ -41,7 +40,7 @@
   let searchQuery = '';
   let statusFilter = 'All';
   let editingId:string = '';
-  let isFetching = false;
+  let isFetching = true;
   let isSubmitting = false;
   let isDeleting = false;
   
@@ -258,9 +257,15 @@
 	{/if}
 
 	<!-- Open Houses Grid -->
-	<OpenHouseList 
-		openHouses={openHouses} 
-		handleEdit={startEdit} 
-		handleDelete={(id, address) => confirmDelete(id, address)} 
-	/>
+	{#if isFetching}
+		<div class="flex justify-center items-center h-64">
+			<div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+		</div>
+	{:else}
+		<OpenHouseList 
+			openHouses={openHouses} 
+			handleEdit={startEdit} 
+			handleDelete={(id, address) => confirmDelete(id, address)} 
+		/>
+	{/if}
 </div>
