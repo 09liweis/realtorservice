@@ -1,7 +1,23 @@
 <script>
   import Link from "$lib/components/Link.svelte";
   import { MENU_ITEMS } from "$lib/types/constant";
+  
   const publicNavigations = MENU_ITEMS;
+  
+  // 递归渲染菜单项
+  function renderMenuItems(items, level = 0) {
+    return items.map(item => {
+      const hasSubmenu = item.submenu && item.submenu.length > 0;
+      return {
+        item,
+        hasSubmenu,
+        level,
+        children: hasSubmenu ? renderMenuItems(item.submenu, level + 1) : []
+      };
+    });
+  }
+  
+  const processedMenu = renderMenuItems(publicNavigations);
 </script>
 
 <footer class="bg-gray-900 text-white py-16 px-4">
@@ -37,27 +53,46 @@
     </div>
 
     <!-- Menu Section -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-      {#each publicNavigations as nav}
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
+      {#each processedMenu as menu}
         <div>
-          <h3 class="text-sm font-semibold text-white uppercase tracking-wider mb-4">{nav.name}</h3>
-          <ul class="space-y-3">
-            {#if nav.submenu}
-              {#each nav.submenu as submenu}
-                <li>
-                  <Link href={submenu.href} className="text-sm text-gray-400 hover:text-white transition-colors">
-                    {submenu.name}
-                  </Link>
+          <h3 class="text-sm font-semibold text-white uppercase tracking-wider mb-4">
+            {#if menu.item.href}
+              <Link href={menu.item.href} className="hover:text-white transition-colors">
+                {menu.item.name}
+              </Link>
+            {:else}
+              {menu.item.name}
+            {/if}
+          </h3>
+          
+          {#if menu.hasSubmenu}
+            <ul class="space-y-3">
+              {#each menu.children as child}
+                <li class="pl-{child.level * 4}">
+                  {#if child.item.href}
+                    <Link href={child.item.href} className="text-sm text-gray-400 hover:text-white transition-colors">
+                      {child.item.name}
+                    </Link>
+                  {:else}
+                    <span class="text-sm text-gray-400">{child.item.name}</span>
+                  {/if}
+                  
+                  {#if child.hasSubmenu}
+                    <ul class="mt-2 space-y-2 pl-4">
+                      {#each child.children as subChild}
+                        <li class="pl-{subChild.level * 4}">
+                          <Link href={subChild.item.href} className="text-xs text-gray-400 hover:text-white transition-colors">
+                            {subChild.item.name}
+                          </Link>
+                        </li>
+                      {/each}
+                    </ul>
+                  {/if}
                 </li>
               {/each}
-            {:else}
-              <li>
-                <Link href={nav.href} className="text-sm text-gray-400 hover:text-white transition-colors">
-                  {nav.name}
-                </Link>
-              </li>
-            {/if}
-          </ul>
+            </ul>
+          {/if}
         </div>
       {/each}
     </div>
