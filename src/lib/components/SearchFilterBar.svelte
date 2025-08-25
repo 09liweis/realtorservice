@@ -60,7 +60,7 @@
       >
         <option value="">All Types</option>
         {#each listingTypes as type}
-          <option value={type}>{type}</option>
+          <option value={type.toLowerCase()}>{type.split('_').join(' ')}</option>
         {/each}
       </select>
       
