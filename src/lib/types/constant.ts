@@ -18,7 +18,7 @@ export function formatAmount(amount:number|string|undefined) {
   }).format(amount);
 }
 
-export const LISTING_TYPES = ['Assignment Sale','Coming Soon']
+export const LISTING_TYPES = ['Assignment_Sale','Coming_Soon']
 
 export const PROPERTY_TYPES = ['House', 'Condo', 'Townhouse', 'Apartment', 'Commercial', 'Other'];
 

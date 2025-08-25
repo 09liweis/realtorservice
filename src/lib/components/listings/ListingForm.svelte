@@ -115,7 +115,7 @@
   function formatSelectOptions(options: string[]) {
     return [
       { value: '', label: 'Select an option' },
-      ...options.map(option => ({ value: option.toLowerCase(), label: option }))
+      ...options.map(option => ({ value: option.toLowerCase(), label: option.split('_').join(' ') }))
     ];
   }
 </script>
