@@ -22,27 +22,29 @@
   ];
 </script>
 
-<main class="max-w-4xl mx-auto p-6">
-  <h1 class="text-3xl font-bold mb-6">Realtor Marketing Resources</h1>
-  <p class="text-gray-600 mb-8">Download these essential resources to boost your online marketing efforts.</p>
+<main class="max-w-4xl mx-auto p-8">
+  <h1 class="text-4xl font-bold mb-8 text-center text-gray-800">Realtor Marketing Resources</h1>
+  <p class="text-lg text-gray-600 mb-10 text-center">Download these essential resources to boost your online marketing efforts.</p>
   
-  <div class="space-y-6">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
     {#each resources as resource}
-      <div class="border border-gray-200 rounded-lg p-6 hover:bg-gray-50 transition">
-        <div class="flex justify-between items-start">
-          <div>
-            <h2 class="text-xl font-semibold">{resource.title}</h2>
-            <p class="text-gray-600 mt-2">{resource.description}</p>
+      <div class="border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-shadow bg-white">
+        <div class="flex flex-col h-full">
+          <div class="flex-grow">
+            <h2 class="text-2xl font-semibold text-gray-800">{resource.title}</h2>
+            <p class="text-gray-600 mt-3">{resource.description}</p>
           </div>
-          <span class="text-sm text-gray-500">{resource.size}</span>
+          <div class="mt-6 flex justify-between items-center">
+            <span class="text-sm text-gray-500">{resource.size}</span>
+            <a 
+              href={resource.file} 
+              download
+              class="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              Download
+            </a>
+          </div>
         </div>
-        <a 
-          href={resource.file} 
-          download
-          class="mt-4 inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-        >
-          Download
-        </a>
       </div>
     {/each}
   </div>
