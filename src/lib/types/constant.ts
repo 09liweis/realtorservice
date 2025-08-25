@@ -1,9 +1,15 @@
+export type MenuItem = {
+  name: string;
+  href?: string;
+  submenu?: MenuItem[];
+};
+
 export const WEBSITE_NAME = "Realtor Service";
 export const PHONE_NUMBER = "416-800-0688";
 export const CONTACT_EMAIL = "dev@realtorservice.ca";
 
 // Public navigation items
-export const MENU_ITEMS = [
+export const MENU_ITEMS:MenuItem[] = [
   { name: "About Us", href: "/about" },
   {
     name: "Realtor Services",
