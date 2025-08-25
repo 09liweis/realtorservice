@@ -129,6 +129,7 @@
                 <Link
                   href="/dashboard"
                   className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                  onclick={() => (userMenuOpen = false)}
                 >
                   <svg
                     class="w-4 h-4 mr-3 text-gray-400"
