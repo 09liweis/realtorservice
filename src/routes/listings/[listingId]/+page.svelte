@@ -6,6 +6,7 @@
   import { fade, fly } from 'svelte/transition';
   import { onMount } from 'svelte';
     import ListingQuickInfo from "../components/ListingQuickInfo.svelte";
+    import ListingType from "$lib/components/listings/ListingType.svelte";
 
   export let data;
 
@@ -135,12 +136,7 @@
       </div>
     {/if}
 
-    <!-- Listing Type Badge -->
-    {#if listing.listing_type}
-      <div class="absolute top-6 left-6 bg-primary text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
-        {listing.listing_type}
-      </div>
-    {/if}
+    <ListingType listing={listing} />
 
     <!-- Sold Badge -->
     {#if listing.is_sold}
