@@ -13,6 +13,7 @@ interface User {
   name: string;
   initial: string;
   credits: number;
+  user_id: string;
 }
 
 // 创建用户存储
