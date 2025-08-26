@@ -5,24 +5,11 @@
   import { flip } from 'svelte/animate';
     import ListingQuickInfo from "../../../routes/listings/components/ListingQuickInfo.svelte";
     import Link from "../Link.svelte";
+    import ListingImage from "../listings/ListingImage.svelte";
 
   export let listings: Listing[];
   export let showTitle: boolean = true;
   export let showViewMore: boolean = false;
-
-  // Get the first image from the pictures string
-  function getFirstImage(pictures: string): string {
-    if (!pictures) return 'https://images.pexels.com/photos/280229/pexels-photo-280229.jpeg?auto=compress&cs=tinysrgb&w=800';
-    const imageUrls = pictures.split(',').filter(url => url.trim());
-    return imageUrls.length > 0 ? imageUrls[0].trim() : 'https://images.pexels.com/photos/280229/pexels-photo-280229.jpeg?auto=compress&cs=tinysrgb&w=800';
-  }
-
-  // Get image count
-  function getImageCount(pictures: string): number {
-    if (!pictures) return 0;
-    return pictures.split(',').filter(url => url.trim()).length;
-  }
-
 </script>
 
 <section class="py-16 bg-gray-50">
@@ -62,34 +49,8 @@
           >
             <!-- Property Image -->
             <div class="relative h-56 bg-gray-200 overflow-hidden">
-              {#if listing.pics}
-              <img 
-                src={getFirstImage(listing.pics)} 
-                alt={listing.project_name || listing.address}
-                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                loading="lazy"
-              />
-              {/if}
               
-              <!-- Gradient Overlay -->
-              <div class="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              
-              <!-- Listing Type Badge -->
-              {#if listing.listing_type}
-                <div class="absolute top-4 left-4 bg-primary text-white px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide shadow-lg backdrop-blur-sm">
-                  {listing.listing_type}
-                </div>
-              {/if}
-              
-              <!-- Image Count -->
-              {#if listing.pics && getImageCount(listing.pics) > 1}
-                <div class="absolute bottom-4 right-4 bg-black bg-opacity-80 text-white px-3 py-1.5 rounded-lg text-xs flex items-center space-x-1 backdrop-blur-sm">
-                  <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"></path>
-                  </svg>
-                  <span>{getImageCount(listing.pics)}</span>
-                </div>
-              {/if}
+              <ListingImage listing={listing} />
 
               <!-- Quick View Button -->
               <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
