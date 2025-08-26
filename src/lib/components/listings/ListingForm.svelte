@@ -35,10 +35,10 @@
 
   const propertyDetailsFields = [
     { name: 'ptype', type: 'select', label: 'Property Type', options: PROPERTY_TYPES },
-    { name: 'bedroom', type: 'number', label: 'Bedrooms', min: '0' },
-    { name: 'bathroom', type: 'number', label: 'Bathrooms', min: '0', step: '0.5' },
+    { name: 'bedroom', type: 'number', label: 'Bedrooms', min: 0 },
+    { name: 'bathroom', type: 'number', label: 'Bathrooms', min: 0, step: 0.5 },
     { name: 'level', type: 'text', label: 'Floor/Level' },
-    { name: 'size', type: 'number', label: 'Size (sqft)', min: '0' },
+    { name: 'size', type: 'number', label: 'Size (sqft)', min: 0 },
     { name: 'exposure', type: 'select', label: 'Exposure', options: ['North', 'South', 'East', 'West', 'Northeast', 'Northwest', 'Southeast', 'Southwest'] },
   ];
 
@@ -49,10 +49,10 @@
   ];
 
   const financialFields = [
-    { name: 'asking_price', type: 'number', label: 'Asking Price ($)', min: '0' },
-    { name: 'original_price', type: 'number', label: 'Original Price ($)', min: '0' },
-    { name: 'commission', type: 'number', label: 'Commission (%)', step: '0.1', min: '0', max: '100' },
-    { name: 'deposit_paid', type: 'number', label: 'Deposit Paid ($)', min: '0' },
+    { name: 'asking_price', type: 'number', label: 'Asking Price ($)', min: 0 },
+    { name: 'original_price', type: 'number', label: 'Original Price ($)', min: 0 },
+    { name: 'commission', type: 'number', label: 'Commission (%)', step: 0.1, min: 0 },
+    { name: 'deposit_paid', type: 'number', label: 'Deposit Paid ($)', min: 0 },
     { name: 'occupancy', type: 'date', label: 'Occupancy Date' },
   ];
 
@@ -183,7 +183,7 @@
           
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             {#each basicInfoFields as field}
-              {#if field.type === 'select'}
+              {#if field.type === 'select' && field.options}
                 <Select
                   id={field.name}
                   label={field.label}
@@ -218,15 +218,13 @@
           
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {#each propertyDetailsFields as field}
-              {#if field.type === 'select'}
-                <div>
-                  <Select
+              {#if field.type === 'select' && field.options}
+                <Select
                     id={field.name}
                     label={field.label}
                     bind:value={listing[field.name]}
                     options={formatSelectOptions(field.options)}
                   />
-                </div>
               {:else}
                 <Input 
                   id={field.name}
@@ -253,15 +251,13 @@
           
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             {#each amenitiesFields as field}
-              {#if field.type === 'select'}
-                <div>
-                  <Select
-                    id={field.name}
-                    label={field.label}
-                    bind:value={listing[field.name]}
-                    options={formatSelectOptions(field.options)}
+              {#if field.type === 'select' && field.options}
+                <Select
+                  id={field.name}
+                  label={field.label}
+                  bind:value={listing[field.name]}
+                  options={formatSelectOptions(field.options)}
                   />
-                </div>
               {:else}
                 <Input 
                   id={field.name}
@@ -292,7 +288,6 @@
                 type={field.type}
                 label={field.label}
                 min={field.min}
-                max={field.max}
                 step={field.step}
                 placeholder={field.type === 'number' ? '0' : ''}
               />
