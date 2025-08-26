@@ -24,20 +24,27 @@ export const GET: RequestHandler = async ({ request }) => {
     let socialsQuery = supabase.from('social_media_services').select('*').order('updated_at',{ascending:false});
     let videosQuery = supabase.from('video_services').select('*').order('updated_at',{ascending:false});
     let listingsQuery = supabase.from('listings').select('*').order('updated_at',{ascending:false});
+    let offerPropertiesQuery = supabase.from('offer_properties').select('*').order('updated_at',{ascending:false});
+    let openHousesQuery = supabase.from('openhouses').select('*').order('updated_at',{ascending:false});
     if (!isAdmin) {
       cleaningsQuery = cleaningsQuery.eq('user_id',user_id)
       stagingsQuery = stagingsQuery.eq('user_id',user_id)
       socialsQuery = socialsQuery.eq('user_id',user_id)
       videosQuery = videosQuery.eq('user_id',user_id)
       listingsQuery = listingsQuery.eq('user_id',user_id)
+      offerPropertiesQuery = offerPropertiesQuery.eq('user_id',user_id)
+      openHousesQuery = openHousesQuery.eq('user_id',user_id)
     }
     const { data:cleanings, error:cleaningsError } = await cleaningsQuery;
     const { data:stagings, error: stagingsError } = await stagingsQuery;
     const { data:socials, error: socialsError } = await socialsQuery;
     const { data:videos, error: videosError } = await videosQuery;
     const { data:listings, error: listingsError } = await listingsQuery;
+    const { data:offerProperties, error: offerPropertiesError } = await offerPropertiesQuery;
+    const { data:openHouses, error: openHousesError } = await openHousesQuery;
 
-    if (cleaningsError||stagingsError||socialsError||videosError||listingsError) {
+    if (cleaningsError||stagingsError||socialsError||videosError||listingsError||offerPropertiesError||openHousesError) {
+      console.error("dashboard Error: ", cleaningsError, stagingsError, socialsError, videosError, listingsError, offerPropertiesError, openHousesError);
       return json(
         { error: "Failed to fetch data from Supabase" },
         { status: 500 }
@@ -116,14 +123,14 @@ export const GET: RequestHandler = async ({ request }) => {
       }
     };
 
-    // // Process activities data
-    // dashboardStats.activities = {
-    //   offers: offersResult.data?.length || 0,
-    //   openHouses: openHousesResult.data?.length || 0
-    // };
+    // Process activities data
+    dashboardStats.activities = {
+      offers: offerProperties?.length || 0,
+      openHouses: openHouses?.length || 0
+    };
     return json({ dashboardStats });
   } catch (error) {
-    console.error("Cleaning Error: ", error);
+    console.error("dashboard Error: ", error);
     return json(
       { error: "Server error" },
       { status: 500 }
