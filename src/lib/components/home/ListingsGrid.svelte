@@ -8,6 +8,7 @@
 
   export let listings: Listing[];
   export let showTitle: boolean = true;
+  export let showViewMore: boolean = false;
 
   // Get the first image from the pictures string
   function getFirstImage(pictures: string): string {
@@ -158,7 +159,7 @@
         {/each}
       </div>
 
-      <!-- View All Button -->
+      {#if showViewMore}
       <div class="text-center mt-12">
         <a
           href="/listings"
@@ -170,6 +171,10 @@
           </svg>
         </a>
       </div>
+      {/if}
+
+
+
     {/if}
   </div>
 </section>

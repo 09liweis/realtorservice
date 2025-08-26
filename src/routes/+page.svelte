@@ -15,6 +15,6 @@
 
 <Banner />
 <ServiceModules />
-<ListingsGrid listings={data.listings} />
+<ListingsGrid listings={data.listings} showViewMore={true} />
 <MarketInsights />
 <TestimonialsStats />
