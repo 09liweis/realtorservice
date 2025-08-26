@@ -186,7 +186,7 @@
               {#if field.type === 'select'}
                 <Select
                   id={field.name}
-                  label={field.label + (field.required ? ' *' : '')}
+                  label={field.label}
                   bind:value={listing[field.name]}
                   options={formatSelectOptions(field.options)}
                   required={field.required}
@@ -196,7 +196,7 @@
                   id={field.name}
                   bind:value={listing[field.name]}
                   type={field.type}
-                  label={field.label + (field.required ? ' *' : '')}
+                  label={field.label}
                   required={field.required}
                   autocomplete={field.autocomplete}
                   handleAutocompleteClick={field.handleAutocompleteClick}
