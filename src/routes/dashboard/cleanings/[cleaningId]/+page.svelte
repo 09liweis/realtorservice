@@ -11,7 +11,6 @@
     import DetailActions from '$lib/components/common/DetailActions.svelte';
     import Timeline from '$lib/components/common/Timeline.svelte';
     import Link from '$lib/components/Link.svelte';
-  import { user } from '$lib/stores/auth';
     import { sendRequest } from '$lib/helper';
 
 
@@ -109,12 +108,6 @@
           class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200"
         >
           Try Again
-        </button>
-        <button
-          on:click={handleBack}
-          class="px-4 py-2 border border-red-300 text-red-700 rounded-lg hover:bg-red-50 transition-colors duration-200"
-        >
-          Go Back
         </button>
       </div>
     </div>
