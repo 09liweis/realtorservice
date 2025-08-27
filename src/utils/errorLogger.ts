@@ -1,15 +1,14 @@
-import type { RequestEvent } from '@sveltejs/kit';
+import type { RequestEvent, RequestHandler } from '@sveltejs/kit';
 
 export function logApiError(
-  request: RequestEvent,
+  request: any,
   error: unknown,
 ): void {
   const errorMessage = error instanceof Error ? error.message : 'Unknown error';
   const stack = error instanceof Error ? error.stack : undefined;
-  const url = request.url;
   
   console.error({
-    message: `API Error in ${url}: ${errorMessage}`,
+    message: `API Error in: ${errorMessage}`,
     stack
   });
 }

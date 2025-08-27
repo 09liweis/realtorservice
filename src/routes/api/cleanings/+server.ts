@@ -3,6 +3,7 @@ import supabase from "$lib/db/client";
 import type { RequestHandler } from "./$types";
 import { checkAuth } from "$lib/server/apiAuth";
 import { sendProjectSubmitted } from "$lib/email";
+import { logApiError } from "../../../utils/errorLogger";
 
 export const GET: RequestHandler = async ({ request }) => {
   try {
@@ -28,7 +29,7 @@ export const GET: RequestHandler = async ({ request }) => {
     }
     return json({ cleanings: data });
   } catch (error) {
-    console.error("Cleaning Error: ", error);
+    logApiError(request, error);
     return json(
       { error: "Server error" },
       { status: 500 }
