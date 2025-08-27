@@ -14,7 +14,7 @@
   let user_id: string;
 
   // State variables
-  let loading = false;
+  let loading = true;
   let error = null;
   let showForm = false;
   let currentRequest: Cleaning;
@@ -27,7 +27,6 @@
 
   // Get data
   export const fetchCleanings = async () => {
-    loading = true;
     const {data:{cleanings,error:fetchError}} = await sendRequest({
       url: '/api/cleanings',
       method: 'GET'

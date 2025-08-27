@@ -12,14 +12,13 @@
     import { sendRequest } from "$lib/helper";
     import { onMount } from "svelte";
     import { deleteDraftService } from "../../../types/service.types";
-    import { goto } from "$app/navigation";
 
   // Props
   let user_id: string|undefined;
 
   // 状态变量
   let loading = true;
-  let error = null;
+  let error:any = null;
   let showForm = false;
   let showDetails = false;
   let currentRequest: Staging;
