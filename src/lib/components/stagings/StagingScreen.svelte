@@ -18,7 +18,7 @@
   let user_id: string|undefined;
 
   // 状态变量
-  let loading = false;
+  let loading = true;
   let error = null;
   let showForm = false;
   let showDetails = false;
@@ -38,29 +38,21 @@
 
   // 获取数据
   export const fetchStagings = async () => {
-    loading = true;
-    const {data:{stagings, error},response} = await sendRequest({
-      url:'/api/stagings',
-      method: 'GET'
-    });
-    if (error) {
-      throw error;
+    try {
+      const {data:{stagings, error}} = await sendRequest({
+        url:'/api/stagings',
+        method: 'GET'
+      });
+      if (error) {
+        throw error;
+      }
+      filteredRequests = stagings;
+    } catch (err) {
+      error = err;
+    } finally {
+      loading = false;
     }
-    filteredRequests = stagings;
-    loading = false;
   };
-
-  // 应用过滤器
-  function applyFilters() {}
-
-  // 处理过滤器变化
-  function handleFilterChange(event: { detail: { searchQuery: string; statusFilter: string; typeFilter: string; sortBy: string; }; }) {
-    searchQuery = event.detail.searchQuery;
-    statusFilter = event.detail.statusFilter;
-    typeFilter = event.detail.typeFilter;
-    sortBy = event.detail.sortBy;
-    applyFilters();
-  }
 
   // 编辑请求
   function editRequest(request: Staging) {
