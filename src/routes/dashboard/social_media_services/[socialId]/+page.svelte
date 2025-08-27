@@ -134,7 +134,7 @@
     <div class="lg:col-span-1">
       <DetailActions 
         request={socialMediaService}
-        tp="social"
+        tp="social_media_services"
         on:statusUpdate={handleStatusUpdate}
       />
     </div>

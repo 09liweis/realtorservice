@@ -157,7 +157,7 @@
         <div class="lg:col-span-1">
           <DetailActions
             request={cleaning}
-            tp="cleaning"
+            tp="cleanings"
             on:statusUpdate={handleStatusUpdate}
           />
         </div>

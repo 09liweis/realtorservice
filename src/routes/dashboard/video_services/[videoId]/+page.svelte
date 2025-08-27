@@ -129,7 +129,7 @@
     <div class="lg:col-span-1">
       <DetailActions 
         request={videoService}
-        tp="video"
+        tp="video_services"
         on:statusUpdate={handleStatusUpdate}
       />
     </div>

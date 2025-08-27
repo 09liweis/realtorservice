@@ -165,7 +165,7 @@
         <!-- Right Column - Actions and Summary -->
         <div class="lg:col-span-1">
           <DetailActions
-            tp="staging" 
+            tp="stagings" 
             request={staging} 
             on:edit={handleEdit}
             on:statusUpdate={handleStatusUpdate}

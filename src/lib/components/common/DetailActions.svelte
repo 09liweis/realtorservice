@@ -13,7 +13,7 @@
 
 
   export let request: Staging|Cleaning|VideoService|SocialMediaService|null;
-  export let tp:string = "staging";
+  export let tp:string = "stagings";
   let note = '';
   $: quotation_price = request?.quotation_price;
 
@@ -65,10 +65,10 @@
   }
 
   const UPDATE_TP_API:{[key:string]:string} = {
-    staging: '/api/stagings',
-    cleaning: '/api/cleanings',
-    social: '/api/socials',
-    video: '/api/videos',
+    stagings: '/api/stagings',
+    cleanings: '/api/cleanings',
+    social_media_services: '/api/socials',
+    video_services: '/api/videos',
   }
 
   const handleStatusUpdate = () => {
@@ -79,7 +79,7 @@
     if (!request) return;
     const oldStatus = request?.status;
     request.status = status as ProjectStatus;
-    request?.history?.push({status, note, date: new Date()});
+    request?.history?.push({status, note:request.notes, date: new Date()});
     const {data:{error:updateError}} = await sendRequest({
       url: `${UPDATE_TP_API[tp]}/${request?.id}`,
       body: request,
@@ -93,7 +93,7 @@
       const {response} = await sendRequest({
         url: '/api/send-status-email',
         body: {
-          tp: 'social_media_services',
+          tp,
           id: request.id,
           oldStatus,
         }
@@ -190,6 +190,11 @@
           label="Quotation Price"
           bind:value={request.quotation_price}
           type="number"
+        />
+        <Input
+          label="Note"
+          bind:value={note}
+          type="text"
         />
         <Button loading={statusLoading} disabled={statusLoading} class_name="w-full" onclick={handleConfirmQuotation}>
           {statusLoading ? 'Confirming Quotation Price' : nextAction.text}
