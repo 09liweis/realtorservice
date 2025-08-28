@@ -20,7 +20,7 @@
   let selectedCoupon: Coupon | null ;
   let loading = false;
   let loadingCredits = false;
-  let loadingCoupons = false;
+  let loadingCoupons = true;
   let couponCode = '';
   let couponError = '';
   let couponSuccess = '';
@@ -47,7 +47,6 @@
 
   async function loadAvailableCoupons() {
     try {
-      loadingCoupons = true;
       const { data: {error, coupons} } = await sendRequest({
         url: '/api/user/coupons',
         method: 'GET',
@@ -107,6 +106,7 @@
               <p class="text-blue-100 text-sm">{tp}</p>
             </div>
             <button
+              aria-label="close_payment_modal"
               on:click={handleClose}
               class="text-white hover:text-gray-200 transition-colors duration-200 cursor-pointer p-1 hover:bg-white hover:bg-opacity-20 rounded-full"
             >
@@ -177,6 +177,7 @@
                   </div>
                 </div>
                 <button
+                  aria-label="remove_coupon"
                   on:click={removeCoupon}
                   class="text-green-600 hover:text-green-700 p-1"
                 >
