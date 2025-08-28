@@ -2,7 +2,7 @@
   import type { Staging } from '$lib/types/staging';
   import type { Cleaning } from '$lib/types/cleaning';
   import type { VideoService } from '$lib/types/video';
-  import type { SocialMediaService } from '$lib/types/social';
+  import { SUBSCRIPTION_TYPES, type SocialMediaService } from '$lib/types/social';
   import { getStatusStyle } from '$lib/types/constant';
 
   export let request: Staging | Cleaning | VideoService | SocialMediaService | null;
@@ -12,7 +12,7 @@
   $: timelineEvents = getTimelineEvents(request, tp);
 
   function getTimelineEvents(request: Staging | Cleaning | VideoService | SocialMediaService, type: string) {
-    const allStatuses = ['draft', 'submitted', 'confirmed', 'paid', 'scheduled', 'completed'];
+    const allStatuses = ['submitted', 'confirmed', 'paid', 'scheduled', 'completed'];
     const historyStatuses = request?.history?.map(entry => entry.status) || [];
 
     return allStatuses.map(status => {
@@ -82,15 +82,20 @@
     }
   }
 
-  function getDurationLabel(request: Staging | Cleaning, type: string): string {
+  function getDurationLabel(request: Staging | Cleaning | SocialMediaService | VideoService, type: string): string {
+    let length:string | number = '';
     if (type === 'staging') {
       const staging = request as Staging;
-      return staging.length ? `${staging.length} month${staging.length !== '1' ? 's' : ''}` : 'To be determined';
+      length = staging.length
     } else if (type === 'cleaning'){
       const cleaning = request as Cleaning;
-      return cleaning.duration ? `${cleaning.duration} month${cleaning.duration !== 1 ? 's' : ''}` : 'To be determined';
+      length = cleaning.duration || 0;
+    } else if (type === 'social') {
+      const social = request as SocialMediaService;
+      const duration = SUBSCRIPTION_TYPES.find(sub => sub.value === social.subscription_type)?.duration;
+      length = duration ? duration/30 : '';
     }
-    return 'To be determined';
+    return length ? `${length} month${length !== '1' ? 's' : ''}` : 'To be determined';
   }
 </script>
 
@@ -107,7 +112,7 @@
   </div>
 
   <div class="p-6">
-    <div class="space-y-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3">
+    <div class="space-y-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3">
       {#each timelineEvents as event, index}
         <div class="flex items-start space-x-4">
           <!-- Timeline Icon -->
@@ -154,6 +159,7 @@
         </div>
       </div>
       
+      {#if request}
       <div class="mt-3 flex items-center space-x-3">
         <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
           <span class="text-lg">⏱️</span>
@@ -165,6 +171,8 @@
           </div>
         </div>
       </div>
+      {/if}
+
     </div>
   </div>
 </div>
