@@ -12,6 +12,7 @@
     import Timeline from '$lib/components/common/Timeline.svelte';
     import Link from '$lib/components/Link.svelte';
     import { sendRequest } from '$lib/helper';
+    import SkeletonLoader from '$lib/components/common/SkeletonLoader.svelte';
 
 
   const cleaningId = $page.params.cleaningId;
@@ -83,31 +84,7 @@
 
   {#if loading}
     <!-- Loading State (Skeleton Style) -->
-    <div class="space-y-6 animate-pulse" in:fade={{ duration: 300 }}>
-      <!-- Back Navigation Skeleton -->
-      <div class="h-8 bg-gray-200 rounded w-24"></div>
-
-      <!-- Header Section Skeleton -->
-      <div class="h-16 bg-gray-200 rounded-xl"></div>
-
-      <!-- Timeline Skeleton -->
-      <div class="h-12 bg-gray-200 rounded-xl"></div>
-
-      <!-- Content Grid Skeleton -->
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Left Column Skeleton -->
-        <div class="lg:col-span-2 space-y-6">
-          <div class="h-64 bg-gray-200 rounded-xl"></div>
-          <div class="h-32 bg-gray-200 rounded-xl"></div>
-          <div class="h-24 bg-gray-200 rounded-xl"></div>
-        </div>
-
-        <!-- Right Column Skeleton -->
-        <div class="lg:col-span-1">
-          <div class="h-32 bg-gray-200 rounded-xl"></div>
-        </div>
-      </div>
-    </div>
+    <SkeletonLoader variant="detail" />
   {:else if error}
     <!-- Error State -->
     <div 

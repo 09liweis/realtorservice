@@ -12,11 +12,12 @@
     import Link from '$lib/components/Link.svelte';
     import Timeline from '$lib/components/common/Timeline.svelte';
     import { sendRequest } from '$lib/helper';
+    import SkeletonLoader from '$lib/components/common/SkeletonLoader.svelte';
 
   const videoServiceId = $page.params.videoId;
   
   let videoService: VideoService;
-  let loading = false;
+  let loading = true;
   let error = '';
 
   let user_id:string|undefined;
@@ -29,11 +30,12 @@
     fetchSocialMediaService();
   })
 
-  const fetchSocialMediaService = async ()=> {
+  const fetchSocialMediaService = async ()=> {    
     const {data: {error,video_service}} = await sendRequest({
       url: `/api/videos/${videoServiceId}`,
       method: 'GET'
     });
+    loading = false;
     if (error) throw error;
     videoService = video_service;
   }
@@ -101,13 +103,8 @@
 
   <!-- Loading Overlay -->
   {#if loading}
-    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div class="bg-white rounded-lg p-6 flex items-center space-x-3">
-        <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-purple-600"></div>
-        <span class="text-gray-700">Refreshing data...</span>
-      </div>
-    </div>
-  {/if}
+    <SkeletonLoader variant="detail"/>
+  {:else}
 
   <!-- Video Service Header -->
   <VideoServiceHeader {videoService} />
@@ -134,4 +131,7 @@
       />
     </div>
   </div>
+
+  {/if}
+
 </div>

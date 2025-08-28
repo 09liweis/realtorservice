@@ -13,6 +13,7 @@
     import Timeline from '$lib/components/common/Timeline.svelte';
     import { formatDate, sendRequest } from '$lib/helper';
   import { user } from '$lib/stores/auth';
+    import SkeletonLoader from '$lib/components/common/SkeletonLoader.svelte';
 
   const stagingId = $page.params.stagingId;
   
@@ -82,12 +83,7 @@
 
   {#if loading}
     <!-- Loading State -->
-    <div class="flex justify-center items-center py-12" in:fade={{ duration: 300 }}>
-      <div class="relative">
-        <div class="animate-spin rounded-full h-12 w-12 border-2 border-gray-200"></div>
-        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-blue-600 absolute top-0 left-0"></div>
-      </div>
-    </div>
+    <SkeletonLoader variant="detail"/>
   {:else if error}
     <!-- Error State -->
     <div 
