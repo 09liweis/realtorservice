@@ -79,7 +79,7 @@
     if (!request) return;
     const oldStatus = request?.status;
     request.status = status as ProjectStatus;
-    request?.history?.push({status, note:request.notes, date: new Date()});
+    request?.history?.push({status, note, date: new Date()});
     const {data:{error:updateError}} = await sendRequest({
       url: `${UPDATE_TP_API[tp]}/${request?.id}`,
       body: request,
