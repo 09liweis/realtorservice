@@ -1,6 +1,5 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import { user } from '$lib/stores/auth';
   import { getPageTitle } from '$lib/types/constant';
   import type { SocialMediaService } from '$lib/types/social';
   import { 
@@ -50,8 +49,8 @@
 
   // Calculate pricing information
   $: pricingInfo = calculateSocialMediaPrice(
-    socialMediaService?.posting_frequency,
-    socialMediaService?.subscription_type,
+    socialMediaService?.posting_frequency || '',
+    socialMediaService?.subscription_type || '',
     socialMediaService?.addons || [],
     socialMediaService?.quotation_price
   );
@@ -106,29 +105,31 @@
     <SkeletonLoader variant="detail"/>
   {:else}
   <!-- Social Media Service Header -->
-  <SocialMediaServiceHeader {socialMediaService} />
-  <Timeline request={socialMediaService} tp='social'/>
+   {#if socialMediaService}
+    <SocialMediaServiceHeader {socialMediaService} />
+    <Timeline request={socialMediaService} tp='social'/>
 
-  <!-- Main Content Grid -->
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-    <!-- Left Column - Main Content -->
-    <div class="lg:col-span-2 space-y-8">
-      <!-- Social Media Service Information -->
-      <SocialMediaServiceInfo {socialMediaService} {platformInfo} {addonInfo} />
+    <!-- Main Content Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Left Column - Main Content -->
+      <div class="lg:col-span-2 space-y-8">
+        <!-- Social Media Service Information -->
+        <SocialMediaServiceInfo {socialMediaService} {platformInfo} {addonInfo} />
 
-      <!-- Pricing Information -->
-      <SocialMediaServicePricing {socialMediaService} {pricingInfo} />
+        <!-- Pricing Information -->
+        <SocialMediaServicePricing {socialMediaService} {pricingInfo} />
+      </div>
+
+      <!-- Right Column - Actions -->
+      <div class="lg:col-span-1">
+        <DetailActions 
+          request={socialMediaService}
+          tp="social_media_services"
+          on:statusUpdate={handleStatusUpdate}
+        />
+      </div>
     </div>
-
-    <!-- Right Column - Actions -->
-    <div class="lg:col-span-1">
-      <DetailActions 
-        request={socialMediaService}
-        tp="social_media_services"
-        on:statusUpdate={handleStatusUpdate}
-      />
-    </div>
-  </div>
+    {/if}
   {/if}
 
 </div>
