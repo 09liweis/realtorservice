@@ -19,6 +19,7 @@
   export let errorMessage = '';
   export let disabled = false;
   export let classes = '';
+  export let autofocus = false;
   export let handleAutocompleteClick = (suggestion:any) => {};
 
   let isTyping = false;
@@ -89,6 +90,7 @@
     on:change={handleChange}
     on:focus={handleFocus}
     on:blur={handleBlur}
+    {autofocus}
   />
   
   {#if autocomplete === 'address'}

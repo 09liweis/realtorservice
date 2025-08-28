@@ -14,7 +14,10 @@
     }
   }
 
-  const urlParams = new URLSearchParams(window.location.search);
+  let urlParams = new URLSearchParams('');
+  if (typeof window !== 'undefined') {
+    urlParams = new URLSearchParams(window.location.search);
+  }
   const redirectUrl = urlParams.get('redirect');
 
   // Form data
@@ -46,7 +49,7 @@
       }
     } catch (err) {
       console.error('Login error:', err);
-      error = err.message || 'Login failed, please check your credentials';
+      error = 'Login failed, please check your credentials';
     } finally {
       loading = false;
     }
@@ -80,6 +83,7 @@
           label="Email address"
           placeholder="Email address"
           required={true}
+          autofocus={true}
           bind:value={email}
         />
         
