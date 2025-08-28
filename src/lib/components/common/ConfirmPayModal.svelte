@@ -315,7 +315,7 @@
         <Button
           variant="secondary"
           onclick={()=>showTopup = true}
-          class_name="w-full"
+          class_name="w-full border-green-600 border-2"
         >
           Topup Credit
         </Button>

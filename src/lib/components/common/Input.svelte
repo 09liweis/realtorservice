@@ -9,7 +9,7 @@
   export let name = '';
   export let type = 'text';
   export let label = '';
-  export let value = '';
+  export let value:any;
   export let min = 0;
   export let step = 1;
   export let placeholder = '';

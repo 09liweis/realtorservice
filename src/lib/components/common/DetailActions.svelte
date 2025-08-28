@@ -186,11 +186,13 @@
           </Button>
         </div>
       {:else if nextAction.action === 'confirmed'}
+        {#if request}
         <Input
           label="Quotation Price"
           bind:value={request.quotation_price}
           type="number"
         />
+        {/if}
         <Input
           label="Note"
           bind:value={note}
