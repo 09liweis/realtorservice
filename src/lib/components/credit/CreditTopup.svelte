@@ -220,6 +220,7 @@
     <div class="flex items-center justify-between">
       <h2 class="text-xl font-bold">Add Credits</h2>
       <button
+        aria-label="close_payment_modal"
         onclick={handleClose}
         class="text-white hover:text-gray-200 transition-colors duration-200 cursor-pointer"
       >
