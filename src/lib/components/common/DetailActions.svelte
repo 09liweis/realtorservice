@@ -252,10 +252,10 @@
   </div>
 </div>
 
+{#if showConfirmPayModal}
 <ConfirmPayModal
   {tp}
   amount={request?.quotation_price}
-  show={showConfirmPayModal}
   on:confirm={confirmPayment}
   on:close={()=>showConfirmPayModal=false}
-/>
+/>{/if}

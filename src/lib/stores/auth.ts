@@ -22,7 +22,7 @@ export const isLoading = writable(true);
 
 export const listings = writable<Listing[]>([]);
 
-async function setUserProfile() {
+export async function setUserProfile() {
   const {data:{userProfile}} = await sendRequest({
     url:'/api/user',
     method: 'GET'
