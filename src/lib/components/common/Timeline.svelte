@@ -9,11 +9,10 @@
   export let tp: string = "staging"; // "staging", "cleaning", "video" or "social"
 
   // Timeline events based on request data and type
-  $: timelineEvents = getTimelineEvents(request, tp);
+  $: timelineEvents = request ? getTimelineEvents(request, tp) : [];
 
   function getTimelineEvents(request: Staging | Cleaning | VideoService | SocialMediaService, type: string) {
     const allStatuses = ['submitted', 'confirmed', 'paid', 'scheduled', 'completed'];
-    const historyStatuses = request?.history?.map(entry => entry.status) || [];
 
     return allStatuses.map(status => {
       const historyEntry = request?.history?.find(entry => entry.status === status);

@@ -173,7 +173,7 @@ export const STATUS_STEPS_NEXT = {
   schedule: "complete",
 };
 
-export function getStatusStyle(status: ProjectStatus) {
+export function getStatusStyle(status: string) {
   switch (status) {
     case "draft":
       return "bg-gray-100 text-gray-800";
