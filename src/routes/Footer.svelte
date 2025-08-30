@@ -2,10 +2,10 @@
   import Link from "$lib/components/Link.svelte";
   import { MENU_ITEMS } from "$lib/types/constant";
   
-  const publicNavigations = MENU_ITEMS;
-  
   // 递归渲染菜单项
+  // @ts-ignore
   function renderMenuItems(items, level = 0) {
+    // @ts-ignore
     return items.map(item => {
       const hasSubmenu = item.submenu && item.submenu.length > 0;
       return {
@@ -17,7 +17,7 @@
     });
   }
   
-  const processedMenu = renderMenuItems(publicNavigations);
+  const processedMenu = renderMenuItems(MENU_ITEMS);
 </script>
 
 <footer class="bg-gray-900 text-white py-16 px-4">
