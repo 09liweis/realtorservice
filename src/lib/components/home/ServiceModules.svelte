@@ -1,10 +1,10 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
 	import { fade, fly, scale } from 'svelte/transition';
 	import { elasticOut } from 'svelte/easing';
     import { user } from '$lib/stores/auth';
 
-	let services = [];
+	let services: boolean[] = [];
 	let observer;
 
 	function createIntersectionObserver(element) {
