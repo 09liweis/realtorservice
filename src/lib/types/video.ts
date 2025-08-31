@@ -71,7 +71,7 @@ export const VIDEO_SERVICE_ADDONS = [
 
 export const EMPTY_VIDEO_SERVICE: VideoService = {
   ...EMPTY_SERVICE,
-  service_type: '',
+  service_type: 'social_media_short',
   number_of_videos: 1,
   addons: []
 };
