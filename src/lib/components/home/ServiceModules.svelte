@@ -5,9 +5,9 @@
     import { user } from '$lib/stores/auth';
 
 	let services: boolean[] = [];
-	let observer;
+	let observer: IntersectionObserver | null = null;
 
-	function createIntersectionObserver(element) {
+	function createIntersectionObserver(element: Element) {
 		if (!observer) {
 			observer = new IntersectionObserver(
 				(entries) => {
