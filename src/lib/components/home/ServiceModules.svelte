@@ -157,7 +157,7 @@
 		
 		<!-- Call to Action -->
 		<div class="mt-16 text-center">
-			<div class="bg-gradient-to-r from-primary to-blue-600 rounded-2xl p-8 md:p-12 text-white">
+			<div class="bg-gradient-to-r from-primary to-blue-600 rounded-2xl p-8 text-white">
 				<h3 class="text-3xl font-bold mb-4">Ready to Transform Your Real Estate Business?</h3>
 				<p class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
 					Join thousands of successful realtors who trust our platform for their professional services.
