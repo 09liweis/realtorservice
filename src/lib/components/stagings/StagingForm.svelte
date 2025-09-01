@@ -51,7 +51,7 @@
   // Update estimate_price when calculation changes
   $: {
     setTimeout(() => {
-      saveDraftService('staging', request);
+      saveDraftService('staging', {...EMPTY_STAGING,...request});
     }, 0);
   }
 
