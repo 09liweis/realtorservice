@@ -271,10 +271,8 @@
             {index + 1}
           </div>
           {#if selectedImage === image}
-            <div class="absolute inset-0 bg-blue-500 bg-opacity-30 rounded-lg flex items-center justify-center">
-              <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-              </svg>
+            <div class="absolute top-2 left-2 bg-blue-500 text-white text-xs px-2 py-1 rounded-full">
+              Cover
             </div>
           {/if}
         </div>
