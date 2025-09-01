@@ -58,7 +58,7 @@
   $: {
     setTimeout(() => {
       // request.estimate_price = cleaningCalculation.totalPrice;
-      saveDraftService('cleaning', request);
+      saveDraftService('cleaning', {...EMPTY_CLEANING,...request});
     }, 0);
   }
 
