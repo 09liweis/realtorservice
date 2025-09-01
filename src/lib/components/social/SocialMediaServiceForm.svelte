@@ -54,7 +54,7 @@
   // Update estimate_price when calculation changes
   $: {
     setTimeout(()=>{
-      saveDraftService('social_media', socialMediaService);
+      saveDraftService('social_media', {...EMPTY_SOCIAL_MEDIA_SERVICE,...socialMediaService});
     },1)
   }
 
