@@ -57,11 +57,13 @@
     { name: 'basement', type: 'select', label: 'Basement', options: ['None', 'Unfinished', 'Finished', 'Walkout'] },
   ];
 
-  const financialFields = [
+  $: financialFields = [
     { name: 'asking_price', type: 'number', label: 'Asking Price ($)', min: 0 },
-    { name: 'original_price', type: 'number', label: 'Original Price ($)', min: 0 },
+    ...(listing.listing_type.toLowerCase() === 'assignment_sale' ? [
+      { name: 'original_price', type: 'number', label: 'Original Price ($)', min: 0 },
+      { name: 'deposit_paid', type: 'number', label: 'Deposit Paid ($)', min: 0 },
+    ] : []),
     { name: 'commission', type: 'number', label: 'Commission (%)', step: 0.1, min: 0 },
-    { name: 'deposit_paid', type: 'number', label: 'Deposit Paid ($)', min: 0 },
     { name: 'occupancy', type: 'date', label: 'Occupancy Date' },
   ];
 
