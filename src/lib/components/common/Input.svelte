@@ -21,6 +21,7 @@
   export let classes = '';
   export let autofocus = false;
   export let handleAutocompleteClick = (suggestion:any) => {};
+  export let handleOnChange = (event:any) => {};
 
   let isTyping = false;
   
@@ -28,6 +29,7 @@
   function handleInput(event: any) {
     isTyping = true;
     dispatch('input', event);
+    handleOnChange(event);
   }
   
   // Handle change event
