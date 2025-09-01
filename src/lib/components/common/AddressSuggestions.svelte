@@ -21,7 +21,7 @@
     loading = true;
     try {
       const response = await fetch(
-        `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${PUBLIC_MAPBOX_API_KEY}&limit=5`
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${PUBLIC_MAPBOX_API_KEY}&limit=5&country=ca`
       );
       const data = await response.json();
       suggestions = data.features || [];
