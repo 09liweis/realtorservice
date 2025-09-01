@@ -6,6 +6,7 @@
   export let images: string[] = [];
   export let maxImages = 30;
   export let disabled = false;
+  export let selectedImage: string | null = null;
 
   const dispatch = createEventDispatcher();
 
@@ -239,8 +240,9 @@
           <img
             src={image}
             alt="Property image {index + 1}"
-            class="w-full h-32 object-cover rounded-lg border border-gray-200"
+            class="w-full h-32 object-cover rounded-lg border border-gray-200 cursor-pointer {selectedImage === image ? 'border-blue-500 border-2' : ''}"
             loading="lazy"
+            onclick={() => dispatch('select', image)}
           />
           <button
             type="button"
@@ -268,6 +270,13 @@
           >
             {index + 1}
           </div>
+          {#if selectedImage === image}
+            <div class="absolute inset-0 bg-blue-500 bg-opacity-30 rounded-lg flex items-center justify-center">
+              <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+          {/if}
         </div>
       {/each}
     </div>

@@ -19,6 +19,15 @@
     imageUrls = event.detail;
     // Convert array back to comma-separated string for the listing object
     listing.pics = imageUrls.join(',');
+    // Reset selected cover image if it's no longer in the list
+    if (!listing.cover) {
+      listing.cover = imageUrls[0];
+    }
+  }
+
+  // Handle cover image selection
+  function handleCoverImageSelect(event: CustomEvent<string>) {
+    listing.cover = event.detail;
   }
 
   // Form sections for better organization
@@ -325,6 +334,8 @@
             <ImageUpload 
               images={imageUrls} 
               on:update={handleImageUpdate}
+              selectedImage={listing.cover}
+              on:select={handleCoverImageSelect}
               maxImages={30}
             />
           </div>

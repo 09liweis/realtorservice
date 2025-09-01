@@ -1,6 +1,7 @@
 export interface Listing {
   id?: string;
   listing_type: string;
+  cover: sting;
   project_name: string;
   developer: string;
   address: string;
