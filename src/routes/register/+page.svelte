@@ -26,6 +26,8 @@
   let reco_number = '';
   let phone = '';
   let password = '';
+  let confirmPassword = '';
+  let passwordError = '';
   
   // Error and loading states
   let error = '';
@@ -33,12 +35,54 @@
   let successMessage = '';
   let showForm = true;
 
+  // Validate password
+  function validatePassword(pwd) {
+    if (!pwd) {
+      passwordError = '';
+      return;
+    }
+    
+    const hasUpperCase = /[A-Z]/.test(pwd);
+    const hasLowerCase = /[a-z]/.test(pwd);
+    const hasNumber = /[0-9]/.test(pwd);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(pwd);
+    
+    if (pwd.length < 8) {
+      passwordError = 'Password must be at least 8 characters long';
+    } else if (!hasUpperCase) {
+      passwordError = 'Password must include at least one uppercase letter';
+    } else if (!hasLowerCase) {
+      passwordError = 'Password must include at least one lowercase letter';
+    } else if (!hasNumber) {
+      passwordError = 'Password must include at least one number';
+    } else if (!hasSpecialChar) {
+      passwordError = 'Password must include at least one special character';
+    } else {
+      passwordError = '';
+    }
+  }
+
   // Handle form submission
   async function handleRegister() {
     // Reset error
     error = '';
     successMessage = '';
     loading = true;
+
+    // Validate password
+    validatePassword(password);
+    if (passwordError) {
+      error = passwordError;
+      loading = false;
+      return;
+    }
+
+    // Check if passwords match
+    if (password !== confirmPassword) {
+      error = 'Passwords do not match';
+      loading = false;
+      return;
+    }
 
     try {
       // Register user with Supabase
@@ -198,6 +242,18 @@
           minlength={8}
           bind:value={password}
         />
+
+        <Input
+          id="confirm-password"
+          name="confirm-password"
+          type="password"
+          label="Confirm Password"
+          placeholder="Confirm Password"
+          autocomplete="new-password"
+          required={true}
+          bind:value={confirmPassword}
+        />
+
         <p class="text-xs text-gray-500 mt-1">Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character</p>
 
       </div>
