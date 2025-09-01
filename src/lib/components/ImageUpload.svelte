@@ -248,7 +248,7 @@
             type="button"
             onclick={() => removeImage(index)}
             {disabled}
-            class="absolute top-2 right-2 bg-red-600 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            class="absolute top-2 right-2 bg-red-600 text-white rounded-full p-1 opacity-100 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed"
             title="Remove image"
           >
             <svg
