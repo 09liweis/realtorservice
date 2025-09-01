@@ -95,7 +95,7 @@
     {autofocus}
   />
   
-  {#if autocomplete === 'address'}
+  {#if autocomplete === 'address' && value.trim()}
   <AddressSuggestions 
     query={value}
     isTyping={isTyping}
