@@ -36,9 +36,15 @@
   let showForm = true;
 
   // Validate password
-  function validatePassword(pwd) {
+  function validatePassword(pwd:string) {
     if (!pwd) {
       passwordError = '';
+      return;
+    }
+    
+    // Check if passwords match
+    if (password !== confirmPassword) {
+      passwordError = 'Passwords do not match';
       return;
     }
     
@@ -241,6 +247,7 @@
           required={true}
           minlength={8}
           bind:value={password}
+          handleOnChange={() => validatePassword(password)}
         />
 
         <Input
@@ -252,7 +259,12 @@
           autocomplete="new-password"
           required={true}
           bind:value={confirmPassword}
+          handleOnChange={() => validatePassword(password)}
         />
+
+        {#if passwordError}
+          <p class="text-xs text-red-500 mt-1">{passwordError}</p>
+        {/if}
 
         <p class="text-xs text-gray-500 mt-1">Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character</p>
 
