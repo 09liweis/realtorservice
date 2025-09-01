@@ -41,7 +41,7 @@
 
   $: {
     setTimeout(() => {
-      saveDraftService('video_service', videoService);
+      saveDraftService('video_service', {...EMPTY_VIDEO_SERVICE,...videoService});
     }, 0);
   }
 
