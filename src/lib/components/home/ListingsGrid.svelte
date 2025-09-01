@@ -71,11 +71,11 @@
                   <Link href={`/listings/${listing.id}`} className="text-2xl text-primary font-bold text-gray-900 mb-1 group-hover:text-primary transition-colors duration-300">
                     {formatAmount(listing.asking_price || listing.original_price)}
                   </Link>
-                  <!-- {#if listing.original_price && listing.original_price !== listing.asking_price}
+                  {#if listing.listing_type === 'assignment_sale' && listing.original_price && listing.original_price !== listing.asking_price}
                     <div class="text-sm text-gray-400 line-through">
                       {formatAmount(listing.original_price)}
                     </div>
-                  {/if} -->
+                  {/if}
                 </div>
                 {#if listing.ptype}
                   <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700 border border-gray-200">

@@ -177,7 +177,7 @@
               <div class="text-4xl font-bold text-gray-900 mb-2">
                 {formatAmount(listing.asking_price)}
               </div>
-              {#if listing.original_price && listing.original_price !== listing.asking_price}
+              {#if listing.listing_type === 'assignment_sale' && listing.original_price && listing.original_price !== listing.asking_price}
                 <div class="text-lg text-gray-500 line-through">
                   {formatAmount(listing.original_price)}
                 </div>

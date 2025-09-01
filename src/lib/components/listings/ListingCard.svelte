@@ -48,7 +48,7 @@
         <div class="text-2xl font-bold text-gray-900 mb-1 group-hover:text-primary transition-colors duration-300">
           {formatAmount(listing.asking_price)}
         </div>
-        {#if listing.original_price && listing.original_price !== listing.asking_price}
+        {#if listing.listing_type === 'assignment_sale' && listing.original_price && listing.original_price !== listing.asking_price}
           <div class="text-sm text-gray-400 line-through">
             {formatAmount(listing.original_price)}
           </div>
