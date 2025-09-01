@@ -660,3 +660,127 @@ export async function sendAccountApprovalEmail(
     html: html,
   });
 }
+
+/**
+ * Send admin notification email for new user registration
+ * @param userEmail New user's email address
+ * @param firstName User's first name
+ * @param lastName User's last name
+ * @param brokerage User's brokerage
+ * @param recoNumber User's RECO number
+ * @param phone User's phone number
+ */
+export async function sendAdminNewUserNotification(
+  userEmail: string,
+  firstName: string,
+  lastName: string,
+  brokerage: string = '',
+  recoNumber: string = '',
+  phone: string = ''
+) {
+  const subject = `New User Registration - ${firstName} ${lastName}`;
+  
+  const content = `
+    <h2>New User Registration Alert</h2>
+    
+    <p>Hello Admin,</p>
+    
+    <p>A new user has registered on the Realtor Service platform and is awaiting approval.</p>
+
+    <div class="alert alert-info">
+      <strong>📋 Action Required</strong><br>
+      Please review the user's information and approve their realtor account if they meet the requirements.
+    </div>
+
+    <div class="card">
+      <h3>👤 User Information</h3>
+      <div style="background-color: white; padding: 20px; border-radius: 8px; border: 1px solid #e0e7ff; margin: 16px 0;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #f1f5f9;">
+          <span style="color: #64748b; font-weight: 500;">Full Name:</span>
+          <span style="color: #1e293b; font-weight: 600;">${firstName} ${lastName}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #f1f5f9;">
+          <span style="color: #64748b; font-weight: 500;">Email:</span>
+          <span style="color: #1e293b; font-weight: 600;">${userEmail}</span>
+        </div>
+        ${phone ? `
+        <div style="display: flex; justify-content: space-between; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #f1f5f9;">
+          <span style="color: #64748b; font-weight: 500;">Phone:</span>
+          <span style="color: #1e293b; font-weight: 600;">${phone}</span>
+        </div>
+        ` : ''}
+        ${brokerage ? `
+        <div style="display: flex; justify-content: space-between; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #f1f5f9;">
+          <span style="color: #64748b; font-weight: 500;">Brokerage:</span>
+          <span style="color: #1e293b; font-weight: 600;">${brokerage}</span>
+        </div>
+        ` : ''}
+        ${recoNumber ? `
+        <div style="display: flex; justify-content: space-between; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #f1f5f9;">
+          <span style="color: #64748b; font-weight: 500;">RECO Number:</span>
+          <span style="color: #1e293b; font-weight: 600;">${recoNumber}</span>
+        </div>
+        ` : ''}
+        <div style="display: flex; justify-content: space-between;">
+          <span style="color: #64748b; font-weight: 500;">Registration Date:</span>
+          <span style="color: #1e293b; font-weight: 600;">${new Date().toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          })}</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-radius: 12px; padding: 24px; margin: 30px 0; border: 1px solid #f59e0b;">
+      <h3 style="color: #92400e; margin-bottom: 16px;">⚡ Quick Actions</h3>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+        <div style="text-align: center;">
+          <div style="font-size: 24px; margin-bottom: 8px;">✅</div>
+          <div style="color: #92400e; font-weight: 600; font-size: 14px;">Approve User</div>
+          <div style="color: #b45309; font-size: 12px;">Grant full access</div>
+        </div>
+        <div style="text-align: center;">
+          <div style="font-size: 24px; margin-bottom: 8px;">📧</div>
+          <div style="color: #92400e; font-weight: 600; font-size: 14px;">Send Message</div>
+          <div style="color: #b45309; font-size: 12px;">Contact the user</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align: center; margin: 40px 0;">
+      <a href="${HOST}/dashboard/admin" class="button" style="margin-right: 15px;">
+        Review in Admin Panel
+      </a>
+      <a href="${HOST}/dashboard/admin" class="button" style="background: linear-gradient(135deg, #64748b 0%, #475569 100%);">
+        View All Users
+      </a>
+    </div>
+
+    <div class="alert alert-info">
+      <strong>💡 Approval Guidelines:</strong><br>
+      • Verify RECO number if provided<br>
+      • Check brokerage information<br>
+      • Ensure contact details are complete<br>
+      • Approve legitimate real estate professionals
+    </div>
+
+    <p style="color: #64748b; font-size: 14px; margin-top: 40px; padding-top: 20px; border-top: 1px solid #e2e8f0;">
+      <strong>Need to contact the user?</strong><br>
+      You can reach them directly at <a href="mailto:${userEmail}" style="color: #0d7377; text-decoration: none; font-weight: 600;">${userEmail}</a>${phone ? ` or call <a href="tel:${phone}" style="color: #0d7377; text-decoration: none; font-weight: 600;">${phone}</a>` : ''}.
+    </p>
+  `;
+
+  const html = createEmailTemplate('New User Registration', content);
+
+  // Send to admin email (you can configure this in environment variables)
+  const adminEmail = 'dev@realtorservice.ca'; // You might want to make this configurable
+
+  return sendMail({
+    to: adminEmail,
+    subject: subject,
+    html: html,
+  });
+}

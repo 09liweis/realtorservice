@@ -2,6 +2,7 @@ import { json } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
 import { checkAuth } from "$lib/server/apiAuth";
 import supabase from "$lib/db/client";
+import { sendAdminNewUserNotification } from '$lib/email';
 
 export const GET: RequestHandler = async ({ request }) => {
   try {
@@ -38,6 +39,21 @@ export const POST: RequestHandler = async ({ request,params }) => {
         { error: "Failed to add user profile from Supabase" },
         { status: 500 }
       );
+    }
+
+    // Send admin notification email about new user registration
+    try {
+      await sendAdminNewUserNotification(
+        userProfile.email,
+        userProfile.first_name,
+        userProfile.last_name,
+        userProfile.brokerage,
+        userProfile.reco_number,
+        userProfile.phone
+      );
+    } catch (emailError) {
+      console.error('Failed to send admin notification email:', emailError);
+      // Don't fail the registration if email fails
     }
 
     const {data: coupons, error: getCouponsError } = await supabase
