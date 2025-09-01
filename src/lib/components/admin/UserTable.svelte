@@ -98,6 +98,7 @@ import { sendRequest } from '$lib/helper';
             <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">RECO Number</th>
             <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Brokerage</th>
             <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Created At</th>
             <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Action</th>
           </tr>
         </thead>
@@ -126,6 +127,9 @@ import { sendRequest } from '$lib/helper';
                     Pending
                   </span>
                 {/if}
+              </td>
+              <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                {new Date(user.created_at).toLocaleString()}
               </td>
               <td class="px-4 py-3 whitespace-nowrap text-sm">
                 {#if !user.realtor_approved}
