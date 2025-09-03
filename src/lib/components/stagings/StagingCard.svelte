@@ -1,6 +1,6 @@
 <script lang="ts">
   import { user } from "$lib/stores/auth";
-  import { formatAmount, getStatusStyle } from "$lib/types/constant";
+  import { DASHBOARD_STAGINGS_URL, formatAmount, getStatusStyle } from "$lib/types/constant";
   import { getStagingEndDate, type Staging } from "$lib/types/staging";
   import CardWrapper from "../common/CardWrapper.svelte";
 
@@ -48,7 +48,7 @@
 		>
 			{request.status}
 		</span>
-		<Link href={`/dashboard/stagings/${request.id}`} className="text-lg font-medium truncate">{request.location}</Link>
+		<Link href={`${DASHBOARD_STAGINGS_URL}/${request.id}`} className="text-lg font-medium truncate">{request.location}</Link>
 	</div>
 	<div class="px-6 py-4">
 		<div class="space-y-3">
@@ -105,7 +105,7 @@
 	<div class="px-6 py-3 bg-gray-50">
 		<div class="flex justify-end space-x-3">
 			<Link
-				href={`/dashboard/stagings/${request.id}`}
+				href={`${DASHBOARD_STAGINGS_URL}/${request.id}`}
 			>
 				View
 			</Link>

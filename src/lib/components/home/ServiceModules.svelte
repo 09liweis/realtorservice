@@ -3,6 +3,7 @@
 	import { fade, fly, scale } from 'svelte/transition';
 	import { elasticOut } from 'svelte/easing';
     import { user } from '$lib/stores/auth';
+    import { DASHBOARD_STAGINGS_URL } from '$lib/types/constant';
 
 	let services: boolean[] = [];
 	let observer: IntersectionObserver | null = null;
@@ -40,7 +41,7 @@
 			color: 'from-purple-500 to-pink-500',
 			bgColor: 'from-purple-50 to-pink-50',
 			icon: '✨',
-      link: $user ? '/dashboard/stagings' : '/realtor-services/listing/staging'
+      link: $user ? DASHBOARD_STAGINGS_URL : '/realtor-services/listing/staging'
 		},
 		{
 			title: 'Professional Cleaning',

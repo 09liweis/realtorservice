@@ -2,7 +2,7 @@
   import { user } from '$lib/stores/auth';
   import { goto } from '$app/navigation';
   import { onMount } from 'svelte';
-  import { getPageTitle } from '$lib/types/constant';
+  import { DASHBOARD_STAGINGS_URL, getPageTitle } from '$lib/types/constant';
   import DashboardHeader from './DashboardHeader.svelte';
   import WelcomeBonusNotification from '$lib/components/dashboard/WelcomeBonusNotification.svelte';
   import ServiceStatsCard from '$lib/components/dashboard/ServiceStatsCard.svelte';
@@ -140,7 +140,7 @@
       icon="✨"
       color="purple"
       loading={loading}
-      link={'/dashboard/stagings'}
+      link={DASHBOARD_STAGINGS_URL}
     >
       <div class="text-sm text-gray-600 mt-1">
         <span class="font-medium">Active</span> projects

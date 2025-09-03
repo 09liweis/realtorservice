@@ -2,7 +2,7 @@
   import { page } from '$app/stores';
   import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
-  import { getPageTitle } from '$lib/types/constant';
+  import { DASHBOARD_STAGINGS_URL, getPageTitle } from '$lib/types/constant';
   import type { Staging } from '$lib/types/staging';
   import StagingPropertyInfo from '$lib/components/stagings/detail/StagingPropertyInfo.svelte';
   import StagingFinancialInfo from '$lib/components/stagings/detail/StagingFinancialInfo.svelte';
@@ -56,7 +56,7 @@
 
   function handleEdit() {
     if (staging) {
-      goto(`/dashboard/stagings?edit=${staging.id}`);
+      goto(`${DASHBOARD_STAGINGS_URL}?edit=${staging.id}`);
     }
   }
 
@@ -73,7 +73,7 @@
 <div class="space-y-6">
   <!-- Back Navigation -->
   <div class="flex items-center space-x-4">
-    <Link href="/dashboard/stagings">
+    <Link href={DASHBOARD_STAGINGS_URL}>
       <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
       </svg>
@@ -105,7 +105,7 @@
           Try Again
         </button>
         <Link
-          href="/dashboard/stagings"
+          href={DASHBOARD_STAGINGS_URL}
         >
           Go Back
         </Link>

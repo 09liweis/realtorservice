@@ -4,6 +4,7 @@
   import Input from '$lib/components/common/Input.svelte';
   import Textarea from '$lib/components/common/Textarea.svelte';
   import {
+    DASHBOARD_STAGINGS_URL,
     formatAmount,
     OCCUPATION_STATUS_OPTIONS,
     PROPERTY_TYPES,
@@ -65,7 +66,7 @@
     }
 
     if (!$user) {
-      goto('/login?redirect=/dashboard/stagings');
+      goto(`/login?redirect=${DASHBOARD_STAGINGS_URL}`);
       return;
     }
 

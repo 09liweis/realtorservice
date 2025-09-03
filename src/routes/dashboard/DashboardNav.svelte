@@ -8,6 +8,7 @@
   import { createEventDispatcher } from "svelte";
   import { scale } from 'svelte/transition';
   import { spring } from 'svelte/motion';
+    import { DASHBOARD_STAGINGS_URL } from "$lib/types/constant";
 
   // Create event dispatcher for close events
   const dispatch = createEventDispatcher();
@@ -37,7 +38,7 @@
     },
     {
       name: "Stagings",
-      href: "/dashboard/stagings",
+      href: DASHBOARD_STAGINGS_URL,
       icon: "✨",
       description: "Property Staging",
     },
