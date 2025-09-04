@@ -2,7 +2,7 @@
   import { user } from '$lib/stores/auth';
   import { goto } from '$app/navigation';
   import { onMount } from 'svelte';
-  import { DASHBOARD_CLEANINGS_URL, DASHBOARD_LISTINGS_URL, DASHBOARD_STAGINGS_URL, getPageTitle } from '$lib/types/constant';
+  import { DASHBOARD_CLEANINGS_URL, DASHBOARD_LISTINGS_URL, DASHBOARD_SOCIAL_MEDIA_SERVICES_URL, DASHBOARD_STAGINGS_URL, getPageTitle } from '$lib/types/constant';
   import DashboardHeader from './DashboardHeader.svelte';
   import WelcomeBonusNotification from '$lib/components/dashboard/WelcomeBonusNotification.svelte';
   import ServiceStatsCard from '$lib/components/dashboard/ServiceStatsCard.svelte';
@@ -188,7 +188,7 @@
       icon="📱"
       color="pink"
       loading={loading}
-      link={'/dashboard/social_media_services'}
+      link={DASHBOARD_SOCIAL_MEDIA_SERVICES_URL}
     >
       <div class="text-sm text-gray-600 mt-1">
         <span class="font-medium">Posts</span> published

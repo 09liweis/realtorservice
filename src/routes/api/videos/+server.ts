@@ -65,7 +65,7 @@ export const POST: RequestHandler = async ({ request }) => {
     const serviceType = getServiceTypeInfo(videoService?.service_type);
 
     const projectName = `Project ${serviceType?.label}`;
-    const projectUrl = `dashboard/video_services/${data.id}`;
+    const projectUrl = `/dashboard/video_services/${data.id}`;
 
     sendProjectSubmitted(authUser.email, projectName, projectUrl);
 

@@ -8,7 +8,7 @@
     SOCIAL_MEDIA_ADDONS,
     calculateSocialMediaPrice
   } from '$lib/types/social';
-  import { formatAmount, getStatusStyle } from '$lib/types/constant';
+  import { DASHBOARD_SOCIAL_MEDIA_SERVICES_URL, formatAmount, getStatusStyle } from '$lib/types/constant';
   import { formatDate } from '$lib/helper';
   import CardWrapper from "../common/CardWrapper.svelte";
   import Link from '../Link.svelte';
@@ -47,7 +47,7 @@
   <div class="px-4 py-3">
     <div class="flex items-center justify-between">
       <div class="text-lg font-bold">
-        <Link href="/dashboard/social_media_services/{service.id}">
+        <Link href={`${DASHBOARD_SOCIAL_MEDIA_SERVICES_URL}/{service.id}`}>
           Social Media Service
         </Link>
       </div>

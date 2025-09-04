@@ -243,7 +243,7 @@ export async function sendProjectStatusChange(
         View Dashboard
       </a>
       ${projectUrl ? `
-        <a href="${HOST}/dashboard/${projectUrl}" class="button">
+        <a href="${HOST}${projectUrl}" class="button">
           View Project Details
         </a>
       ` : ''}
@@ -346,7 +346,7 @@ export async function sendProjectSubmitted(
     </div>
 
     <div style="text-align: center; margin: 40px 0;">
-      <a href="${HOST}/${projectUrl}" class="button" style="margin-right: 15px;">
+      <a href="${HOST}${projectUrl}" class="button" style="margin-right: 15px;">
         View Project Details
       </a>
       <a href="${HOST}/dashboard" class="button" style="background: linear-gradient(135deg, #64748b 0%, #475569 100%);">

@@ -3,6 +3,7 @@ import supabase from "$lib/db/client";
 import type { RequestHandler } from "./$types";
 import { checkAuth } from "$lib/server/apiAuth";
 import { sendProjectSubmitted } from "$lib/email";
+import { DASHBOARD_SOCIAL_MEDIA_SERVICES_URL } from "$lib/types/constant";
 
 export const GET: RequestHandler = async ({ request }) => {
   try {
@@ -63,7 +64,7 @@ export const POST: RequestHandler = async ({ request }) => {
     }
 
     const projectName = `${socialMediaService.platforms.join(', ')} ${socialMediaService.posting_frequency}`;
-    const projectUrl = `dashboard/social_media_services/${data.id}`;
+    const projectUrl = `${DASHBOARD_SOCIAL_MEDIA_SERVICES_URL}/${data.id}`;
 
     sendProjectSubmitted(authUser.email, projectName, projectUrl);
 

@@ -16,7 +16,7 @@
   import Select from '$lib/components/common/Select.svelte';
   import CheckBox from '$lib/components/common/CheckBox.svelte';
   import { user } from '$lib/stores/auth';
-    import { formatAmount } from '$lib/types/constant';
+    import { DASHBOARD_SOCIAL_MEDIA_SERVICES_URL, formatAmount } from '$lib/types/constant';
   import { getDraftService, saveDraftService } from '../../../types/service.types';
   import { goto } from '$app/navigation';
 
@@ -86,7 +86,7 @@
   function handleSubmit(event: Event) {
     event.preventDefault();
     if (!$user) {
-      goto('/login?redirect=/dashboard/social_media_services');
+      goto(`/login?redirect=${DASHBOARD_SOCIAL_MEDIA_SERVICES_URL}`);
       return;
     }
     

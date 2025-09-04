@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import { getPageTitle } from '$lib/types/constant';
+  import { DASHBOARD_SOCIAL_MEDIA_SERVICES_URL, getPageTitle } from '$lib/types/constant';
   import type { SocialMediaService } from '$lib/types/social';
   import { 
     SOCIAL_MEDIA_PLATFORMS, 
@@ -79,7 +79,7 @@
   <!-- Back Navigation -->
   <div class="flex items-center space-x-4">
     <Link
-      href={'/dashboard/social_media_services'}
+      href={DASHBOARD_SOCIAL_MEDIA_SERVICES_URL}
     >
       <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>

@@ -3,6 +3,7 @@ import supabase from "$lib/db/client";
 import type { RequestHandler } from "./$types";
 import { checkAuth } from "$lib/server/apiAuth";
 import { sendProjectSubmitted } from "$lib/email";
+import { DASHBOARD_STAGINGS_URL } from "$lib/types/constant";
 
 export const GET: RequestHandler = async ({ request }) => {
   try {
@@ -62,7 +63,7 @@ export const POST: RequestHandler = async ({ request }) => {
     }
 
     const projectName = stagingService.location || data?.id;
-    const projectUrl = 'dashboard/stagings/' + data?.id;
+    const projectUrl =  DASHBOARD_STAGINGS_URL + '/' + data?.id;
 
     sendProjectSubmitted(authUser.email, projectName, projectUrl);
 

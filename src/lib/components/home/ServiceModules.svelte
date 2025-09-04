@@ -3,7 +3,7 @@
 	import { fade, fly, scale } from 'svelte/transition';
 	import { elasticOut } from 'svelte/easing';
     import { user } from '$lib/stores/auth';
-    import { DASHBOARD_CLEANINGS_URL, DASHBOARD_STAGINGS_URL } from '$lib/types/constant';
+    import { DASHBOARD_CLEANINGS_URL, DASHBOARD_SOCIAL_MEDIA_SERVICES_URL, DASHBOARD_STAGINGS_URL } from '$lib/types/constant';
 
 	let services: boolean[] = [];
 	let observer: IntersectionObserver | null = null;
@@ -74,7 +74,7 @@
 			color: 'from-blue-500 to-indigo-500',
 			bgColor: 'from-blue-50 to-indigo-50',
 			icon: '📱',
-      link: $user ? '/dashboard/social_media_services' : '/realtor-services/social-media/management'
+      link: $user ? DASHBOARD_SOCIAL_MEDIA_SERVICES_URL : '/realtor-services/social-media/management'
 		}
 	];
 </script>
