@@ -4,6 +4,7 @@ import type { RequestHandler } from "./$types";
 import { checkAuth } from "$lib/server/apiAuth";
 import { sendProjectSubmitted } from "$lib/email";
 import { logApiError } from "../../../utils/errorLogger";
+import { DASHBOARD_CLEANINGS_URL } from "$lib/types/constant";
 
 export const GET: RequestHandler = async ({ request }) => {
   try {
@@ -63,7 +64,7 @@ export const POST: RequestHandler = async ({ request }) => {
     }
 
     const projectName = cleaningService.location || data?.id;
-    const projectUrl = `/dashboard/cleanings/${data?.id}`;
+    const projectUrl = `${DASHBOARD_CLEANINGS_URL}/${data?.id}`;
 
     sendProjectSubmitted(authUser.email, projectName, projectUrl);
 

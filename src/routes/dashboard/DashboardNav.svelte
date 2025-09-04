@@ -8,7 +8,7 @@
   import { createEventDispatcher } from "svelte";
   import { scale } from 'svelte/transition';
   import { spring } from 'svelte/motion';
-    import { DASHBOARD_STAGINGS_URL } from "$lib/types/constant";
+    import { DASHBOARD_CLEANINGS_URL, DASHBOARD_STAGINGS_URL } from "$lib/types/constant";
 
   // Create event dispatcher for close events
   const dispatch = createEventDispatcher();
@@ -44,7 +44,7 @@
     },
     {
       name: "Cleanings",
-      href: "/dashboard/cleanings",
+      href: DASHBOARD_CLEANINGS_URL,
       icon: "🧽",
       description: "Cleaning Services",
     }

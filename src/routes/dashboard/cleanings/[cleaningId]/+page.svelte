@@ -2,7 +2,7 @@
   import { page } from '$app/stores';
   import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
-  import { getPageTitle } from '$lib/types/constant';
+  import { DASHBOARD_CLEANINGS_URL, getPageTitle } from '$lib/types/constant';
   import type { Cleaning } from '$lib/types/cleaning';
   import CleaningPropertyInfo from '$lib/components/cleanings/detail/CleaningPropertyInfo.svelte';
   import CleaningFinancialInfo from '$lib/components/cleanings/detail/CleaningFinancialInfo.svelte';
@@ -55,7 +55,7 @@
 
   function handleEdit() {
     if (cleaning) {
-      goto(`/dashboard/cleanings?edit=${cleaning.id}`);
+      goto(`${DASHBOARD_CLEANINGS_URL}?edit=${cleaning.id}`);
     }
   }
 
@@ -73,7 +73,7 @@
   <!-- Back Navigation -->
   <div class="flex items-center space-x-4">
     <Link
-      href={'/dashboard/cleanings'}
+      href={DASHBOARD_CLEANINGS_URL}
     >
       <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>

@@ -3,7 +3,7 @@
 	import { fade, fly, scale } from 'svelte/transition';
 	import { elasticOut } from 'svelte/easing';
     import { user } from '$lib/stores/auth';
-    import { DASHBOARD_STAGINGS_URL } from '$lib/types/constant';
+    import { DASHBOARD_CLEANINGS_URL, DASHBOARD_STAGINGS_URL } from '$lib/types/constant';
 
 	let services: boolean[] = [];
 	let observer: IntersectionObserver | null = null;
@@ -52,7 +52,7 @@
 			color: 'from-green-500 to-emerald-500',
 			bgColor: 'from-green-50 to-emerald-50',
 			icon: '🧽',
-      link: $user ? '/dashboard/cleanings' : '/realtor-services/listing/cleaning'
+      link: $user ? DASHBOARD_CLEANINGS_URL : '/realtor-services/listing/cleaning'
 		},
 		{
 			title: 'Video Editing Services',

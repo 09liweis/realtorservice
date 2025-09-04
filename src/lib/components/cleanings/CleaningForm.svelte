@@ -2,7 +2,7 @@
   import { createEventDispatcher, onMount } from "svelte";
   import Button from "../common/Button.svelte";
   import Input from '$lib/components/common/Input.svelte';
-  import { formatAmount, PROPERTY_TYPES } from "$lib/types/constant";
+  import { DASHBOARD_CLEANINGS_URL, formatAmount, PROPERTY_TYPES } from "$lib/types/constant";
   import { EMPTY_CLEANING, type Cleaning, calculateCleaningPrice, CLEANING_TYPES, CLEANING_FREQUENCIES, calculateServiceCount } from "$lib/types/cleaning";
   import Select from '$lib/components/common/Select.svelte';
   import Textarea from '$lib/components/common/Textarea.svelte';
@@ -72,7 +72,7 @@
     }
 
     if (!$user) {
-      goto('/login?redirect=/dashboard/cleanings');
+      goto(`/login?redirect=${DASHBOARD_CLEANINGS_URL}`);
       return;
     }
 

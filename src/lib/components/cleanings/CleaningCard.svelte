@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { formatAmount, getStatusStyle } from "$lib/types/constant";
+  import { DASHBOARD_CLEANINGS_URL, formatAmount, getStatusStyle } from "$lib/types/constant";
   import type { Cleaning } from "$lib/types/cleaning";
   import { CLEANING_TYPES, CLEANING_FREQUENCIES } from "$lib/types/cleaning";
 
@@ -51,7 +51,7 @@
 		>
 			{request.status}
 		</span>
-		<Link href={`/dashboard/cleanings/${request.id}`} className="text-lg font-medium text-gray-900">{request.location}</Link>
+		<Link href={`${DASHBOARD_CLEANINGS_URL}/${request.id}`} className="text-lg font-medium text-gray-900">{request.location}</Link>
 	</div>
 	<div class="px-6 py-4">
 		<div class="space-y-3">
@@ -114,7 +114,7 @@
 	<div class="px-6 py-3 bg-gray-50">
 		<div class="flex justify-end space-x-3">
 			<Link
-				href={`/dashboard/cleanings/${request.id}`}
+				href={`${DASHBOARD_CLEANINGS_URL}/${request.id}`}
 			>
 				View
 			</Link>
