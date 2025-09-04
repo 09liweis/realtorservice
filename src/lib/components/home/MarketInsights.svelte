@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
 	import { fade, fly, scale } from 'svelte/transition';
 	import { elasticOut } from 'svelte/easing';
@@ -105,7 +105,7 @@
 		}
 	];
 
-	function getChangeColor(changeType) {
+	function getChangeColor(changeType:string) {
 		switch (changeType) {
 			case 'increase': return 'text-green-600';
 			case 'decrease': return 'text-red-600';
@@ -113,7 +113,7 @@
 		}
 	}
 
-	function getTrendColor(trend) {
+	function getTrendColor(trend:string) {
 		switch (trend) {
 			case 'up': return 'text-green-600';
 			case 'down': return 'text-red-600';
@@ -121,7 +121,7 @@
 		}
 	}
 
-	function getTrendIcon(trend) {
+	function getTrendIcon(trend:string) {
 		switch (trend) {
 			case 'up': return '↗️';
 			case 'down': return '↘️';
@@ -131,7 +131,7 @@
 </script>
 
 <section class="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
-	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+	<div class="container mx-auto px-4 sm:px-6 lg:px-8">
 		{#if visible}
 			<div class="text-center mb-16" in:fly={{ y: -30, duration: 600, delay: 200 }}>
 				<h2 class="text-4xl font-bold text-gray-900 mb-4">
