@@ -4,6 +4,7 @@
 	import { elasticOut } from 'svelte/easing';
     import { user } from '$lib/stores/auth';
     import { DASHBOARD_CLEANINGS_URL, DASHBOARD_SOCIAL_MEDIA_SERVICES_URL, DASHBOARD_STAGINGS_URL } from '$lib/types/constant';
+  import Link from '../Link.svelte';
 
 	let services: boolean[] = [];
 	let observer: IntersectionObserver | null = null;
@@ -142,12 +143,13 @@
 								
 								<!-- Action Buttons -->
 								<div class="flex flex-col sm:flex-row gap-3">
-									<a
+									<Link
 										href={service.link}
-										class="flex-1 inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-gradient-to-r {service.color} hover:shadow-lg transition-all duration-300 transform hover:scale-105"
+										linkType='btn'
+										className='w-full justify-center'
 									>
 										Get Quote
-									</a>
+								</Link>
 								</div>
 							</div>
 						</div>

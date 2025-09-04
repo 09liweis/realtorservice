@@ -19,7 +19,7 @@
 <a 
   {href}
   onclick={onclick} 
-  class="flex items-center {linkType === 'btn' ? 'p-4 rounded-md bg-primary text-white' : 'font-medium text-primary transition-transform duration-300'} {className} {hoverClass} "
+  class="flex items-center transition-transform duration-300 {linkType === 'btn' ? 'p-4 rounded-md bg-primary text-white' : 'font-medium text-primary'} {className} {hoverClass} "
 >
   <slot />
 </a>
