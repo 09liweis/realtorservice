@@ -80,7 +80,7 @@
 </script>
 
 <section class="py-20 bg-gray-50">
-	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+	<div class="container mx-auto px-4 sm:px-6 lg:px-8">
 		<div class="text-center mb-16">
 			<h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
 				Our Professional Services
@@ -90,7 +90,7 @@
 			</p>
 		</div>
 		
-		<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+		<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
 			{#each serviceData as service, index}
 				<div 
 					class="group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2"
@@ -120,7 +120,7 @@
 							</div>
 							
 							<!-- Service Content -->
-							<div class="p-8">
+							<div class="p-4">
 								<h3 class="text-2xl font-bold text-gray-900 mb-4 group-hover:text-primary transition-colors duration-300">
 									{service.title}
 								</h3>
