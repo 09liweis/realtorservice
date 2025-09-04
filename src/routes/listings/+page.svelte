@@ -138,7 +138,7 @@
 
 <!-- Hero Section -->
 <section class="bg-primary text-white py-8">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center" in:fade={{ duration: 600, delay: 200 }}>
       <h1 class="text-4xl md:text-5xl font-bold mb-4">
         Property Listings
@@ -224,7 +224,7 @@
       </div>
     {:else if listings.length === 0}
       <!-- Empty State -->
-      <div class="text-center py-16 bg-white rounded-xl shadow-sm border border-gray-200" in:fade={{ duration: 600, delay: 400 }}>
+      <div class="text-center py-8 bg-white rounded-xl shadow-sm border border-gray-200" in:fade={{ duration: 600, delay: 400 }}>
         <div class="mx-auto h-16 w-16 bg-gray-100 rounded-full flex items-center justify-center mb-6">
           <svg class="h-8 w-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
@@ -296,8 +296,8 @@
 </section>
 
 <!-- Call to Action -->
-<section class="py-16 bg-primary">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+<section class="py-8 bg-primary">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
     <div in:fade={{ duration: 600, delay: 200 }}>
       <h2 class="text-3xl font-bold text-white mb-4">
         Ready to List Your Property?

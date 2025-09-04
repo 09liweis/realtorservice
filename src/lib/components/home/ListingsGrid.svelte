@@ -12,8 +12,8 @@
   export let showViewMore: boolean = false;
 </script>
 
-<section class="py-16 bg-gray-50">
-  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+<section class="py-8 bg-gray-50">
+  <div class="container mx-auto">
     <!-- Section Header -->
     {#if showTitle}
     <div class="text-center mb-12">
