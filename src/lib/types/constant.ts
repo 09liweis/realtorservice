@@ -109,6 +109,7 @@ export const MENU_ITEMS:MenuItem[] = [
 export const DASHBOARD_STAGINGS_URL = '/dashboard/stagings';
 export const DASHBOARD_CLEANINGS_URL = '/dashboard/cleanings';
 export const DASHBOARD_LISTINGS_URL = '/dashboard/listings';
+export const DASHBOARD_OPENHOUSES_URL = '/dashboard/openhouses';
 export const DASHBOARD_OFFERS_URL = '/dashboard/offers';
 
 export const getPageTitle = (title: string) => {

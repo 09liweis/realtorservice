@@ -4,6 +4,7 @@
   import { flip } from 'svelte/animate';
   import { quintOut, elasticOut } from 'svelte/easing';
     import { formatDate } from "$lib/helper";
+    import { DASHBOARD_OPENHOUSES_URL } from "$lib/types/constant";
 
   export let openHouses: any[] = [];
   export let handleEdit;
@@ -21,7 +22,7 @@
       <!-- Header with address -->
       <div class="p-5 border-b border-gray-100">
         <Link 
-          href={`/dashboard/openhouses/${house.id}`} 
+          href={`${DASHBOARD_OPENHOUSES_URL}/${house.id}`} 
           className="text-lg font-medium text-gray-800 hover:text-blue-600 transition-colors duration-200"
         >
           {house.address}

@@ -1,6 +1,7 @@
 <script>
     import Link from "$lib/components/Link.svelte";
     import { user } from "$lib/stores/auth";
+    import { DASHBOARD_OPENHOUSES_URL } from "$lib/types/constant";
 
   // 开放日服务功能列表
   const features = [
@@ -34,6 +35,6 @@
       </div>
     {/each}
 
-    <Link href={$user ? '/dashboard/openhouses' : '/login?redirect=/dashboard/openhouses'} linkType="btn" >Create Open House</Link>
+    <Link href={$user ? DASHBOARD_OPENHOUSES_URL : `/login?redirect=${DASHBOARD_OPENHOUSES_URL}`} linkType="btn" >Create Open House</Link>
   </div>
 </main>
