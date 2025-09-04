@@ -108,7 +108,8 @@ export const MENU_ITEMS:MenuItem[] = [
 
 export const DASHBOARD_STAGINGS_URL = '/dashboard/stagings';
 export const DASHBOARD_CLEANINGS_URL = '/dashboard/cleanings';
-export const DASHBOARD_SOCIAL_MEDIA_SERVICES_URL = 'dashboard/social_media_services';
+export const DASHBOARD_SOCIAL_MEDIA_SERVICES_URL = '/dashboard/social_media_services';
+export const DASHBOARD_VIDEO_SERVICES_URL =  '/dashboard/video_services';
 export const DASHBOARD_LISTINGS_URL = '/dashboard/listings';
 export const DASHBOARD_OPENHOUSES_URL = '/dashboard/openhouses';
 export const DASHBOARD_OFFERS_URL = '/dashboard/offers';

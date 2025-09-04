@@ -4,6 +4,7 @@ import type { RequestHandler } from "./$types";
 import { checkAuth } from "$lib/server/apiAuth";
 import { getServiceTypeInfo } from "$lib/types/video";
 import { sendProjectSubmitted } from "$lib/email";
+import { DASHBOARD_VIDEO_SERVICES_URL } from "$lib/types/constant";
 
 export const GET: RequestHandler = async ({ request }) => {
   try {
@@ -65,7 +66,7 @@ export const POST: RequestHandler = async ({ request }) => {
     const serviceType = getServiceTypeInfo(videoService?.service_type);
 
     const projectName = `Project ${serviceType?.label}`;
-    const projectUrl = `/dashboard/video_services/${data.id}`;
+    const projectUrl = `${DASHBOARD_VIDEO_SERVICES_URL}/${data.id}`;
 
     sendProjectSubmitted(authUser.email, projectName, projectUrl);
 

@@ -7,7 +7,7 @@
   import Select from '$lib/components/common/Select.svelte';
   import CheckBox from '$lib/components/common/CheckBox.svelte';
   import { user } from '$lib/stores/auth';
-    import { formatAmount } from '$lib/types/constant';
+    import { DASHBOARD_VIDEO_SERVICES_URL, formatAmount } from '$lib/types/constant';
     import { goto } from '$app/navigation';
     import { getDraftService, saveDraftService } from '../../../types/service.types';
 
@@ -73,7 +73,7 @@
     event.preventDefault();
 
     if (!$user) {
-      goto('/login?redirect=/dashboard/video_services');
+      goto(`/login?redirect=${DASHBOARD_VIDEO_SERVICES_URL}`);
       return;
     }
 

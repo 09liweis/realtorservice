@@ -8,7 +8,7 @@
   import { createEventDispatcher } from "svelte";
   import { scale } from 'svelte/transition';
   import { spring } from 'svelte/motion';
-    import { DASHBOARD_CLEANINGS_URL, DASHBOARD_LISTINGS_URL, DASHBOARD_OPENHOUSES_URL, DASHBOARD_SOCIAL_MEDIA_SERVICES_URL, DASHBOARD_STAGINGS_URL } from "$lib/types/constant";
+    import { DASHBOARD_CLEANINGS_URL, DASHBOARD_LISTINGS_URL, DASHBOARD_OPENHOUSES_URL, DASHBOARD_SOCIAL_MEDIA_SERVICES_URL, DASHBOARD_STAGINGS_URL, DASHBOARD_VIDEO_SERVICES_URL } from "$lib/types/constant";
 
   // Create event dispatcher for close events
   const dispatch = createEventDispatcher();
@@ -32,7 +32,7 @@
     },
     {
       name: "Video Services",
-      href: "/dashboard/video_services",
+      href: DASHBOARD_VIDEO_SERVICES_URL,
       icon: "🎬",
       description: "Video Editing Services",
     },

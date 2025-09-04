@@ -3,7 +3,7 @@
   import type { VideoService } from '$lib/types/video';
   import { VIDEO_SERVICE_ADDONS, calculateVideoServicePrice, getServiceTypeInfo } from '$lib/types/video';
   import Link from '../Link.svelte';
-  import { formatAmount, getStatusStyle } from '$lib/types/constant';
+  import { DASHBOARD_VIDEO_SERVICES_URL, formatAmount, getStatusStyle } from '$lib/types/constant';
   import { formatDate } from '$lib/helper';
   import CardWrapper from "../common/CardWrapper.svelte";
   import { user } from '$lib/stores/auth';
@@ -49,7 +49,7 @@
   <!-- Service Header -->
   <div class="px-4 py-3">
     <div class="flex items-center justify-between">
-      <Link href={`/dashboard/video_services/${videoService.id}`} className="text-white">
+      <Link href={`${DASHBOARD_VIDEO_SERVICES_URL}/${videoService.id}`} className="text-white">
         {getServiceTypeInfo(videoService.service_type)?.label || videoService.service_type}
       </Link>
       <div class="text-right">
