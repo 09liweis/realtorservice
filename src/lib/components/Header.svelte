@@ -192,6 +192,7 @@
     <!-- Mobile menu button -->
     <div class="md:hidden">
       <button
+        aria-label="Open menu"
         onclick={() => (mobileMenuOpen = !mobileMenuOpen)}
         class="text-gray-700 hover:text-blue-600 focus:outline-none focus:text-blue-600"
       >
@@ -297,7 +298,7 @@
 
 <!-- Click outside handler for user menu -->
 {#if userMenuOpen}
-  <div class="fixed inset-0 z-40" onclick={() => (userMenuOpen = false)}></div>
+  <a class="fixed inset-0 z-40" href="#" aria-label="Close user menu" onclick={() => (userMenuOpen = false)}></a>
 {/if}
 
 <style>
