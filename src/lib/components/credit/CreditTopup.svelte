@@ -4,6 +4,7 @@
   import { PUBLIC_STRIPE_PUBLISHABLE_KEY } from "$env/static/public";
   import Button from "../common/Button.svelte";
   import { sendRequest } from "$lib/helper";
+    import { DASHBOARD_PROFILE_URL } from "$lib/types/constant";
 
   const dispatch = createEventDispatcher();
 
@@ -164,7 +165,7 @@
         await stripe.confirmPayment({
           elements,
           confirmParams: {
-            return_url: window.location.origin + "/dashboard/profile",
+            return_url: window.location.origin + DASHBOARD_PROFILE_URL,
           },
           redirect: "if_required",
         });

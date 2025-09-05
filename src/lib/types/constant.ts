@@ -113,6 +113,7 @@ export const DASHBOARD_VIDEO_SERVICES_URL =  '/dashboard/video_services';
 export const DASHBOARD_LISTINGS_URL = '/dashboard/listings';
 export const DASHBOARD_OPENHOUSES_URL = '/dashboard/openhouses';
 export const DASHBOARD_OFFERS_URL = '/dashboard/offers';
+export const DASHBOARD_PROFILE_URL = '/dashboard/profile';
 
 export const getPageTitle = (title: string) => {
   return `${title} - ${WEBSITE_NAME}`;

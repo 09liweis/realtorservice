@@ -8,7 +8,7 @@
   import { createEventDispatcher } from "svelte";
   import { scale } from 'svelte/transition';
   import { spring } from 'svelte/motion';
-    import { DASHBOARD_CLEANINGS_URL, DASHBOARD_LISTINGS_URL, DASHBOARD_OFFERS_URL, DASHBOARD_OPENHOUSES_URL, DASHBOARD_SOCIAL_MEDIA_SERVICES_URL, DASHBOARD_STAGINGS_URL, DASHBOARD_VIDEO_SERVICES_URL } from "$lib/types/constant";
+    import { DASHBOARD_CLEANINGS_URL, DASHBOARD_LISTINGS_URL, DASHBOARD_OFFERS_URL, DASHBOARD_OPENHOUSES_URL, DASHBOARD_PROFILE_URL, DASHBOARD_SOCIAL_MEDIA_SERVICES_URL, DASHBOARD_STAGINGS_URL, DASHBOARD_VIDEO_SERVICES_URL } from "$lib/types/constant";
 
   // Create event dispatcher for close events
   const dispatch = createEventDispatcher();
@@ -159,7 +159,7 @@
   <div class="px-2 py-4 border-t border-gray-200 space-y-1">
     <div in:scale={{delay: 300, duration: 300, start: 0.95}}>
       <Link
-        href="/dashboard/profile"
+        href={DASHBOARD_PROFILE_URL}
         className="flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-all duration-300 ease-in-out transform hover:translate-x-1"
       >
         <svg
