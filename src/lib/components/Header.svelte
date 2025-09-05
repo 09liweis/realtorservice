@@ -5,7 +5,7 @@
   import { derived } from "svelte/store";
   import Link from "$lib/components/Link.svelte";
   import Logo from "./Logo.svelte";
-  import { DASHBOARD_LISTINGS_URL, MENU_ITEMS } from "$lib/types/constant";
+  import { DASHBOARD_LISTINGS_URL, DASHBOARD_OFFERS_URL, MENU_ITEMS } from "$lib/types/constant";
 
   let mobileMenuOpen = $state(false);
   let userMenuOpen = $state(false);
@@ -17,7 +17,7 @@
   const privateNavigation = [
     { name: "Dashboard", href: "/dashboard" },
     { name: "My Listings", href: DASHBOARD_LISTINGS_URL },
-    { name: "Offers", href: "/dashboard/offers" },
+    { name: "Offers", href: DASHBOARD_OFFERS_URL },
   ];
 
   // Get navigation items based on login status

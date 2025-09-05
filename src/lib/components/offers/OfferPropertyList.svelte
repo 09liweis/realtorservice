@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { formatAmount } from "$lib/types/constant";
+    import { DASHBOARD_OFFERS_URL, formatAmount } from "$lib/types/constant";
     import Link from "../Link.svelte";
     import { fade, fly, slide } from "svelte/transition";
     import { flip } from 'svelte/animate';
@@ -56,7 +56,7 @@
             </button>
           </div>
           <Link
-            href={`/dashboard/offers/${offerProperty.id}`}
+            href={`${DASHBOARD_OFFERS_URL}/${offerProperty.id}`}
           >
             View Details
           </Link>
