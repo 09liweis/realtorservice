@@ -1,4 +1,5 @@
 import { PUBLIC_SUPABASE_URL } from "$env/static/public"
+import type { UserProfile } from "./types/user";
 
 export function getAuthToken() {
   const authorizationKey = PUBLIC_SUPABASE_URL.split('https://')[1].split('.')[0];
@@ -35,4 +36,12 @@ export function formatDate(date: string|undefined) {
     month: 'short',
     day: 'numeric'
   });
+}
+
+export function formatUserName({first_name, last_name}:UserProfile) {
+  return `${first_name} ${last_name}`;
+}
+
+export function getUserInitials({first_name, last_name}:UserProfile) {
+  return `${first_name[0]}${last_name[0]}`;
 }
