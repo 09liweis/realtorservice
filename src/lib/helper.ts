@@ -43,5 +43,6 @@ export function formatUserName({first_name, last_name}:UserProfile) {
 }
 
 export function getUserInitials({first_name, last_name}:UserProfile) {
+  if (!first_name || !last_name) return '';
   return `${first_name[0]}${last_name[0]}`;
 }

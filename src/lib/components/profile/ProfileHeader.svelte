@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getUserInitials } from '$lib/helper';
+  import { formatUserName, getUserInitials } from '$lib/helper';
   import type { UserProfile } from '$lib/types/user';
   export let profile: UserProfile;
 
@@ -16,7 +16,7 @@
   </div>
   <div class="text-white">
     <h1 class="text-3xl font-bold mb-2">
-      {profile.first_name} {profile.last_name}
+      {formatUserName(profile)}
     </h1>
     <p class="text-blue-100 text-lg">{profile.role === 'realtor' ? 'Real Estate Professional' : profile.role}</p>
     <div class="flex items-center space-x-4 mt-2">

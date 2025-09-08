@@ -1,4 +1,5 @@
 import supabase from "$lib/db/client";
+import { formatUserName, getUserInitials } from "$lib/helper";
 
 export async function checkAuth(request:Request) {
   const authorization = request.headers.get('authorization');
@@ -13,8 +14,8 @@ export async function checkAuth(request:Request) {
           ...profile,
           isAdmin: profile?.role === 'admin',
           isApproved: profile?.realtor_approved,
-          name: `${profile.first_name} ${profile.last_name}`,
-          initial: `${profile.first_name[0]}`,
+          name: formatUserName(profile),
+          initial: getUserInitials(profile),
         }
       }
     }

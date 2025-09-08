@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { formatUserName } from "$lib/helper";
   import { user } from "$lib/stores/auth";
   import { DASHBOARD_STAGINGS_URL, formatAmount, getStatusStyle } from "$lib/types/constant";
   import { getStagingEndDate, type Staging } from "$lib/types/staging";
@@ -29,7 +30,7 @@
 				</div>
 				<div class="ml-3">
 					<p class="text-sm font-medium text-blue-800">
-						{request.user_profiles.first_name} {request.user_profiles.last_name}
+						{formatUserName(request.user_profiles)}
 					</p>
 					{#if request.user_profiles.brokerage}
 						<p class="text-xs text-blue-600">

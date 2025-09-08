@@ -7,6 +7,7 @@
   import { onMount } from 'svelte';
     import ListingQuickInfo from "../components/ListingQuickInfo.svelte";
     import ListingType from "$lib/components/listings/ListingType.svelte";
+  import { formatUserName, getUserInitials } from "$lib/helper";
 
   export let data;
 
@@ -326,12 +327,12 @@
             <div class="flex items-center space-x-4 mb-6">
               <div class="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center">
                 <span class="text-xl font-bold text-white">
-                  {listing.user_profiles.first_name?.charAt(0)}{listing.user_profiles.last_name?.charAt(0)}
+                  {getUserInitials(listing.user_profiles)}
                 </span>
               </div>
               <div>
                 <div class="text-lg font-semibold text-gray-900">
-                  {listing.user_profiles.first_name} {listing.user_profiles.last_name}
+                  {formatUserName(listing.user_profiles)}
                 </div>
                 {#if listing.user_profiles.brokerage}
                   <div class="text-gray-600">{listing.user_profiles.brokerage}</div>
