@@ -10,7 +10,7 @@
     import Link from "../Link.svelte";
   import CardWrapper from "../common/CardWrapper.svelte";
   import { user } from "$lib/stores/auth";
-    import { formatDate } from "$lib/helper";
+    import { formatDate, formatUserName } from "$lib/helper";
 
   function getCleaningTypeLabel(type: string): string {
     return CLEANING_TYPES.find(t => t.value === type)?.label || type;
@@ -32,7 +32,7 @@
 				</div>
 				<div class="ml-3">
 					<p class="text-sm font-medium text-green-800">
-						{request.user_profiles.first_name} {request.user_profiles.last_name}
+						{formatUserName(request.user_profiles)}
 					</p>
 					{#if request.user_profiles.brokerage}
 						<p class="text-xs text-green-600">

@@ -32,6 +32,10 @@ export type Service = {
   created_at?: string;
   updated_at?: string;
   user_profiles?: {
+    reco_number: string,
+    role: string,
+    realtor_approved:boolean,
+    credits: number,
     first_name: string;
     last_name: string;
     email: string;

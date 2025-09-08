@@ -1,5 +1,5 @@
 <script lang="ts">
-import { sendRequest } from '$lib/helper';
+import { formatUserName, sendRequest } from '$lib/helper';
 
   export let users: any[];
 
@@ -106,7 +106,7 @@ import { sendRequest } from '$lib/helper';
           {#each users as user (user.user_id)}
             <tr class="hover:bg-gray-50">
               <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
-                {user.first_name} {user.last_name}
+                {formatUserName(user)}
               </td>
               <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
                 {user.email}
