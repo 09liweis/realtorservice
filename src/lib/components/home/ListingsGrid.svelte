@@ -6,6 +6,7 @@
     import ListingQuickInfo from "../../../routes/listings/components/ListingQuickInfo.svelte";
     import Link from "../Link.svelte";
     import ListingImage from "../listings/ListingImage.svelte";
+  import { formatUserName } from "$lib/helper";
 
   export let listings: Listing[];
   export let showTitle: boolean = true;
@@ -106,7 +107,7 @@
                   </div>
                   <div class="ml-2">
                     <div class="text-sm font-semibold text-gray-800 group-hover:text-primary transition-colors duration-300">
-                      {listing.user_profiles.first_name} {listing.user_profiles.last_name}
+                      {formatUserName(listing.user_profiles)}
                     </div>
                     <div class="text-xs text-gray-500 mt-1">
                       {listing.user_profiles.brokerage}

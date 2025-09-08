@@ -6,6 +6,7 @@
   import { elasticOut } from 'svelte/easing';
   import { user } from "$lib/stores/auth";
     import ListingImage from "./ListingImage.svelte";
+  import { formatUserName, getUserInitials } from "$lib/helper";
 
   export let listing: Listing;
   export let editListing: (listing: Listing) => void;
@@ -155,12 +156,12 @@
           <div class="flex items-center space-x-3">
             <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center transition-transform duration-300 hover:scale-110 shadow-sm">
               <span class="text-sm font-bold text-white">
-                {listing.user_profiles.first_name?.charAt(0)}{listing.user_profiles.last_name?.charAt(0)}
+                {getUserInitials(listing.user_profiles)}
               </span>
             </div>
             <div>
               <div class="text-sm font-semibold text-gray-900">
-                {listing.user_profiles.first_name} {listing.user_profiles.last_name}
+                {formatUserName(listing.user_profiles)}
               </div>
               {#if listing.user_profiles.brokerage}
                 <div class="text-xs text-gray-600 font-medium">{listing.user_profiles.brokerage}</div>

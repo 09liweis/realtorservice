@@ -1,13 +1,7 @@
 <script lang="ts">
+  import { getUserInitials } from '$lib/helper';
   import type { UserProfile } from '$lib/types/user';
-
   export let profile: UserProfile;
-
-  function getInitials(firstName: string, lastName: string): string {
-    const first = firstName?.charAt(0)?.toUpperCase() || '';
-    const last = lastName?.charAt(0)?.toUpperCase() || '';
-    return first + last || '?';
-  }
 
   function getApprovalStatusStyle(approved: boolean): string {
     return approved 
@@ -18,7 +12,7 @@
 
 <div class="bg-primary rounded-2xl p-8 flex items-center space-x-6">
   <div class="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center text-2xl font-bold">
-    {getInitials(profile.first_name, profile.last_name)}
+    {getUserInitials(profile)}
   </div>
   <div class="text-white">
     <h1 class="text-3xl font-bold mb-2">
