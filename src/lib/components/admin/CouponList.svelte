@@ -86,7 +86,7 @@
             animate:flip={{ duration: 300 }}
           >
             <!-- Coupon Header -->
-            <div class="bg-gradient-to-r from-blue-500 to-purple-600 px-4 py-3 text-white">
+            <div class="bg-primary px-4 py-3 text-white">
               <div class="flex items-center justify-between">
                 <div class="font-mono text-lg font-bold">
                   {coupon.name}
