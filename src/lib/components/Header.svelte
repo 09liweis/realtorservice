@@ -102,7 +102,7 @@
           <div class="relative">
             <button
               onclick={() => (userMenuOpen = !userMenuOpen)}
-              class="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-50 transition-colors duration-200"
+              class="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-50 transition-colors duration-200 cursor-pointer"
             >
               <div
                 class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-medium text-sm uppercase"
@@ -149,7 +149,7 @@
                 <div class="border-t border-gray-100 mt-2 pt-2">
                   <button
                     onclick={handleSignOut}
-                    class="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                    class="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 cursor-pointer"
                   >
                     <svg
                     class="w-4 h-4 mr-3"
