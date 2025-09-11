@@ -157,24 +157,5 @@
 				</div>
 			{/each}
 		</div>
-		
-		<!-- Call to Action -->
-		<div class="mt-16 text-center">
-			<div class="bg-gradient-to-r from-primary to-blue-600 rounded-2xl p-8 text-white">
-				<h3 class="text-3xl font-bold mb-4">Ready to Transform Your Real Estate Business?</h3>
-				<p class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-					Join thousands of successful realtors who trust our platform for their professional services.
-				</p>
-				<a
-					href="/register"
-					class="inline-flex items-center justify-center px-8 py-4 border border-transparent text-lg font-semibold rounded-xl text-primary bg-white hover:bg-gray-50 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-				>
-					Start Your Free Trial
-					<svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
-					</svg>
-				</a>
-			</div>
-		</div>
 	</div>
 </section>
