@@ -5,7 +5,7 @@
   import { derived } from "svelte/store";
   import Link from "$lib/components/Link.svelte";
   import Logo from "./Logo.svelte";
-  import { DASHBOARD_LISTINGS_URL, DASHBOARD_OFFERS_URL, MENU_ITEMS } from "$lib/types/constant";
+  import { DASHBOARD_LISTINGS_URL, DASHBOARD_OFFERS_URL, LOGIN_URL, MENU_ITEMS } from "$lib/types/constant";
 
   let mobileMenuOpen = $state(false);
   let userMenuOpen = $state(false);
@@ -174,7 +174,7 @@
         <!-- Login/Register Buttons -->
         <div class="flex items-center space-x-3">
           <Link
-            href="/login"
+            href={LOGIN_URL}
             className="text-gray-600 hover:text-primary px-3 py-2 text-sm font-medium transition-colors duration-200"
           >
             Login
@@ -275,7 +275,7 @@
         {:else}
           <div class="border-t border-gray-200 mt-4 pt-4 space-y-2">
             <Link
-              href="/login"
+              href={LOGIN_URL}
               onclick={() => (mobileMenuOpen = false)}
               className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50 transition-colors duration-200"
             >
