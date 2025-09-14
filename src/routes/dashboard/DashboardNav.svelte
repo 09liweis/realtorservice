@@ -8,7 +8,7 @@
   import { createEventDispatcher } from "svelte";
   import { scale } from 'svelte/transition';
   import { spring } from 'svelte/motion';
-    import { DASHBOARD_CLEANINGS_URL, DASHBOARD_LISTINGS_URL, DASHBOARD_OFFERS_URL, DASHBOARD_OPENHOUSES_URL, DASHBOARD_PROFILE_URL, DASHBOARD_SOCIAL_MEDIA_SERVICES_URL, DASHBOARD_STAGINGS_URL, DASHBOARD_VIDEO_SERVICES_URL } from "$lib/types/constant";
+    import { DASHBOARD_ADMIN_URL, DASHBOARD_CLEANINGS_URL, DASHBOARD_LISTINGS_URL, DASHBOARD_OFFERS_URL, DASHBOARD_OPENHOUSES_URL, DASHBOARD_PROFILE_URL, DASHBOARD_SOCIAL_MEDIA_SERVICES_URL, DASHBOARD_STAGINGS_URL, DASHBOARD_VIDEO_SERVICES_URL } from "$lib/types/constant";
 
   // Create event dispatcher for close events
   const dispatch = createEventDispatcher();
@@ -53,7 +53,7 @@
   // Admin navigation item
   const adminNavItem = {
     name: "Admin Panel",
-    href: "/dashboard/admin",
+    href: DASHBOARD_ADMIN_URL,
     icon: "⚙️",
     description: "System Administration",
   };

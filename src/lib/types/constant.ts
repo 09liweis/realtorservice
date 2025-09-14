@@ -106,6 +106,7 @@ export const MENU_ITEMS:MenuItem[] = [
   },
 ];
 
+export const DASHBOARD_ADMIN_URL = '/dashboard/admin';
 export const DASHBOARD_STAGINGS_URL = '/dashboard/stagings';
 export const DASHBOARD_CLEANINGS_URL = '/dashboard/cleanings';
 export const DASHBOARD_SOCIAL_MEDIA_SERVICES_URL = '/dashboard/social_media_services';

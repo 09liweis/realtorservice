@@ -1,5 +1,6 @@
 import { HOST,RESEND_API_KEY,EMAIL_FROM } from '$env/static/private';
 import { Resend } from 'resend';
+import { DASHBOARD_ADMIN_URL } from './types/constant';
 
 // Initialize Resend client with API key from environment variables
 const resend = new Resend(RESEND_API_KEY);
@@ -751,10 +752,10 @@ export async function sendAdminNewUserNotification(
     </div>
 
     <div style="text-align: center; margin: 40px 0;">
-      <a href="${HOST}/dashboard/admin" class="button" style="margin-right: 15px;">
+      <a href="${HOST}${DASHBOARD_ADMIN_URL}" class="button" style="margin-right: 15px;">
         Review in Admin Panel
       </a>
-      <a href="${HOST}/dashboard/admin" class="button" style="background: linear-gradient(135deg, #64748b 0%, #475569 100%);">
+      <a href="${HOST}${DASHBOARD_ADMIN_URL}" class="button" style="background: linear-gradient(135deg, #64748b 0%, #475569 100%);">
         View All Users
       </a>
     </div>
