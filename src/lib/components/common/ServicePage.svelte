@@ -9,15 +9,17 @@
 
 <h1 class="text-3xl font-bold text-gray-900 mb-6">{pageTitle}</h1>
 
-<div class="prose max-w-none mb-10">
+<div class="prose max-w-none mb-10 space-y-6">
   {#if serviceImage}
-  <img src={serviceImage} alt={pageTitle} class="mb-6" />
+  <img src={serviceImage} alt={pageTitle} />
   {/if}
-  <p>
+  <p class="">
     {pageContent}
   </p>
 
-  <p class="mt-6 font-medium">
+  <slot />
+
+  <p class="font-medium">
     {callText} Just call us at <a
       href="tel:{PHONE_NUMBER}"
       class="text-primary hover:underline">{PHONE_NUMBER}</a
