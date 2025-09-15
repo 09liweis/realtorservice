@@ -5,6 +5,7 @@
   export let pageContent;
   export let callText;
   export let serviceImage = '';
+  export let gallery: string[]= [];
 </script>
 
 <h1 class="text-3xl font-bold text-gray-900 mb-6">{pageTitle}</h1>
@@ -13,6 +14,15 @@
   {#if serviceImage}
   <img src={serviceImage} alt={pageTitle} />
   {/if}
+  
+  {#if gallery.length > 0}
+  <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    {#each gallery as image}
+    <img src={image} alt={pageTitle} />
+    {/each}
+  </div>
+  {/if}
+
   <p class="">
     {pageContent}
   </p>
