@@ -1,7 +1,7 @@
 <script>
   // Page metadata
   import { page } from "$app/stores";
-  import ServicePage from "../../../../lib/components/common/ServicePage.svelte";
+  import ServicePage from "$lib/components/common/ServicePage.svelte";
 </script>
 
 <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

@@ -1,7 +1,7 @@
 <script>
   // Page metadata
   import { page } from "$app/stores";
-  import ServicePage from "../../../../lib/components/common/ServicePage.svelte";
+  import ServicePage from "$lib/components/common/ServicePage.svelte";
 
   // Styles for the content
   const contentStyle = "text-gray-800 leading-relaxed";
