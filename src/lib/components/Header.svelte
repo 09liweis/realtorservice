@@ -43,7 +43,7 @@
       <Logo cssClass="h-18" />
 
       <!-- Desktop Navigation -->
-      <div class="hidden md:flex items-center space-x-8">
+      <div class="hidden md:flex items-center gap-4">
         {#each publicNavigation as item, itemIndex}
           <div class="relative group">
             <Link
