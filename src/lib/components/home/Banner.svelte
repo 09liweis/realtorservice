@@ -47,10 +47,5 @@
 				</div>
 			{/if}
 		</div>
-	</div>
-	
-	<!-- Floating Elements -->
-	<div class="absolute top-20 left-10 w-20 h-20 bg-white bg-opacity-10 rounded-full animate-pulse"></div>
-	<div class="absolute bottom-20 right-10 w-16 h-16 bg-yellow-300 bg-opacity-20 rounded-full animate-bounce"></div>
-	<div class="absolute top-1/2 right-20 w-12 h-12 bg-blue-300 bg-opacity-20 rounded-full animate-ping"></div>
+	</div>	
 </section>
