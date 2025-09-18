@@ -1,4 +1,6 @@
 <script>
+  import Link from "$lib/components/Link.svelte";
+
   export let title;
   export let data;
 </script>
@@ -11,9 +13,9 @@
     <ul class="space-y-4">
       {#each data.rssFeed as item}
         <li class="border-b border-gray-200 pb-4">
-          <a href={item.link} target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline font-medium">
+          <Link href={item.link} target="_blank" rel="noopener noreferrer">
             {item.title}
-          </a>
+          </Link>
           <p class="text-gray-600 mt-2">{item.description}</p>
           <small class="text-gray-400 block mt-1">Published: {item.pubDate}</small>
         </li>

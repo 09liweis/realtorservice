@@ -12,12 +12,16 @@
   export let hoverClass = "hover:scale-105";
   export let onclick = () => {};
   export let linkType = '';
+  export let target = "_self";
+  export let rel = "";
 
   // Automatically add noopener noreferrer for external links
 </script>
 
 <a 
+  {rel}
   {href}
+  {target}
   onclick={onclick} 
   class="flex items-center transition-transform duration-300 {linkType === 'btn' ? 'p-4 rounded-md bg-primary text-white' : 'font-medium text-primary'} {className} {hoverClass} "
 >
