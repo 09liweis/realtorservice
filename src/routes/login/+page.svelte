@@ -48,9 +48,8 @@
         goto(redirectUrl || '/dashboard');
       }
     } catch (err) {
-      console.error('Login error:', err);
+      // console.error('Login error:', err);
       error = 'Login failed, please check your credentials';
-    } finally {
       loading = false;
     }
   }
