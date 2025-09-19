@@ -12,7 +12,7 @@
   export let hoverClass = "hover:scale-105";
   export let onclick = () => {};
   export let linkType = '';
-  export let target = "_self";
+  export let target = "";
   export let rel = "";
 
   // Automatically add noopener noreferrer for external links
