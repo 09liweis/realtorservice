@@ -169,7 +169,7 @@
               {#each presets as preset}
                 <button
                   on:click={() => applyPreset(preset)}
-                  class="text-left p-3 border border-gray-200 rounded-lg hover:bg-blue-50 hover:border-blue-300 transition-all duration-200 text-sm"
+                  class="text-left p-3 border border-gray-200 rounded-lg hover:bg-blue-50 hover:border-blue-300 transition-all duration-200 text-sm cursor-pointer"
                 >
                   <div class="font-medium text-gray-900">{preset.name}</div>
                   <div class="text-gray-600">{formatCurrency(preset.homePrice)} • {formatPercent((preset.downPayment/preset.homePrice)*100)} down</div>
