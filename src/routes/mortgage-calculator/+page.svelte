@@ -185,8 +185,8 @@
               label="Home Price"
               type="number"
               bind:value={homePrice}
-              min="1"
-              step="1000"
+              min={1}
+              step={1000}
               placeholder="500000"
             />
 
@@ -196,8 +196,8 @@
               label="Down Payment"
               type="number"
               bind:value={downPayment}
-              min="0"
-              step="1000"
+              min={0}
+              step={1000}
               placeholder="100000"
             />
 
@@ -207,8 +207,8 @@
               label="Interest Rate (%)"
               type="number"
               bind:value={interestRate}
-              min="0.1"
-              step="0.1"
+              min={0.1}
+              step={0.1}
               placeholder="5.5"
             />
 
@@ -218,9 +218,9 @@
               label="Loan Term (years)"
               type="number"
               bind:value={loanTerm}
-              min="1"
-              max="35"
-              step="1"
+              min={1}
+              max={35}
+              step={1}
               placeholder="25"
             />
 
@@ -234,8 +234,8 @@
                   label="Annual Property Tax"
                   type="number"
                   bind:value={propertyTax}
-                  min="0"
-                  step="100"
+                  min={0}
+                  step={100}
                   placeholder="3000"
                 />
 
@@ -245,8 +245,8 @@
                   label="Annual Home Insurance"
                   type="number"
                   bind:value={homeInsurance}
-                  min="0"
-                  step="100"
+                  min={0}
+                  step={100}
                   placeholder="1200"
                 />
 
@@ -257,8 +257,8 @@
                     label="PMI Rate (% annually)"
                     type="number"
                     bind:value={pmiRate}
-                    min="0"
-                    step="0.1"
+                    min={0}
+                    step={0.1}
                     placeholder="0.5"
                   />
                 {/if}
