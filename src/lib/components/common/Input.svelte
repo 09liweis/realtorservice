@@ -11,6 +11,7 @@
   export let label = '';
   export let value:any;
   export let min = 0;
+  export let max = 99999999999999;
   export let step = 1;
   export let placeholder = '';
   export let required = false;
@@ -82,6 +83,7 @@
     {name}
     {type}
     {min}
+    {max}
     {step}
     {placeholder}
     {required}
