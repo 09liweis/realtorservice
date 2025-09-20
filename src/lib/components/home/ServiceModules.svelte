@@ -39,9 +39,6 @@
 			image: 'https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=800',
 			price: 'Starting at $2,500',
 			features: ['Furniture & decor selection', 'Room layout optimization', 'Complete setup & removal'],
-			color: 'from-purple-500 to-pink-500',
-			bgColor: 'from-purple-50 to-pink-50',
-			icon: '✨',
       link: $user ? DASHBOARD_STAGINGS_URL : '/realtor-services/listing/staging'
 		},
 		{
@@ -50,9 +47,6 @@
 			image: 'https://images.pexels.com/photos/4239091/pexels-photo-4239091.jpeg?auto=compress&cs=tinysrgb&w=800',
 			price: 'Starting at $150',
 			features: ['Deep cleaning service', 'Pre-listing preparation', 'Move-in/out cleaning'],
-			color: 'from-green-500 to-emerald-500',
-			bgColor: 'from-green-50 to-emerald-50',
-			icon: '🧽',
       link: $user ? DASHBOARD_CLEANINGS_URL : '/realtor-services/listing/cleaning'
 		},
 		{
@@ -61,9 +55,6 @@
 			image: 'https://images.pexels.com/photos/5698855/pexels-photo-5698855.jpeg?auto=compress&cs=tinysrgb&w=800',
 			price: 'Starting at $300',
 			features: ['Video editing & enhancement', 'Property walkthrough videos', 'Social media video content'],
-			color: 'from-teal-500 to-cyan-500',
-			bgColor: 'from-teal-50 to-cyan-50',
-			icon: '🎬',
       link: $user ? '/dashboard/videos' : '/realtor-services/social-media/video'
 		},
 		{
@@ -72,9 +63,6 @@
 			image: 'https://images.pexels.com/photos/267350/pexels-photo-267350.jpeg?auto=compress&cs=tinysrgb&w=800',
 			price: 'Starting at $480/month',
 			features: ['Content creation & scheduling', 'Professional branding', 'Analytics & reporting'],
-			color: 'from-blue-500 to-indigo-500',
-			bgColor: 'from-blue-50 to-indigo-50',
-			icon: '📱',
       link: $user ? DASHBOARD_SOCIAL_MEDIA_SERVICES_URL : '/realtor-services/social-media/management'
 		}
 	];
@@ -94,7 +82,7 @@
 		<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
 			{#each serviceData as service, index}
 				<div 
-					class="group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2"
+					class="group relative bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all duration-300"
 					data-index={index}
 					use:createIntersectionObserver
 				>
@@ -106,13 +94,7 @@
 									src={service.image} 
 									alt={service.title}
 									class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-								/>
-								<div class="absolute inset-0 bg-gradient-to-t {service.color} opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
-								
-								<!-- Service Icon -->
-								<div class="absolute top-4 left-4 w-12 h-12 bg-white bg-opacity-90 rounded-xl flex items-center justify-center">
-									<span class="text-2xl">{service.icon}</span>
-								</div>
+								/>								
 								
 								<!-- Price Badge -->
 								<div class="absolute top-4 right-4 bg-white bg-opacity-95 px-4 py-2 rounded-full">
