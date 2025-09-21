@@ -36,7 +36,7 @@
 		{
 			title: 'Professional Staging',
 			description: 'Transform your property with expert staging services that highlight its best features and create emotional connections with buyers.',
-			image: 'https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=800',
+			image: 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80',
 			price: 'Starting at $2,500',
 			features: ['Furniture & decor selection', 'Room layout optimization', 'Complete setup & removal'],
       link: $user ? DASHBOARD_STAGINGS_URL : '/realtor-services/listing/staging'
@@ -44,7 +44,7 @@
 		{
 			title: 'Professional Cleaning',
 			description: 'Comprehensive cleaning services to ensure your property looks spotless for showings and photography.',
-			image: 'https://images.pexels.com/photos/4239091/pexels-photo-4239091.jpeg?auto=compress&cs=tinysrgb&w=800',
+			image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80',
 			price: 'Starting at $150',
 			features: ['Deep cleaning service', 'Pre-listing preparation', 'Move-in/out cleaning'],
       link: $user ? DASHBOARD_CLEANINGS_URL : '/realtor-services/listing/cleaning'
@@ -52,7 +52,7 @@
 		{
 			title: 'Video Editing Services',
 			description: 'Professional video editing services to enhance your property marketing with high-quality visuals.',
-			image: 'https://images.pexels.com/photos/5698855/pexels-photo-5698855.jpeg?auto=compress&cs=tinysrgb&w=800',
+			image: 'https://images.unsplash.com/photo-1626785774573-4b799315345d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80',
 			price: 'Starting at $300',
 			features: ['Video editing & enhancement', 'Property walkthrough videos', 'Social media video content'],
       link: $user ? '/dashboard/videos' : '/realtor-services/social-media/video'
