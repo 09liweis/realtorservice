@@ -44,13 +44,13 @@
           <div class="space-x-2">
             <button
               on:click={() => handleEdit(offerProperty)}
-              class="px-3 py-1 text-sm font-medium text-blue-600 hover:text-blue-800"
+              class="px-3 py-1 text-sm font-medium text-blue-600 hover:text-blue-800 cursor-pointer"
             >
               Edit
             </button>
             <button
               on:click={() => handleDelete(offerProperty.id)}
-              class="px-3 py-1 text-sm font-medium text-red-600 hover:text-red-800"
+              class="px-3 py-1 text-sm font-medium text-red-600 hover:text-red-800 cursor-pointer"
             >
               Delete
             </button>
