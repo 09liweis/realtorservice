@@ -164,7 +164,7 @@
           
           <!-- Preset Scenarios -->
           <div class="mb-6">
-            <label class="block text-sm font-medium text-gray-700 mb-3">Quick Scenarios</label>
+            <label for="payments" class="block text-sm font-medium text-gray-700 mb-3">Quick Scenarios</label>
             <div class="grid grid-cols-1 gap-2">
               {#each presets as preset}
                 <button
