@@ -68,7 +68,7 @@
       class="col-span-full text-center py-12 bg-white rounded-lg"
       in:fade={{ duration: 300, delay: 150 }}
     >
-      <p class="text-gray-500">No offers found</p>
+      <p class="text-gray-500">No Properties found</p>
     </div>
   {/each}
 </div>
