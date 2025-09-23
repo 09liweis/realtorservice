@@ -9,7 +9,7 @@
    */
   export let href;
   export let className = "";
-  export let hoverClass = "hover:scale-105";
+  export let hoverClass = "hover:underline";
   export let onclick = () => {};
   export let linkType = '';
   export let target = "";
