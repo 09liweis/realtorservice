@@ -6,6 +6,7 @@
   import { fade, fly } from 'svelte/transition';
 
   // Calculator inputs
+  let calculatorMode = 'monthly-payment'; // 'monthly-payment' or 'home-price'
   let homePrice = 500000;
   let downPayment = 100000;
   let interestRate = 5.5;
@@ -13,6 +14,12 @@
   let propertyTax = 3000;
   let homeInsurance = 1200;
   let pmiRate = 0.5;
+  
+  // Reverse calculator inputs
+  let targetMonthlyPayment = 2500;
+  let reverseDownPayment = 100000;
+  let reverseInterestRate = 5.5;
+  let reverseLoanTerm = 25;
 
   // Calculated values
   let monthlyPayment = 0;
@@ -22,13 +29,22 @@
   let downPaymentPercent = 0;
   let monthlyTaxInsurance = 0;
   let totalMonthlyPayment = 0;
+  
+  // Reverse calculated values
+  let affordableHomePrice = 0;
+  let reverseLoanAmount = 0;
+  let reverseDownPaymentPercent = 0;
 
   // Chart data for amortization
   let chartData: Array<{year: number, principal: number, interest: number, balance: number}> = [];
 
   // Reactive calculations
   $: {
-    calculateMortgage();
+    if (calculatorMode === 'home-price') {
+      calculateAffordableHomePrice();
+    } else {
+      calculateMortgage();
+    }
   }
 
   function calculateMortgage() {
@@ -68,6 +84,39 @@
     
     // Generate amortization data for chart (yearly summary)
     generateAmortizationData();
+  }
+
+  function calculateAffordableHomePrice() {
+    // Basic validations
+    if (targetMonthlyPayment <= 0 || reverseDownPayment < 0 || reverseInterestRate <= 0 || reverseLoanTerm <= 0) {
+      return;
+    }
+
+    // Monthly interest rate
+    const monthlyRate = reverseInterestRate / 100 / 12;
+    const numberOfPayments = reverseLoanTerm * 12;
+    
+    // Calculate loan amount from monthly payment using reverse mortgage formula
+    let maxLoanAmount = 0;
+    if (monthlyRate > 0) {
+      maxLoanAmount = targetMonthlyPayment * (Math.pow(1 + monthlyRate, numberOfPayments) - 1) / 
+                     (monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments));
+    } else {
+      maxLoanAmount = targetMonthlyPayment * numberOfPayments;
+    }
+    
+    reverseLoanAmount = maxLoanAmount;
+    affordableHomePrice = maxLoanAmount + reverseDownPayment;
+    reverseDownPaymentPercent = (reverseDownPayment / affordableHomePrice) * 100;
+    
+    // Update the main calculator values for consistency
+    homePrice = affordableHomePrice;
+    downPayment = reverseDownPayment;
+    interestRate = reverseInterestRate;
+    loanTerm = reverseLoanTerm;
+    
+    // Calculate the actual monthly payment for verification
+    calculateMortgage();
   }
 
   function generateAmortizationData() {
@@ -120,12 +169,28 @@
     { name: 'Luxury Home', homePrice: 1200000, downPayment: 300000, interestRate: 5.2, loanTerm: 30 }
   ];
 
+  // Reverse calculator presets
+  const reversePresets = [
+    { name: 'Budget Buyer', monthlyPayment: 1800, downPayment: 50000, interestRate: 5.8, loanTerm: 25 },
+    { name: 'Average Budget', monthlyPayment: 2500, downPayment: 100000, interestRate: 5.5, loanTerm: 25 },
+    { name: 'Higher Budget', monthlyPayment: 4000, downPayment: 200000, interestRate: 5.2, loanTerm: 30 }
+  ];
+
   function applyPreset(preset: typeof presets[0]) {
     homePrice = preset.homePrice;
     downPayment = preset.downPayment;
     interestRate = preset.interestRate;
     loanTerm = preset.loanTerm;
     calculateMortgage();
+  }
+
+  function applyReversePreset(preset: typeof reversePresets[0]) {
+    targetMonthlyPayment = preset.monthlyPayment;
+    reverseDownPayment = preset.downPayment;
+    reverseInterestRate = preset.interestRate;
+    reverseLoanTerm = preset.loanTerm;
+    calculatorMode = 'home-price';
+    calculateAffordableHomePrice();
   }
 
   onMount(() => {
@@ -146,7 +211,7 @@
         Mortgage Calculator
       </h1>
       <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-        Calculate your monthly mortgage payments and explore different scenarios to find the perfect home financing solution.
+        Calculate your monthly mortgage payments or discover what home price you can afford with our comprehensive mortgage tools.
       </p>
     </div>
   </div>
@@ -160,76 +225,165 @@
       <!-- Calculator Inputs -->
       <div class="lg:col-span-1" in:fly={{ x: -50, duration: 600, delay: 400 }}>
         <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 sticky top-8">
-          <h2 class="text-2xl font-bold text-gray-900 mb-6">Loan Details</h2>
-          
-          <!-- Preset Scenarios -->
+          <!-- Calculator Mode Toggle -->
           <div class="mb-6">
-            <label for="payments" class="block text-sm font-medium text-gray-700 mb-3">Quick Scenarios</label>
-            <div class="grid grid-cols-1 gap-2">
-              {#each presets as preset}
-                <button
-                  on:click={() => applyPreset(preset)}
-                  class="text-left p-3 border border-gray-200 rounded-lg hover:bg-blue-50 hover:border-blue-300 transition-all duration-200 text-sm cursor-pointer"
-                >
-                  <div class="font-medium text-gray-900">{preset.name}</div>
-                  <div class="text-gray-600">{formatCurrency(preset.homePrice)} • {formatPercent((preset.downPayment/preset.homePrice)*100)} down</div>
-                </button>
-              {/each}
+            <label class="block text-sm font-medium text-gray-700 mb-3">Calculator Mode</label>
+            <div class="grid grid-cols-2 gap-2">
+              <button
+                on:click={() => calculatorMode = 'monthly-payment'}
+                class="p-3 text-sm font-medium rounded-lg transition-all duration-200 {calculatorMode === 'monthly-payment' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}"
+              >
+                Monthly Payment
+              </button>
+              <button
+                on:click={() => calculatorMode = 'home-price'}
+                class="p-3 text-sm font-medium rounded-lg transition-all duration-200 {calculatorMode === 'home-price' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}"
+              >
+                Home Price
+              </button>
             </div>
           </div>
 
-          <div class="space-y-6">
-            <Input
-              on:input={calculateMortgage}
-              id="homePrice"
-              label="Home Price"
-              type="number"
-              bind:value={homePrice}
-              min={1}
-              step={1000}
-              placeholder="500000"
-            />
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">
+            {calculatorMode === 'monthly-payment' ? 'Calculate Monthly Payment' : 'Calculate Affordable Home Price'}
+          </h2>
+          
+          {#if calculatorMode === 'monthly-payment'}
+            <!-- Original Calculator - Preset Scenarios -->
+            <div class="mb-6">
+              <label class="block text-sm font-medium text-gray-700 mb-3">Quick Scenarios</label>
+              <div class="grid grid-cols-1 gap-2">
+                {#each presets as preset}
+                  <button
+                    on:click={() => applyPreset(preset)}
+                    class="text-left p-3 border border-gray-200 rounded-lg hover:bg-blue-50 hover:border-blue-300 transition-all duration-200 text-sm cursor-pointer"
+                  >
+                    <div class="font-medium text-gray-900">{preset.name}</div>
+                    <div class="text-gray-600">{formatCurrency(preset.homePrice)} • {formatPercent((preset.downPayment/preset.homePrice)*100)} down</div>
+                  </button>
+                {/each}
+              </div>
+            </div>
 
-            <Input
-              on:input={calculateMortgage}
-              id="downPayment"
-              label="Down Payment"
-              type="number"
-              bind:value={downPayment}
-              min={0}
-              step={1000}
-              placeholder="100000"
-            />
+            <div class="space-y-6">
+              <Input
+                on:input={calculateMortgage}
+                id="homePrice"
+                label="Home Price"
+                type="number"
+                bind:value={homePrice}
+                min={1}
+                step={1000}
+                placeholder="500000"
+              />
 
-            <Input
-              on:input={calculateMortgage}
-              id="interestRate"
-              label="Interest Rate (%)"
-              type="number"
-              bind:value={interestRate}
-              min={0.1}
-              step={0.1}
-              placeholder="5.5"
-            />
+              <Input
+                on:input={calculateMortgage}
+                id="downPayment"
+                label="Down Payment"
+                type="number"
+                bind:value={downPayment}
+                min={0}
+                step={1000}
+                placeholder="100000"
+              />
 
-            <Input
-              on:input={calculateMortgage}
-              id="loanTerm"
-              label="Loan Term (years)"
-              type="number"
-              bind:value={loanTerm}
-              min={1}
-              max={35}
-              step={1}
-              placeholder="25"
-            />
+              <Input
+                on:input={calculateMortgage}
+                id="interestRate"
+                label="Interest Rate (%)"
+                type="number"
+                bind:value={interestRate}
+                min={0.1}
+                step={0.1}
+                placeholder="5.5"
+              />
 
+              <Input
+                on:input={calculateMortgage}
+                id="loanTerm"
+                label="Loan Term (years)"
+                type="number"
+                bind:value={loanTerm}
+                min={1}
+                max={35}
+                step={1}
+                placeholder="25"
+              />
+            </div>
+          {:else}
+            <!-- Reverse Calculator - Preset Scenarios -->
+            <div class="mb-6">
+              <label class="block text-sm font-medium text-gray-700 mb-3">Budget Scenarios</label>
+              <div class="grid grid-cols-1 gap-2">
+                {#each reversePresets as preset}
+                  <button
+                    on:click={() => applyReversePreset(preset)}
+                    class="text-left p-3 border border-gray-200 rounded-lg hover:bg-blue-50 hover:border-blue-300 transition-all duration-200 text-sm cursor-pointer"
+                  >
+                    <div class="font-medium text-gray-900">{preset.name}</div>
+                    <div class="text-gray-600">{formatCurrency(preset.monthlyPayment)}/mo • {formatCurrency(preset.downPayment)} down</div>
+                  </button>
+                {/each}
+              </div>
+            </div>
+
+            <div class="space-y-6">
+              <Input
+                on:input={calculateAffordableHomePrice}
+                id="targetMonthlyPayment"
+                label="Target Monthly Payment"
+                type="number"
+                bind:value={targetMonthlyPayment}
+                min={1}
+                step={50}
+                placeholder="2500"
+              />
+
+              <Input
+                on:input={calculateAffordableHomePrice}
+                id="reverseDownPayment"
+                label="Available Down Payment"
+                type="number"
+                bind:value={reverseDownPayment}
+                min={0}
+                step={1000}
+                placeholder="100000"
+              />
+
+              <Input
+                on:input={calculateAffordableHomePrice}
+                id="reverseInterestRate"
+                label="Interest Rate (%)"
+                type="number"
+                bind:value={reverseInterestRate}
+                min={0.1}
+                step={0.1}
+                placeholder="5.5"
+              />
+
+              <Input
+                on:input={calculateAffordableHomePrice}
+                id="reverseLoanTerm"
+                label="Loan Term (years)"
+                type="number"
+                bind:value={reverseLoanTerm}
+                min={1}
+                max={35}
+                step={1}
+                placeholder="25"
+              />
+            </div>
+          {/if}
+
+          <!-- Additional Costs (shown for both modes) -->
+          <div class="mb-6">
             <div class="border-t border-gray-200 pt-6">
               <h3 class="text-lg font-semibold text-gray-900 mb-4">Additional Costs</h3>
               
               <div class="space-y-4">
                 <Input
-                  on:input={calculateMortgage}
+                  on:input={() => calculatorMode === 'monthly-payment' ? calculateMortgage() : calculateAffordableHomePrice()}
                   id="propertyTax"
                   label="Annual Property Tax"
                   type="number"
@@ -240,7 +394,7 @@
                 />
 
                 <Input
-                  on:input={calculateMortgage}
+                  on:input={() => calculatorMode === 'monthly-payment' ? calculateMortgage() : calculateAffordableHomePrice()}
                   id="homeInsurance"
                   label="Annual Home Insurance"
                   type="number"
@@ -250,9 +404,9 @@
                   placeholder="1200"
                 />
 
-                {#if downPaymentPercent < 20}
+                {#if (calculatorMode === 'monthly-payment' ? downPaymentPercent : reverseDownPaymentPercent) < 20}
                   <Input
-                    on:input={calculateMortgage}
+                    on:input={() => calculatorMode === 'monthly-payment' ? calculateMortgage() : calculateAffordableHomePrice()}
                     id="pmiRate"
                     label="PMI Rate (% annually)"
                     type="number"
@@ -265,6 +419,7 @@
               </div>
             </div>
           </div>
+
         </div>
       </div>
 
@@ -274,17 +429,25 @@
           
           <!-- Payment Summary -->
           <div class="bg-primary rounded-2xl p-8 text-white">
-            <h2 class="text-2xl font-bold mb-6">Monthly Payment Breakdown</h2>
+            <h2 class="text-2xl font-bold mb-6">
+              {calculatorMode === 'monthly-payment' ? 'Payment Summary' : 'Affordability Summary'}
+            </h2>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div class="rounded-xl p-6">
-                <div class="text-3xl font-bold mb-2">{formatCurrency(monthlyPayment)}</div>
-                <div class="text-blue-100">Principal & Interest</div>
+                <div class="text-3xl font-bold mb-2">
+                  {calculatorMode === 'monthly-payment' ? formatCurrency(homePrice) : formatCurrency(affordableHomePrice)}
+                </div>
+                <div class="text-blue-100">
+                  {calculatorMode === 'monthly-payment' ? 'Home Price' : 'Max Home Price'}
+                </div>
               </div>
               
               <div class="rounded-xl p-6">
                 <div class="text-3xl font-bold mb-2">{formatCurrency(totalMonthlyPayment)}</div>
-                <div class="text-blue-100">Total Monthly Payment</div>
+                <div class="text-blue-100">
+                  {calculatorMode === 'monthly-payment' ? 'Total Monthly' : 'Required Monthly'}
+                </div>
               </div>
             </div>
 
@@ -299,11 +462,15 @@
               </div>
               <div>
                 <div class="text-blue-100">Down Payment</div>
-                <div class="font-semibold">{formatPercent(downPaymentPercent)}</div>
+                <div class="font-semibold">
+                  {formatPercent(calculatorMode === 'monthly-payment' ? downPaymentPercent : reverseDownPaymentPercent)}
+                </div>
               </div>
               <div>
                 <div class="text-blue-100">Loan Amount</div>
-                <div class="font-semibold">{formatCurrency(loanAmount)}</div>
+                <div class="font-semibold">
+                  {formatCurrency(calculatorMode === 'monthly-payment' ? loanAmount : reverseLoanAmount)}
+                </div>
               </div>
             </div>
           </div>
@@ -336,10 +503,55 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                 </svg>
               </div>
-              <div class="text-2xl font-bold text-gray-900 mb-1">{loanTerm}</div>
+              <div class="text-2xl font-bold text-gray-900 mb-1">
+                {calculatorMode === 'monthly-payment' ? loanTerm : reverseLoanTerm}
+              </div>
               <div class="text-sm text-gray-600">Years</div>
             </div>
           </div>
+
+          {#if calculatorMode === 'home-price'}
+            <!-- Affordability Insights -->
+            <div class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-8 border border-green-200">
+              <h3 class="text-xl font-bold text-gray-900 mb-6">💡 Affordability Insights</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white rounded-lg p-4 border border-green-200">
+                  <h4 class="font-medium text-gray-900 mb-2">Budget Breakdown</h4>
+                  <div class="space-y-2 text-sm">
+                    <div class="flex justify-between">
+                      <span class="text-gray-600">Target Payment:</span>
+                      <span class="font-medium">{formatCurrency(targetMonthlyPayment)}</span>
+                    </div>
+                    <div class="flex justify-between">
+                      <span class="text-gray-600">Actual Payment:</span>
+                      <span class="font-medium">{formatCurrency(monthlyPayment)}</span>
+                    </div>
+                    <div class="flex justify-between">
+                      <span class="text-gray-600">Difference:</span>
+                      <span class="font-medium {targetMonthlyPayment - monthlyPayment >= 0 ? 'text-green-600' : 'text-red-600'}">
+                        {formatCurrency(Math.abs(targetMonthlyPayment - monthlyPayment))}
+                        {targetMonthlyPayment - monthlyPayment >= 0 ? 'under budget' : 'over budget'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="bg-white rounded-lg p-4 border border-green-200">
+                  <h4 class="font-medium text-gray-900 mb-2">Recommendations</h4>
+                  <div class="text-sm text-gray-600 space-y-1">
+                    {#if reverseDownPaymentPercent < 20}
+                      <p>• Consider increasing down payment to avoid PMI</p>
+                    {/if}
+                    {#if targetMonthlyPayment - monthlyPayment > 100}
+                      <p>• You have room to increase your budget</p>
+                    {:else if monthlyPayment - targetMonthlyPayment > 100}
+                      <p>• Consider a lower price range or longer term</p>
+                    {/if}
+                    <p>• Factor in maintenance and utilities</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {/if}
 
           <!-- Amortization Chart -->
           <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
@@ -390,6 +602,16 @@
           <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-2xl p-8 border border-yellow-200">
             <h3 class="text-xl font-bold text-gray-900 mb-4">💡 Mortgage Tips</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+              {#if calculatorMode === 'home-price'}
+                <div>
+                  <h4 class="font-semibold text-gray-900 mb-2">Budget Planning</h4>
+                  <p class="text-gray-700">Remember to factor in closing costs, moving expenses, and emergency funds when determining your home budget.</p>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-gray-900 mb-2">Monthly Budget</h4>
+                  <p class="text-gray-700">Your housing costs should typically not exceed 28-32% of your gross monthly income for optimal financial health.</p>
+                </div>
+              {:else}
               <div>
                 <h4 class="font-semibold text-gray-900 mb-2">Down Payment</h4>
                 <p class="text-gray-700">A larger down payment reduces your monthly payments and may eliminate PMI requirements (typically 20% or more).</p>
@@ -398,6 +620,7 @@
                 <h4 class="font-semibold text-gray-900 mb-2">Interest Rates</h4>
                 <p class="text-gray-700">Even a small difference in interest rates can significantly impact your total payment over the life of the loan.</p>
               </div>
+              {/if}
               <div>
                 <h4 class="font-semibold text-gray-900 mb-2">Loan Term</h4>
                 <p class="text-gray-700">Shorter terms mean higher monthly payments but less total interest paid over the life of the loan.</p>
@@ -411,22 +634,26 @@
 
           <!-- Call to Action -->
           <div class="bg-primary rounded-2xl p-8 text-white text-center">
-            <h3 class="text-2xl font-bold mb-4">Ready to Get Pre-Approved?</h3>
+            <h3 class="text-2xl font-bold mb-4">
+              {calculatorMode === 'monthly-payment' ? 'Ready to Get Pre-Approved?' : 'Found Your Budget? Start Shopping!'}
+            </h3>
             <p class="text-blue-100 mb-6">
-              Connect with our trusted mortgage professionals to get pre-approved and start your home buying journey.
+              {calculatorMode === 'monthly-payment' 
+                ? 'Connect with our trusted mortgage professionals to get pre-approved and start your home buying journey.'
+                : 'Now that you know your budget, explore our listings to find your perfect home.'}
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
               <a
                 href="/register"
                 class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-blue-600 bg-white hover:bg-gray-50 transition-colors duration-200"
               >
-                Get Started
+                {calculatorMode === 'monthly-payment' ? 'Get Pre-Approved' : 'Get Started'}
               </a>
               <a
                 href="/listings"
                 class="inline-flex items-center justify-center px-6 py-3 border-2 border-white text-base font-medium rounded-lg text-white hover:bg-white hover:text-blue-600 transition-colors duration-200"
               >
-                Browse Listings
+                {calculatorMode === 'monthly-payment' ? 'Browse Listings' : 'Find Your Home'}
               </a>
             </div>
           </div>
