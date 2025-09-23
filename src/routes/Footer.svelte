@@ -31,7 +31,7 @@
         </p>
       </div>
       
-      <div class="flex space-x-6">
+      <!-- <div class="flex space-x-6">
         {#each [
           { icon: 'twitter', href: '#' },
           { icon: 'facebook', href: '#' },
@@ -49,7 +49,8 @@
             </svg>
           </Link>
         {/each}
-      </div>
+      </div> -->
+
     </div>
 
     <!-- Menu Section -->
