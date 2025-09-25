@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import { user } from '$lib/stores/auth';
-  import { getPageTitle } from '$lib/types/constant';
+  import { DASHBOARD_VIDEO_SERVICES_URL, getPageTitle } from '$lib/types/constant';
   import type { VideoService } from '$lib/types/video';
   import { VIDEO_SERVICE_TYPES, VIDEO_SERVICE_ADDONS, calculateVideoServicePrice } from '$lib/types/video';
   import VideoServiceHeader from '$lib/components/video/detail/VideoServiceHeader.svelte';
@@ -80,7 +80,7 @@
   <!-- Back Navigation -->
   <div class="flex items-center space-x-4">
     <Link
-      href={'/dashboard/video'}
+      href={DASHBOARD_VIDEO_SERVICES_URL}
     >
       <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
