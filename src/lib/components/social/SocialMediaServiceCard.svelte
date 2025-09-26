@@ -47,7 +47,7 @@
   <div class="px-4 py-3">
     <div class="flex items-center justify-between">
       <div class="text-lg font-bold">
-        <Link href={`${DASHBOARD_SOCIAL_MEDIA_SERVICES_URL}/{service.id}`}>
+        <Link href={`${DASHBOARD_SOCIAL_MEDIA_SERVICES_URL}/${service.id}`}>
           Social Media Service
         </Link>
       </div>
