@@ -17,7 +17,9 @@
             {item.title}
           </Link>
           <p class="text-gray-600 mt-2">{item.description}</p>
+          {#if item.pubDate}
           <small class="text-gray-400 block mt-1">Published: {item.pubDate}</small>
+          {/if}
         </li>
       {/each}
     </ul>

@@ -14,7 +14,7 @@ export async function fetchAndParseRSS(url: string) {
       title: item.getElementsByTagName('title')[0]?.textContent || 'No title',
       link: item.getElementsByTagName('link')[0]?.textContent || '#',
       description: item.getElementsByTagName('description')[0]?.textContent || 'No description',
-      pubDate: item.getElementsByTagName('pubDate')[0]?.textContent || 'No date'
+      pubDate: item.getElementsByTagName('pubDate')[0]?.textContent || ''
     }));
   } catch (error) {
     throw error;
