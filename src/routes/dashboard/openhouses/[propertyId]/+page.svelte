@@ -6,9 +6,10 @@
     import OpenHouseGuestList from '$lib/components/openhouses/OpenHouseGuestList.svelte';
     import Select from '$lib/components/common/Select.svelte';
   import { user } from '$lib/stores/auth';
-    import { getPageTitle } from '$lib/types/constant';
+    import { DASHBOARD_OPENHOUSES_URL, getPageTitle } from '$lib/types/constant';
     import { onMount } from 'svelte';
     import { sendRequest } from '$lib/helper';
+  import Link from '$lib/components/Link.svelte';
   
   const property_id = $page.params.propertyId;
 
@@ -95,6 +96,9 @@
 </svelte:head>
 
 <div class="space-y-6">
+  <Link href={DASHBOARD_OPENHOUSES_URL}>
+    Back to Openhouses
+  </Link>
 	<div class="flex items-center justify-between">
 		<h1 class="text-2xl font-semibold text-gray-900">Open House Guests Management</h1>
     <Button 
