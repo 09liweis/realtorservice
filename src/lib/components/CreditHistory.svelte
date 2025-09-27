@@ -14,7 +14,7 @@
       <h3 class="text-lg font-semibold text-gray-900">Credit History</h3>
     </div>
   {/if}
-  <div class="p-6 max-h-[600px] overflow-y-auto">
+  <div class="p-3 max-h-[600px] overflow-y-auto">
     {#if loadingCredits}
       <div class="flex justify-center py-4">
         <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
@@ -29,7 +29,7 @@
     {:else}
       <div class="space-y-3">
         {#each creditRecords as record}
-          <div class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+          <div class="p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
             <div class="flex justify-between items-start">
               <div>
                 <p class="text-sm font-medium text-gray-900 capitalize">{record.tp || 'N/A'}</p>
