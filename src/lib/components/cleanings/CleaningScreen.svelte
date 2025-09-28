@@ -99,6 +99,8 @@
   }
 </script>
 
+<title>Cleaning Requests</title>
+
 <div class="space-y-6">
   <div class="flex justify-between items-center">
     <h1 class="text-2xl font-bold text-gray-900">Cleaning Requests</h1>
