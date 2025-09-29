@@ -10,7 +10,6 @@
     import { DASHBOARD_OFFERS_URL } from '$lib/types/constant';
   
   // 接收属性和属性ID作为props
-  export let property;
   export let property_id: string;
 
   const EMPTY_OFFER:Offer = {
@@ -35,11 +34,12 @@
 
   // 状态变量
   let offers:Offer[] = [];
+  let property:any = null;
   let newOffer = EMPTY_OFFER;
   let selectedOffer = null;
   let showDetailsModal = false;
   let showDeleteConfirm = false;
-  let offerToDelete = null;
+  let offerToDelete:Offer|null = null;
   let isLoading = false;
   let errorMessage = '';
 
@@ -48,12 +48,13 @@
     errorMessage = '';
     
     try {
-      const {data:{error,offers:propertyOffers}} = await sendRequest({
+      const {data} = await sendRequest({
         url: `/api/offerproperties/${property_id}/offers`,
         method:'GET'
       })
-      if (error) throw error;
-      offers = propertyOffers;
+      if (data.error) throw data.error;
+      offers = data.offers;
+      property = data.property;
     } catch (error) {
       console.error('Error fetching offers:', error);
       errorMessage = 'Failed to load offers. Please try again.';
@@ -170,7 +171,6 @@
           </button>
           <Button
             onclick={handleDelete}
-            variant="danger"
             disabled={isLoading}
           >
             {#if isLoading}

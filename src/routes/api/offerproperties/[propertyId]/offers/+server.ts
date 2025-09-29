@@ -17,16 +17,16 @@ export const GET: RequestHandler = async ({ request,params }) => {
     }
 
     // Fetch user email from Supabase
-    let query = supabase.from('offers').select('*').eq('property_id',propertyId).eq('user_id',user_id).order('updated_at',{ascending:false});
-    const { data, error } = await query;
+    const { data: property, error: propertyError } = await supabase.from('offer_properties').select('*').eq('user_id',user_id).eq('id',propertyId).single();
+    const { data, error } = await supabase.from('offers').select('*').eq('property_id',propertyId).eq('user_id',user_id).order('updated_at',{ascending:false});
 
-    if (error) {
+    if (propertyError || error) {
       return json(
         { error: "Failed to fetch user offers from Supabase" },
         { status: 500 }
       );
     }
-    return json({ offers: data });
+    return json({ offers: data, property });
   } catch (error) {
     console.error("offers Error: ", error);
     return json(
