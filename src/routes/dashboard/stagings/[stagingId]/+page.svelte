@@ -67,7 +67,7 @@
 </script>
 
 <svelte:head>
-  <title>{getPageTitle('Staging Details')}</title>
+  <title>{getPageTitle(`Staging Details ${staging?.location || ''}`)}</title>
 </svelte:head>
 
 <div class="space-y-6">
