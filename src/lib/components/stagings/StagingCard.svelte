@@ -102,32 +102,21 @@
 		</div>
 	</div>
 
-	{#if request.status !== 'paid'}
-	<div class="px-6 py-3 bg-gray-50">
-		<div class="flex justify-end space-x-3">
-			<Link
-				href={`${DASHBOARD_STAGINGS_URL}/${request.id}`}
-			>
-				View
-			</Link>
-			
-			{#if ($user?.user_id === request.user_id && request.status === 'submitted')}
-				<button
-					on:click={() => onEdit(request)}
-					class="text-sm text-blue-600 hover:text-blue-900"
-				>
-					Edit
-				</button>
+	{#if ($user?.user_id === request.user_id && request.status === 'submitted')}
+		<div class="px-6 py-3 bg-gray-50">
+		<button
+			on:click={() => onEdit(request)}
+			class="text-sm text-blue-600 hover:text-blue-900"
+		>
+			Edit
+		</button>
 
-				<button
-					on:click={() => onDelete(request.id)}
-					class="text-sm text-red-600 hover:text-red-900"
-				>
-					Delete
-				</button>
-			{/if}
-
+		<button
+			on:click={() => onDelete(request.id)}
+			class="text-sm text-red-600 hover:text-red-900"
+		>
+			Delete
+		</button>
 		</div>
-	</div>
 	{/if}
 </CardWrapper>
