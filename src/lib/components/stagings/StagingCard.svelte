@@ -52,7 +52,7 @@
 		<Link href={`${DASHBOARD_STAGINGS_URL}/${request.id}`} className="text-lg font-medium truncate">{request.location}</Link>
 	</div>
 	<div class="px-6 py-4">
-		<div class="space-y-3">
+		<div class="space-y-2">
 			<div class="flex justify-between">
 				<span class="text-sm text-gray-500">Property Type</span>
 				<span class="text-sm text-gray-900 capitalize">{request.property_type}</span>
