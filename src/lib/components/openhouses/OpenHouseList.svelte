@@ -31,30 +31,12 @@
       
       <!-- Content area -->
       <div class="p-5">
-        <div class="flex items-center">
-          <div class="flex-shrink-0 text-blue-500 mr-3">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-          </div>
-          <div>
-            <p class="text-sm font-medium text-gray-700">
-              {formatDate(house.date)}
-            </p>
-          </div>
-        </div>
-        <div class="flex items-center mt-2">
-          <div class="flex-shrink-0 text-green-500 mr-3">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-            </svg>
-          </div>
-          <div>
-            <p class="text-sm font-medium text-gray-700">
-              {house.openhouse_guests?.length || 0} guests
-            </p>
-          </div>
-        </div>
+        <p class="text-sm font-medium text-gray-700">
+          {formatDate(house.date)}
+        </p>
+        <p class="text-sm font-medium text-gray-700">
+          {house.openhouse_guests?.length || 0} guests
+        </p>
       </div>
       
       <!-- Action buttons -->
