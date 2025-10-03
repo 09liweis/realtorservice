@@ -41,7 +41,7 @@
   </div>
 
   <!-- Quick Stats -->
-  <div class="px-8 py-6 bg-gray-50 border-b border-gray-200">
+  <div class="px-8 py-6 border-b border-gray-200">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       <div class="text-center">
         <div class="text-2xl font-bold text-gray-900">
