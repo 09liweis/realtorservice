@@ -21,6 +21,7 @@ export const GET: RequestHandler = async ({ request }) => {
     const { data, error } = await query;
 
     if (error) {
+      console.error("openhouses list Error: ", error);
       return json(
         { error: "Failed to fetch user openhouses from Supabase" },
         { status: 500 }

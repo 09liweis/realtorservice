@@ -6,7 +6,14 @@
     import { formatDate } from "$lib/helper";
     import { DASHBOARD_OPENHOUSES_URL } from "$lib/types/constant";
 
-  export let openHouses: any[] = [];
+  interface OpenHouse {
+    id: string;
+    address: string;
+    date: string;
+    openhouse_guests?: any[];
+  }
+
+  export let openHouses: OpenHouse[] = [];
   export let handleEdit;
   export let handleDelete;
 </script>
