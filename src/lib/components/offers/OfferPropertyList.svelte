@@ -3,6 +3,7 @@
     import Link from "../Link.svelte";
     import { fade, fly, slide } from "svelte/transition";
     import { flip } from 'svelte/animate';
+    import { formatDate } from "$lib/helper";
 
   export let offerProperties;
   export let handleClick;
@@ -32,7 +33,7 @@
           </div>
           <div class="flex justify-between hover:bg-gray-50 p-2 rounded transition-colors duration-200">
             <span class="text-sm text-gray-500">Submitted</span>
-            <span class="text-sm text-gray-900">{offerProperty.date}</span>
+            <span class="text-sm text-gray-900">{formatDate(offerProperty.date)}</span>
           </div>
           <div class="flex justify-between hover:bg-gray-50 p-2 rounded transition-colors duration-200">
             <span class="text-sm text-gray-500">Number of offers</span>
