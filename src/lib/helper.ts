@@ -33,7 +33,7 @@ export function formatDate(date: string|undefined) {
   if (!date) return '';
   return new Date(date).toLocaleDateString('en-US', {
     year: 'numeric',
-    month: 'short',
+    month: 'long',
     day: 'numeric'
   });
 }
