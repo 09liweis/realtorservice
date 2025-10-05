@@ -5,12 +5,13 @@
   import { quintOut, elasticOut } from 'svelte/easing';
     import { formatDate } from "$lib/helper";
     import { DASHBOARD_OPENHOUSES_URL } from "$lib/types/constant";
+  import type { OpenHouseGuest } from "$lib/types/openhouse";
 
   interface OpenHouse {
     id: string;
     address: string;
     date: string;
-    openhouse_guests?: any[];
+    openhouse_guests?: OpenHouseGuest[];
   }
 
   export let openHouses: OpenHouse[] = [];
