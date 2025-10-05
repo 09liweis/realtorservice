@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { formatUserName } from "$lib/helper";
+  import { formatDate, formatUserName } from "$lib/helper";
   import { user } from "$lib/stores/auth";
   import { DASHBOARD_STAGINGS_URL, formatAmount, getStatusStyle } from "$lib/types/constant";
   import { getStagingEndDate, type Staging } from "$lib/types/staging";
@@ -74,7 +74,7 @@
 			<div class="flex justify-between">
 				<span class="text-sm text-gray-500">Timeline</span>
 				<span class="text-sm text-gray-900">
-					{request.timeline || 'Not specified'}
+					{formatDate(request.timeline) || 'Not specified'}
 				</span>
 			</div>
 			<div class="flex justify-between">

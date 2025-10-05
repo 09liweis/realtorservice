@@ -1,3 +1,4 @@
+import { formatDate } from "$lib/helper";
 import type { Service } from "../../types/service.types";
 import { EMPTY_SERVICE } from "../../types/service.types";
 
@@ -28,21 +29,26 @@ export const EMPTY_STAGING = {
 
 export function getStagingEndDate(staging: Staging): string {
   if (!staging.length || !staging.timeline) return '';
-  
-  const startDate = new Date(staging.timeline);
-  const months = parseFloat(staging.length.toString());
-  
-  // Calculate full months and remaining days
-  const fullMonths = Math.floor(months);
-  const remainingDays = Math.round((months - fullMonths) * 30); // Approximate 30 days per month
-  
-  // Add full months first
-  const dateWithMonths = new Date(startDate.setMonth(startDate.getMonth() + fullMonths));
-  
-  // Then add remaining days
-  const endDate = new Date(dateWithMonths.setDate(dateWithMonths.getDate() + remainingDays));
-  
-  return endDate.toISOString().split('T')[0];
+
+  try {
+    const startDate = new Date(staging.timeline);
+    const months = parseFloat(staging.length.toString());
+    
+    // Calculate full months and remaining days
+    const fullMonths = Math.floor(months);
+    const remainingDays = Math.round((months - fullMonths) * 30); // Approximate 30 days per month
+    
+    // Add full months first
+    const dateWithMonths = new Date(startDate.setMonth(startDate.getMonth() + fullMonths));
+    
+    // Then add remaining days
+    const endDate = new Date(dateWithMonths.setDate(dateWithMonths.getDate() + remainingDays));
+    
+    return formatDate(endDate.toISOString().split('T')[0]);
+  } catch (error) {
+    console.error(error);
+    return '';
+  }
 }
 
 // Toronto-based staging fee calculation constants
