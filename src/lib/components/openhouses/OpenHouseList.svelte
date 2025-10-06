@@ -48,7 +48,7 @@
       </div>
       
       <!-- Action buttons -->
-      <div class="px-5 py-4 bg-gray-50 flex justify-end space-x-4 border-t border-gray-100">
+      <div class="px-5 py-4 flex justify-end space-x-4 border-t border-gray-100">
         <Link 
           href={`${DASHBOARD_OPENHOUSES_URL}/${house.id}`}>
           View
