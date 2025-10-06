@@ -96,11 +96,11 @@
   <title>{getPageTitle('Dashboard')}</title>
 </svelte:head>
 
-<div class="space-y-8">
+<div class="space-y-4">
   <DashboardHeader />
 
   <!-- Main Stats Grid -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
     <!-- Listings Stats -->
     <ServiceStatsCard 
       title="Listings"
@@ -161,10 +161,7 @@
         <span class="font-medium">Scheduled</span> services
       </div>
     </ServiceStatsCard>
-  </div>
-
-  <!-- Secondary Services Grid -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+  
     <!-- Video Services -->
     <ServiceStatsCard 
       title="Video Services"
