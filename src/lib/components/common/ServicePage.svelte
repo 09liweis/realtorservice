@@ -18,7 +18,7 @@
   {#if gallery.length > 0}
   <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
     {#each gallery as image}
-    <img src={image} alt={pageTitle} />
+    <img src={image} alt={pageTitle} class="rounded" />
     {/each}
   </div>
   {/if}
