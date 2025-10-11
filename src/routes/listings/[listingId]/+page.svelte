@@ -196,7 +196,7 @@
         {#if listing.description}
           <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8" in:fly={{ y: 30, duration: 600, delay: 500 }}>
             <h2 class="text-2xl font-bold text-gray-900 mb-4">Description</h2>
-            <div class="prose prose-gray max-w-none text-gray-700 leading-relaxed">
+            <div class="max-w-none text-gray-700 leading-relaxed">
               {listing.description}
             </div>
           </div>
@@ -453,13 +453,3 @@
     </div>
   </div>
 {/if}
-
-<style>
-  .prose {
-    line-height: 1.7;
-  }
-  
-  .prose p {
-    margin-bottom: 1rem;
-  }
-</style>
