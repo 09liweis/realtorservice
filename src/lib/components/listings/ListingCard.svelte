@@ -138,7 +138,7 @@
       <div class="border-t border-gray-100 pt-4 mt-4 flex justify-end" in:fly={{ y: 15, duration: 400, delay: 500 }}>
         <button 
           on:click={() => editListing(listing)}
-          class="inline-flex items-center px-3 py-1.5 border border-primary text-xs font-medium rounded-lg text-primary bg-white hover:bg-primary hover:text-white hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-300 shadow-sm"
+          class="inline-flex cursor-pointer items-center px-3 py-1.5 border border-primary text-xs font-medium rounded-lg text-primary bg-white hover:bg-primary hover:text-white hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-300 shadow-sm"
           in:scale={{ duration: 300, delay: 600, easing: elasticOut }}
         >
           <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
