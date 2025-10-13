@@ -361,7 +361,7 @@ export async function sendProjectSubmitted(
 
     <p style="color: #64748b; font-size: 14px; margin-top: 40px; padding-top: 20px; border-top: 1px solid #e2e8f0;">
       <strong>Need immediate assistance?</strong><br>
-      Our support team is here to help! Contact us at <a href="mailto:dev@realtorservice.ca" style="color: #0d7377; text-decoration: none; font-weight: 600;">dev@realtorservice.ca</a> or call <a href="tel:416-800-0688" style="color: #0d7377; text-decoration: none; font-weight: 600;">416-800-0688</a>.
+      Our support team is here to help! Contact us at <a href="mailto:dev@realtorservice.ca" style="color: #0d7377; text-decoration: none; font-weight: 600;">dev@realtorservice.ca</a> or call <a href="tel:${PHONE_NUMBER}" style="color: #0d7377; text-decoration: none; font-weight: 600;">${PHONE_NUMBER}</a>.
     </p>
   `;
 
