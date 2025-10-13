@@ -1,6 +1,6 @@
 import { HOST,RESEND_API_KEY,EMAIL_FROM } from '$env/static/private';
 import { Resend } from 'resend';
-import { DASHBOARD_ADMIN_URL } from './types/constant';
+import { DASHBOARD_ADMIN_URL, PHONE_NUMBER } from './types/constant';
 
 // Initialize Resend client with API key from environment variables
 const resend = new Resend(RESEND_API_KEY);
@@ -41,7 +41,7 @@ function getEmailFooter(): string {
           <p style="margin: 0 0 10px 0;">
             <strong style="color: #334155;">Realtor Service</strong><br>
             Professional Real Estate Solutions<br>
-            📞 416-800-0688 | 📧 dev@realtorservice.ca
+            📞 ${PHONE_NUMBER} | 📧 dev@realtorservice.ca
           </p>
         </div>
 
