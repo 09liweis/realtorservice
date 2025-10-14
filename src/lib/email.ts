@@ -777,7 +777,7 @@ export async function sendAdminNewUserNotification(
   const html = createEmailTemplate('New User Registration', content);
 
   // Send to admin email (you can configure this in environment variables)
-  const adminEmail = 'dev@realtorservice.ca'; // You might want to make this configurable
+  const adminEmail = CONTACT_EMAIL; // You might want to make this configurable
 
   return sendMail({
     to: adminEmail,
