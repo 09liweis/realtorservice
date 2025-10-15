@@ -10,7 +10,7 @@
   }
 </script>
 
-<div class="bg-primary rounded-2xl p-8 flex items-center space-x-6">
+<div class="bg-primary rounded-2xl p-6 flex items-center space-x-4">
   <div class="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center text-2xl font-bold">
     {getUserInitials(profile)}
   </div>
