@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { formatUserName, getUserInitials } from '$lib/helper';
+  import { formatUserName, getUserInitials, isRealtor } from '$lib/helper';
   import type { UserProfile } from '$lib/types/user';
   export let profile: UserProfile;
 
@@ -18,7 +18,7 @@
     <h1 class="text-3xl font-bold mb-2">
       {formatUserName(profile)}
     </h1>
-    <p class="text-blue-100 text-lg">{profile.role === 'realtor' ? 'Real Estate Professional' : profile.role}</p>
+    <p class="text-blue-100 text-lg">{isRealtor(profile) ? 'Real Estate Professional' : profile.role}</p>
     <div class="flex items-center space-x-4 mt-2">
       <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border {getApprovalStatusStyle(profile.realtor_approved)}">
         {#if profile.realtor_approved}

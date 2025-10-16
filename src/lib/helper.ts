@@ -46,3 +46,7 @@ export function getUserInitials({first_name, last_name}:UserProfile) {
   if (!first_name || !last_name) return '';
   return `${first_name[0]}${last_name[0]}`;
 }
+
+export function isRealtor(user:UserProfile) {
+  return user.role === 'realtor';
+}
