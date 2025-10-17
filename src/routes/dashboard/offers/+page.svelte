@@ -8,6 +8,7 @@
     import type { OfferProperty } from '$lib/types/offer';
     import { onMount } from 'svelte';
     import { sendRequest } from '$lib/helper';
+    import { user } from '../../../lib/stores/auth';
 
   const EMPTY_OFFER_PROPERTY:OfferProperty = {
     address:'',
@@ -111,7 +112,7 @@
 <div class="space-y-6">
 	<div class="flex items-center justify-between">
 		<h1 class="text-2xl font-semibold text-gray-900">Offers Management</h1>
-    <Button onclick={AddNewProperty} disabled={isFetching}>
+    <Button onclick={AddNewProperty} disabled={!$user?.isApproved}>
       <Add />
       {#if isFetching}
         Loading...
