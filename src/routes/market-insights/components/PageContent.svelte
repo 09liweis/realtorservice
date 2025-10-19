@@ -13,7 +13,7 @@
     <ul class="space-y-4">
       {#each data.rssFeed as item}
         <li class="border-b border-gray-200 pb-4">
-          <Link href={item.link} target="_blank" rel="noopener noreferrer">
+          <Link href={item.link} className="text-xl" target="_blank" rel="noopener noreferrer">
             {item.title}
           </Link>
           <p class="text-gray-600 mt-2">{item.description}</p>
