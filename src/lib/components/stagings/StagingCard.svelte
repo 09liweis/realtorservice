@@ -106,14 +106,14 @@
 		<div class="px-6 py-3 bg-gray-50">
 		<button
 			on:click={() => onEdit(request)}
-			class="text-sm text-blue-600 hover:text-blue-900"
+			class="text-sm text-blue-600 hover:text-blue-900 cursor-pointer"
 		>
 			Edit
 		</button>
 
 		<button
 			on:click={() => onDelete(request.id)}
-			class="text-sm text-red-600 hover:text-red-900"
+			class="text-sm text-red-600 hover:text-red-900 cursor-pointer"
 		>
 			Delete
 		</button>
